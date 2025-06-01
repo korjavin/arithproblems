@@ -313,6 +313,69 @@ h2 {
     text-align: center;
 }
 
+/* Grid for Fraction Simplification Problems */
+.fraction-problem-grid {
+    /* Uses .arithmetic-grid styles by sharing the class */
+    /* We can add specific overrides here if needed */
+    gap: 20px 15px; /* Potentially different gap */
+}
+
+.fraction-problem-item {
+    font-size: 1.2em;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    display: flex;
+    flex-direction: column; /* Stack problem content and calculation space */
+    align-items: center;    /* Center the problem content horizontally */
+    justify-content: flex-start; /* Align content to the top, allowing calculation-space to fill below */
+    min-height: 7em; /* Significantly increased height for calculation space */
+}
+
+.fraction-problem-item .problem-content {
+    display: flex;
+    align-items: center; /* Vertically align fraction and equals sign */
+    /* font-size: 1.2em; /* Already inherited or can be set on fraction-problem-item */
+    margin-bottom: 5px; /* Small space before calculation area */
+    width: 100%; /* Ensure it takes width for justify-content if needed */
+    justify-content: center; /* Center the fraction and equals sign group */
+}
+
+.fraction-problem-item .calculation-space {
+    flex-grow: 1; /* Takes up remaining vertical space */
+    width: 100%;  /* Full width for scribbling */
+    /* border-top: 1px dashed #ccc; /* Optional: visual separator for the calculation area */
+    min-height: 2em; /* Ensure some minimum space even if flex-grow doesn't give much */
+}
+
+/* Styling for the fraction itself */
+.fraction {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle; /* Align with surrounding text */
+    margin: 0 8px; /* Space around the fraction */
+    font-family: 'Courier New', Courier, monospace; /* Good for consistent width */
+    position: relative; /* For absolute positioning of the vinculum (line) if chosen */
+}
+
+.fraction .numerator,
+.fraction .denominator {
+    display: block;
+    padding: 0 5px; /* Padding around number */
+    line-height: 1.1; /* Snug line height */
+    font-size: 1.1em; /* Slightly larger numbers */
+}
+
+.fraction .numerator {
+    border-bottom: 2px solid #333; /* Vinculum (fraction line) */
+    padding-bottom: 2px;
+}
+
+.fraction .denominator {
+    padding-top: 2px;
+}
+
 
 /* Footer */
 footer {
@@ -408,6 +471,95 @@ footer {
         min-width: 1cm;
         height: 1cm;
         padding: 2mm;
+    }
+
+    /* Print specific for fractions */
+        .fraction-problem-grid { /* This assumes .fraction-problem-grid is a class on the same element as .arithmetic-grid or a child */
+            gap: 15mm 10mm;
+        }
+
+    /* Styles for Control Sum Key Grid (Fractions) */
+    .control-sum-key-container {
+        margin-top: 30px;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+    }
+
+    .control-sum-key-container h4 {
+        margin-top: 0;
+        margin-bottom: 5px; 
+        font-size: 1.1em;
+        color: #333;
+        text-align: center;
+    }
+    .control-sum-key-container p { /* For the explanation text */
+        text-align: center;
+        font-size: 0.85em;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .control-sum-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Match problem grid */
+        gap: 10px 15px; /* Row gap, Column gap */
+        justify-items: center;
+    }
+
+    .control-sum-cell {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.4em; 
+        font-weight: bold;
+        color: #0056b3; /* Consistent with DR cell color */
+        background-color: #fff;
+        border: 1px solid #d4d4d4;
+        border-radius: 4px;
+        padding: 8px 5px; 
+        min-width: 40px; 
+        height: 40px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .fraction-problem-item {
+        font-size: 12pt;
+        border: none;
+        page-break-inside: avoid;
+        min-height: 2.5cm; /* Adjusted min-height for print */
+    }
+    .fraction .numerator, .fraction .denominator {
+        font-size: 13pt;
+    }
+    .fraction .numerator {
+        border-bottom-width: 1.5px; /* Slightly thinner for print */
+    }
+
+    /* Print-specific adjustments for Control Sum Key Grid */
+    .control-sum-key-container {
+        margin-top: 10mm;
+        padding: 5mm;
+        page-break-inside: avoid;
+    }
+     .control-sum-key-container h4 {
+        font-size: 12pt;
+    }
+    .control-sum-key-container p {
+        font-size: 9pt;
+    }
+    .control-sum-grid {
+        grid-template-columns: repeat(4, 1fr); /* Match problem grid's print columns */
+        gap: 8mm 8mm;
+    }
+    .control-sum-cell {
+        font-size: 12pt;
+        border: 1px solid #bbb;
+        min-width: 1cm;
+        height: 1cm;
+        padding: 2mm;
+        page-break-inside: avoid;
     }
 
 

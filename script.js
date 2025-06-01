@@ -77,19 +77,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderRationalCanonicalControls() {
     topicSpecificControlsContainer.innerHTML = `
-            <div>
-                <label for="rc-max-numerator">Max Numerator Value:</label>
-                <input type="number" id="rc-max-numerator" value="50" min="1">
-            </div>
-            <div>
-                <label for="rc-max-denominator">Max Denominator Value:</label>
-                <input type="number" id="rc-max-denominator" value="50" min="2">
-            </div>
-             <div>
-                <input type="checkbox" id="rc-ensure-reducible" checked>
-                <label for="rc-ensure-reducible">Ensure Fraction is Reducible</label>
-            </div>
-        `;
+        <div>
+            <label for="rc-max-val">Max Value for Numerator/Denominator:</label>
+            <input type="number" id="rc-max-val" value="30" min="2"> 
+        </div>
+        <div>
+            <input type="checkbox" id="rc-ensure-reducible" checked>
+            <label for="rc-ensure-reducible">Ensure Fraction is Reducible</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">Students should simplify the fraction to its lowest terms.</p>
+        <!-- No DR key for this section for now -->
+    `;
   }
 
   function renderRationalOperationsControls() {
@@ -115,6 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Helper Functions ---
+function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    if (b === 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
   function digitalRoot(n) {
       let num = Math.abs(n); // Ensure positive for the digit summing process
       let sum = num;
@@ -460,16 +467,181 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(`Multiplication/Division problems with DR key generated: ${generatedCount}`);
 }
 
-  function generateRationalCanonicalProblems() {
-    console.log("Generating Canonical Rational Number problems...");
-    problemsContainer.innerHTML =
-      "<p>Canonical Rational Number problems will appear here.</p>";
-    // TODO: Implement logic based on inputs:
-    // document.getElementById('rc-max-numerator').value
-    // document.getElementById('rc-max-denominator').value
-    // document.getElementById('rc-ensure-reducible').checked
-    // numProblemsInput.value
-  }
+function generateRationalCanonicalProblems() {
+   console.log("Generating Canonical Rational Number problems with Answer Key...");
+   problemsContainer.innerHTML = ''; // Clear previous
+
+   // --- Get DOM elements for inputs ---
+   const maxValInput = document.getElementById('rc-max-val');
+   const ensureReducibleCheckbox = document.getElementById('rc-ensure-reducible');
+   const numberOfProblemsInput = document.getElementById('num-problems');
+
+   // --- Read input values ---
+   const maxVal = parseInt(maxValInput.value, 10);
+   const ensureReducible = ensureReducibleCheckbox.checked;
+   const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+   // --- Basic Validation ---
+   if (isNaN(maxVal) || maxVal < 2) {
+       problemsContainer.innerHTML = '<p class="error-message">Max value for numerator/denominator must be at least 2.</p>';
+       return;
+   }
+
+   if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+       problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
+       return;
+   }
+
+   // Helper to get a random integer between min and max (inclusive)
+   function getRandomInt(min, max) {
+       return Math.floor(Math.random() * (max - min + 1)) + min;
+   }
+
+   const h3Title = document.createElement('h3');
+   h3Title.textContent = 'Simplify Fractions (to Canonical Form)';
+   problemsContainer.appendChild(h3Title);
+
+   const gridContainer = document.createElement('div');
+   gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // New class for specific styling if needed
+
+   const problemsHtmlArray = [];
+   const simplifiedAnswers = []; // For the answer key
+   let generatedCount = 0;
+   let generationAttempts = 0;
+   const MAX_ATTEMPTS_PER_PROBLEM = 50; // To prevent infinite loops
+
+   while (generatedCount < numberOfProblems && generationAttempts < numberOfProblems * MAX_ATTEMPTS_PER_PROBLEM) {
+       generationAttempts++;
+       let numerator = getRandomInt(1, maxVal);
+       let denominator = getRandomInt(1, maxVal); // Denominator can be 1 initially
+
+       // Ensure denominator is not 1 if numerator is also 1 (1/1 is trivial)
+       // and for more interesting problems, ensure denominator isn't 1 in general unless it's e.g. 5/1.
+       // A common case is d > 1.
+       if (denominator === 1 && numerator !== 1) {
+           // If X/1, it's already "simplified" to X.
+           // If ensureReducible is true, we want something like 6/2, not 6/1.
+           // So, if ensureReducible, try to get a denominator > 1.
+           if (ensureReducible) {
+                if (maxVal > 1) denominator = getRandomInt(2, maxVal);
+                else continue; // Cannot make it reducible if maxVal is 1
+           } else {
+               // Allow X/1 if not ensuring reducibility, though they are simple.
+           }
+       } else if (denominator === 1 && numerator === 1) { // Avoid 1/1
+           continue;
+       }
+        
+       if (denominator === 0) continue; // Should not happen with getRandomInt(1, maxVal)
+       if (numerator === 0 && denominator !== 0) { // 0/d simplifies to 0
+            // If ensureReducible, this might be too simple. Skip if ensureReducible.
+           if (ensureReducible) continue;
+       }
+
+
+       // Check for reducibility if required
+       if (ensureReducible) {
+           const commonDivisor = gcd(numerator, denominator);
+           // A fraction is reducible if gcd > 1.
+           // Also, it's not "interesting" if it's a whole number (e.g. 6/2=3) or if num is 0.
+           // We want fractions like 6/4, not 6/2 or 0/5.
+           if (commonDivisor <= 1 || denominator === 0 ) { 
+                continue; // Not reducible or invalid denominator
+           }
+           // If it is a whole number like 6/3 (gcd=3), it simplifies to 2/1.
+           // If ensureReducible is true, we prefer fractions that don't simplify to whole numbers.
+           if (numerator % denominator === 0 && denominator !== 1) { // It's a whole number like 4/2 or 6/3 but not X/1
+               continue; // Try for a non-whole number reducible fraction
+           }
+            // At this point, if ensureReducible, gcd(num,den) > 1 and it's not a whole number (unless it simplifies to X/1)
+       }
+        
+       // Ensure n/d != d/n for variety if they are not equal, simple swap to make num < den if preferred for initial display
+       // For simplification tasks, this isn't strictly necessary.
+
+       // Calculate simplified form and then the Control Sum
+       const commonDivisorForKey = gcd(numerator, denominator);
+       let sn = numerator / commonDivisorForKey; // simplified numerator
+       let sd = denominator / commonDivisorForKey; // simplified denominator
+
+       let controlSum;
+
+       if (sd === 0) { 
+           controlSum = NaN; // Error indicator
+       } else if (sn === 0) { // Fraction is 0 (e.g. 0/5)
+           // Remainder fraction is 0/sd. Control sum is 0 + sd.
+           controlSum = 0 + sd;
+       } else if (sd === 1) { // Simplified to a whole number (sn/1)
+           // Remainder fraction is 0/1. Control sum is 0 + 1.
+           controlSum = 1; 
+       } else if (sn < sd) { // Proper fraction (sn/sd)
+           // Remainder fraction is sn/sd. Control sum is sn + sd.
+           controlSum = sn + sd;
+       } else { // Improper fraction (sn/sd, sn >= sd)
+           // const wholePart = Math.floor(sn / sd); // Not needed for control sum
+           const remainderNum = sn % sd;
+           // Remainder fraction is remainderNum/sd. Control sum is remainderNum + sd.
+           // This covers cases like 6/3 -> remainderNum 0 -> control sum 0+3=3.
+           controlSum = remainderNum + sd;
+       }
+       simplifiedAnswers.push({ controlSum: controlSum });
+
+       // Format fraction problem (removed "Simplify:", added calculation space structure)
+       const problemHTML = `
+           <div class="fraction-problem-item">
+               <div class="problem-content">
+                   <span class="fraction">
+                       <span class="numerator">${numerator}</span>
+                       <span class="denominator">${denominator}</span>
+                   </span> =
+               </div>
+               <div class="calculation-space"></div>
+           </div>`;
+        
+       problemsHtmlArray.push(problemHTML);
+       generatedCount++;
+   }
+
+   if (generatedCount < numberOfProblems && ensureReducible) { // Only show warning if ensureReducible was on
+       const warningP = document.createElement('p');
+       warningP.className = 'warning-message';
+       warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems with the "Ensure Reducible" constraint. Try increasing Max Value or unchecking the option.`;
+       // Insert warning before the grid container if it exists, or just append
+       if (gridContainer.parentNode) {
+            problemsContainer.insertBefore(warningP, gridContainer);
+       } else {
+           problemsContainer.appendChild(warningP);
+       }
+   }
+
+   gridContainer.innerHTML = problemsHtmlArray.join('');
+   if (generatedCount > 0 || !ensureReducible) { // Only append grid if problems were made or reducibility wasn't required
+       problemsContainer.appendChild(gridContainer);
+   } else if (generatedCount === 0 && ensureReducible) {
+       // If ensureReducible was on and NO problems could be made, the warning message already covers it.
+       // We might not want to show an empty grid container.
+   }
+
+    // --- Add Control Sum Key Grid ---
+    if (simplifiedAnswers.length > 0) {
+        const answerKeyContainer = document.createElement('div');
+        answerKeyContainer.className = 'control-sum-key-container'; 
+        
+        answerKeyContainer.innerHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:10px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1 (from W and 0/1). If fraction is 0 (0/D), sum is D.)</p>';
+
+        const answerGrid = document.createElement('div');
+        answerGrid.className = 'control-sum-grid'; 
+
+        simplifiedAnswers.forEach(ans => {
+            // ans is { controlSum: X }
+            answerGrid.innerHTML += `<div class="control-sum-cell">${isNaN(ans.controlSum) ? "Error" : ans.controlSum}</div>`;
+        });
+        answerKeyContainer.appendChild(answerGrid);
+        problemsContainer.appendChild(answerKeyContainer);
+    }
+    
+   console.log(`Canonical Rational Number problems generated: ${generatedCount}`);
+}
 
   function generateRationalOperationsProblems() {
     console.log("Generating Rational Operations problems...");
