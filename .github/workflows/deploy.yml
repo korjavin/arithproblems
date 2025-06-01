@@ -3,7 +3,7 @@ name: Deploy Math Worksheet Generator
 on:
   push:
     branches:
-      - master # Or your default branch, e.g., master
+      - master # Or your default branch, e.g., main
 
 jobs:
   build-and-push-ghcr:
@@ -23,11 +23,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Optional: List files to confirm structure before cd (useful for debugging)
+      # - name: List files in workspace root before cd
+      #   run: ls -laR
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@v5
         with:
-          context: ./arithproblems # Context is the arithproblems subdirectory where Dockerfile is
+          # Context will default to the working-directory
+          # Dockerfile path will default to Dockerfile in the working-directory
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           # Alternative tagging strategy:
@@ -35,6 +40,7 @@ jobs:
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:v1.0.${{ github.run_number }}
+        working-directory: ./
 
       - name: Image Digest
         run: echo ${{ steps.build-and-push.outputs.digest }}
