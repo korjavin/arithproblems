@@ -91,25 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderRationalOperationsControls() {
-    topicSpecificControlsContainer.innerHTML = `
-            <div>
-                <label for="ro-num-terms">Number of Fractions (e.g., 2 for a/b + c/d):</label>
-                <input type="number" id="ro-num-terms" value="2" min="2">
-            </div>
-            <div>
-                <label for="ro-max-value">Max value for Numerators/Denominators:</label>
-                <input type="number" id="ro-max-value" value="20" min="1">
-            </div>
-            <div>
-                <label for="ro-operation">Operation:</label>
-                <select id="ro-operation">
-                    <option value="add">Addition (+)</option>
-                    <option value="subtract">Subtraction (-)</option>
-                    <!-- <option value="multiply">Multiplication (*)</option> -->
-                    <!-- <option value="divide">Division (/)</option> -->
-                </select>
-            </div>
-        `;
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="ro-num-terms">Number of Fractions (2 recommended):</label>
+            <input type="number" id="ro-num-terms" value="2" min="2" max="2"> <!-- Forcing 2 for now -->
+        </div>
+        <div>
+            <label for="ro-max-val">Max Value for Numerators/Denominators:</label>
+            <input type="number" id="ro-max-val" value="15" min="1">
+        </div>
+        <p style="font-size:0.9em; color:#555;">Operations will be a mix of addition and subtraction. Result should be simplified. Control sums will be shown for self-checking.</p>
+    `;
   }
 
   // --- Helper Functions ---
@@ -643,13 +635,134 @@ function generateRationalCanonicalProblems() {
    console.log(`Canonical Rational Number problems generated: ${generatedCount}`);
 }
 
-  function generateRationalOperationsProblems() {
-    console.log("Generating Rational Operations problems...");
-    problemsContainer.innerHTML =
-      "<p>Rational Operations problems will appear here.</p>";
-    // TODO: Implement logic based on inputs from renderRationalOperationsControls()
-    // numProblemsInput.value
-  }
+function generateRationalOperationsProblems() {
+    console.log("Generating Rational Operations problems with Control Sum key...");
+    problemsContainer.innerHTML = ''; // Clear previous
+
+    // --- Get DOM elements for inputs ---
+    // const numTermsInput = document.getElementById('ro-num-terms'); // Fixed to 2 for now
+    const maxValInput = document.getElementById('ro-max-val');
+    // const operationTypeInput = document.getElementById('ro-operation'); // Removed
+    const numberOfProblemsInput = document.getElementById('num-problems');
+
+    // --- Read input values ---
+    const maxVal = parseInt(maxValInput.value, 10);
+    // let operationType = operationTypeInput.value; // Removed, will always be mixed
+    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+    // --- Basic Validation ---
+    if (isNaN(maxVal) || maxVal < 1) {
+        problemsContainer.innerHTML = '<p class="error-message">Max value for N/D must be at least 1.</p>';
+        return;
+    }
+    // Removed maxVal > 50 constraint
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
+        return;
+    }
+
+    function getRandomInt(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const h3Title = document.createElement('h3');
+    h3Title.textContent = 'Operations on Rational Numbers';
+    problemsContainer.appendChild(h3Title);
+
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // Reuse existing grid style
+
+    const problemsHtmlArray = [];
+    const controlSumsArray = []; 
+    let generatedCount = 0;
+
+    for (let i = 0; i < numberOfProblems; i++) {
+        let n1 = getRandomInt(1, maxVal);
+        let d1 = getRandomInt(1, maxVal);
+        let n2 = getRandomInt(1, maxVal);
+        let d2 = getRandomInt(1, maxVal);
+
+        // Operations are now always mixed
+        const currentOperation = Math.random() < 0.5 ? 'add' : 'subtract';
+        
+        let resultN, resultD;
+        let opSymbol = '';
+
+        if (currentOperation === 'add') {
+            opSymbol = '+';
+            resultN = (n1 * d2) + (n2 * d1);
+            resultD = d1 * d2;
+        } else { // subtract
+            opSymbol = '&ndash;';
+            resultN = (n1 * d2) - (n2 * d1);
+            resultD = d1 * d2;
+        }
+
+        if (resultD === 0) { 
+            i--; continue; 
+        }
+        
+        const commonDivisor = gcd(resultN, resultD);
+        let finalN = resultN / commonDivisor;
+        let finalD = resultD / commonDivisor;
+
+        if (finalD < 0) {
+            finalN = -finalN;
+            finalD = -finalD;
+        }
+
+        let controlSum;
+        if (finalD === 0) { controlSum = NaN; }
+        else if (finalN === 0) { controlSum = 0 + finalD; }
+        else if (finalD === 1) { controlSum = 1; } 
+        else if (Math.abs(finalN) < finalD) { 
+            controlSum = Math.abs(finalN) + finalD;
+        } else { 
+            const remainderNum = Math.abs(finalN) % finalD;
+            controlSum = remainderNum + finalD;
+        }
+        controlSumsArray.push({ controlSum: controlSum });
+
+        const problemHTML = `
+            <div class="fraction-operation-item">
+                <div class="problem-content">
+                    <span class="fraction">
+                        <span class="numerator">${n1}</span>
+                        <span class="denominator">${d1}</span>
+                    </span>
+                    <span class="operation-symbol">${opSymbol}</span>
+                    <span class="fraction">
+                        <span class="numerator">${n2}</span>
+                        <span class="denominator">${d2}</span>
+                    </span> =
+                </div>
+                <div class="calculation-space"></div>
+            </div>`;
+        
+        problemsHtmlArray.push(problemHTML);
+        generatedCount++;
+    }
+
+    gridContainer.innerHTML = problemsHtmlArray.join('');
+    problemsContainer.appendChild(gridContainer);
+    
+    if (controlSumsArray.length > 0) {
+        const answerKeyContainer = document.createElement('div');
+        answerKeyContainer.className = 'control-sum-key-container'; 
+        answerKeyContainer.innerHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
+
+        const answerGrid = document.createElement('div');
+        answerGrid.className = 'control-sum-grid'; 
+
+        controlSumsArray.forEach(ans => {
+            answerGrid.innerHTML += `<div class="control-sum-cell">${isNaN(ans.controlSum) ? "Err" : ans.controlSum}</div>`;
+        });
+        answerKeyContainer.appendChild(answerGrid);
+        problemsContainer.appendChild(answerKeyContainer);
+    }
+    
+    console.log(`Rational Operations problems generated: ${generatedCount}`);
+}
 
   // --- Event Handlers ---
   function handleTopicChange() {

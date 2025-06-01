@@ -389,10 +389,16 @@ footer {
 
 /* Print-specific styles */
 @media print {
+    html, body { /* Ensure html and body can expand */
+        height: 100%; 
+    }
     body {
+        position: relative; /* Needed for absolute positioning of children */
         padding: 0;
         background-color: #fff; /* Ensure white background for printing */
         font-size: 12pt; /* Adjust base font size for print */
+        display: flex; /* Make body a flex container to manage main's height */
+        flex-direction: column;
     }
 
     header,
@@ -406,26 +412,45 @@ footer {
 
     main {
         max-width: 100%;
-        margin: 0;
-        padding: 0;
+        margin: 0; /* Standard browser print margins will apply outside <html> */
+        padding: 10mm 10mm 0 10mm; /* Add some padding, but bottom padding handled by #problems-container or fixed key */
         border: none;
         box-shadow: none;
+        display: flex; /* Use flexbox on main */
+        flex-direction: column;
+        flex-grow: 1; /* Allow main to grow if body is flex */
+        /* Attempt to make main fill the page height minus space for fixed key */
+        /* 100vh in print context is one page. Subtract estimated fixed key height + bottom margin */
+        min-height: calc(100vh - 60mm); /* 50mm was padding, key itself is ~10-15mm high. Adjust as needed. */
     }
 
-    #output-area {
+    #output-area { /* This contains #problems-container */
         border: none;
         padding: 0;
         background-color: #fff;
+        flex-grow: 1; /* Allow output area to take space in main */
+        display: flex;
+        flex-direction: column;
     }
-
+    
     #problems-container {
         min-height: auto;
         border: none;
+        padding-bottom: 50mm; /* Space for the fixed key containers at the bottom, adjust as needed */
+        flex-grow: 1; /* Allow problems container to take available space in #output-area */
+        display: flex; 
+        flex-direction: column;
     }
-    #problems-container .arithmetic-grid {
+
+    #problems-container .arithmetic-grid,
+    #problems-container .fraction-problem-grid { 
+        /* display: grid !important; -- Already ensured above or inherited */
         grid-template-columns: repeat(4, 1fr); /* Example: 4 columns for print, adjust as needed */
-        gap: 15mm 8mm; /* More generous spacing for print */
-        padding-top: 5mm;
+        /* gap: 15mm 8mm; /* More generous spacing for print */
+        /* padding-top: 5mm; */ /* Let align-content handle spacing */
+        flex-grow: 1; /* Make the grid itself take available vertical space in #problems-container */
+        align-content: space-around; /* Distribute space between rows */
+        gap: 10mm 8mm !important; /* Adjust gap for row and column, row gap increased */
     }
 
     .problem { /* This is for the old linear problem style, might not be needed if all are grid */
@@ -466,20 +491,62 @@ footer {
         gap: 8mm 8mm;
     }
     .dr-cell {
-        font-size: 12pt;
-        border: 1px solid #bbb;
-        min-width: 1cm;
-        height: 1cm;
-        padding: 2mm;
-    }
-
-    /* Print specific for fractions */
-        .fraction-problem-grid { /* This assumes .fraction-problem-grid is a class on the same element as .arithmetic-grid or a child */
-            gap: 15mm 10mm;
+        .control-sum-cell {
+            font-size: 12pt;
+            border: 1px solid #bbb;
+            min-width: 1cm;
+            height: 1cm;
+            padding: 2mm;
+            page-break-inside: avoid;
         }
 
-    /* Styles for Control Sum Key Grid (Fractions) */
-    .control-sum-key-container {
+    /* --- Styles for Rational Operations Problems --- */
+    /* .fraction-problem-grid (from canonical) can be reused if styling is similar */
+
+    .fraction-operation-item {
+        font-size: 1.2em; /* Base font size for the item */
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        background-color: #fdfdfd;
+        display: flex;
+        flex-direction: column; 
+        align-items: center;    
+        justify-content: flex-start; 
+        min-height: 7em; /* Consistent with simplification problems for vertical space */
+    }
+
+    .fraction-operation-item .problem-content {
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        margin-bottom: 5px; 
+        width: 100%;
+        /* font-size for fractions within is handled by .fraction class */
+    }
+
+    .fraction-operation-item .operation-symbol {
+        font-size: 1.5em; /* Make operator stand out from fraction numbers */
+        font-weight: bold;
+        margin: 0 10px; 
+        color: #333;
+        line-height: 1; /* Ensure it aligns well vertically with fractions */
+    }
+
+    /* .fraction styles are reused */
+    /* .calculation-space style (if added to HTML structure) is reused from .fraction-problem-item .calculation-space */
+
+
+     /* Print specific for fractions */
+             .fraction-problem-grid { /* This assumes .fraction-problem-grid is a class on the same element as .arithmetic-grid or a child */
+                 display: grid !important; /* Ensure grid display */
+                 /* Assuming grid-template-columns is set similar to .arithmetic-grid if it's a top-level problem grid */
+                 /* If it's just a class on .arithmetic-grid, this display:grid might be redundant but harmless */
+                 gap: 15mm 10mm; 
+             }
+
+        /* Styles for Control Sum Key Grid (Fractions) */
+        .control-sum-key-container {
         margin-top: 30px;
         padding: 15px;
         border: 1px solid #e0e0e0;
@@ -537,29 +604,70 @@ footer {
         border-bottom-width: 1.5px; /* Slightly thinner for print */
     }
 
-    /* Print-specific adjustments for Control Sum Key Grid */
-    .control-sum-key-container {
-        margin-top: 10mm;
-        padding: 5mm;
+    /* Print specific for fraction operations */
+    .fraction-operation-item {
+        font-size: 12pt;
+        border: none;
+        min-height: 2.5cm; 
         page-break-inside: avoid;
     }
-     .control-sum-key-container h4 {
+    .fraction-operation-item .operation-symbol {
+        font-size: 1.3em; 
+        margin: 0 6px; /* Adjusted margin for print */
+    }
+    /* .fraction print styles are inherited */
+    /* .calculation-space print styles are inherited */
+
+    /* Print-specific adjustments for Key Grids (DR and Control Sum) */
+    .digital-root-check-grid-container,
+    .control-sum-key-container {
+        position: fixed;
+        bottom: 10mm;
+        left: 10mm;
+        right: 10mm;
+        width: auto;
+        max-width: 190mm; /* Adjust for A4 paper content width */
+        margin: 0 auto; /* Center horizontally */
+        z-index: 100; /* High z-index */
+        background-color: #fdfdfd; /* Give it a light background */
+        border: 1px solid #ccc;
+        padding: 3mm;
+        page-break-inside: avoid !important;
+        clear: both; 
+    }
+    .digital-root-check-grid-container h4, /* Shared style for h4 in key containers */
+    .control-sum-key-container h4 {
         font-size: 12pt;
     }
+    .digital-root-check-grid-container p, /* Shared style for p in key containers */
     .control-sum-key-container p {
         font-size: 9pt;
     }
+
+    .digital-root-check-grid,
     .control-sum-grid {
-        grid-template-columns: repeat(4, 1fr); /* Match problem grid's print columns */
-        gap: 8mm 8mm;
+        display: grid !important; 
+        grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)) !important; /* Use auto-fill to adapt */
+        gap: 3mm !important; 
+        list-style-type: none !important; 
+        padding: 0 !important; 
+        margin: 0 auto !important; /* Center grid if its container is wider */
+        max-width: 100%;
     }
+
+    .dr-cell,
     .control-sum-cell {
-        font-size: 12pt;
-        border: 1px solid #bbb;
-        min-width: 1cm;
-        height: 1cm;
-        padding: 2mm;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc; 
+        font-size: 8pt; /* Even smaller if needed */
+        height: 0.7cm;       
+        padding: 1mm; 
         page-break-inside: avoid;
+        overflow: hidden; 
+        text-overflow: ellipsis;
+        margin: 0; 
     }
 
 
