@@ -670,8 +670,20 @@ footer {
         margin: 0; 
     }
 
+    /* New style for the comma-separated line of sums in rational sections' keys */
+    /* This targets the <p class="control-sum-line"> inside the key container */
+    .control-sum-key-container .control-sum-line {
+        font-size: 8pt;          /* Small font for the compact list */
+        text-align: center;      /* Center the text block */
+        word-wrap: break-word;   /* Allow long line of numbers to wrap */
+        line-height: 1.3;        /* Adjust line height for wrapped text */
+        padding: 1mm 3mm;      /* Give it a little horizontal padding within the fixed footer */
+        margin: 0 auto;          /* Center the paragraph block if its container is wider */
+        max-width: 90%;          /* Prevent it from touching edges of the footer container */
+    }
 
-    h1, h2 {
+
+    h1, h2 { /* This looks like a good anchor point */
      h1,
      h2 {
         /* Optionally style headers differently for print or hide them if part of .controls */

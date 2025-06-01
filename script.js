@@ -614,21 +614,17 @@ function generateRationalCanonicalProblems() {
        // We might not want to show an empty grid container.
    }
 
-    // --- Add Control Sum Key Grid ---
+    // --- Add Control Sum Key Line ---
     if (simplifiedAnswers.length > 0) {
         const answerKeyContainer = document.createElement('div');
-        answerKeyContainer.className = 'control-sum-key-container'; 
+        answerKeyContainer.className = 'control-sum-key-container rational-canonical-key'; // Added specific class
         
-        answerKeyContainer.innerHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:10px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1 (from W and 0/1). If fraction is 0 (0/D), sum is D.)</p>';
-
-        const answerGrid = document.createElement('div');
-        answerGrid.className = 'control-sum-grid'; 
-
-        simplifiedAnswers.forEach(ans => {
-            // ans is { controlSum: X }
-            answerGrid.innerHTML += `<div class="control-sum-cell">${isNaN(ans.controlSum) ? "Error" : ans.controlSum}</div>`;
-        });
-        answerKeyContainer.appendChild(answerGrid);
+        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1 (from W and 0/1). If fraction is 0 (0/D), sum is D.)</p>';
+        
+        const sums = simplifiedAnswers.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
+        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`; // New class for the line of sums
+        
+        answerKeyContainer.innerHTML = titleHTML;
         problemsContainer.appendChild(answerKeyContainer);
     }
     
@@ -748,16 +744,14 @@ function generateRationalOperationsProblems() {
     
     if (controlSumsArray.length > 0) {
         const answerKeyContainer = document.createElement('div');
-        answerKeyContainer.className = 'control-sum-key-container'; 
-        answerKeyContainer.innerHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
+        answerKeyContainer.className = 'control-sum-key-container rational-operations-key'; // Added specific class
+        
+        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
+        
+        const sums = controlSumsArray.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
+        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`; // New class for the line of sums
 
-        const answerGrid = document.createElement('div');
-        answerGrid.className = 'control-sum-grid'; 
-
-        controlSumsArray.forEach(ans => {
-            answerGrid.innerHTML += `<div class="control-sum-cell">${isNaN(ans.controlSum) ? "Err" : ans.controlSum}</div>`;
-        });
-        answerKeyContainer.appendChild(answerGrid);
+        answerKeyContainer.innerHTML = titleHTML;
         problemsContainer.appendChild(answerKeyContainer);
     }
     
