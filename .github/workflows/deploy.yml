@@ -40,7 +40,6 @@ jobs:
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}
           #   ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:v1.0.${{ github.run_number }}
-        working-directory: .
 
       - name: Image Digest
         run: echo ${{ steps.build-and-push.outputs.digest }}
