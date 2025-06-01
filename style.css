@@ -1,0 +1,419 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Controls Panel */
+.controls label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.controls input[type="number"],
+.controls input[type="text"],
+.controls select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.controls input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    background: #5cb85c;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 1em;
+}
+
+.button:hover {
+    background: #4cae4c;
+}
+
+#print-button {
+    background: #f0ad4e;
+}
+
+#print-button:hover {
+    background: #eea236;
+}
+
+/* Problems Output Area */
+.problems {
+    background-color: #e9e9e9;
+}
+
+#problems-container {
+    min-height: 100px; /* Placeholder height */
+    padding: 10px;
+    border: 1px dashed #ccc;
+    background-color: #fff; /* White background for the content area */
+}
+
+#problems-container h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+#problems-container .problem-subtitle {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.problem {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1em; /* Slightly larger font for problems */
+    display: flex; /* For better alignment of problem parts if needed */
+    align-items: center;
+}
+
+.problem:last-child {
+    border-bottom: none;
+}
+
+.problem .blank {
+    display: inline-block;
+    width: 70px; /* Adjust width as needed */
+    border-bottom: 1px solid #333;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+/* Multiplication Chart Specific Styles */
+.multiplication-chart {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.9em; /* Adjust as needed */
+}
+
+.multiplication-chart th,
+.multiplication-chart td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    min-width: 30px; /* Ensure cells are not too small */
+    height: 30px;
+}
+
+.multiplication-chart th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.multiplication-chart td {
+    background-color: #fff;
+}
+
+.multiplication-chart td.prefilled {
+    background-color: #e0ffe0; /* A light green background */
+    font-weight: bold;
+    color: #228B22; /* Forest green text color */
+}
+
+
+/* --- Styles for Columnar Addition/Subtraction & Multiplication Problems --- */
+#problems-container .arithmetic-grid { /* Applied to a div inside #problems-container */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Adjust minmax for desired problem width */
+    gap: 30px 25px; /* Row gap, Column gap */
+    align-items: start; /* Align items to the start of their grid cell */
+    padding-top: 15px; /* Space from the "Addition & Subtraction Problems" header */
+}
+
+.arith-problem {
+    font-family: 'Courier New', Courier, monospace; /* Monospaced font for alignment */
+    font-size: 1.6em; /* Larger font for clarity */
+    line-height: 1.3;
+    /* display: inline-block; */ /* Not needed if parent is grid */
+    text-align: right;
+    /* padding: 10px; */ /* Let grid gap handle spacing */
+    /* border: 1px solid #f0f0f0; */ /* Optional border around each problem */
+    /* border-radius: 3px; */
+    /* background-color: #fdfdfd; */
+    min-width: 100px; /* Ensure a minimum width based on font and digits */
+    margin: 0 auto; /* Center in grid cell if cell is wider */
+}
+
+.arith-problem .operand-1 {
+    padding-right: 5px; /* Align with operand-2 numbers */
+    margin-bottom: 2px; /* Small space before operator line */
+}
+
+.arith-problem .operator-operand2 {
+    display: flex;
+    /* justify-content: space-between; */ /* Operator will be on left of operand2 */
+    align-items: flex-end; /* Align along the bottom of the numbers */
+    width: 100%;
+}
+
+.arith-problem .operator {
+    padding-right: 10px; /* Space between operator and operand2's start */
+    min-width: 1em; /* Ensure operator takes some space */
+    text-align: left;
+    color: #333;
+}
+.arith-problem .operand-2 {
+    flex-grow: 1; /* Operand 2 takes remaining space to ensure right alignment */
+    padding-right: 5px; /* Consistent with operand-1 */
+}
+
+
+.arith-problem .problem-line {
+    border-bottom: 2.5px solid #000;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    min-height: 2px;
+}
+
+.arith-problem .answer-space {
+    min-height: 3.5em; /* Generous space for writing the answer and carry/borrow marks */
+    /* background-color: #f0f8ff; /* Light blue for answer space, optional */
+}
+
+/* Style for linear division problems when they are grid items */
+.arithmetic-grid .division-problem {
+    font-size: 1.2em; /* Or adjust to match .problem style */
+    padding: 10px 8px;
+    text-align: left;
+    border: 1px solid #f0f0f0;
+    background-color: #fdfdfd;
+    border-radius: 3px;
+    min-height: 3em; /* Try to match height of columnar problems */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content (numbering + problem) to the left */
+}
+
+.arithmetic-grid .division-problem .blank {
+    /* Ensure .blank styles from general .problem apply or redefine here if needed */
+}
+
+.arithmetic-grid .multiplication-problem {
+    /* Inherits .arith-problem styles. Add specific overrides if necessary. */
+    /* e.g., if multiplication needs more answer space than addition */
+}
+
+.warning-message {
+    color: #8a6d3b; /* Bootstrap warning color */
+    background-color: #fcf8e3;
+    border: 1px solid #faebcc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* --- Styles for Digital Root Self-Check Grid --- */
+.digital-root-check-grid-container {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.digital-root-check-grid-container h4 {
+    margin-top: 0;
+    margin-bottom: 5px; /* Reduced margin */
+    font-size: 1.1em;
+    color: #333;
+    text-align: center;
+}
+.digital-root-check-grid-container p { /* For the Mult/Div explanation text */
+    text-align: center;
+    font-size: 0.85em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.digital-root-check-grid {
+    display: grid;
+    /* Dynamically set column count via JS or try to match problem grid: */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Match problem grid */
+    gap: 10px 25px; /* Smaller gap for DR grid cells; Row gap, Column gap */
+    justify-items: center; /* Center cells horizontally */
+}
+
+.dr-cell {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4em; /* Prominent display */
+    font-weight: bold;
+    color: #0056b3;
+    background-color: #fff;
+    border: 1px solid #d4d4d4;
+    border-radius: 4px;
+    padding: 8px 5px; /* Adjust padding */
+    min-width: 40px; /* Ensure a decent width */
+    height: 40px; /* Ensure a decent height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Print-specific styles */
+@media print {
+    body {
+        padding: 0;
+        background-color: #fff; /* Ensure white background for printing */
+        font-size: 12pt; /* Adjust base font size for print */
+    }
+
+    header,
+    #topic-selection-section,
+    .controls,
+    #actions-panel,
+    footer,
+    nav /* if you add a nav */ {
+        display: none !important;
+    }
+
+    main {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    #output-area {
+        border: none;
+        padding: 0;
+        background-color: #fff;
+    }
+
+    #problems-container {
+        min-height: auto;
+        border: none;
+    }
+    #problems-container .arithmetic-grid {
+        grid-template-columns: repeat(4, 1fr); /* Example: 4 columns for print, adjust as needed */
+        gap: 15mm 8mm; /* More generous spacing for print */
+        padding-top: 5mm;
+    }
+
+    .problem { /* This is for the old linear problem style, might not be needed if all are grid */
+        page-break-inside: avoid; /* Try to keep problems from splitting across pages */
+        padding: 5px 0; /* Adjust padding for print */
+    }
+
+    .arith-problem {
+        font-size: 14pt; /* Ensure good print size */
+        border: none; /* Remove borders for cleaner print */
+        padding: 5px 0; /* Adjust padding for print */
+        page-break-inside: avoid;
+    }
+    .arith-problem .answer-space {
+        min-height: 1.8cm; /* Specific height for print answer */
+    }
+    .arith-problem .problem-line {
+        border-bottom-width: 2px;
+    }
+
+    /* Print-specific adjustments for Digital Root Grid */
+    .digital-root-check-grid-container {
+        margin-top: 10mm;
+        padding: 5mm;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        page-break-before: auto;
+    }
+    .digital-root-check-grid-container h4 {
+        font-size: 12pt;
+    }
+    .digital-root-check-grid-container p {
+        font-size: 9pt;
+    }
+    .digital-root-check-grid {
+        /* Match column count of problem grid in print, e.g., repeat(4, 1fr) */
+        grid-template-columns: repeat(4, 1fr); /* Example, should match problem grid's print columns */
+        gap: 8mm 8mm;
+    }
+    .dr-cell {
+        font-size: 12pt;
+        border: 1px solid #bbb;
+        min-width: 1cm;
+        height: 1cm;
+        padding: 2mm;
+    }
+
+
+    h1, h2 {
+     h1,
+     h2 {
+        /* Optionally style headers differently for print or hide them if part of .controls */
+    }
+}

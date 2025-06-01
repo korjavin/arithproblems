@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Math Worksheet Generator</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Math Worksheet Generator</h1>
+        </header>
+
+        <main>
+            <section id="topic-selection-section">
+                <h2>Select Topic</h2>
+                <select id="topic-selector">
+                    <option value="multiplication-table">
+                        Multiplication Table
+                    </option>
+                    <option value="addition-subtraction">
+                        Addition/Subtraction
+                    </option>
+                    <option value="multiplication-division">
+                        Multiplication/Division
+                    </option>
+                    <option value="rational-canonical">
+                        Canonical Rational Numbers
+                    </option>
+                    <option value="rational-operations">
+                        Rational Operations
+                    </option>
+                </select>
+            </section>
+
+            <section id="controls-panel" class="controls">
+                <h2>Controls</h2>
+                <!-- Topic-specific controls will be populated here by JavaScript -->
+                <div id="common-controls">
+                    <label for="num-problems">Number of Problems:</label>
+                    <input
+                        type="number"
+                        id="num-problems"
+                        value="10"
+                        min="1"
+                        max="100"
+                    />
+                </div>
+                <!-- Placeholder for topic specific controls -->
+                <div id="topic-specific-controls"></div>
+            </section>
+
+            <section id="actions-panel">
+                <button id="generate-button" class="button">
+                    Generate Worksheet
+                </button>
+                <button id="print-button" class="button">
+                    Print Worksheet
+                </button>
+            </section>
+
+            <section id="output-area" class="problems">
+                <h2>Generated Problems</h2>
+                <div id="problems-container">
+                    <!-- Problems will be inserted here -->
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Math Worksheet Generator</p>
+        </footer>
+
+        <script src="script.js"></script>
+    </body>
+</html>
