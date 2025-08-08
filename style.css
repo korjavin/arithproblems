@@ -689,3 +689,24 @@ footer {
         /* Optionally style headers differently for print or hide them if part of .controls */
     }
 }
+
+.range-inputs > div {
+    display: flex;
+    align-items: center;
+}
+
+.range-inputs label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.range-inputs div > label {
+    margin-bottom: 0;
+    margin-right: 5px;
+}
+
+.range-inputs input {
+    width: 80px !important;
+    margin-right: 10px;
+    text-align: center;
+}
