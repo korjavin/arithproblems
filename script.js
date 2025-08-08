@@ -19,13 +19,22 @@ document.addEventListener("DOMContentLoaded", () => {
   // These functions will create and append input elements to topicSpecificControlsContainer
 
   function renderMultiplicationTableControls() {
-      topicSpecificControlsContainer.innerHTML = `
-          <div>
-              <label for="mt-max-factor">Table Size (Max 10x10):</label>
-              <input type="number" id="mt-max-factor" value="10" min="1" max="10">
-          </div>
-          <p style="font-size:0.9em; color:#555;">The chart will be partially pre-filled to help learning.</p>
-      `;
+    topicSpecificControlsContainer.innerHTML = `
+        <div class="range-inputs">
+            <label>Multiplicators range:</label>
+            <div>
+                <label for="mt-from-factor">From:</label>
+                <input type="number" id="mt-from-factor" value="1" min="1" max="100">
+                <label for="mt-to-factor">To:</label>
+                <input type="number" id="mt-to-factor" value="10" min="1" max="100">
+            </div>
+        </div>
+        <div>
+            <label for="mt-percent-hints">Percent of hints (%):</label>
+            <input type="number" id="mt-percent-hints" value="5" min="0" max="100">
+        </div>
+        <p style="font-size:0.9em; color:#555;">The chart will be partially pre-filled to help learning.</p>
+    `;
   }
 
   function renderAdditionSubtractionControls() {
@@ -129,81 +138,85 @@ function gcd(a, b) {
   // These will be filled in later based on your plan
 
   function generateMultiplicationTableProblems() {
-      console.log("Generating partially pre-filled Multiplication Table...");
-      // --- Get DOM elements for inputs ---
-      const maxFactorInput = document.getElementById('mt-max-factor');
-      // numProblemsInput is available but not used for this chart-only mode.
+    console.log("Generating partially pre-filled Multiplication Table...");
 
-      // --- Read input values and parse them ---
-      let maxFactor = parseInt(maxFactorInput.value, 10);
+    // --- Get DOM elements for inputs ---
+    const fromFactorInput = document.getElementById('mt-from-factor');
+    const toFactorInput = document.getElementById('mt-to-factor');
+    const percentHintsInput = document.getElementById('mt-percent-hints');
 
-      // --- Validation and Capping ---
-      if (isNaN(maxFactor) || maxFactor < 1) {
-          maxFactor = 1; // Default to a minimal valid value if input is bad
-          maxFactorInput.value = "1"; // Correct the input field
-          console.warn("Invalid Max Factor, defaulted to 1.");
-      }
-      if (maxFactor > 10) {
-          maxFactor = 10; // Cap at 10
-          maxFactorInput.value = "10"; // Correct the input field
-          console.warn("Max Factor capped at 10.");
-      }
+    // --- Read input values and parse them ---
+    let fromFactor = parseInt(fromFactorInput.value, 10);
+    let toFactor = parseInt(toFactorInput.value, 10);
+    let percentHints = parseInt(percentHintsInput.value, 10);
 
-      let htmlOutput = '';
+    // --- Validation ---
+    if (isNaN(fromFactor) || fromFactor < 1) {
+        fromFactor = 1;
+        fromFactorInput.value = "1";
+    }
+    if (isNaN(toFactor) || toFactor < fromFactor) {
+        toFactor = fromFactor;
+        toFactorInput.value = fromFactor.toString();
+    }
+    if (isNaN(percentHints) || percentHints < 0 || percentHints > 100) {
+        percentHints = 5;
+        percentHintsInput.value = "5";
+    }
 
-      // --- Generate Partially Pre-filled Multiplication Chart ---
-      htmlOutput += `<h3>Multiplication Chart (up to ${maxFactor} &times; ${maxFactor})</h3>`;
-      htmlOutput += '<table class="multiplication-chart">';
-        
-      // Header row
-      htmlOutput += '<thead><tr><th>&times;</th>';
-      for (let i = 1; i <= maxFactor; i++) {
-          htmlOutput += `<th>${i}</th>`;
-      }
-      htmlOutput += '</tr></thead>';
-        
-      // Table body
-      htmlOutput += '<tbody>';
+    let htmlOutput = '';
 
-      const totalCells = maxFactor * maxFactor;
-      const cellsToFillCount = Math.floor(totalCells * 0.20); // Approximately 20%
-        
-      // Create a flat list of all possible cell coordinates [row, col]
-      const allCellCoordinates = [];
-      for (let r = 1; r <= maxFactor; r++) {
-          for (let c = 1; c <= maxFactor; c++) {
-              allCellCoordinates.push([r, c]);
-          }
-      }
+    // --- Generate Partially Pre-filled Multiplication Chart ---
+    htmlOutput += `<h3>Multiplication Chart (${fromFactor} &times; ${fromFactor} to ${toFactor} &times; ${toFactor})</h3>`;
+    htmlOutput += '<table class="multiplication-chart">';
 
-      // Shuffle the coordinates and pick the first `cellsToFillCount` to pre-fill
-      // This creates a Set of strings like "row-col" for easy lookup
-      const cellsToPreFill = new Set();
-      // Fisher-Yates shuffle
-      for (let i = allCellCoordinates.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [allCellCoordinates[i], allCellCoordinates[j]] = [allCellCoordinates[j], allCellCoordinates[i]];
-      }
-      for (let i = 0; i < cellsToFillCount && i < allCellCoordinates.length; i++) {
-          cellsToPreFill.add(`${allCellCoordinates[i][0]}-${allCellCoordinates[i][1]}`);
-      }
+    // Header row
+    htmlOutput += '<thead><tr><th>&times;</th>';
+    for (let i = fromFactor; i <= toFactor; i++) {
+        htmlOutput += `<th>${i}</th>`;
+    }
+    htmlOutput += '</tr></thead>';
 
-      for (let i = 1; i <= maxFactor; i++) { // Row iterator
-          htmlOutput += `<tr><th>${i}</th>`; // Row header
-          for (let j = 1; j <= maxFactor; j++) { // Column iterator
-              if (cellsToPreFill.has(`${i}-${j}`)) {
-                  htmlOutput += `<td class="prefilled">${i * j}</td>`; // Filled cell with class
-              } else {
-                  htmlOutput += '<td> </td>'; // Empty cell for student to fill
-              }
-          }
-          htmlOutput += '</tr>';
-      }
-      htmlOutput += '</tbody></table>';
+    // Table body
+    htmlOutput += '<tbody>';
 
-      problemsContainer.innerHTML = htmlOutput;
-      console.log("Partially pre-filled Multiplication Table problems generated.");
-  }
+    const range = toFactor - fromFactor + 1;
+    const totalCells = range * range;
+    const cellsToFillCount = Math.floor(totalCells * (percentHints / 100));
+
+    const allCellCoordinates = [];
+    for (let r = fromFactor; r <= toFactor; r++) {
+        for (let c = fromFactor; c <= toFactor; c++) {
+            allCellCoordinates.push([r, c]);
+        }
+    }
+
+    const cellsToPreFill = new Set();
+    // Fisher-Yates shuffle
+    for (let i = allCellCoordinates.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allCellCoordinates[i], allCellCoordinates[j]] = [allCellCoordinates[j], allCellCoordinates[i]];
+    }
+    for (let i = 0; i < cellsToFillCount && i < allCellCoordinates.length; i++) {
+        cellsToPreFill.add(`${allCellCoordinates[i][0]}-${allCellCoordinates[i][1]}`);
+    }
+
+    for (let i = fromFactor; i <= toFactor; i++) { // Row iterator
+        htmlOutput += `<tr><th>${i}</th>`; // Row header
+        for (let j = fromFactor; j <= toFactor; j++) { // Column iterator
+            if (cellsToPreFill.has(`${i}-${j}`)) {
+                htmlOutput += `<td class="prefilled">${i * j}</td>`;
+            } else {
+                htmlOutput += '<td> </td>';
+            }
+        }
+        htmlOutput += '</tr>';
+    }
+    htmlOutput += '</tbody></table>';
+
+    problemsContainer.innerHTML = htmlOutput;
+    console.log("Partially pre-filled Multiplication Table problems generated.");
+}
 
   function generateAdditionSubtractionProblems() {
       console.log("Generating Add/Sub problems with digital root answer key...");
@@ -764,6 +777,7 @@ function generateRationalOperationsProblems() {
     console.log("Topic changed to:", currentTopic);
     // Clear previous topic-specific controls
     topicSpecificControlsContainer.innerHTML = "";
+    problemsContainer.innerHTML = "";
     // Render new controls based on selected topic
     switch (currentTopic) {
       case "multiplication-table":
