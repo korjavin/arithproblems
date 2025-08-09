@@ -433,10 +433,16 @@ function gcd(a, b) {
             const dividend = divisor * quotient; 
             actualResult = quotient; 
             
-            // Linear HTML for division, wrapped in its own div for grid consistency
-            let divisionProblemStr = `${dividend} &divide; ${divisor} = <span class="blank">___</span>`;
-            // Add problem number to linear division problems for clarity, columnar problems get it implicitly by position
-            problemHTML = `<div class="problem division-problem">${i + 1}. ${divisionProblemStr}</div>`; 
+            // New HTML for the user-requested division format
+            problemHTML = `
+                <div class="arith-problem division-problem-user">
+                    <div class="dividend">${dividend}</div>
+                    <div class="divisor-container">
+                        <div class="divisor">${divisor}</div>
+                        <div class="answer-line"></div>
+                        <div class="answer-space"></div>
+                    </div>
+                </div>`;
         }
         
         problemsHtmlArray.push(problemHTML); // Push the generated HTML (either columnar or linear wrapped)
