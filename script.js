@@ -433,9 +433,16 @@ function gcd(a, b) {
             const dividend = divisor * quotient; 
             actualResult = quotient; 
             
-            // New, simpler HTML for the user-requested division format
-            let divisionProblemStr = `${dividend} | ${divisor}`;
-            problemHTML = `<div class="problem division-problem">${i + 1}. ${divisionProblemStr}</div>`;
+            // New HTML for the user-requested division format
+            problemHTML = `
+                <div class="arith-problem division-problem-user">
+                    <div class="dividend">${dividend}</div>
+                    <div class="divisor-container">
+                        <div class="divisor">${divisor}</div>
+                        <div class="answer-line"></div>
+                        <div class="answer-space"></div>
+                    </div>
+                </div>`;
         }
         
         problemsHtmlArray.push(problemHTML); // Push the generated HTML (either columnar or linear wrapped)

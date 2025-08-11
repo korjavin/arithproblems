@@ -256,6 +256,44 @@ h2 {
     /* e.g., if multiplication needs more answer space than addition */
 }
 
+/* --- Styles for User-Requested Division Problems --- */
+.arith-problem.division-problem-user {
+    display: flex;
+    align-items: flex-start;
+    text-align: center;
+}
+
+.division-problem-user .dividend {
+    padding: 0 10px;
+}
+
+.division-problem-user .divisor-container {
+    position: relative;
+    padding-left: 12px; /* Space for the separator */
+}
+
+.division-problem-user .divisor-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1.5em; /* approximate height of a line of text */
+    width: 2.5px;
+    background-color: #000;
+}
+
+.division-problem-user .divisor {
+    padding-bottom: 5px;
+}
+
+.division-problem-user .answer-line {
+    border-top: 2.5px solid #000; /* Horizontal line for the answer */
+}
+
+.division-problem-user .answer-space {
+    min-height: 3.5em; /* Space for the answer */
+}
+
 .warning-message {
     color: #8a6d3b; /* Bootstrap warning color */
     background-color: #fcf8e3;

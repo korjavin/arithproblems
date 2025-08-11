@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master # Or your default branch, e.g., main
+  workflow_dispatch:
 
 jobs:
   build-and-push-ghcr:
