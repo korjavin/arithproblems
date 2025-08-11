@@ -268,8 +268,18 @@ h2 {
 }
 
 .division-problem-user .divisor-container {
-    padding: 0 10px;
-    border-left: 2.5px solid #000; /* Vertical separator */
+    position: relative;
+    padding-left: 12px; /* Space for the separator */
+}
+
+.division-problem-user .divisor-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1.5em; /* approximate height of a line of text */
+    width: 2.5px;
+    background-color: #000;
 }
 
 .division-problem-user .divisor {
