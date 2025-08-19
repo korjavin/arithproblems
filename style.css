@@ -695,6 +695,33 @@ footer {
         min-width: 40px;
     }
 
+    /* Print specific for decimal/rational problems */
+    .decimal-rational-problem-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 columns for print */
+        gap: 15mm 10mm !important;
+    }
+    
+    .decimal-rational-problem-item {
+        font-size: 11pt;
+        border: 1px solid #ccc;
+        min-height: 2.5cm;
+        page-break-inside: avoid;
+        padding: 6mm;
+    }
+    
+    .fraction-display,
+    .decimal-display {
+        font-size: 1.1em;
+        margin-bottom: 4mm;
+    }
+    
+    .fraction-display .answer-space,
+    .decimal-display .answer-space {
+        border-bottom-width: 1.5px;
+        min-width: 60px;
+        max-width: 120px;
+    }
 
     /* Print-specific adjustments for Key Grids (DR and Control Sum) */
     .digital-root-check-grid-container,
@@ -907,5 +934,58 @@ footer {
     font-style: italic;
     margin-top: 5px;
     text-align: center;
+}
+
+/* --- Styles for Decimal/Rational Conversion Problems --- */
+.decimal-rational-problem-grid {
+    /* Uses .arithmetic-grid styles by sharing the class */
+    gap: 20px 15px; /* Adjust gap for decimal/rational problems */
+}
+
+.decimal-rational-problem-item {
+    font-size: 1.1em;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    min-height: 4em; /* Further reduced height since no conversion prompt */
+}
+
+.decimal-rational-problem-item .problem-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.fraction-display,
+.decimal-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.decimal-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.fraction-display .equals,
+.decimal-display .equals {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.fraction-display .answer-space,
+.decimal-display .answer-space {
+    flex-grow: 1;
+    height: 2px;
+    border-bottom: 2px solid #333;
+    min-width: 100px;
+    max-width: 200px;
 }
 

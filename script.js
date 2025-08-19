@@ -145,6 +145,28 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderDecimalRationalControls() {
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="dr-problem-mix">Problem Type Mix:</label>
+            <select id="dr-problem-mix">
+                <option value="mixed">Mixed (Both Conversions)</option>
+                <option value="fraction-to-decimal">Fraction → Decimal Only</option>
+                <option value="decimal-to-fraction">Decimal → Fraction Only</option>
+            </select>
+        </div>
+        <div>
+            <label for="dr-decimal-places">Max Decimal Places:</label>
+            <input type="number" id="dr-decimal-places" value="3" min="1" max="4">
+        </div>
+        <div>
+            <input type="checkbox" id="dr-terminating-only" checked>
+            <label for="dr-terminating-only">Terminating Decimals Only</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">Problems convert between decimals and fractions. Self-check uses digital roots: for decimal answers (ignore decimal point), for fraction answers (sum numerator + denominator).</p>
+    `;
+  }
+
   // --- Helper Functions ---
 function gcd(a, b) {
     a = Math.abs(a);
@@ -1145,6 +1167,187 @@ function generateProportionProblems() {
     console.log(`Proportion problems generated: ${generatedCount}`);
 }
 
+function generateDecimalRationalProblems() {
+    console.log("Generating Decimal/Rational conversion problems with digital root self-check...");
+    problemsContainer.innerHTML = ''; // Clear previous
+
+    // --- Get DOM elements for inputs ---
+    const problemMixInput = document.getElementById('dr-problem-mix');
+    const decimalPlacesInput = document.getElementById('dr-decimal-places');
+    const terminatingOnlyInput = document.getElementById('dr-terminating-only');
+    const numberOfProblemsInput = document.getElementById('num-problems');
+
+    // --- Read input values ---
+    const problemMix = problemMixInput.value;
+    const maxDecimalPlaces = parseInt(decimalPlacesInput.value, 10);
+    const terminatingOnly = terminatingOnlyInput.checked;
+    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+    // --- Basic Validation ---
+    if (isNaN(maxDecimalPlaces) || maxDecimalPlaces < 1 || maxDecimalPlaces > 4) {
+        problemsContainer.innerHTML = '<p class="error-message">Max decimal places must be between 1-4.</p>';
+        return;
+    }
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
+        return;
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Valid denominators for terminating decimals
+    const terminatingDenominators = [2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 100, 125, 200, 250, 400, 500, 1000];
+
+    const h3Title = document.createElement('h3');
+    h3Title.textContent = 'Decimal/Rational Conversion Problems';
+    problemsContainer.appendChild(h3Title);
+
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'arithmetic-grid decimal-rational-problem-grid';
+
+    const problemsHtmlArray = [];
+    const digitalRoots = []; 
+    let generatedCount = 0;
+    let attempts = 0;
+    const maxAttempts = numberOfProblems * 100;
+
+    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+        attempts++;
+
+        let problemType = '';
+        if (problemMix === 'mixed') {
+            problemType = Math.random() < 0.5 ? 'fraction-to-decimal' : 'decimal-to-fraction';
+        } else {
+            problemType = problemMix;
+        }
+
+        let problemHTML = '';
+        let checkNumber = 0;
+
+        if (problemType === 'fraction-to-decimal') {
+            // Generate fraction that converts to terminating decimal
+            let denominator, numerator;
+            
+            if (terminatingOnly) {
+                // Use valid denominators for terminating decimals
+                denominator = terminatingDenominators[getRandomInt(0, terminatingDenominators.length - 1)];
+                numerator = getRandomInt(1, denominator - 1);
+            } else {
+                denominator = getRandomInt(2, 20);
+                numerator = getRandomInt(1, denominator - 1);
+            }
+
+            // Ensure fraction is in lowest terms
+            const commonFactor = gcd(numerator, denominator);
+            numerator = numerator / commonFactor;
+            denominator = denominator / commonFactor;
+
+            // Calculate decimal answer
+            const decimalAnswer = numerator / denominator;
+            
+            // Check if it's a terminating decimal within our precision
+            const decimalStr = decimalAnswer.toString();
+            const decimalPlaces = decimalStr.includes('.') ? decimalStr.split('.')[1].length : 0;
+            
+            if (terminatingOnly && (decimalPlaces > maxDecimalPlaces || !isFinite(decimalAnswer))) {
+                continue;
+            }
+
+            // Calculate check number (digital root of decimal without decimal point)
+            const decimalWithoutPoint = decimalStr.replace('.', '');
+            checkNumber = digitalRoot(parseInt(decimalWithoutPoint, 10));
+
+            problemHTML = `
+                <div class="decimal-rational-problem-item">
+                    <div class="problem-content">
+                        <div class="fraction-display">
+                            <span class="fraction">
+                                <span class="numerator">${numerator}</span>
+                                <span class="denominator">${denominator}</span>
+                            </span>
+                            <span class="equals"> = </span>
+                            <div class="answer-space"></div>
+                        </div>
+                    </div>
+                </div>`;
+
+        } else { // decimal-to-fraction
+            // Generate a terminating decimal
+            let decimalAnswer, numerator, denominator;
+            
+            if (terminatingOnly) {
+                // Generate decimal with specific number of places
+                const places = getRandomInt(1, maxDecimalPlaces);
+                const multiplier = Math.pow(10, places);
+                numerator = getRandomInt(1, multiplier - 1);
+                denominator = multiplier;
+                decimalAnswer = numerator / denominator;
+            } else {
+                // Generate any reasonable decimal
+                decimalAnswer = getRandomInt(1, 999) / Math.pow(10, getRandomInt(1, maxDecimalPlaces));
+                const decimalStr = decimalAnswer.toString();
+                const parts = decimalStr.split('.');
+                numerator = parseInt(parts[0] + parts[1], 10);
+                denominator = Math.pow(10, parts[1].length);
+            }
+
+            // Simplify the fraction
+            const commonFactor = gcd(numerator, denominator);
+            numerator = numerator / commonFactor;
+            denominator = denominator / commonFactor;
+
+            // Calculate check number (digital root of numerator + denominator)
+            checkNumber = digitalRoot(numerator + denominator);
+
+            problemHTML = `
+                <div class="decimal-rational-problem-item">
+                    <div class="problem-content">
+                        <div class="decimal-display">
+                            <span class="decimal-number">${decimalAnswer}</span>
+                            <span class="equals"> = </span>
+                            <div class="answer-space"></div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        digitalRoots.push({ digitalRoot: checkNumber });
+        problemsHtmlArray.push(problemHTML);
+        generatedCount++;
+    }
+
+    if (generatedCount < numberOfProblems) {
+        const warningP = document.createElement('p');
+        warningP.className = 'warning-message';
+        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems. Try adjusting the parameters.`;
+        problemsContainer.appendChild(warningP);
+    }
+
+    gridContainer.innerHTML = problemsHtmlArray.join('');
+    problemsContainer.appendChild(gridContainer);
+    
+    // Add Digital Root Self-Check Grid
+    if (digitalRoots.length > 0) {
+        const digitalRootContainer = document.createElement('div');
+        digitalRootContainer.className = 'digital-root-check-grid-container';
+        
+        digitalRootContainer.innerHTML = '<h4>Digital Root Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(For decimal answers: ignore decimal point, find digital root. For fraction answers: add numerator + denominator, find digital root)</p>';
+
+        const drGrid = document.createElement('div');
+        drGrid.className = 'digital-root-check-grid';
+
+        digitalRoots.forEach(answer => {
+            drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`;
+        });
+        digitalRootContainer.appendChild(drGrid);
+        problemsContainer.appendChild(digitalRootContainer);
+    }
+    
+    console.log(`Decimal/Rational conversion problems generated: ${generatedCount}`);
+}
+
   // --- Event Handlers ---
   function handleTopicChange() {
     currentTopic = topicSelector.value;
@@ -1174,6 +1377,9 @@ function generateProportionProblems() {
         break;
       case "proportion":
         renderProportionControls();
+        break;
+      case "decimal-rational":
+        renderDecimalRationalControls();
         break;
       default:
         console.error("Unknown topic selected:", currentTopic);
@@ -1211,6 +1417,9 @@ function generateProportionProblems() {
         break;
       case "proportion":
         generateProportionProblems();
+        break;
+      case "decimal-rational":
+        generateDecimalRationalProblems();
         break;
       default:
         console.error("Unknown topic for generation:", currentTopic);
