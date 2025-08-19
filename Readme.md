@@ -2,55 +2,79 @@
 
 ## Overview
 
-This static web application is designed for teachers, parents, and students to quickly generate customized math worksheets. It focuses on core elementary topics such as multiplication tables, multi-digit arithmetic, and fractions, allowing users to specify the difficulty and problem parameters. Each worksheet is generated on the client-side (no backend needed) and rendered in a clean, printable format. The goal is to provide an offline-friendly tool that produces endless random problem sets, supporting traditional practice and reinforcing key mathematical concepts.
+This static web application is designed for teachers, parents, and students to quickly generate customized math worksheets. It covers comprehensive math topics from basic arithmetic to advanced rational number operations, allowing users to specify difficulty and problem parameters. Each worksheet is generated client-side (no backend needed) with integrated self-checking mechanisms using digital roots and control sums. The goal is to provide an offline-friendly tool that produces endless random problem sets with built-in verification for independent learning.
 
 ## Features
 
-- **Randomized Problems**: Generate a fresh set of math problems with each click, ensuring a wide variety of practice.
-- **Topic Selection**: Choose from multiple topics, each with its own tailored problem generator.
-- **Custom Difficulty**: Adjust numeric ranges and enable or disable features (e.g., carrying in addition, exact division) to set the difficulty level.
-- **Print-Ready Layout**: A "Print" button opens the browser's print dialog. The app uses CSS `@media print` rules to hide buttons and controls, formatting problems cleanly for printing on paper.
-- **Self-Contained and Static**: Built with plain HTML, CSS, and JavaScript. All generation and formatting are done on the client-side.
+- **Randomized Problems**: Generate fresh math problems with each click, ensuring wide variety of practice.
+- **Visual Topic Selection**: Interactive card-based interface for easy topic browsing with descriptions.
+- **Custom Difficulty**: Adjust numeric ranges, digit counts, and enable/disable features to set precise difficulty levels.
+- **Self-Checking System**: Digital root and control sum grids for student self-verification without answer keys.
+- **Optimized Print Layout**: Professional print formatting with improved page utilization and space efficiency.
+- **Comprehensive Coverage**: 8 different math topics from basic arithmetic to advanced rational operations.
+- **Self-Contained**: Pure client-side application - no server required, works offline.
 
 ## Recent Enhancements
 
-- **Dynamic Problem Clearing**: The problem area is now automatically cleared when a new topic is selected, providing a cleaner user experience.
-- **Enhanced Multiplication Table Controls**:
-    - **Percent of Hints**: Instead of a fixed number of pre-filled answers, you can now specify the percentage of hints to be shown on the multiplication table.
-    - **Customizable Range**: You can now define a custom range for the multiplicators (e.g., from 6 to 12), allowing for more targeted practice.
+- **Redesigned Topic Selection**: Replaced dropdown with interactive card grid featuring topic descriptions and hover effects.
+- **Unified Self-Check System**: Standardized digital root and control sum presentation across all topics using grid layouts.
+- **Print Optimization**: Enhanced print layouts with better space utilization and page-aware formatting.
+- **Streamlined Problem Design**: Removed redundant elements from problems to maximize page efficiency.
+- **Enhanced Multiplication Table**: Percentage-based hints and customizable factor ranges for targeted practice.
 
-## Topics
+## Available Topics
 
-### Multiplication Table
-Generate exercises from multiplication tables. Users can specify a range of factors (e.g., 1–12) and the percentage of hints to display. The app can output a partially-filled multiplication chart for the student to complete.
+### 1. Multiplication Table
+Pre-filled multiplication charts with customizable factor ranges and hint percentages. Students complete missing products to reinforce multiplication facts.
 
-### Multi-digit Addition/Subtraction
-Create problems that involve adding or subtracting large numbers (e.g., 2- or 3-digit). The generator picks random numbers, and users can toggle options like "no carrying" or "allow borrow."
+### 2. Addition/Subtraction
+Multi-digit columnar addition and subtraction problems with configurable digit counts. Includes digital root self-checking for immediate verification.
 
-### Multiplication/Division
-Generate multi-digit multiplication or division problems. For multiplication, users can set the number of digits for the factors. For division, the generator can ensure integer results.
+### 3. Multiplication/Division
+Mixed multiplication and division problems with customizable digit parameters. Features columnar multiplication format and specialized division layout with digital root verification.
 
-### Canonical Forms of Rational Numbers
-These exercises focus on simplifying fractions. Each problem presents a fraction (e.g., "18/24") and asks the student to reduce it to its lowest terms.
+### 4. Canonical Rational Numbers
+Fraction simplification exercises where students reduce fractions to lowest terms. Control sum system allows self-verification of answers.
 
-### Operations on Rational Numbers
-These problems involve adding, subtracting, multiplying, or dividing fractions. The generator creates pairs of random fractions and an operation, often requiring students to find a common denominator and simplify the result.
+### 5. Rational Operations
+Addition and subtraction of fractions with different denominators. Students find common denominators and simplify results using control sum verification.
 
-## UX/UI Expectations
+### 6. Rational Multiplication/Division
+Multiplication and division of fractions with options to avoid whole number results. Features control sum grids for answer verification.
 
-The user interface is designed to be simple and intuitive:
-- **Topic Selection**: A dropdown menu allows users to select from the available topics.
-- **Controls**: Each topic has its own set of controls, such as number inputs and checkboxes, to set parameters.
-- **Generate Button**: A prominent button that generates and displays the problems for the selected topic.
-- **Output Area**: A styled container where the generated problems appear.
-- **Print Button**: A button that opens the print dialog, with print-specific CSS to ensure a clean, paper-friendly layout.
+### 7. Proportion
+Clean proportion problems in the form a/b = c/d where students solve for the missing variable. Includes digital root verification grid.
+
+### 8. Decimal/Rational Conversion
+Bidirectional conversion between decimals and fractions with support for terminating decimals. Features digital root checking for both formats.
+
+## User Interface
+
+The interface prioritizes simplicity and educational effectiveness:
+
+- **Visual Topic Selection**: Interactive card grid with topic descriptions and hover effects for easy browsing
+- **Dynamic Controls**: Context-sensitive controls that appear based on selected topic with intuitive parameter settings
+- **Problem Generation**: Single-click generation with automatic clearing and formatting
+- **Self-Check Integration**: Built-in verification grids that appear with each problem set
+- **Professional Print Layout**: Optimized print styles with proper spacing, page breaks, and clean formatting
+
+## Self-Checking System
+
+The application includes innovative self-verification features:
+
+- **Digital Roots**: Mathematical technique using repeated digit summation for arithmetic problem verification
+- **Control Sums**: Specialized checking method for fraction problems using numerator/denominator relationships  
+- **Grid Layout**: Visual presentation of check values aligned with problem layout for easy comparison
+- **Independent Learning**: Students can verify answers without requiring teacher intervention or answer keys
 
 ## Tech Stack
 
-- **Frontend**: Vanilla HTML, CSS, and JavaScript.
-- **Styling**: Modern CSS for layout and responsive design.
-- **Containerization**: A `Dockerfile` is provided to bundle the static files into a lightweight Nginx container.
-- **CI/CD**: GitHub Actions are used for automation, building and publishing the Docker image to the GitHub Container Registry (GHCR) on each commit.
+- **Frontend**: Vanilla HTML5, CSS3, and ES6+ JavaScript
+- **Styling**: Modern CSS with Grid, Flexbox, and print media queries
+- **Mathematics**: Client-side algorithms for digital roots, GCD calculation, and random number generation
+- **Containerization**: Lightweight Nginx Docker container for easy deployment
+- **CI/CD**: GitHub Actions workflow for automated builds and GHCR publishing
+- **Performance**: Zero dependencies, pure static files for optimal loading and offline capability
 
 ## Deployment
 
