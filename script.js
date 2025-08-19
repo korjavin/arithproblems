@@ -113,6 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderRationalMultDivControls() {
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="rmd-max-val">Max Value for Numerators/Denominators:</label>
+            <input type="number" id="rmd-max-val" value="12" min="1">
+        </div>
+        <div>
+            <input type="checkbox" id="rmd-avoid-whole-nums" checked>
+            <label for="rmd-avoid-whole-nums">Avoid Results that are Whole Numbers</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">Operations will be a mix of multiplication and division. Result should be simplified. Control sums will be shown for self-checking.</p>
+    `;
+  }
+
   // --- Helper Functions ---
 function gcd(a, b) {
     a = Math.abs(a);
@@ -777,6 +791,152 @@ function generateRationalOperationsProblems() {
     console.log(`Rational Operations problems generated: ${generatedCount}`);
 }
 
+function generateRationalMultDivProblems() {
+    console.log("Generating Rational Multiplication/Division problems with Control Sum key...");
+    problemsContainer.innerHTML = ''; // Clear previous
+
+    // --- Get DOM elements for inputs ---
+    const maxValInput = document.getElementById('rmd-max-val');
+    const avoidWholeNumsInput = document.getElementById('rmd-avoid-whole-nums');
+    const numberOfProblemsInput = document.getElementById('num-problems');
+
+    // --- Read input values ---
+    const maxVal = parseInt(maxValInput.value, 10);
+    const avoidWholeNums = avoidWholeNumsInput.checked;
+    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+    // --- Basic Validation ---
+    if (isNaN(maxVal) || maxVal < 1) {
+        problemsContainer.innerHTML = '<p class="error-message">Max value for N/D must be at least 1.</p>';
+        return;
+    }
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
+        return;
+    }
+
+    function getRandomInt(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const h3Title = document.createElement('h3');
+    h3Title.textContent = 'Multiplication & Division of Rational Numbers';
+    problemsContainer.appendChild(h3Title);
+
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // Reuse existing grid style
+
+    const problemsHtmlArray = [];
+    const controlSumsArray = []; 
+    let generatedCount = 0;
+    let attempts = 0;
+    const maxAttempts = numberOfProblems * 50; // Prevent infinite loops
+
+    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+        attempts++;
+        let n1 = getRandomInt(1, maxVal);
+        let d1 = getRandomInt(1, maxVal);
+        let n2 = getRandomInt(1, maxVal);
+        let d2 = getRandomInt(1, maxVal);
+
+        // Operations are mixed multiplication and division
+        const currentOperation = Math.random() < 0.5 ? 'multiply' : 'divide';
+        
+        let resultN, resultD;
+        let opSymbol = '';
+
+        if (currentOperation === 'multiply') {
+            opSymbol = '&times;';
+            resultN = n1 * n2;
+            resultD = d1 * d2;
+        } else { // divide
+            opSymbol = '&divide;';
+            // (n1/d1) ÷ (n2/d2) = (n1/d1) × (d2/n2) = (n1*d2)/(d1*n2)
+            if (n2 === 0) continue; // Avoid division by zero
+            resultN = n1 * d2;
+            resultD = d1 * n2;
+        }
+
+        if (resultD === 0) { 
+            continue; 
+        }
+        
+        const commonDivisor = gcd(resultN, resultD);
+        let finalN = resultN / commonDivisor;
+        let finalD = resultD / commonDivisor;
+
+        // Handle negative denominators
+        if (finalD < 0) {
+            finalN = -finalN;
+            finalD = -finalD;
+        }
+
+        // If avoiding whole numbers, skip if result is a whole number
+        if (avoidWholeNums && finalD === 1) {
+            continue;
+        }
+
+        let controlSum;
+        if (finalD === 0) { 
+            controlSum = NaN; 
+        } else if (finalN === 0) { 
+            controlSum = 0 + finalD; 
+        } else if (finalD === 1) { 
+            controlSum = 1; 
+        } else if (Math.abs(finalN) < finalD) { 
+            controlSum = Math.abs(finalN) + finalD;
+        } else { 
+            const remainderNum = Math.abs(finalN) % finalD;
+            controlSum = remainderNum + finalD;
+        }
+        controlSumsArray.push({ controlSum: controlSum });
+
+        const problemHTML = `
+            <div class="fraction-operation-item">
+                <div class="problem-content">
+                    <span class="fraction">
+                        <span class="numerator">${n1}</span>
+                        <span class="denominator">${d1}</span>
+                    </span>
+                    <span class="operation-symbol">${opSymbol}</span>
+                    <span class="fraction">
+                        <span class="numerator">${n2}</span>
+                        <span class="denominator">${d2}</span>
+                    </span> =
+                </div>
+                <div class="calculation-space"></div>
+            </div>`;
+        
+        problemsHtmlArray.push(problemHTML);
+        generatedCount++;
+    }
+
+    if (generatedCount < numberOfProblems && avoidWholeNums) {
+        const warningP = document.createElement('p');
+        warningP.className = 'warning-message';
+        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems with the "Avoid Whole Numbers" constraint. Try increasing Max Value or unchecking the option.`;
+        problemsContainer.appendChild(warningP);
+    }
+
+    gridContainer.innerHTML = problemsHtmlArray.join('');
+    problemsContainer.appendChild(gridContainer);
+    
+    if (controlSumsArray.length > 0) {
+        const answerKeyContainer = document.createElement('div');
+        answerKeyContainer.className = 'control-sum-key-container rational-mult-div-key'; // Added specific class
+        
+        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
+        
+        const sums = controlSumsArray.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
+        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`;
+
+        answerKeyContainer.innerHTML = titleHTML;
+        problemsContainer.appendChild(answerKeyContainer);
+    }
+    
+    console.log(`Rational Multiplication/Division problems generated: ${generatedCount}`);
+}
+
   // --- Event Handlers ---
   function handleTopicChange() {
     currentTopic = topicSelector.value;
@@ -800,6 +960,9 @@ function generateRationalOperationsProblems() {
         break;
       case "rational-operations":
         renderRationalOperationsControls();
+        break;
+      case "rational-mult-div":
+        renderRationalMultDivControls();
         break;
       default:
         console.error("Unknown topic selected:", currentTopic);
@@ -831,6 +994,9 @@ function generateRationalOperationsProblems() {
         break;
       case "rational-operations":
         generateRationalOperationsProblems();
+        break;
+      case "rational-mult-div":
+        generateRationalMultDivProblems();
         break;
       default:
         console.error("Unknown topic for generation:", currentTopic);
