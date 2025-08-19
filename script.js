@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed");
 
   // --- DOM Element References ---
-  const topicSelector = document.getElementById("topic-selector");
+  const topicGrid = document.getElementById("topic-grid");
+  const topicCards = document.querySelectorAll(".topic-card");
   const controlsPanel = document.getElementById("controls-panel");
   const topicSpecificControlsContainer = document.getElementById(
     "topic-specific-controls",
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const problemsContainer = document.getElementById("problems-container");
 
   // --- State ---
-  let currentTopic = topicSelector.value;
+  let currentTopic = "multiplication-table"; // Default to first topic
 
   // --- Topic-Specific Control Generators ---
   // These functions will create and append input elements to topicSpecificControlsContainer
@@ -687,18 +688,21 @@ function generateRationalCanonicalProblems() {
        // We might not want to show an empty grid container.
    }
 
-    // --- Add Control Sum Key Line ---
+    // --- Add Control Sum Self-Check Grid ---
     if (simplifiedAnswers.length > 0) {
-        const answerKeyContainer = document.createElement('div');
-        answerKeyContainer.className = 'control-sum-key-container rational-canonical-key'; // Added specific class
+        const digitalRootContainer = document.createElement('div');
+        digitalRootContainer.className = 'digital-root-check-grid-container';
         
-        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1 (from W and 0/1). If fraction is 0 (0/D), sum is D.)</p>';
-        
-        const sums = simplifiedAnswers.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
-        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`; // New class for the line of sums
-        
-        answerKeyContainer.innerHTML = titleHTML;
-        problemsContainer.appendChild(answerKeyContainer);
+        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1. If fraction is 0 (0/D), sum is D.)</p>';
+
+        const drGrid = document.createElement('div');
+        drGrid.className = 'digital-root-check-grid';
+
+        simplifiedAnswers.forEach(answer => {
+            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
+        });
+        digitalRootContainer.appendChild(drGrid);
+        problemsContainer.appendChild(digitalRootContainer);
     }
     
    console.log(`Canonical Rational Number problems generated: ${generatedCount}`);
@@ -816,16 +820,19 @@ function generateRationalOperationsProblems() {
     problemsContainer.appendChild(gridContainer);
     
     if (controlSumsArray.length > 0) {
-        const answerKeyContainer = document.createElement('div');
-        answerKeyContainer.className = 'control-sum-key-container rational-operations-key'; // Added specific class
+        const digitalRootContainer = document.createElement('div');
+        digitalRootContainer.className = 'digital-root-check-grid-container';
         
-        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
-        
-        const sums = controlSumsArray.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
-        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`; // New class for the line of sums
+        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
 
-        answerKeyContainer.innerHTML = titleHTML;
-        problemsContainer.appendChild(answerKeyContainer);
+        const drGrid = document.createElement('div');
+        drGrid.className = 'digital-root-check-grid';
+
+        controlSumsArray.forEach(answer => {
+            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
+        });
+        digitalRootContainer.appendChild(drGrid);
+        problemsContainer.appendChild(digitalRootContainer);
     }
     
     console.log(`Rational Operations problems generated: ${generatedCount}`);
@@ -962,16 +969,19 @@ function generateRationalMultDivProblems() {
     problemsContainer.appendChild(gridContainer);
     
     if (controlSumsArray.length > 0) {
-        const answerKeyContainer = document.createElement('div');
-        answerKeyContainer.className = 'control-sum-key-container rational-mult-div-key'; // Added specific class
+        const digitalRootContainer = document.createElement('div');
+        digitalRootContainer.className = 'digital-root-check-grid-container';
         
-        let titleHTML = '<h4>Control Sums (Self-Check)</h4><p style="font-size:0.85em; margin-bottom:5px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
-        
-        const sums = controlSumsArray.map(ans => isNaN(ans.controlSum) ? "Err" : ans.controlSum).join(', ');
-        titleHTML += `<p class="control-sum-line">Sums: ${sums}</p>`;
+        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
 
-        answerKeyContainer.innerHTML = titleHTML;
-        problemsContainer.appendChild(answerKeyContainer);
+        const drGrid = document.createElement('div');
+        drGrid.className = 'digital-root-check-grid';
+
+        controlSumsArray.forEach(answer => {
+            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
+        });
+        digitalRootContainer.appendChild(drGrid);
+        problemsContainer.appendChild(digitalRootContainer);
     }
     
     console.log(`Rational Multiplication/Division problems generated: ${generatedCount}`);
@@ -1097,10 +1107,8 @@ function generateProportionProblems() {
 
         const problemHTML = `
             <div class="proportion-problem-item">
-                <div class="problem-header">Exercise ${generatedCount + 1}</div>
                 <div class="problem-content">
                     <div class="proportion-equation">
-                        <span class="solve-text">Solve for x:</span>
                         <div class="proportion">
                             <span class="fraction">
                                 <span class="numerator">${displayA}</span>
@@ -1111,23 +1119,6 @@ function generateProportionProblems() {
                                 <span class="numerator">${displayC}</span>
                                 <span class="denominator">${displayD}</span>
                             </span>
-                        </div>
-                    </div>
-                    <div class="answer-section">
-                        <span class="answer-label">Answer: x = </span>
-                        <div class="answer-line"></div>
-                    </div>
-                    <div class="control-check-section">
-                        <div class="control-check-header">Control Check:</div>
-                        <div class="cross-multiplication">
-                            <div class="cross-check-line">
-                                <span class="cross-product">${crossProduct1}</span> = 
-                                <div class="check-answer-line"></div>
-                            </div>
-                            <div class="cross-check-line">
-                                <span class="cross-product">${crossProduct2}</span> = 
-                                <div class="check-answer-line"></div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1349,9 +1340,60 @@ function generateDecimalRationalProblems() {
 }
 
   // --- Event Handlers ---
-  function handleTopicChange() {
-    currentTopic = topicSelector.value;
+  function handleTopicCardClick(event) {
+    const card = event.currentTarget;
+    const newTopic = card.dataset.topic;
+    
+    if (newTopic === currentTopic) return; // Already selected
+    
+    // Remove selected class from all cards
+    topicCards.forEach(c => c.classList.remove("selected"));
+    
+    // Add selected class to clicked card
+    card.classList.add("selected");
+    
+    // Update current topic
+    currentTopic = newTopic;
     console.log("Topic changed to:", currentTopic);
+    
+    // Clear previous topic-specific controls and problems
+    topicSpecificControlsContainer.innerHTML = "";
+    problemsContainer.innerHTML = "";
+    
+    // Render new controls based on selected topic
+    switch (currentTopic) {
+      case "multiplication-table":
+        renderMultiplicationTableControls();
+        break;
+      case "addition-subtraction":
+        renderAdditionSubtractionControls();
+        break;
+      case "multiplication-division":
+        renderMultiplicationDivisionControls();
+        break;
+      case "rational-canonical":
+        renderRationalCanonicalControls();
+        break;
+      case "rational-operations":
+        renderRationalOperationsControls();
+        break;
+      case "rational-mult-div":
+        renderRationalMultDivControls();
+        break;
+      case "proportion":
+        renderProportionControls();
+        break;
+      case "decimal-rational":
+        renderDecimalRationalControls();
+        break;
+      default:
+        console.error("Unknown topic selected:", currentTopic);
+    }
+  }
+
+  function handleTopicChange() {
+    // This function is now used for initialization only
+    console.log("Initializing topic:", currentTopic);
     // Clear previous topic-specific controls
     topicSpecificControlsContainer.innerHTML = "";
     problemsContainer.innerHTML = "";
@@ -1433,9 +1475,17 @@ function generateDecimalRationalProblems() {
   }
 
   // --- Initialization ---
-  if (topicSelector) {
-    topicSelector.addEventListener("change", handleTopicChange);
+  // Add click event listeners to topic cards
+  topicCards.forEach(card => {
+    card.addEventListener("click", handleTopicCardClick);
+  });
+  
+  // Set initial selected card
+  const firstCard = document.querySelector(`[data-topic="${currentTopic}"]`);
+  if (firstCard) {
+    firstCard.classList.add("selected");
   }
+  
   if (generateButton) {
     generateButton.addEventListener("click", handleGenerateClick);
   }

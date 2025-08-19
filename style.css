@@ -45,6 +45,50 @@ h2 {
     color: #333;
 }
 
+/* Topic Selection Grid */
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.topic-card {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.topic-card:hover {
+    background: #e3f2fd;
+    border-color: #2196f3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.topic-card.selected {
+    background: #e8f5e8;
+    border-color: #4caf50;
+    box-shadow: 0 2px 8px rgba(76,175,80,0.3);
+}
+
+.topic-card h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.topic-card p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
 /* Controls Panel */
 .controls label {
     display: block;
@@ -474,7 +518,7 @@ footer {
     #problems-container {
         min-height: auto;
         border: none;
-        padding-bottom: 50mm; /* Space for the fixed key containers at the bottom, adjust as needed */
+        padding-bottom: 10mm; /* Reduced padding since we're no longer using fixed positioning */
         flex-grow: 1; /* Allow problems container to take available space in #output-area */
         display: flex; 
         flex-direction: column;
@@ -511,11 +555,12 @@ footer {
 
     /* Print-specific adjustments for Digital Root Grid */
     .digital-root-check-grid-container {
-        margin-top: 10mm;
-        padding: 5mm;
+        margin-top: 8mm;
+        padding: 3mm;
         border: 1px solid #ccc;
         background-color: #fff;
-        page-break-before: auto;
+        page-break-before: avoid;
+        page-break-after: avoid;
     }
     .digital-root-check-grid-container h4 {
         font-size: 12pt;
@@ -525,18 +570,17 @@ footer {
     }
     .digital-root-check-grid {
         /* Match column count of problem grid in print, e.g., repeat(4, 1fr) */
-        grid-template-columns: repeat(4, 1fr); /* Example, should match problem grid's print columns */
-        gap: 8mm 8mm;
+        grid-template-columns: repeat(6, 1fr); /* More columns to fit more items per row */
+        gap: 3mm 3mm; /* Reduced gap */
     }
     .dr-cell {
-        .control-sum-cell {
-            font-size: 12pt;
-            border: 1px solid #bbb;
-            min-width: 1cm;
-            height: 1cm;
-            padding: 2mm;
-            page-break-inside: avoid;
-        }
+        font-size: 10pt;
+        border: 1px solid #bbb;
+        min-width: 8mm;
+        height: 8mm;
+        padding: 1mm;
+        page-break-inside: avoid;
+    }
 
     /* --- Styles for Rational Operations Problems --- */
     /* .fraction-problem-grid (from canonical) can be reused if styling is similar */
@@ -666,9 +710,9 @@ footer {
     .proportion-problem-item {
         font-size: 11pt;
         border: 1px solid #ccc;
-        min-height: 6cm;
+        min-height: 2.5cm; /* Reduced from 6cm since we removed sections */
         page-break-inside: avoid;
-        padding: 8mm;
+        padding: 6mm; /* Reduced padding */
     }
     
     .proportion-problem-item .problem-header {
@@ -723,21 +767,17 @@ footer {
         max-width: 120px;
     }
 
-    /* Print-specific adjustments for Key Grids (DR and Control Sum) */
-    .digital-root-check-grid-container,
+    /* Print-specific adjustments for Control Sum containers only */
     .control-sum-key-container {
-        position: fixed;
-        bottom: 10mm;
-        left: 10mm;
-        right: 10mm;
+        position: relative;
+        margin-top: 8mm;
+        margin-bottom: 10mm;
         width: auto;
-        max-width: 190mm; /* Adjust for A4 paper content width */
-        margin: 0 auto; /* Center horizontally */
-        z-index: 100; /* High z-index */
-        background-color: #fdfdfd; /* Give it a light background */
+        background-color: #fdfdfd;
         border: 1px solid #ccc;
         padding: 3mm;
         page-break-inside: avoid !important;
+        page-break-before: avoid;
         clear: both; 
     }
     .digital-root-check-grid-container h4, /* Shared style for h4 in key containers */
@@ -788,9 +828,7 @@ footer {
     }
 
 
-    h1, h2 { /* This looks like a good anchor point */
-     h1,
-     h2 {
+    h1, h2 {
         /* Optionally style headers differently for print or hide them if part of .controls */
     }
 }
@@ -830,7 +868,7 @@ footer {
     background-color: #fdfdfd;
     display: flex;
     flex-direction: column;
-    min-height: 12em; /* Taller to accommodate control check section */
+    min-height: 4em; /* Reduced since we removed answer and control check sections */
 }
 
 .proportion-problem-item .problem-header {
