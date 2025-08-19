@@ -4,8 +4,6 @@ services:
   tgwebapp:
     image: ghcr.io/korjavin/arithproblems:latest
     container_name: arithproblems
-    networks:
-      - ${NETWORK}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.arithproblems.rule=Host(`${DNS_NAME}`)"
@@ -14,6 +12,3 @@ services:
 
     restart: unless-stopped
 
-networks:
-  ${NETWORK}:
-    external: true
