@@ -10,7 +10,7 @@ jobs:
   build-and-push-ghcr:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write # Required to push to GitHub Container Registry
 
     steps:
