@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  tgwebapp:
+    image: ghcr.io/korjavin/arithproblems:latest
+    container_name: arithproblems
+    networks:
+      - ${NETWORK}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.arithproblems.rule=Host(`${DNS_NAME}`)"
+      - "traefik.http.routers.arithproblems.entrypoints=websecure"
+      - "traefik.http.routers.arithproblems.tls.certresolver=myresolver"
+
+    restart: unless-stopped
+
+networks:
+  ${NETWORK}:
+    external: true
