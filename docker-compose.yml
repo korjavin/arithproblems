@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tgwebapp:
-    image: ghcr.io/korjavin/arithproblems:latest
+    image: ghcr.io/korjavin/arithproblems:95bf76bdd8c0c485d4cd0fe0a9a9d06f91cb7235
     container_name: arithproblems
     networks:
       - ${NETWORK}
