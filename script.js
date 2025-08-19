@@ -127,6 +127,24 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderProportionControls() {
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="prop-max-base">Max Value for Base Ratio (a, b):</label>
+            <input type="number" id="prop-max-base" value="10" min="1" max="15">
+        </div>
+        <div>
+            <label for="prop-max-multiplier">Max Multiplier (k):</label>
+            <input type="number" id="prop-max-multiplier" value="8" min="2" max="12">
+        </div>
+        <div>
+            <input type="checkbox" id="prop-simplify-ratios" checked>
+            <label for="prop-simplify-ratios">Ensure Base Ratios are Simplified</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">Problems will be proportions with one missing value. Students solve for x, verify using cross-multiplication, then check their answer's digital root against the grid. Each problem guarantees integer solutions.</p>
+    `;
+  }
+
   // --- Helper Functions ---
 function gcd(a, b) {
     a = Math.abs(a);
@@ -937,6 +955,196 @@ function generateRationalMultDivProblems() {
     console.log(`Rational Multiplication/Division problems generated: ${generatedCount}`);
 }
 
+function generateProportionProblems() {
+    console.log("Generating Proportion problems with cross-multiplication self-check...");
+    problemsContainer.innerHTML = ''; // Clear previous
+
+    // --- Get DOM elements for inputs ---
+    const maxBaseInput = document.getElementById('prop-max-base');
+    const maxMultiplierInput = document.getElementById('prop-max-multiplier');
+    const simplifyRatiosInput = document.getElementById('prop-simplify-ratios');
+    const numberOfProblemsInput = document.getElementById('num-problems');
+
+    // --- Read input values ---
+    const maxBase = parseInt(maxBaseInput.value, 10);
+    const maxMultiplier = parseInt(maxMultiplierInput.value, 10);
+    const simplifyRatios = simplifyRatiosInput.checked;
+    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+    // --- Basic Validation ---
+    if (isNaN(maxBase) || maxBase < 1 || maxBase > 15) {
+        problemsContainer.innerHTML = '<p class="error-message">Max value for base ratio must be between 1-15.</p>';
+        return;
+    }
+    if (isNaN(maxMultiplier) || maxMultiplier < 2 || maxMultiplier > 12) {
+        problemsContainer.innerHTML = '<p class="error-message">Max multiplier must be between 2-12.</p>';
+        return;
+    }
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
+        return;
+    }
+
+    function getRandomInt(min, max) { // min and max included 
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    const h3Title = document.createElement('h3');
+    h3Title.textContent = 'Proportion Problems';
+    problemsContainer.appendChild(h3Title);
+
+    const gridContainer = document.createElement('div');
+    gridContainer.className = 'arithmetic-grid proportion-problem-grid';
+
+    const problemsHtmlArray = [];
+    const digitalRoots = []; 
+    let generatedCount = 0;
+    let attempts = 0;
+    const maxAttempts = numberOfProblems * 100; // Prevent infinite loops
+
+    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+        attempts++;
+
+        // Step 1: Create a Base Ratio (a/b)
+        let a = getRandomInt(1, maxBase);
+        let b = getRandomInt(1, maxBase);
+
+        // Ensure simplified ratio if required
+        if (simplifyRatios) {
+            const baseGcd = gcd(a, b);
+            if (baseGcd > 1) {
+                a = a / baseGcd;
+                b = b / baseGcd;
+            }
+        }
+
+        // Avoid trivial ratios like 1/1
+        if (a === b && a === 1) {
+            continue;
+        }
+
+        // Step 2: Generate a Multiplier (k)
+        const k = getRandomInt(2, maxMultiplier);
+
+        // Step 3: Calculate the Second, Equivalent Ratio (c/d)
+        const c = a * k;
+        const d = b * k;
+
+        // Now we have the complete proportion: a/b = c/d
+
+        // Step 4: Create the Problem by Hiding One Value
+        const positions = ['a', 'b', 'c', 'd'];
+        const hiddenPosition = positions[Math.floor(Math.random() * 4)];
+        
+        let displayA = a, displayB = b, displayC = c, displayD = d;
+        let solution = 0;
+        let crossProduct1, crossProduct2;
+
+        switch (hiddenPosition) {
+            case 'a':
+                solution = a;
+                displayA = 'x';
+                crossProduct1 = `x × ${d}`;
+                crossProduct2 = `${b} × ${c}`;
+                break;
+            case 'b':
+                solution = b;
+                displayB = 'x';
+                crossProduct1 = `${a} × ${d}`;
+                crossProduct2 = `x × ${c}`;
+                break;
+            case 'c':
+                solution = c;
+                displayC = 'x';
+                crossProduct1 = `${a} × ${d}`;
+                crossProduct2 = `${b} × x`;
+                break;
+            case 'd':
+                solution = d;
+                displayD = 'x';
+                crossProduct1 = `${a} × x`;
+                crossProduct2 = `${b} × ${c}`;
+                break;
+        }
+
+        // Calculate digital root of the solution for self-check
+        const solutionDigitalRoot = digitalRoot(solution);
+        digitalRoots.push({ 
+            digitalRoot: solutionDigitalRoot
+        });
+
+        const problemHTML = `
+            <div class="proportion-problem-item">
+                <div class="problem-header">Exercise ${generatedCount + 1}</div>
+                <div class="problem-content">
+                    <div class="proportion-equation">
+                        <span class="solve-text">Solve for x:</span>
+                        <div class="proportion">
+                            <span class="fraction">
+                                <span class="numerator">${displayA}</span>
+                                <span class="denominator">${displayB}</span>
+                            </span>
+                            <span class="equals">=</span>
+                            <span class="fraction">
+                                <span class="numerator">${displayC}</span>
+                                <span class="denominator">${displayD}</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="answer-section">
+                        <span class="answer-label">Answer: x = </span>
+                        <div class="answer-line"></div>
+                    </div>
+                    <div class="control-check-section">
+                        <div class="control-check-header">Control Check:</div>
+                        <div class="cross-multiplication">
+                            <div class="cross-check-line">
+                                <span class="cross-product">${crossProduct1}</span> = 
+                                <div class="check-answer-line"></div>
+                            </div>
+                            <div class="cross-check-line">
+                                <span class="cross-product">${crossProduct2}</span> = 
+                                <div class="check-answer-line"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        
+        problemsHtmlArray.push(problemHTML);
+        generatedCount++;
+    }
+
+    if (generatedCount < numberOfProblems) {
+        const warningP = document.createElement('p');
+        warningP.className = 'warning-message';
+        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems. Try adjusting the parameters.`;
+        problemsContainer.appendChild(warningP);
+    }
+
+    gridContainer.innerHTML = problemsHtmlArray.join('');
+    problemsContainer.appendChild(gridContainer);
+    
+    // Add Digital Root Self-Check Grid
+    if (digitalRoots.length > 0) {
+        const digitalRootContainer = document.createElement('div');
+        digitalRootContainer.className = 'digital-root-check-grid-container';
+        
+        digitalRootContainer.innerHTML = '<h4>Digital Root Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Find the digital root of your answer x and compare to the grid below)</p>';
+
+        const drGrid = document.createElement('div');
+        drGrid.className = 'digital-root-check-grid';
+
+        digitalRoots.forEach(answer => {
+            drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`;
+        });
+        digitalRootContainer.appendChild(drGrid);
+        problemsContainer.appendChild(digitalRootContainer);
+    }
+    
+    console.log(`Proportion problems generated: ${generatedCount}`);
+}
+
   // --- Event Handlers ---
   function handleTopicChange() {
     currentTopic = topicSelector.value;
@@ -963,6 +1171,9 @@ function generateRationalMultDivProblems() {
         break;
       case "rational-mult-div":
         renderRationalMultDivControls();
+        break;
+      case "proportion":
+        renderProportionControls();
         break;
       default:
         console.error("Unknown topic selected:", currentTopic);
@@ -997,6 +1208,9 @@ function generateRationalMultDivProblems() {
         break;
       case "rational-mult-div":
         generateRationalMultDivProblems();
+        break;
+      case "proportion":
+        generateProportionProblems();
         break;
       default:
         console.error("Unknown topic for generation:", currentTopic);

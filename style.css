@@ -656,6 +656,46 @@ footer {
     /* .fraction print styles are inherited */
     /* .calculation-space print styles are inherited */
 
+    /* Print specific for proportion problems */
+    .proportion-problem-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 columns for print */
+        gap: 20mm 15mm !important;
+    }
+    
+    .proportion-problem-item {
+        font-size: 11pt;
+        border: 1px solid #ccc;
+        min-height: 6cm;
+        page-break-inside: avoid;
+        padding: 8mm;
+    }
+    
+    .proportion-problem-item .problem-header {
+        font-size: 11pt;
+        margin-bottom: 5mm;
+    }
+    
+    .proportion {
+        font-size: 1.2em;
+    }
+    
+    .answer-section .answer-line {
+        border-bottom-width: 1.5px;
+        min-width: 60px;
+    }
+    
+    .control-check-section {
+        border-top: 1px dashed #999;
+        padding-top: 5mm;
+    }
+    
+    .cross-check-line .check-answer-line {
+        border-bottom-width: 1px;
+        min-width: 40px;
+    }
+
+
     /* Print-specific adjustments for Key Grids (DR and Control Sum) */
     .digital-root-check-grid-container,
     .control-sum-key-container {
@@ -748,3 +788,124 @@ footer {
     margin-right: 10px;
     text-align: center;
 }
+
+/* --- Styles for Proportion Problems --- */
+.proportion-problem-grid {
+    /* Uses .arithmetic-grid styles by sharing the class */
+    gap: 25px 20px; /* Potentially different gap for proportion problems */
+}
+
+.proportion-problem-item {
+    font-size: 1.1em;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    min-height: 12em; /* Taller to accommodate control check section */
+}
+
+.proportion-problem-item .problem-header {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.proportion-problem-item .problem-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.proportion-equation {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.proportion-equation .solve-text {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.proportion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+}
+
+.proportion .equals {
+    margin: 0 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.answer-section {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.answer-section .answer-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.answer-section .answer-line {
+    flex-grow: 1;
+    height: 2px;
+    border-bottom: 2px solid #333;
+    min-width: 80px;
+    max-width: 120px;
+}
+
+.control-check-section {
+    border-top: 1px dashed #ccc;
+    padding-top: 10px;
+    flex-grow: 1;
+}
+
+.control-check-header {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+.cross-multiplication {
+    font-size: 0.95em;
+}
+
+.cross-check-line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.cross-check-line .cross-product {
+    margin-right: 10px;
+    min-width: 80px;
+    text-align: left;
+}
+
+.cross-check-line .check-answer-line {
+    flex-grow: 1;
+    height: 1px;
+    border-bottom: 1px solid #666;
+    min-width: 50px;
+    max-width: 80px;
+}
+
+.verification-note {
+    font-size: 0.85em;
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
+    text-align: center;
+}
+
