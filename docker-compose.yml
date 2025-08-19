@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tgwebapp:
-    image: ghcr.io/korjavin/arithproblems:1ab0e6fe810cc03f1e60ddef0fecffcee26f79da
+    image: ghcr.io/korjavin/arithproblems:01ed86316cb193aae45afd879d963032e683d5e5
     container_name: arithproblems
     labels:
       - "traefik.enable=true"
