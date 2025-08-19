@@ -35,7 +35,7 @@ jobs:
           # Context will default to the working-directory
           # Dockerfile path will default to Dockerfile in the working-directory
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}
           build-args: |
             COMMIT_SHA=${{ github.sha }}
           # Alternative tagging strategy:
