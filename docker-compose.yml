@@ -4,6 +4,8 @@ services:
   tgwebapp:
     image: ghcr.io/korjavin/arithproblems:01ed86316cb193aae45afd879d963032e683d5e5
     container_name: arithproblems
+    networks:
+      - vaultwarden_default
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.arithproblems.rule=Host(`${DNS_NAME}`)"
@@ -12,3 +14,6 @@ services:
 
     restart: unless-stopped
 
+networks:
+  vaultwarden_default:
+    external: true
