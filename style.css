@@ -37,16 +37,18 @@ header h1 {
     font-size: 24px; /* This will control the size of the flags */
 }
 
-#language-switcher .flag-icon {
+#language-switcher .language-flag {
     cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0 0 2px rgba(0,0,0,0.5);
-    transition: transform 0.2s;
-    /* The size is inherited from the parent's font-size */
+    font-size: 28px;
+    transition: transform 0.2s, filter 0.2s;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+    border-radius: 4px;
+    padding: 2px;
 }
 
-#language-switcher .flag-icon:hover {
+#language-switcher .language-flag:hover {
     transform: scale(1.1);
+    filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
 }
 
 main {
