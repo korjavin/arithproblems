@@ -228,6 +228,30 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderPercentageControls() {
+      const t = translations.script.percentage;
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="pct-problem-type">${t.problem_type_label}</label>
+            <select id="pct-problem-type">
+                <option value="mixed">${t.mixed_option}</option>
+                <option value="find-percent">${t.find_percent_option}</option>
+                <option value="find-what-percent">${t.find_what_percent_option}</option>
+                <option value="find-whole">${t.find_whole_option}</option>
+            </select>
+        </div>
+        <div>
+            <label for="pct-max-number">${t.max_number_label}</label>
+            <input type="number" id="pct-max-number" value="100" min="10" max="1000">
+        </div>
+        <div>
+            <input type="checkbox" id="pct-whole-percents-only" checked>
+            <label for="pct-whole-percents-only">${t.whole_percents_only_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -851,6 +875,93 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function generatePercentageProblems() {
+      const t = translations.script.percentage;
+      problemsContainer.innerHTML = '';
+      const problemTypeInput = document.getElementById('pct-problem-type');
+      const maxNumberInput = document.getElementById('pct-max-number');
+      const wholePercentsOnlyInput = document.getElementById('pct-whole-percents-only');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const problemType = problemTypeInput.value;
+      const maxNumber = parseInt(maxNumberInput.value, 10);
+      const wholePercentsOnly = wholePercentsOnlyInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxNumber) || maxNumber < 10) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_number}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+      function getRandomPercentage() {
+          if (wholePercentsOnly) {
+              return getRandomInt(1, 99);
+          } else {
+              return Math.round((Math.random() * 99 + 1) * 10) / 10; // 1 decimal place
+          }
+      }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid percentage-problem-grid';
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+      let generatedCount = 0;
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let currentProblemType;
+          if (problemType === 'mixed') {
+              const types = ['find-percent', 'find-what-percent', 'find-whole'];
+              currentProblemType = types[Math.floor(Math.random() * types.length)];
+          } else {
+              currentProblemType = problemType;
+          }
+
+          let problemHTML = '';
+          let answer = 0;
+
+          if (currentProblemType === 'find-percent') {
+              // Find X% of Y (e.g., "25% of 80 = ?")
+              const percentage = getRandomPercentage();
+              const number = getRandomInt(10, maxNumber);
+              answer = Math.round((percentage / 100) * number);
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% of ${number} = </span><div class="answer-space"></div></div></div>`;
+          } else if (currentProblemType === 'find-what-percent') {
+              // Find what percent X is of Y (e.g., "15 is what % of 60?")
+              const whole = getRandomInt(20, maxNumber);
+              const percentage = getRandomPercentage();
+              const part = Math.round((percentage / 100) * whole);
+              answer = Math.round(percentage);
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${part} is what % of ${whole}?</span><div class="answer-space"></div></div></div>`;
+          } else if (currentProblemType === 'find-whole') {
+              // Find the whole when given part and percentage (e.g., "25% of what number is 20?")
+              const percentage = getRandomPercentage();
+              const part = getRandomInt(5, Math.floor(maxNumber * 0.6));
+              answer = Math.round(part / (percentage / 100));
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% of what number is ${part}?</span><div class="answer-space"></div></div></div>`;
+          }
+
+          const answerDigitalRoot = digitalRoot(answer);
+          digitalRoots.push({ digitalRoot: answerDigitalRoot });
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -877,6 +988,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "rational-mult-div": renderRationalMultDivControls(); break;
       case "proportion": renderProportionControls(); break;
       case "decimal-rational": renderDecimalRationalControls(); break;
+      case "percentage": renderPercentageControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -899,6 +1011,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "rational-mult-div": generateRationalMultDivProblems(); break;
       case "proportion": generateProportionProblems(); break;
       case "decimal-rational": generateDecimalRationalProblems(); break;
+      case "percentage": generatePercentageProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
