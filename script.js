@@ -374,12 +374,14 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let i = 0; i < numberOfProblems; i++) {
           let problemHTML;
           let actualResult;
-          if (Math.random() < 0.5 || digitsDiv === 0 || digitsQuo === 0) {
+          if (Math.random() < 0.5) {
+              // Generate multiplication problem
               const factor1 = getRandomNumber(digitsF1);
               const factor2 = getRandomNumber(digitsF2);
               actualResult = factor1 * factor2;
               problemHTML = `<div class="arith-problem multiplication-problem"><div class="operand-1">${factor1}</div><div class="operator-operand2"><span class="operator">&times;</span><span class="operand-2">${factor2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`;
           } else {
+              // Generate division problem
               let divisor = getRandomNumber(digitsDiv);
               let quotient = getRandomNumber(digitsQuo);
               if (divisor === 0) divisor = 1;
