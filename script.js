@@ -1,6 +1,60 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM fully loaded and parsed");
 
+  // --- I18N ---
+  let translations = {};
+  const supportedLangs = ['en', 'de', 'ru'];
+  let currentLang = 'en'; // default
+
+  async function applyTranslations() {
+      document.querySelectorAll('[data-translate-key]').forEach(element => {
+          const key = element.getAttribute('data-translate-key');
+          const translation = key.split('.').reduce((obj, i) => (obj ? obj[i] : null), translations);
+          if (translation) {
+              element.innerHTML = translation;
+          }
+      });
+      // also update title
+      const titleKey = document.title.dataset.translateKey;
+      if(titleKey) {
+          const translation = titleKey.split('.').reduce((obj, i) => (obj ? obj[i] : null), translations);
+          if(translation) {
+              document.title = translation;
+          }
+      }
+  }
+
+  async function setLanguage(lang) {
+      if (!supportedLangs.includes(lang)) {
+          lang = 'en';
+      }
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+
+      try {
+          const response = await fetch(`locales/${lang}.json`);
+          translations = await response.json();
+          await applyTranslations();
+          // After applying translations, we need to re-render the controls
+          // because their content is generated dynamically.
+          handleTopicChange();
+      } catch (error) {
+          console.error(`Could not load language file: ${lang}.json`, error);
+      }
+  }
+
+  function getInitialLang() {
+      let lang = localStorage.getItem('lang');
+      if (lang && supportedLangs.includes(lang)) {
+          return lang;
+      }
+      lang = navigator.language.split('-')[0];
+      if (supportedLangs.includes(lang)) {
+          return lang;
+      }
+      return 'en';
+  }
+
   // --- DOM Element References ---
   const topicGrid = document.getElementById("topic-grid");
   const topicCards = document.querySelectorAll(".topic-card");
@@ -12,6 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const generateButton = document.getElementById("generate-button");
   const printButton = document.getElementById("print-button");
   const problemsContainer = document.getElementById("problems-container");
+  const languageSwitcher = document.getElementById("language-switcher");
+
 
   // --- State ---
   let currentTopic = "multiplication-table"; // Default to first topic
@@ -20,163 +76,166 @@ document.addEventListener("DOMContentLoaded", () => {
   // These functions will create and append input elements to topicSpecificControlsContainer
 
   function renderMultiplicationTableControls() {
+    const t = translations.script.multiplication_table;
     topicSpecificControlsContainer.innerHTML = `
         <div class="range-inputs">
-            <label>Multiplicators range:</label>
+            <label>${t.range_label}</label>
             <div>
-                <label for="mt-from-factor">From:</label>
+                <label for="mt-from-factor">${t.from_label}</label>
                 <input type="number" id="mt-from-factor" value="1" min="1" max="100">
-                <label for="mt-to-factor">To:</label>
+                <label for="mt-to-factor">${t.to_label}</label>
                 <input type="number" id="mt-to-factor" value="10" min="1" max="100">
             </div>
         </div>
         <div>
-            <label for="mt-percent-hints">Percent of hints (%):</label>
+            <label for="mt-percent-hints">${t.percent_hints_label}</label>
             <input type="number" id="mt-percent-hints" value="5" min="0" max="100">
         </div>
-        <p style="font-size:0.9em; color:#555;">The chart will be partially pre-filled to help learning.</p>
+        <p style="font-size:0.9em; color:#555;">${t.chart_description}</p>
     `;
   }
 
   function renderAdditionSubtractionControls() {
+      const t = translations.script.addition_subtraction;
       topicSpecificControlsContainer.innerHTML = `
           <div>
-              <label for="as-digits-num1">Digits in Number 1:</label>
+              <label for="as-digits-num1">${t.digits_num1_label}</label>
               <input type="number" id="as-digits-num1" value="3" min="1" max="7">
           </div>
           <div>
-              <label for="as-digits-num2">Digits in Number 2:</label>
+              <label for="as-digits-num2">${t.digits_num2_label}</label>
               <input type="number" id="as-digits-num2" value="3" min="1" max="7">
           </div>
-          <p style="font-size:0.9em; color:#555;">Digital roots of the answers will be shown below the problems for self-checking.</p>
+          <p style="font-size:0.9em; color:#555;">${t.digital_root_description}</p>
       `;
   }
 
   function renderMultiplicationDivisionControls() {
+      const t = translations.script.multiplication_division;
       topicSpecificControlsContainer.innerHTML = `
-          <p><strong>Multiplication:</strong></p>
+          <p><strong>${t.multiplication_title}</strong></p>
           <div>
-              <label for="md-digits-factor1">Digits in Factor 1:</label>
+              <label for="md-digits-factor1">${t.digits_factor1_label}</label>
               <input type="number" id="md-digits-factor1" value="2" min="1" max="4">
           </div>
           <div>
-              <label for="md-digits-factor2">Digits in Factor 2:</label>
+              <label for="md-digits-factor2">${t.digits_factor2_label}</label>
               <input type="number" id="md-digits-factor2" value="2" min="1" max="4">
           </div>
-          <!-- <div>
-              <input type="checkbox" id="md-allow-carry-multiplication" checked>
-              <label for="md-allow-carry-multiplication">Allow Carry (Multiplication)</label>
-          </div> -->
           <hr>
-          <p><strong>Division:</strong></p>
+          <p><strong>${t.division_title}</strong></p>
           <div>
-              <label for="md-digits-divisor">Digits in Divisor:</label>
+              <label for="md-digits-divisor">${t.digits_divisor_label}</label>
               <input type="number" id="md-digits-divisor" value="2" min="1" max="4">
           </div>
           <div>
-              <label for="md-digits-quotient">Digits in Quotient:</label>
+              <label for="md-digits-quotient">${t.digits_quotient_label}</label>
               <input type="number" id="md-digits-quotient" value="1" min="1" max="3">
           </div>
           <div>
               <input type="checkbox" id="md-no-remainder" checked>
-              <label for="md-no-remainder">Require Integer Result (No Remainder)</label>
+              <label for="md-no-remainder">${t.no_remainder_label}</label>
           </div>
-          <p style="font-size:0.9em; color:#555;">Digital roots of products/quotients will be shown for self-checking.</p>
+          <p style="font-size:0.9em; color:#555;">${t.digital_root_description}</p>
       `;
   }
 
   function renderRationalCanonicalControls() {
+    const t = translations.script.rational_canonical;
     topicSpecificControlsContainer.innerHTML = `
         <div>
-            <label for="rc-max-val">Max Value for Numerator/Denominator:</label>
+            <label for="rc-max-val">${t.max_val_label}</label>
             <input type="number" id="rc-max-val" value="30" min="2"> 
         </div>
         <div>
             <input type="checkbox" id="rc-ensure-reducible" checked>
-            <label for="rc-ensure-reducible">Ensure Fraction is Reducible</label>
+            <label for="rc-ensure-reducible">${t.ensure_reducible_label}</label>
         </div>
-        <p style="font-size:0.9em; color:#555;">Students should simplify the fraction to its lowest terms.</p>
-        <!-- No DR key for this section for now -->
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
   }
 
   function renderRationalOperationsControls() {
+      const t = translations.script.rational_operations;
       topicSpecificControlsContainer.innerHTML = `
         <div>
-            <label for="ro-num-terms">Number of Fractions (2 recommended):</label>
+            <label for="ro-num-terms">${t.num_terms_label}</label>
             <input type="number" id="ro-num-terms" value="2" min="2" max="2"> <!-- Forcing 2 for now -->
         </div>
         <div>
-            <label for="ro-max-val">Max Value for Numerators/Denominators:</label>
+            <label for="ro-max-val">${t.max_val_label}</label>
             <input type="number" id="ro-max-val" value="15" min="1">
         </div>
-        <p style="font-size:0.9em; color:#555;">Operations will be a mix of addition and subtraction. Result should be simplified. Control sums will be shown for self-checking.</p>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
   }
 
   function renderRationalMultDivControls() {
+      const t = translations.script.rational_mult_div;
       topicSpecificControlsContainer.innerHTML = `
         <div>
-            <label for="rmd-max-val">Max Value for Numerators/Denominators:</label>
+            <label for="rmd-max-val">${t.max_val_label}</label>
             <input type="number" id="rmd-max-val" value="12" min="1">
         </div>
         <div>
             <input type="checkbox" id="rmd-avoid-whole-nums" checked>
-            <label for="rmd-avoid-whole-nums">Avoid Results that are Whole Numbers</label>
+            <label for="rmd-avoid-whole-nums">${t.avoid_whole_nums_label}</label>
         </div>
-        <p style="font-size:0.9em; color:#555;">Operations will be a mix of multiplication and division. Result should be simplified. Control sums will be shown for self-checking.</p>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
   }
 
   function renderProportionControls() {
+      const t = translations.script.proportion;
       topicSpecificControlsContainer.innerHTML = `
         <div>
-            <label for="prop-max-base">Max Value for Base Ratio (a, b):</label>
+            <label for="prop-max-base">${t.max_base_label}</label>
             <input type="number" id="prop-max-base" value="10" min="1" max="15">
         </div>
         <div>
-            <label for="prop-max-multiplier">Max Multiplier (k):</label>
+            <label for="prop-max-multiplier">${t.max_multiplier_label}</label>
             <input type="number" id="prop-max-multiplier" value="8" min="2" max="12">
         </div>
         <div>
             <input type="checkbox" id="prop-simplify-ratios" checked>
-            <label for="prop-simplify-ratios">Ensure Base Ratios are Simplified</label>
+            <label for="prop-simplify-ratios">${t.simplify_ratios_label}</label>
         </div>
-        <p style="font-size:0.9em; color:#555;">Problems will be proportions with one missing value. Students solve for x, verify using cross-multiplication, then check their answer's digital root against the grid. Each problem guarantees integer solutions.</p>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
   }
 
   function renderDecimalRationalControls() {
+      const t = translations.script.decimal_rational;
       topicSpecificControlsContainer.innerHTML = `
         <div>
-            <label for="dr-problem-mix">Problem Type Mix:</label>
+            <label for="dr-problem-mix">${t.problem_mix_label}</label>
             <select id="dr-problem-mix">
-                <option value="mixed">Mixed (Both Conversions)</option>
-                <option value="fraction-to-decimal">Fraction → Decimal Only</option>
-                <option value="decimal-to-fraction">Decimal → Fraction Only</option>
+                <option value="mixed">${t.mixed_option}</option>
+                <option value="fraction-to-decimal">${t.fraction_to_decimal_option}</option>
+                <option value="decimal-to-fraction">${t.decimal_to_fraction_option}</option>
             </select>
         </div>
         <div>
-            <label for="dr-decimal-places">Max Decimal Places:</label>
+            <label for="dr-decimal-places">${t.max_decimal_places_label}</label>
             <input type="number" id="dr-decimal-places" value="3" min="1" max="4">
         </div>
         <div>
             <input type="checkbox" id="dr-terminating-only" checked>
-            <label for="dr-terminating-only">Terminating Decimals Only</label>
+            <label for="dr-terminating-only">${t.terminating_only_label}</label>
         </div>
-        <p style="font-size:0.9em; color:#555;">Problems convert between decimals and fractions. Self-check uses digital roots: for decimal answers (ignore decimal point), for fraction answers (sum numerator + denominator).</p>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
   }
 
   // --- Helper Functions ---
-function gcd(a, b) {
-    a = Math.abs(a);
-    b = Math.abs(b);
-    if (b === 0) {
-        return a;
-    }
-    return gcd(b, a % b);
-}
+  function gcd(a, b) {
+      a = Math.abs(a);
+      b = Math.abs(b);
+      if (b === 0) {
+          return a;
+      }
+      return gcd(b, a % b);
+  }
 
   function digitalRoot(n) {
       let num = Math.abs(n); // Ensure positive for the digit summing process
@@ -188,1284 +247,606 @@ function gcd(a, b) {
   }
 
   // --- Problem Generator Functions ---
-  // getRandomNumber helper might be duplicated if not careful; ensure it's defined once or passed if needed.
-  // For simplicity here, assuming it's available in scope, or each generator re-defines it if necessary.
-  // These will be filled in later based on your plan
-
   function generateMultiplicationTableProblems() {
-    console.log("Generating partially pre-filled Multiplication Table...");
-
-    // --- Get DOM elements for inputs ---
+    const t = translations.script.multiplication_table;
+    // ... (rest of the function uses `t` for strings)
     const fromFactorInput = document.getElementById('mt-from-factor');
     const toFactorInput = document.getElementById('mt-to-factor');
     const percentHintsInput = document.getElementById('mt-percent-hints');
-
-    // --- Read input values and parse them ---
     let fromFactor = parseInt(fromFactorInput.value, 10);
     let toFactor = parseInt(toFactorInput.value, 10);
     let percentHints = parseInt(percentHintsInput.value, 10);
 
-    // --- Validation ---
-    if (isNaN(fromFactor) || fromFactor < 1) {
-        fromFactor = 1;
-        fromFactorInput.value = "1";
-    }
-    if (isNaN(toFactor) || toFactor < fromFactor) {
-        toFactor = fromFactor;
-        toFactorInput.value = fromFactor.toString();
-    }
-    if (isNaN(percentHints) || percentHints < 0 || percentHints > 100) {
-        percentHints = 5;
-        percentHintsInput.value = "5";
-    }
+    if (isNaN(fromFactor) || fromFactor < 1) { fromFactor = 1; fromFactorInput.value = "1"; }
+    if (isNaN(toFactor) || toFactor < fromFactor) { toFactor = fromFactor; toFactorInput.value = fromFactor.toString(); }
+    if (isNaN(percentHints) || percentHints < 0 || percentHints > 100) { percentHints = 5; percentHintsInput.value = "5"; }
 
     let htmlOutput = '';
-
-    // --- Generate Partially Pre-filled Multiplication Chart ---
-    htmlOutput += `<h3>Multiplication Chart (${fromFactor} &times; ${fromFactor} to ${toFactor} &times; ${toFactor})</h3>`;
+    const title = t.chart_title.replace(/{fromFactor}/g, fromFactor).replace(/{toFactor}/g, toFactor);
+    htmlOutput += `<h3>${title}</h3>`;
     htmlOutput += '<table class="multiplication-chart">';
-
-    // Header row
     htmlOutput += '<thead><tr><th>&times;</th>';
-    for (let i = fromFactor; i <= toFactor; i++) {
-        htmlOutput += `<th>${i}</th>`;
-    }
+    for (let i = fromFactor; i <= toFactor; i++) { htmlOutput += `<th>${i}</th>`; }
     htmlOutput += '</tr></thead>';
-
-    // Table body
     htmlOutput += '<tbody>';
 
     const range = toFactor - fromFactor + 1;
     const totalCells = range * range;
     const cellsToFillCount = Math.floor(totalCells * (percentHints / 100));
-
     const allCellCoordinates = [];
-    for (let r = fromFactor; r <= toFactor; r++) {
-        for (let c = fromFactor; c <= toFactor; c++) {
-            allCellCoordinates.push([r, c]);
-        }
-    }
-
+    for (let r = fromFactor; r <= toFactor; r++) { for (let c = fromFactor; c <= toFactor; c++) { allCellCoordinates.push([r, c]); } }
     const cellsToPreFill = new Set();
-    // Fisher-Yates shuffle
-    for (let i = allCellCoordinates.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allCellCoordinates[i], allCellCoordinates[j]] = [allCellCoordinates[j], allCellCoordinates[i]];
-    }
-    for (let i = 0; i < cellsToFillCount && i < allCellCoordinates.length; i++) {
-        cellsToPreFill.add(`${allCellCoordinates[i][0]}-${allCellCoordinates[i][1]}`);
-    }
-
-    for (let i = fromFactor; i <= toFactor; i++) { // Row iterator
-        htmlOutput += `<tr><th>${i}</th>`; // Row header
-        for (let j = fromFactor; j <= toFactor; j++) { // Column iterator
-            if (cellsToPreFill.has(`${i}-${j}`)) {
-                htmlOutput += `<td class="prefilled">${i * j}</td>`;
-            } else {
-                htmlOutput += '<td> </td>';
-            }
-        }
-        htmlOutput += '</tr>';
-    }
+    for (let i = allCellCoordinates.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[allCellCoordinates[i], allCellCoordinates[j]] = [allCellCoordinates[j], allCellCoordinates[i]]; }
+    for (let i = 0; i < cellsToFillCount && i < allCellCoordinates.length; i++) { cellsToPreFill.add(`${allCellCoordinates[i][0]}-${allCellCoordinates[i][1]}`); }
+    for (let i = fromFactor; i <= toFactor; i++) { htmlOutput += `<tr><th>${i}</th>`; for (let j = fromFactor; j <= toFactor; j++) { if (cellsToPreFill.has(`${i}-${j}`)) { htmlOutput += `<td class="prefilled">${i * j}</td>`; } else { htmlOutput += '<td> </td>'; } } htmlOutput += '</tr>'; }
     htmlOutput += '</tbody></table>';
-
     problemsContainer.innerHTML = htmlOutput;
-    console.log("Partially pre-filled Multiplication Table problems generated.");
-}
+  }
 
   function generateAdditionSubtractionProblems() {
-      console.log("Generating Add/Sub problems with digital root answer key...");
-      problemsContainer.innerHTML = ''; // Clear previous problems
-
-      // --- Get DOM elements for inputs ---
+      const t = translations.script.addition_subtraction;
+      problemsContainer.innerHTML = '';
       const digitsNum1Input = document.getElementById('as-digits-num1');
       const digitsNum2Input = document.getElementById('as-digits-num2');
-      const numberOfProblemsInput = document.getElementById('num-problems'); // Global control
-
-      // --- Read input values and parse them ---
+      const numberOfProblemsInput = document.getElementById('num-problems');
       const digits1 = parseInt(digitsNum1Input.value, 10);
       const digits2 = parseInt(digitsNum2Input.value, 10);
       const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
 
-      // --- Basic Validation ---
-      if (isNaN(digits1) || digits1 < 1 || digits1 > 7 || isNaN(digits2) || digits2 < 1 || digits2 > 7) {
-          problemsContainer.innerHTML = '<p class="error-message">Please enter valid digit counts (1-7) for both numbers.</p>';
-          return;
+      if (isNaN(digits1) || digits1 < 1 || digits1 > 7 || isNaN(digits2) || digits2 < 1 || digits2 > 7) { problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_digits}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1) { problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems}</p>`; return; }
+      if (numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_problems}</p>`; return; }
+
+      function getRandomNumber(numDigits) { if (numDigits <= 0) return 0; const min = Math.pow(10, numDigits - 1); const max = Math.pow(10, numDigits) - 1; return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid';
+      const problemsHtmlArray = [];
+      const answerRoots = [];
+      let generatedCount = 0;
+
+      while (generatedCount < numberOfProblems) {
+          let num1 = getRandomNumber(digits1);
+          let num2 = getRandomNumber(digits2);
+          const isAddition = Math.random() < 0.5;
+          let actualResult;
+          let problemHTML;
+          if (isAddition) {
+              actualResult = num1 + num2;
+              problemHTML = `<div class="arith-problem"><div class="operand-1">${num1}</div><div class="operator-operand2"><span class="operator">+</span><span class="operand-2">${num2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`;
+          } else {
+              if (num1 < num2) { [num1, num2] = [num2, num1]; }
+              actualResult = num1 - num2;
+              problemHTML = `<div class="arith-problem"><div class="operand-1">${num1}</div><div class="operator-operand2"><span class="operator">&ndash;</span><span class="operand-2">${num2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`;
+          }
+          problemsHtmlArray.push(problemHTML);
+          answerRoots.push({ root: digitalRoot(actualResult) });
+          generatedCount++;
       }
-      // Removed Max 7 digits validation here as it's covered above for as-digits-num1/2.
-      if (isNaN(numberOfProblems) || numberOfProblems < 1) {
-          problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (>= 1).</p>';
-          return;
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (answerRoots.length > 0) {
+          const rootKeyGridContainer = document.createElement('div');
+          rootKeyGridContainer.className = 'digital-root-check-grid-container';
+          rootKeyGridContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          answerRoots.forEach(item => { drGrid.innerHTML += `<div class="dr-cell">${item.root}</div>`; });
+          rootKeyGridContainer.appendChild(drGrid);
+          problemsContainer.appendChild(rootKeyGridContainer);
       }
-      if (numberOfProblems > 50) { // Adjust safety limit for grid display
-          problemsContainer.innerHTML = '<p class="error-message">Max 50 problems for this format. Please choose a smaller number.</p>';
-          return;
-      }
-      // Removed Digital Root validation as it's no longer an input for Add/Sub
-
-    // Helper to generate a random number
-    function getRandomNumber(numDigits) {
-        if (numDigits <= 0) return 0;
-        const min = Math.pow(10, numDigits - 1);
-        const max = Math.pow(10, numDigits) - 1;
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Addition & Subtraction Problems';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid';
-
-    const problemsHtmlArray = [];
-    const answerRoots = []; // To store digital roots of answers
-    let generatedCount = 0;
-    // Removed 'attempts' variable
-
-    while (generatedCount < numberOfProblems) { // Loop until numberOfProblems is met
-        let num1 = getRandomNumber(digits1);
-        let num2 = getRandomNumber(digits2);
-        const isAddition = Math.random() < 0.5;
-        let actualResult; 
-        let problemHTML;
-
-        if (isAddition) {
-            actualResult = num1 + num2;
-            problemHTML = `
-                <div class="arith-problem">
-                    <div class="operand-1">${num1}</div>
-                    <div class="operator-operand2">
-                        <span class="operator">+</span>
-                        <span class="operand-2">${num2}</span>
-                    </div>
-                    <div class="problem-line"></div>
-                    <div class="answer-space"></div>
-                </div>`;
-        } else { // Subtraction
-            if (num1 < num2) { // Ensure num1 is greater for standard layout
-                [num1, num2] = [num2, num1];
-            }
-            actualResult = num1 - num2;
-            problemHTML = `
-                <div class="arith-problem">
-                    <div class="operand-1">${num1}</div>
-                    <div class="operator-operand2">
-                        <span class="operator">&ndash;</span>
-                        <span class="operand-2">${num2}</span>
-                    </div>
-                    <div class="problem-line"></div>
-                    <div class="answer-space"></div>
-                </div>`;
-        }
-        
-        problemsHtmlArray.push(problemHTML);
-        answerRoots.push({ root: digitalRoot(actualResult) }); // Simplified
-        generatedCount++;
-    }
-
-    // No specific error/warning needed here for not meeting count, as we always generate numberOfProblems
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer); // Always append the grid container
-
-    // --- Add Digital Root Self-Check Grid ---
-    if (answerRoots.length > 0) {
-        const rootKeyGridContainer = document.createElement('div');
-        rootKeyGridContainer.className = 'digital-root-check-grid-container';
-        
-        rootKeyGridContainer.innerHTML = '<h4>Digital Root Self-Check Grid</h4>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid'; // This will be the actual grid
-
-        answerRoots.forEach(item => {
-            drGrid.innerHTML += `<div class="dr-cell">${item.root}</div>`;
-        });
-        rootKeyGridContainer.appendChild(drGrid);
-        problemsContainer.appendChild(rootKeyGridContainer);
-    }
-    
-    console.log(`Addition/Subtraction problems with DR key generated: ${generatedCount}`);
-}
+  }
 
   function generateMultiplicationDivisionProblems() {
-    console.log("Generating Multiplication/Division problems with digital root key...");
-    problemsContainer.innerHTML = ''; // Clear previous
-
-    // --- Get DOM elements for inputs ---
-    const digitsFactor1Input = document.getElementById('md-digits-factor1');
-    const digitsFactor2Input = document.getElementById('md-digits-factor2');
-    // const allowCarryMulInput = document.getElementById('md-allow-carry-multiplication'); // Not actively used
-
-    const digitsDivisorInput = document.getElementById('md-digits-divisor');
-    const digitsQuotientInput = document.getElementById('md-digits-quotient');
-    const noRemainderInput = document.getElementById('md-no-remainder'); // Still useful for clarity
-
-    const numberOfProblemsInput = document.getElementById('num-problems');
-
-    // --- Read input values ---
-    const digitsF1 = parseInt(digitsFactor1Input.value, 10);
-    const digitsF2 = parseInt(digitsFactor2Input.value, 10);
-
-    const digitsDiv = parseInt(digitsDivisorInput.value, 10);
-    const digitsQuo = parseInt(digitsQuotientInput.value, 10);
-    // const requireNoRemainder = noRemainderInput.checked; // Logic will always produce no remainder
-
-    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-    // --- Basic Validation ---
-    if (isNaN(digitsF1) || digitsF1 < 1 || digitsF1 > 4 || isNaN(digitsF2) || digitsF2 < 1 || digitsF2 > 4) {
-        problemsContainer.innerHTML = '<p class="error-message">Multiplication: Enter valid digit counts (1-4) for factors.</p>';
-        return;
-    }
-    if (isNaN(digitsDiv) || digitsDiv < 1 || digitsDiv > 4 || isNaN(digitsQuo) || digitsQuo < 1 || digitsQuo > 3) {
-        problemsContainer.innerHTML = '<p class="error-message">Division: Enter valid digit counts (Divisor: 1-4, Quotient: 1-3).</p>';
-        return;
-    }
-    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-        return;
-    }
-
-    // getRandomNumber helper (ensure it's accessible)
-    function getRandomNumber(numDigits) {
-        if (numDigits <= 0) return 1; 
-        const min = Math.pow(10, numDigits - 1);
-        const max = Math.pow(10, numDigits) - 1;
-        // Ensure min is at least 1 for single digit numbers (10^0 = 1)
-        // For numDigits=1, min=1, max=9. For numDigits=2, min=10, max=99.
-        if (min === 0 && numDigits === 1) return Math.floor(Math.random() * 9) + 1; // 1-9
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Multiplication & Division Problems';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid problem-list-grid'; 
-
-    const problemsHtmlArray = [];
-    const answerRoots = [];
-    let generatedCount = 0;
-
-    for (let i = 0; i < numberOfProblems; i++) {
-        let problemHTML = '';
-        let actualResult;
-        let problemType = '';
-
-        if (Math.random() < 0.5 || digitsDiv === 0 || digitsQuo === 0) { // Prioritize multiplication if division inputs are problematic (though validation should catch it)
-            problemType = "Multiplication";
-            const factor1 = getRandomNumber(digitsF1);
-            const factor2 = getRandomNumber(digitsF2);
-            actualResult = factor1 * factor2;
-            // New HTML for columnar multiplication
-            problemHTML = `
-                <div class="arith-problem multiplication-problem">
-                    <div class="operand-1">${factor1}</div>
-                    <div class="operator-operand2">
-                        <span class="operator">&times;</span>
-                        <span class="operand-2">${factor2}</span>
-                    </div>
-                    <div class="problem-line"></div>
-                    <div class="answer-space"></div>
-                </div>`;
-        } else { // Division
-            problemType = "Division";
-            let divisor = getRandomNumber(digitsDiv);
-            let quotient = getRandomNumber(digitsQuo);
-
-            // Avoid division by zero or by one if quotient is large, or too simple problems.
-            if (divisor === 0) divisor = 1; // Safeguard, though getRandomNumber(1+) prevents this
-            if (quotient === 0) quotient = 1; // Safeguard
-
-            // For very small divisors/quotients, result might not match digit expectations
-            // e.g. 1-digit divisor, 1-digit quotient => 1-digit dividend (e.g. 2 / 1 = 2)
-            // This is generally fine.
-
-            const dividend = divisor * quotient; 
-            actualResult = quotient; 
-            
-            // New HTML for the user-requested division format
-            problemHTML = `
-                <div class="arith-problem division-problem-user">
-                    <div class="dividend">${dividend}</div>
-                    <div class="divisor-container">
-                        <div class="divisor">${divisor}</div>
-                        <div class="answer-line"></div>
-                        <div class="answer-space"></div>
-                    </div>
-                </div>`;
-        }
-        
-        problemsHtmlArray.push(problemHTML); // Push the generated HTML (either columnar or linear wrapped)
-        answerRoots.push({ root: digitalRoot(actualResult) }); // Simplified for later grid display
-        generatedCount++;
-    }
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer);
-
-    // --- Add Digital Root Self-Check Grid ---
-    if (answerRoots.length > 0) {
-        const rootKeyGridContainer = document.createElement('div');
-        rootKeyGridContainer.className = 'digital-root-check-grid-container';
-        
-        let rootKeyTitleHTML = `<h4>Digital Root Self-Check Grid</h4>
-                                <p style="font-size:0.85em; margin-bottom:10px;">
-                                (Product DR for &times;, Quotient DR for &divide;)
-                                </p>`;
-        rootKeyGridContainer.innerHTML = rootKeyTitleHTML;
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        answerRoots.forEach(item => {
-            // item is { root: X }
-            drGrid.innerHTML += `<div class="dr-cell">${item.root}</div>`;
-        });
-        rootKeyGridContainer.appendChild(drGrid);
-        problemsContainer.appendChild(rootKeyGridContainer);
-    }
-    
-    console.log(`Multiplication/Division problems with DR key generated: ${generatedCount}`);
-}
-
-function generateRationalCanonicalProblems() {
-   console.log("Generating Canonical Rational Number problems with Answer Key...");
-   problemsContainer.innerHTML = ''; // Clear previous
-
-   // --- Get DOM elements for inputs ---
-   const maxValInput = document.getElementById('rc-max-val');
-   const ensureReducibleCheckbox = document.getElementById('rc-ensure-reducible');
-   const numberOfProblemsInput = document.getElementById('num-problems');
-
-   // --- Read input values ---
-   const maxVal = parseInt(maxValInput.value, 10);
-   const ensureReducible = ensureReducibleCheckbox.checked;
-   const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-   // --- Basic Validation ---
-   if (isNaN(maxVal) || maxVal < 2) {
-       problemsContainer.innerHTML = '<p class="error-message">Max value for numerator/denominator must be at least 2.</p>';
-       return;
-   }
-
-   if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-       problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-       return;
-   }
-
-   // Helper to get a random integer between min and max (inclusive)
-   function getRandomInt(min, max) {
-       return Math.floor(Math.random() * (max - min + 1)) + min;
-   }
-
-   const h3Title = document.createElement('h3');
-   h3Title.textContent = 'Simplify Fractions (to Canonical Form)';
-   problemsContainer.appendChild(h3Title);
-
-   const gridContainer = document.createElement('div');
-   gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // New class for specific styling if needed
-
-   const problemsHtmlArray = [];
-   const simplifiedAnswers = []; // For the answer key
-   let generatedCount = 0;
-   let generationAttempts = 0;
-   const MAX_ATTEMPTS_PER_PROBLEM = 50; // To prevent infinite loops
-
-   while (generatedCount < numberOfProblems && generationAttempts < numberOfProblems * MAX_ATTEMPTS_PER_PROBLEM) {
-       generationAttempts++;
-       let numerator = getRandomInt(1, maxVal);
-       let denominator = getRandomInt(1, maxVal); // Denominator can be 1 initially
-
-       // Ensure denominator is not 1 if numerator is also 1 (1/1 is trivial)
-       // and for more interesting problems, ensure denominator isn't 1 in general unless it's e.g. 5/1.
-       // A common case is d > 1.
-       if (denominator === 1 && numerator !== 1) {
-           // If X/1, it's already "simplified" to X.
-           // If ensureReducible is true, we want something like 6/2, not 6/1.
-           // So, if ensureReducible, try to get a denominator > 1.
-           if (ensureReducible) {
-                if (maxVal > 1) denominator = getRandomInt(2, maxVal);
-                else continue; // Cannot make it reducible if maxVal is 1
-           } else {
-               // Allow X/1 if not ensuring reducibility, though they are simple.
-           }
-       } else if (denominator === 1 && numerator === 1) { // Avoid 1/1
-           continue;
-       }
-        
-       if (denominator === 0) continue; // Should not happen with getRandomInt(1, maxVal)
-       if (numerator === 0 && denominator !== 0) { // 0/d simplifies to 0
-            // If ensureReducible, this might be too simple. Skip if ensureReducible.
-           if (ensureReducible) continue;
-       }
-
-
-       // Check for reducibility if required
-       if (ensureReducible) {
-           const commonDivisor = gcd(numerator, denominator);
-           // A fraction is reducible if gcd > 1.
-           // Also, it's not "interesting" if it's a whole number (e.g. 6/2=3) or if num is 0.
-           // We want fractions like 6/4, not 6/2 or 0/5.
-           if (commonDivisor <= 1 || denominator === 0 ) { 
-                continue; // Not reducible or invalid denominator
-           }
-           // If it is a whole number like 6/3 (gcd=3), it simplifies to 2/1.
-           // If ensureReducible is true, we prefer fractions that don't simplify to whole numbers.
-           if (numerator % denominator === 0 && denominator !== 1) { // It's a whole number like 4/2 or 6/3 but not X/1
-               continue; // Try for a non-whole number reducible fraction
-           }
-            // At this point, if ensureReducible, gcd(num,den) > 1 and it's not a whole number (unless it simplifies to X/1)
-       }
-        
-       // Ensure n/d != d/n for variety if they are not equal, simple swap to make num < den if preferred for initial display
-       // For simplification tasks, this isn't strictly necessary.
-
-       // Calculate simplified form and then the Control Sum
-       const commonDivisorForKey = gcd(numerator, denominator);
-       let sn = numerator / commonDivisorForKey; // simplified numerator
-       let sd = denominator / commonDivisorForKey; // simplified denominator
-
-       let controlSum;
-
-       if (sd === 0) { 
-           controlSum = NaN; // Error indicator
-       } else if (sn === 0) { // Fraction is 0 (e.g. 0/5)
-           // Remainder fraction is 0/sd. Control sum is 0 + sd.
-           controlSum = 0 + sd;
-       } else if (sd === 1) { // Simplified to a whole number (sn/1)
-           // Remainder fraction is 0/1. Control sum is 0 + 1.
-           controlSum = 1; 
-       } else if (sn < sd) { // Proper fraction (sn/sd)
-           // Remainder fraction is sn/sd. Control sum is sn + sd.
-           controlSum = sn + sd;
-       } else { // Improper fraction (sn/sd, sn >= sd)
-           // const wholePart = Math.floor(sn / sd); // Not needed for control sum
-           const remainderNum = sn % sd;
-           // Remainder fraction is remainderNum/sd. Control sum is remainderNum + sd.
-           // This covers cases like 6/3 -> remainderNum 0 -> control sum 0+3=3.
-           controlSum = remainderNum + sd;
-       }
-       simplifiedAnswers.push({ controlSum: controlSum });
-
-       // Format fraction problem (removed "Simplify:", added calculation space structure)
-       const problemHTML = `
-           <div class="fraction-problem-item">
-               <div class="problem-content">
-                   <span class="fraction">
-                       <span class="numerator">${numerator}</span>
-                       <span class="denominator">${denominator}</span>
-                   </span> =
-               </div>
-               <div class="calculation-space"></div>
-           </div>`;
-        
-       problemsHtmlArray.push(problemHTML);
-       generatedCount++;
-   }
-
-   if (generatedCount < numberOfProblems && ensureReducible) { // Only show warning if ensureReducible was on
-       const warningP = document.createElement('p');
-       warningP.className = 'warning-message';
-       warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems with the "Ensure Reducible" constraint. Try increasing Max Value or unchecking the option.`;
-       // Insert warning before the grid container if it exists, or just append
-       if (gridContainer.parentNode) {
-            problemsContainer.insertBefore(warningP, gridContainer);
-       } else {
-           problemsContainer.appendChild(warningP);
-       }
-   }
-
-   gridContainer.innerHTML = problemsHtmlArray.join('');
-   if (generatedCount > 0 || !ensureReducible) { // Only append grid if problems were made or reducibility wasn't required
-       problemsContainer.appendChild(gridContainer);
-   } else if (generatedCount === 0 && ensureReducible) {
-       // If ensureReducible was on and NO problems could be made, the warning message already covers it.
-       // We might not want to show an empty grid container.
-   }
-
-    // --- Add Control Sum Self-Check Grid ---
-    if (simplifiedAnswers.length > 0) {
-        const digitalRootContainer = document.createElement('div');
-        digitalRootContainer.className = 'digital-root-check-grid-container';
-        
-        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(For mixed numbers like A B/C, sum B+C. For proper fractions N/D, sum N+D. For whole numbers W, sum is 1. If fraction is 0 (0/D), sum is D.)</p>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        simplifiedAnswers.forEach(answer => {
-            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
-        });
-        digitalRootContainer.appendChild(drGrid);
-        problemsContainer.appendChild(digitalRootContainer);
-    }
-    
-   console.log(`Canonical Rational Number problems generated: ${generatedCount}`);
-}
-
-function generateRationalOperationsProblems() {
-    console.log("Generating Rational Operations problems with Control Sum key...");
-    problemsContainer.innerHTML = ''; // Clear previous
-
-    // --- Get DOM elements for inputs ---
-    // const numTermsInput = document.getElementById('ro-num-terms'); // Fixed to 2 for now
-    const maxValInput = document.getElementById('ro-max-val');
-    // const operationTypeInput = document.getElementById('ro-operation'); // Removed
-    const numberOfProblemsInput = document.getElementById('num-problems');
-
-    // --- Read input values ---
-    const maxVal = parseInt(maxValInput.value, 10);
-    // let operationType = operationTypeInput.value; // Removed, will always be mixed
-    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-    // --- Basic Validation ---
-    if (isNaN(maxVal) || maxVal < 1) {
-        problemsContainer.innerHTML = '<p class="error-message">Max value for N/D must be at least 1.</p>';
-        return;
-    }
-    // Removed maxVal > 50 constraint
-    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-        return;
-    }
-
-    function getRandomInt(min, max) { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Operations on Rational Numbers';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // Reuse existing grid style
-
-    const problemsHtmlArray = [];
-    const controlSumsArray = []; 
-    let generatedCount = 0;
-
-    for (let i = 0; i < numberOfProblems; i++) {
-        let n1 = getRandomInt(1, maxVal);
-        let d1 = getRandomInt(1, maxVal);
-        let n2 = getRandomInt(1, maxVal);
-        let d2 = getRandomInt(1, maxVal);
-
-        // Operations are now always mixed
-        const currentOperation = Math.random() < 0.5 ? 'add' : 'subtract';
-        
-        let resultN, resultD;
-        let opSymbol = '';
-
-        if (currentOperation === 'add') {
-            opSymbol = '+';
-            resultN = (n1 * d2) + (n2 * d1);
-            resultD = d1 * d2;
-        } else { // subtract
-            opSymbol = '&ndash;';
-            resultN = (n1 * d2) - (n2 * d1);
-            resultD = d1 * d2;
-        }
-
-        if (resultD === 0) { 
-            i--; continue; 
-        }
-        
-        const commonDivisor = gcd(resultN, resultD);
-        let finalN = resultN / commonDivisor;
-        let finalD = resultD / commonDivisor;
-
-        if (finalD < 0) {
-            finalN = -finalN;
-            finalD = -finalD;
-        }
-
-        let controlSum;
-        if (finalD === 0) { controlSum = NaN; }
-        else if (finalN === 0) { controlSum = 0 + finalD; }
-        else if (finalD === 1) { controlSum = 1; } 
-        else if (Math.abs(finalN) < finalD) { 
-            controlSum = Math.abs(finalN) + finalD;
-        } else { 
-            const remainderNum = Math.abs(finalN) % finalD;
-            controlSum = remainderNum + finalD;
-        }
-        controlSumsArray.push({ controlSum: controlSum });
-
-        const problemHTML = `
-            <div class="fraction-operation-item">
-                <div class="problem-content">
-                    <span class="fraction">
-                        <span class="numerator">${n1}</span>
-                        <span class="denominator">${d1}</span>
-                    </span>
-                    <span class="operation-symbol">${opSymbol}</span>
-                    <span class="fraction">
-                        <span class="numerator">${n2}</span>
-                        <span class="denominator">${d2}</span>
-                    </span> =
-                </div>
-                <div class="calculation-space"></div>
-            </div>`;
-        
-        problemsHtmlArray.push(problemHTML);
-        generatedCount++;
-    }
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer);
-    
-    if (controlSumsArray.length > 0) {
-        const digitalRootContainer = document.createElement('div');
-        digitalRootContainer.className = 'digital-root-check-grid-container';
-        
-        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        controlSumsArray.forEach(answer => {
-            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
-        });
-        digitalRootContainer.appendChild(drGrid);
-        problemsContainer.appendChild(digitalRootContainer);
-    }
-    
-    console.log(`Rational Operations problems generated: ${generatedCount}`);
-}
-
-function generateRationalMultDivProblems() {
-    console.log("Generating Rational Multiplication/Division problems with Control Sum key...");
-    problemsContainer.innerHTML = ''; // Clear previous
-
-    // --- Get DOM elements for inputs ---
-    const maxValInput = document.getElementById('rmd-max-val');
-    const avoidWholeNumsInput = document.getElementById('rmd-avoid-whole-nums');
-    const numberOfProblemsInput = document.getElementById('num-problems');
-
-    // --- Read input values ---
-    const maxVal = parseInt(maxValInput.value, 10);
-    const avoidWholeNums = avoidWholeNumsInput.checked;
-    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-    // --- Basic Validation ---
-    if (isNaN(maxVal) || maxVal < 1) {
-        problemsContainer.innerHTML = '<p class="error-message">Max value for N/D must be at least 1.</p>';
-        return;
-    }
-    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-        return;
-    }
-
-    function getRandomInt(min, max) { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Multiplication & Division of Rational Numbers';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid fraction-problem-grid'; // Reuse existing grid style
-
-    const problemsHtmlArray = [];
-    const controlSumsArray = []; 
-    let generatedCount = 0;
-    let attempts = 0;
-    const maxAttempts = numberOfProblems * 50; // Prevent infinite loops
-
-    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
-        attempts++;
-        let n1 = getRandomInt(1, maxVal);
-        let d1 = getRandomInt(1, maxVal);
-        let n2 = getRandomInt(1, maxVal);
-        let d2 = getRandomInt(1, maxVal);
-
-        // Operations are mixed multiplication and division
-        const currentOperation = Math.random() < 0.5 ? 'multiply' : 'divide';
-        
-        let resultN, resultD;
-        let opSymbol = '';
-
-        if (currentOperation === 'multiply') {
-            opSymbol = '&times;';
-            resultN = n1 * n2;
-            resultD = d1 * d2;
-        } else { // divide
-            opSymbol = '&divide;';
-            // (n1/d1) ÷ (n2/d2) = (n1/d1) × (d2/n2) = (n1*d2)/(d1*n2)
-            if (n2 === 0) continue; // Avoid division by zero
-            resultN = n1 * d2;
-            resultD = d1 * n2;
-        }
-
-        if (resultD === 0) { 
-            continue; 
-        }
-        
-        const commonDivisor = gcd(resultN, resultD);
-        let finalN = resultN / commonDivisor;
-        let finalD = resultD / commonDivisor;
-
-        // Handle negative denominators
-        if (finalD < 0) {
-            finalN = -finalN;
-            finalD = -finalD;
-        }
-
-        // If avoiding whole numbers, skip if result is a whole number
-        if (avoidWholeNums && finalD === 1) {
-            continue;
-        }
-
-        let controlSum;
-        if (finalD === 0) { 
-            controlSum = NaN; 
-        } else if (finalN === 0) { 
-            controlSum = 0 + finalD; 
-        } else if (finalD === 1) { 
-            controlSum = 1; 
-        } else if (Math.abs(finalN) < finalD) { 
-            controlSum = Math.abs(finalN) + finalD;
-        } else { 
-            const remainderNum = Math.abs(finalN) % finalD;
-            controlSum = remainderNum + finalD;
-        }
-        controlSumsArray.push({ controlSum: controlSum });
-
-        const problemHTML = `
-            <div class="fraction-operation-item">
-                <div class="problem-content">
-                    <span class="fraction">
-                        <span class="numerator">${n1}</span>
-                        <span class="denominator">${d1}</span>
-                    </span>
-                    <span class="operation-symbol">${opSymbol}</span>
-                    <span class="fraction">
-                        <span class="numerator">${n2}</span>
-                        <span class="denominator">${d2}</span>
-                    </span> =
-                </div>
-                <div class="calculation-space"></div>
-            </div>`;
-        
-        problemsHtmlArray.push(problemHTML);
-        generatedCount++;
-    }
-
-    if (generatedCount < numberOfProblems && avoidWholeNums) {
-        const warningP = document.createElement('p');
-        warningP.className = 'warning-message';
-        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems with the "Avoid Whole Numbers" constraint. Try increasing Max Value or unchecking the option.`;
-        problemsContainer.appendChild(warningP);
-    }
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer);
-    
-    if (controlSumsArray.length > 0) {
-        const digitalRootContainer = document.createElement('div');
-        digitalRootContainer.className = 'digital-root-check-grid-container';
-        
-        digitalRootContainer.innerHTML = '<h4>Control Sum Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Simplify result to A B/C or N/D. Sum B+C or N+D. For whole numbers W, sum is 1. For 0/D, sum is D. For negative results, use absolute value of numerator for sum, e.g. -2/5 means sum is 2+5=7)</p>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        controlSumsArray.forEach(answer => {
-            drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`;
-        });
-        digitalRootContainer.appendChild(drGrid);
-        problemsContainer.appendChild(digitalRootContainer);
-    }
-    
-    console.log(`Rational Multiplication/Division problems generated: ${generatedCount}`);
-}
-
-function generateProportionProblems() {
-    console.log("Generating Proportion problems with cross-multiplication self-check...");
-    problemsContainer.innerHTML = ''; // Clear previous
-
-    // --- Get DOM elements for inputs ---
-    const maxBaseInput = document.getElementById('prop-max-base');
-    const maxMultiplierInput = document.getElementById('prop-max-multiplier');
-    const simplifyRatiosInput = document.getElementById('prop-simplify-ratios');
-    const numberOfProblemsInput = document.getElementById('num-problems');
-
-    // --- Read input values ---
-    const maxBase = parseInt(maxBaseInput.value, 10);
-    const maxMultiplier = parseInt(maxMultiplierInput.value, 10);
-    const simplifyRatios = simplifyRatiosInput.checked;
-    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-    // --- Basic Validation ---
-    if (isNaN(maxBase) || maxBase < 1 || maxBase > 15) {
-        problemsContainer.innerHTML = '<p class="error-message">Max value for base ratio must be between 1-15.</p>';
-        return;
-    }
-    if (isNaN(maxMultiplier) || maxMultiplier < 2 || maxMultiplier > 12) {
-        problemsContainer.innerHTML = '<p class="error-message">Max multiplier must be between 2-12.</p>';
-        return;
-    }
-    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-        return;
-    }
-
-    function getRandomInt(min, max) { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Proportion Problems';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid proportion-problem-grid';
-
-    const problemsHtmlArray = [];
-    const digitalRoots = []; 
-    let generatedCount = 0;
-    let attempts = 0;
-    const maxAttempts = numberOfProblems * 100; // Prevent infinite loops
-
-    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
-        attempts++;
-
-        // Step 1: Create a Base Ratio (a/b)
-        let a = getRandomInt(1, maxBase);
-        let b = getRandomInt(1, maxBase);
-
-        // Ensure simplified ratio if required
-        if (simplifyRatios) {
-            const baseGcd = gcd(a, b);
-            if (baseGcd > 1) {
-                a = a / baseGcd;
-                b = b / baseGcd;
-            }
-        }
-
-        // Avoid trivial ratios like 1/1
-        if (a === b && a === 1) {
-            continue;
-        }
-
-        // Step 2: Generate a Multiplier (k)
-        const k = getRandomInt(2, maxMultiplier);
-
-        // Step 3: Calculate the Second, Equivalent Ratio (c/d)
-        const c = a * k;
-        const d = b * k;
-
-        // Now we have the complete proportion: a/b = c/d
-
-        // Step 4: Create the Problem by Hiding One Value
-        const positions = ['a', 'b', 'c', 'd'];
-        const hiddenPosition = positions[Math.floor(Math.random() * 4)];
-        
-        let displayA = a, displayB = b, displayC = c, displayD = d;
-        let solution = 0;
-        let crossProduct1, crossProduct2;
-
-        switch (hiddenPosition) {
-            case 'a':
-                solution = a;
-                displayA = 'x';
-                crossProduct1 = `x × ${d}`;
-                crossProduct2 = `${b} × ${c}`;
-                break;
-            case 'b':
-                solution = b;
-                displayB = 'x';
-                crossProduct1 = `${a} × ${d}`;
-                crossProduct2 = `x × ${c}`;
-                break;
-            case 'c':
-                solution = c;
-                displayC = 'x';
-                crossProduct1 = `${a} × ${d}`;
-                crossProduct2 = `${b} × x`;
-                break;
-            case 'd':
-                solution = d;
-                displayD = 'x';
-                crossProduct1 = `${a} × x`;
-                crossProduct2 = `${b} × ${c}`;
-                break;
-        }
-
-        // Calculate digital root of the solution for self-check
-        const solutionDigitalRoot = digitalRoot(solution);
-        digitalRoots.push({ 
-            digitalRoot: solutionDigitalRoot
-        });
-
-        const problemHTML = `
-            <div class="proportion-problem-item">
-                <div class="problem-content">
-                    <div class="proportion-equation">
-                        <div class="proportion">
-                            <span class="fraction">
-                                <span class="numerator">${displayA}</span>
-                                <span class="denominator">${displayB}</span>
-                            </span>
-                            <span class="equals">=</span>
-                            <span class="fraction">
-                                <span class="numerator">${displayC}</span>
-                                <span class="denominator">${displayD}</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        
-        problemsHtmlArray.push(problemHTML);
-        generatedCount++;
-    }
-
-    if (generatedCount < numberOfProblems) {
-        const warningP = document.createElement('p');
-        warningP.className = 'warning-message';
-        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems. Try adjusting the parameters.`;
-        problemsContainer.appendChild(warningP);
-    }
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer);
-    
-    // Add Digital Root Self-Check Grid
-    if (digitalRoots.length > 0) {
-        const digitalRootContainer = document.createElement('div');
-        digitalRootContainer.className = 'digital-root-check-grid-container';
-        
-        digitalRootContainer.innerHTML = '<h4>Digital Root Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(Find the digital root of your answer x and compare to the grid below)</p>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        digitalRoots.forEach(answer => {
-            drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`;
-        });
-        digitalRootContainer.appendChild(drGrid);
-        problemsContainer.appendChild(digitalRootContainer);
-    }
-    
-    console.log(`Proportion problems generated: ${generatedCount}`);
-}
-
-function generateDecimalRationalProblems() {
-    console.log("Generating Decimal/Rational conversion problems with digital root self-check...");
-    problemsContainer.innerHTML = ''; // Clear previous
-
-    // --- Get DOM elements for inputs ---
-    const problemMixInput = document.getElementById('dr-problem-mix');
-    const decimalPlacesInput = document.getElementById('dr-decimal-places');
-    const terminatingOnlyInput = document.getElementById('dr-terminating-only');
-    const numberOfProblemsInput = document.getElementById('num-problems');
-
-    // --- Read input values ---
-    const problemMix = problemMixInput.value;
-    const maxDecimalPlaces = parseInt(decimalPlacesInput.value, 10);
-    const terminatingOnly = terminatingOnlyInput.checked;
-    const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
-
-    // --- Basic Validation ---
-    if (isNaN(maxDecimalPlaces) || maxDecimalPlaces < 1 || maxDecimalPlaces > 4) {
-        problemsContainer.innerHTML = '<p class="error-message">Max decimal places must be between 1-4.</p>';
-        return;
-    }
-    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
-        problemsContainer.innerHTML = '<p class="error-message">Please enter a valid Number of Problems (1-50).</p>';
-        return;
-    }
-
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    // Valid denominators for terminating decimals
-    const terminatingDenominators = [2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 100, 125, 200, 250, 400, 500, 1000];
-
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = 'Decimal/Rational Conversion Problems';
-    problemsContainer.appendChild(h3Title);
-
-    const gridContainer = document.createElement('div');
-    gridContainer.className = 'arithmetic-grid decimal-rational-problem-grid';
-
-    const problemsHtmlArray = [];
-    const digitalRoots = []; 
-    let generatedCount = 0;
-    let attempts = 0;
-    const maxAttempts = numberOfProblems * 100;
-
-    while (generatedCount < numberOfProblems && attempts < maxAttempts) {
-        attempts++;
-
-        let problemType = '';
-        if (problemMix === 'mixed') {
-            problemType = Math.random() < 0.5 ? 'fraction-to-decimal' : 'decimal-to-fraction';
-        } else {
-            problemType = problemMix;
-        }
-
-        let problemHTML = '';
-        let checkNumber = 0;
-
-        if (problemType === 'fraction-to-decimal') {
-            // Generate fraction that converts to terminating decimal
-            let denominator, numerator;
-            
-            if (terminatingOnly) {
-                // Use valid denominators for terminating decimals
-                denominator = terminatingDenominators[getRandomInt(0, terminatingDenominators.length - 1)];
-                numerator = getRandomInt(1, denominator - 1);
-            } else {
-                denominator = getRandomInt(2, 20);
-                numerator = getRandomInt(1, denominator - 1);
-            }
-
-            // Ensure fraction is in lowest terms
-            const commonFactor = gcd(numerator, denominator);
-            numerator = numerator / commonFactor;
-            denominator = denominator / commonFactor;
-
-            // Calculate decimal answer
-            const decimalAnswer = numerator / denominator;
-            
-            // Check if it's a terminating decimal within our precision
-            const decimalStr = decimalAnswer.toString();
-            const decimalPlaces = decimalStr.includes('.') ? decimalStr.split('.')[1].length : 0;
-            
-            if (terminatingOnly && (decimalPlaces > maxDecimalPlaces || !isFinite(decimalAnswer))) {
-                continue;
-            }
-
-            // Calculate check number (digital root of decimal without decimal point)
-            const decimalWithoutPoint = decimalStr.replace('.', '');
-            checkNumber = digitalRoot(parseInt(decimalWithoutPoint, 10));
-
-            problemHTML = `
-                <div class="decimal-rational-problem-item">
-                    <div class="problem-content">
-                        <div class="fraction-display">
-                            <span class="fraction">
-                                <span class="numerator">${numerator}</span>
-                                <span class="denominator">${denominator}</span>
-                            </span>
-                            <span class="equals"> = </span>
-                            <div class="answer-space"></div>
-                        </div>
-                    </div>
-                </div>`;
-
-        } else { // decimal-to-fraction
-            // Generate a terminating decimal
-            let decimalAnswer, numerator, denominator;
-            
-            if (terminatingOnly) {
-                // Generate decimal with specific number of places
-                const places = getRandomInt(1, maxDecimalPlaces);
-                const multiplier = Math.pow(10, places);
-                numerator = getRandomInt(1, multiplier - 1);
-                denominator = multiplier;
-                decimalAnswer = numerator / denominator;
-            } else {
-                // Generate any reasonable decimal
-                decimalAnswer = getRandomInt(1, 999) / Math.pow(10, getRandomInt(1, maxDecimalPlaces));
-                const decimalStr = decimalAnswer.toString();
-                const parts = decimalStr.split('.');
-                numerator = parseInt(parts[0] + parts[1], 10);
-                denominator = Math.pow(10, parts[1].length);
-            }
-
-            // Simplify the fraction
-            const commonFactor = gcd(numerator, denominator);
-            numerator = numerator / commonFactor;
-            denominator = denominator / commonFactor;
-
-            // Calculate check number (digital root of numerator + denominator)
-            checkNumber = digitalRoot(numerator + denominator);
-
-            problemHTML = `
-                <div class="decimal-rational-problem-item">
-                    <div class="problem-content">
-                        <div class="decimal-display">
-                            <span class="decimal-number">${decimalAnswer}</span>
-                            <span class="equals"> = </span>
-                            <div class="answer-space"></div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
-        digitalRoots.push({ digitalRoot: checkNumber });
-        problemsHtmlArray.push(problemHTML);
-        generatedCount++;
-    }
-
-    if (generatedCount < numberOfProblems) {
-        const warningP = document.createElement('p');
-        warningP.className = 'warning-message';
-        warningP.textContent = `Note: Could only generate ${generatedCount} of ${numberOfProblems} requested problems. Try adjusting the parameters.`;
-        problemsContainer.appendChild(warningP);
-    }
-
-    gridContainer.innerHTML = problemsHtmlArray.join('');
-    problemsContainer.appendChild(gridContainer);
-    
-    // Add Digital Root Self-Check Grid
-    if (digitalRoots.length > 0) {
-        const digitalRootContainer = document.createElement('div');
-        digitalRootContainer.className = 'digital-root-check-grid-container';
-        
-        digitalRootContainer.innerHTML = '<h4>Digital Root Self-Check Grid</h4><p style="font-size:0.85em; margin-bottom:10px;">(For decimal answers: ignore decimal point, find digital root. For fraction answers: add numerator + denominator, find digital root)</p>';
-
-        const drGrid = document.createElement('div');
-        drGrid.className = 'digital-root-check-grid';
-
-        digitalRoots.forEach(answer => {
-            drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`;
-        });
-        digitalRootContainer.appendChild(drGrid);
-        problemsContainer.appendChild(digitalRootContainer);
-    }
-    
-    console.log(`Decimal/Rational conversion problems generated: ${generatedCount}`);
-}
+      const t = translations.script.multiplication_division;
+      problemsContainer.innerHTML = '';
+      const digitsFactor1Input = document.getElementById('md-digits-factor1');
+      const digitsFactor2Input = document.getElementById('md-digits-factor2');
+      const digitsDivisorInput = document.getElementById('md-digits-divisor');
+      const digitsQuotientInput = document.getElementById('md-digits-quotient');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const digitsF1 = parseInt(digitsFactor1Input.value, 10);
+      const digitsF2 = parseInt(digitsFactor2Input.value, 10);
+      const digitsDiv = parseInt(digitsDivisorInput.value, 10);
+      const digitsQuo = parseInt(digitsQuotientInput.value, 10);
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(digitsF1) || digitsF1 < 1 || digitsF1 > 4 || isNaN(digitsF2) || digitsF2 < 1 || digitsF2 > 4) { problemsContainer.innerHTML = `<p class="error-message">${t.error_mult_digits}</p>`; return; }
+      if (isNaN(digitsDiv) || digitsDiv < 1 || digitsDiv > 4 || isNaN(digitsQuo) || digitsQuo < 1 || digitsQuo > 3) { problemsContainer.innerHTML = `<p class="error-message">${t.error_div_digits}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomNumber(numDigits) { if (numDigits <= 0) return 1; const min = Math.pow(10, numDigits - 1); const max = Math.pow(10, numDigits) - 1; if (min === 0 && numDigits === 1) return Math.floor(Math.random() * 9) + 1; return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid problem-list-grid';
+      const problemsHtmlArray = [];
+      const answerRoots = [];
+      let generatedCount = 0;
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let problemHTML;
+          let actualResult;
+          if (Math.random() < 0.5 || digitsDiv === 0 || digitsQuo === 0) {
+              const factor1 = getRandomNumber(digitsF1);
+              const factor2 = getRandomNumber(digitsF2);
+              actualResult = factor1 * factor2;
+              problemHTML = `<div class="arith-problem multiplication-problem"><div class="operand-1">${factor1}</div><div class="operator-operand2"><span class="operator">&times;</span><span class="operand-2">${factor2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`;
+          } else {
+              let divisor = getRandomNumber(digitsDiv);
+              let quotient = getRandomNumber(digitsQuo);
+              if (divisor === 0) divisor = 1;
+              if (quotient === 0) quotient = 1;
+              const dividend = divisor * quotient;
+              actualResult = quotient;
+              problemHTML = `<div class="arith-problem division-problem-user"><div class="dividend">${dividend}</div><div class="divisor-container"><div class="divisor">${divisor}</div><div class="answer-line"></div><div class="answer-space"></div></div></div>`;
+          }
+          problemsHtmlArray.push(problemHTML);
+          answerRoots.push({ root: digitalRoot(actualResult) });
+          generatedCount++;
+      }
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (answerRoots.length > 0) {
+          const rootKeyGridContainer = document.createElement('div');
+          rootKeyGridContainer.className = 'digital-root-check-grid-container';
+          let rootKeyTitleHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          rootKeyGridContainer.innerHTML = rootKeyTitleHTML;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          answerRoots.forEach(item => { drGrid.innerHTML += `<div class="dr-cell">${item.root}</div>`; });
+          rootKeyGridContainer.appendChild(drGrid);
+          problemsContainer.appendChild(rootKeyGridContainer);
+      }
+  }
+
+  function generateRationalCanonicalProblems() {
+      const t = translations.script.rational_canonical;
+      problemsContainer.innerHTML = '';
+      const maxValInput = document.getElementById('rc-max-val');
+      const ensureReducibleCheckbox = document.getElementById('rc-ensure-reducible');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const maxVal = parseInt(maxValInput.value, 10);
+      const ensureReducible = ensureReducibleCheckbox.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxVal) || maxVal < 2) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid fraction-problem-grid';
+      const problemsHtmlArray = [];
+      const simplifiedAnswers = [];
+      let generatedCount = 0;
+      let generationAttempts = 0;
+      const MAX_ATTEMPTS_PER_PROBLEM = 50;
+
+      while (generatedCount < numberOfProblems && generationAttempts < numberOfProblems * MAX_ATTEMPTS_PER_PROBLEM) {
+          generationAttempts++;
+          let numerator = getRandomInt(1, maxVal);
+          let denominator = getRandomInt(1, maxVal);
+          if (denominator === 1 && numerator !== 1) { if (ensureReducible) { if (maxVal > 1) denominator = getRandomInt(2, maxVal); else continue; } }
+          else if (denominator === 1 && numerator === 1) { continue; }
+          if (denominator === 0) continue;
+          if (numerator === 0 && denominator !== 0) { if (ensureReducible) continue; }
+
+          if (ensureReducible) {
+              const commonDivisor = gcd(numerator, denominator);
+              if (commonDivisor <= 1 || denominator === 0) { continue; }
+              if (numerator % denominator === 0 && denominator !== 1) { continue; }
+          }
+
+          const commonDivisorForKey = gcd(numerator, denominator);
+          let sn = numerator / commonDivisorForKey;
+          let sd = denominator / commonDivisorForKey;
+          let controlSum;
+          if (sd === 0) { controlSum = NaN; }
+          else if (sn === 0) { controlSum = 0 + sd; }
+          else if (sd === 1) { controlSum = 1; }
+          else if (sn < sd) { controlSum = sn + sd; }
+          else { const remainderNum = sn % sd; controlSum = remainderNum + sd; }
+          simplifiedAnswers.push({ controlSum: controlSum });
+
+          const problemHTML = `<div class="fraction-problem-item"><div class="problem-content"><span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span> =</div><div class="calculation-space"></div></div>`;
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      if (generatedCount < numberOfProblems && ensureReducible) {
+          const warningP = document.createElement('p');
+          warningP.className = 'warning-message';
+          const warningText = t.warning_generation.replace('{generatedCount}', generatedCount).replace('{numberOfProblems}', numberOfProblems);
+          warningP.textContent = warningText;
+          if (gridContainer.parentNode) { problemsContainer.insertBefore(warningP, gridContainer); }
+          else { problemsContainer.appendChild(warningP); }
+      }
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      if (generatedCount > 0 || !ensureReducible) { problemsContainer.appendChild(gridContainer); }
+
+      if (simplifiedAnswers.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          simplifiedAnswers.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
+  function generateRationalOperationsProblems() {
+      const t = translations.script.rational_operations;
+      problemsContainer.innerHTML = '';
+      const maxValInput = document.getElementById('ro-max-val');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const maxVal = parseInt(maxValInput.value, 10);
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxVal) || maxVal < 1) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid fraction-problem-grid';
+      const problemsHtmlArray = [];
+      const controlSumsArray = [];
+      let generatedCount = 0;
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let n1 = getRandomInt(1, maxVal);
+          let d1 = getRandomInt(1, maxVal);
+          let n2 = getRandomInt(1, maxVal);
+          let d2 = getRandomInt(1, maxVal);
+          const currentOperation = Math.random() < 0.5 ? 'add' : 'subtract';
+          let resultN, resultD, opSymbol;
+
+          if (currentOperation === 'add') { opSymbol = '+'; resultN = (n1 * d2) + (n2 * d1); resultD = d1 * d2; }
+          else { opSymbol = '&ndash;'; resultN = (n1 * d2) - (n2 * d1); resultD = d1 * d2; }
+
+          if (resultD === 0) { i--; continue; }
+
+          const commonDivisor = gcd(resultN, resultD);
+          let finalN = resultN / commonDivisor;
+          let finalD = resultD / commonDivisor;
+          if (finalD < 0) { finalN = -finalN; finalD = -finalD; }
+
+          let controlSum;
+          if (finalD === 0) { controlSum = NaN; }
+          else if (finalN === 0) { controlSum = 0 + finalD; }
+          else if (finalD === 1) { controlSum = 1; }
+          else if (Math.abs(finalN) < finalD) { controlSum = Math.abs(finalN) + finalD; }
+          else { const remainderNum = Math.abs(finalN) % finalD; controlSum = remainderNum + finalD; }
+          controlSumsArray.push({ controlSum: controlSum });
+
+          const problemHTML = `<div class="fraction-operation-item"><div class="problem-content"><span class="fraction"><span class="numerator">${n1}</span><span class="denominator">${d1}</span></span><span class="operation-symbol">${opSymbol}</span><span class="fraction"><span class="numerator">${n2}</span><span class="denominator">${d2}</span></span> =</div><div class="calculation-space"></div></div>`;
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (controlSumsArray.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          controlSumsArray.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
+  function generateRationalMultDivProblems() {
+      const t = translations.script.rational_mult_div;
+      problemsContainer.innerHTML = '';
+      const maxValInput = document.getElementById('rmd-max-val');
+      const avoidWholeNumsInput = document.getElementById('rmd-avoid-whole-nums');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const maxVal = parseInt(maxValInput.value, 10);
+      const avoidWholeNums = avoidWholeNumsInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxVal) || maxVal < 1) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid fraction-problem-grid';
+      const problemsHtmlArray = [];
+      const controlSumsArray = [];
+      let generatedCount = 0;
+      let attempts = 0;
+      const maxAttempts = numberOfProblems * 50;
+
+      while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+          attempts++;
+          let n1 = getRandomInt(1, maxVal);
+          let d1 = getRandomInt(1, maxVal);
+          let n2 = getRandomInt(1, maxVal);
+          let d2 = getRandomInt(1, maxVal);
+          const currentOperation = Math.random() < 0.5 ? 'multiply' : 'divide';
+          let resultN, resultD, opSymbol;
+
+          if (currentOperation === 'multiply') { opSymbol = '&times;'; resultN = n1 * n2; resultD = d1 * d2; }
+          else { opSymbol = '&divide;'; if (n2 === 0) continue; resultN = n1 * d2; resultD = d1 * n2; }
+
+          if (resultD === 0) { continue; }
+
+          const commonDivisor = gcd(resultN, resultD);
+          let finalN = resultN / commonDivisor;
+          let finalD = resultD / commonDivisor;
+          if (finalD < 0) { finalN = -finalN; finalD = -finalD; }
+          if (avoidWholeNums && finalD === 1) { continue; }
+
+          let controlSum;
+          if (finalD === 0) { controlSum = NaN; }
+          else if (finalN === 0) { controlSum = 0 + finalD; }
+          else if (finalD === 1) { controlSum = 1; }
+          else if (Math.abs(finalN) < finalD) { controlSum = Math.abs(finalN) + finalD; }
+          else { const remainderNum = Math.abs(finalN) % finalD; controlSum = remainderNum + finalD; }
+          controlSumsArray.push({ controlSum: controlSum });
+
+          const problemHTML = `<div class="fraction-operation-item"><div class="problem-content"><span class="fraction"><span class="numerator">${n1}</span><span class="denominator">${d1}</span></span><span class="operation-symbol">${opSymbol}</span><span class="fraction"><span class="numerator">${n2}</span><span class="denominator">${d2}</span></span> =</div><div class="calculation-space"></div></div>`;
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      if (generatedCount < numberOfProblems && avoidWholeNums) {
+          const warningP = document.createElement('p');
+          warningP.className = 'warning-message';
+          const warningText = t.warning_generation.replace('{generatedCount}', generatedCount).replace('{numberOfProblems}', numberOfProblems);
+          warningP.textContent = warningText;
+          problemsContainer.appendChild(warningP);
+      }
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (controlSumsArray.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          controlSumsArray.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${isNaN(answer.controlSum) ? "Err" : answer.controlSum}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
+  function generateProportionProblems() {
+      const t = translations.script.proportion;
+      problemsContainer.innerHTML = '';
+      const maxBaseInput = document.getElementById('prop-max-base');
+      const maxMultiplierInput = document.getElementById('prop-max-multiplier');
+      const simplifyRatiosInput = document.getElementById('prop-simplify-ratios');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const maxBase = parseInt(maxBaseInput.value, 10);
+      const maxMultiplier = parseInt(maxMultiplierInput.value, 10);
+      const simplifyRatios = simplifyRatiosInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxBase) || maxBase < 1 || maxBase > 15) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_base}</p>`; return; }
+      if (isNaN(maxMultiplier) || maxMultiplier < 2 || maxMultiplier > 12) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_multiplier}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid proportion-problem-grid';
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+      let generatedCount = 0;
+      let attempts = 0;
+      const maxAttempts = numberOfProblems * 100;
+
+      while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+          attempts++;
+          let a = getRandomInt(1, maxBase);
+          let b = getRandomInt(1, maxBase);
+          if (simplifyRatios) { const baseGcd = gcd(a, b); if (baseGcd > 1) { a = a / baseGcd; b = b / baseGcd; } }
+          if (a === b && a === 1) { continue; }
+          const k = getRandomInt(2, maxMultiplier);
+          const c = a * k;
+          const d = b * k;
+          const positions = ['a', 'b', 'c', 'd'];
+          const hiddenPosition = positions[Math.floor(Math.random() * 4)];
+          let displayA = a, displayB = b, displayC = c, displayD = d;
+          let solution = 0;
+          switch (hiddenPosition) {
+              case 'a': solution = a; displayA = 'x'; break;
+              case 'b': solution = b; displayB = 'x'; break;
+              case 'c': solution = c; displayC = 'x'; break;
+              case 'd': solution = d; displayD = 'x'; break;
+          }
+          const solutionDigitalRoot = digitalRoot(solution);
+          digitalRoots.push({ digitalRoot: solutionDigitalRoot });
+          const problemHTML = `<div class="proportion-problem-item"><div class="problem-content"><div class="proportion-equation"><div class="proportion"><span class="fraction"><span class="numerator">${displayA}</span><span class="denominator">${displayB}</span></span><span class="equals">=</span><span class="fraction"><span class="numerator">${displayC}</span><span class="denominator">${displayD}</span></span></div></div></div></div>`;
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      if (generatedCount < numberOfProblems) {
+          const warningP = document.createElement('p');
+          warningP.className = 'warning-message';
+          const warningText = t.warning_generation.replace('{generatedCount}', generatedCount).replace('{numberOfProblems}', numberOfProblems);
+          warningP.textContent = warningText;
+          problemsContainer.appendChild(warningP);
+      }
+
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
+  function generateDecimalRationalProblems() {
+      const t = translations.script.decimal_rational;
+      problemsContainer.innerHTML = '';
+      const problemMixInput = document.getElementById('dr-problem-mix');
+      const decimalPlacesInput = document.getElementById('dr-decimal-places');
+      const terminatingOnlyInput = document.getElementById('dr-terminating-only');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const problemMix = problemMixInput.value;
+      const maxDecimalPlaces = parseInt(decimalPlacesInput.value, 10);
+      const terminatingOnly = terminatingOnlyInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxDecimalPlaces) || maxDecimalPlaces < 1 || maxDecimalPlaces > 4) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_decimal_places}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+      const terminatingDenominators = [2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 100, 125, 200, 250, 400, 500, 1000];
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid decimal-rational-problem-grid';
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+      let generatedCount = 0;
+      let attempts = 0;
+      const maxAttempts = numberOfProblems * 100;
+
+      while (generatedCount < numberOfProblems && attempts < maxAttempts) {
+          attempts++;
+          let problemType = (problemMix === 'mixed') ? (Math.random() < 0.5 ? 'fraction-to-decimal' : 'decimal-to-fraction') : problemMix;
+          let problemHTML = '';
+          let checkNumber = 0;
+
+          if (problemType === 'fraction-to-decimal') {
+              let denominator, numerator;
+              if (terminatingOnly) { denominator = terminatingDenominators[getRandomInt(0, terminatingDenominators.length - 1)]; numerator = getRandomInt(1, denominator - 1); }
+              else { denominator = getRandomInt(2, 20); numerator = getRandomInt(1, denominator - 1); }
+              const commonFactor = gcd(numerator, denominator);
+              numerator /= commonFactor;
+              denominator /= commonFactor;
+              const decimalAnswer = numerator / denominator;
+              const decimalStr = decimalAnswer.toString();
+              const decimalPlaces = decimalStr.includes('.') ? decimalStr.split('.')[1].length : 0;
+              if (terminatingOnly && (decimalPlaces > maxDecimalPlaces || !isFinite(decimalAnswer))) { continue; }
+              const decimalWithoutPoint = decimalStr.replace('.', '');
+              checkNumber = digitalRoot(parseInt(decimalWithoutPoint, 10));
+              problemHTML = `<div class="decimal-rational-problem-item"><div class="problem-content"><div class="fraction-display"><span class="fraction"><span class="numerator">${numerator}</span><span class="denominator">${denominator}</span></span><span class="equals"> = </span><div class="answer-space"></div></div></div></div>`;
+          } else {
+              let decimalAnswer, numerator, denominator;
+              if (terminatingOnly) { const places = getRandomInt(1, maxDecimalPlaces); const multiplier = Math.pow(10, places); numerator = getRandomInt(1, multiplier - 1); denominator = multiplier; decimalAnswer = numerator / denominator; }
+              else { decimalAnswer = getRandomInt(1, 999) / Math.pow(10, getRandomInt(1, maxDecimalPlaces)); const decimalStr = decimalAnswer.toString(); const parts = decimalStr.split('.'); numerator = parseInt(parts[0] + parts[1], 10); denominator = Math.pow(10, parts[1].length); }
+              const commonFactor = gcd(numerator, denominator);
+              numerator /= commonFactor;
+              denominator /= commonFactor;
+              checkNumber = digitalRoot(numerator + denominator);
+              problemHTML = `<div class="decimal-rational-problem-item"><div class="problem-content"><div class="decimal-display"><span class="decimal-number">${decimalAnswer}</span><span class="equals"> = </span><div class="answer-space"></div></div></div></div>`;
+          }
+          digitalRoots.push({ digitalRoot: checkNumber });
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      if (generatedCount < numberOfProblems) {
+          const warningP = document.createElement('p');
+          warningP.className = 'warning-message';
+          const warningText = t.warning_generation.replace('{generatedCount}', generatedCount).replace('{numberOfProblems}', numberOfProblems);
+          warningP.textContent = warningText;
+          problemsContainer.appendChild(warningP);
+      }
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
 
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
     const newTopic = card.dataset.topic;
-    
-    if (newTopic === currentTopic) return; // Already selected
-    
-    // Remove selected class from all cards
+    if (newTopic === currentTopic) return;
     topicCards.forEach(c => c.classList.remove("selected"));
-    
-    // Add selected class to clicked card
     card.classList.add("selected");
-    
-    // Update current topic
     currentTopic = newTopic;
-    console.log("Topic changed to:", currentTopic);
-    
-    // Clear previous topic-specific controls and problems
     topicSpecificControlsContainer.innerHTML = "";
     problemsContainer.innerHTML = "";
-    
-    // Render new controls based on selected topic
-    switch (currentTopic) {
-      case "multiplication-table":
-        renderMultiplicationTableControls();
-        break;
-      case "addition-subtraction":
-        renderAdditionSubtractionControls();
-        break;
-      case "multiplication-division":
-        renderMultiplicationDivisionControls();
-        break;
-      case "rational-canonical":
-        renderRationalCanonicalControls();
-        break;
-      case "rational-operations":
-        renderRationalOperationsControls();
-        break;
-      case "rational-mult-div":
-        renderRationalMultDivControls();
-        break;
-      case "proportion":
-        renderProportionControls();
-        break;
-      case "decimal-rational":
-        renderDecimalRationalControls();
-        break;
-      default:
-        console.error("Unknown topic selected:", currentTopic);
-    }
+    handleTopicChange();
   }
 
   function handleTopicChange() {
-    // This function is now used for initialization only
-    console.log("Initializing topic:", currentTopic);
-    // Clear previous topic-specific controls
+    // This function is now used for initialization and language change
     topicSpecificControlsContainer.innerHTML = "";
     problemsContainer.innerHTML = "";
-    // Render new controls based on selected topic
     switch (currentTopic) {
-      case "multiplication-table":
-        renderMultiplicationTableControls();
-        break;
-      case "addition-subtraction":
-        renderAdditionSubtractionControls();
-        break;
-      case "multiplication-division":
-        renderMultiplicationDivisionControls();
-        break;
-      case "rational-canonical":
-        renderRationalCanonicalControls();
-        break;
-      case "rational-operations":
-        renderRationalOperationsControls();
-        break;
-      case "rational-mult-div":
-        renderRationalMultDivControls();
-        break;
-      case "proportion":
-        renderProportionControls();
-        break;
-      case "decimal-rational":
-        renderDecimalRationalControls();
-        break;
-      default:
-        console.error("Unknown topic selected:", currentTopic);
+      case "multiplication-table": renderMultiplicationTableControls(); break;
+      case "addition-subtraction": renderAdditionSubtractionControls(); break;
+      case "multiplication-division": renderMultiplicationDivisionControls(); break;
+      case "rational-canonical": renderRationalCanonicalControls(); break;
+      case "rational-operations": renderRationalOperationsControls(); break;
+      case "rational-mult-div": renderRationalMultDivControls(); break;
+      case "proportion": renderProportionControls(); break;
+      case "decimal-rational": renderDecimalRationalControls(); break;
+      default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
 
   function handleGenerateClick() {
-    console.log("Generate button clicked for topic:", currentTopic);
-    problemsContainer.innerHTML = ""; // Clear previous problems
-
+    console.log(translations.script.generate_button_clicked_for_topic, currentTopic);
+    problemsContainer.innerHTML = "";
     const numberOfProblems = parseInt(numProblemsInput.value, 10);
     if (isNaN(numberOfProblems) || numberOfProblems < 1) {
-      alert("Please enter a valid number of problems.");
+      alert(translations.script.invalid_num_problems_alert);
       return;
     }
 
     switch (currentTopic) {
-      case "multiplication-table":
-        generateMultiplicationTableProblems();
-        break;
-      case "addition-subtraction":
-        generateAdditionSubtractionProblems();
-        break;
-      case "multiplication-division":
-        generateMultiplicationDivisionProblems();
-        break;
-      case "rational-canonical":
-        generateRationalCanonicalProblems();
-        break;
-      case "rational-operations":
-        generateRationalOperationsProblems();
-        break;
-      case "rational-mult-div":
-        generateRationalMultDivProblems();
-        break;
-      case "proportion":
-        generateProportionProblems();
-        break;
-      case "decimal-rational":
-        generateDecimalRationalProblems();
-        break;
-      default:
-        console.error("Unknown topic for generation:", currentTopic);
-        problemsContainer.innerHTML = "<p>Error: Unknown topic selected.</p>";
+      case "multiplication-table": generateMultiplicationTableProblems(); break;
+      case "addition-subtraction": generateAdditionSubtractionProblems(); break;
+      case "multiplication-division": generateMultiplicationDivisionProblems(); break;
+      case "rational-canonical": generateRationalCanonicalProblems(); break;
+      case "rational-operations": generateRationalOperationsProblems(); break;
+      case "rational-mult-div": generateRationalMultDivProblems(); break;
+      case "proportion": generateProportionProblems(); break;
+      case "decimal-rational": generateDecimalRationalProblems(); break;
+      default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
 
@@ -1475,12 +856,10 @@ function generateDecimalRationalProblems() {
   }
 
   // --- Initialization ---
-  // Add click event listeners to topic cards
   topicCards.forEach(card => {
     card.addEventListener("click", handleTopicCardClick);
   });
   
-  // Set initial selected card
   const firstCard = document.querySelector(`[data-topic="${currentTopic}"]`);
   if (firstCard) {
     firstCard.classList.add("selected");
@@ -1493,8 +872,15 @@ function generateDecimalRationalProblems() {
     printButton.addEventListener("click", handlePrintClick);
   }
 
-  // Initial rendering of controls for the default selected topic
-  handleTopicChange();
+  languageSwitcher.addEventListener('click', (e) => {
+      const lang = e.target.dataset.lang;
+      if (lang) {
+          setLanguage(lang);
+      }
+  });
+
+  const initialLang = getInitialLang();
+  setLanguage(initialLang);
 
   console.log("App initialized.");
 });

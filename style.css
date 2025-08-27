@@ -16,13 +16,37 @@ body {
 header {
     background: #333;
     color: #fff;
-    padding: 1rem 0;
+    padding: 1rem 20px;
     text-align: center;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
     margin: 0;
+    font-size: 1.5em;
+    flex-grow: 0;
+}
+
+#language-switcher {
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    font-size: 24px; /* This will control the size of the flags */
+}
+
+#language-switcher .flag-icon {
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    transition: transform 0.2s;
+    /* The size is inherited from the parent's font-size */
+}
+
+#language-switcher .flag-icon:hover {
+    transform: scale(1.1);
 }
 
 main {

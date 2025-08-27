@@ -3,58 +3,64 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Math Worksheet Generator</title>
+        <title data-translate-key="title">Math Worksheet Generator</title>
+        <link rel="stylesheet" href="flag-icon.min.css">
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <header>
-            <h1>Math Worksheet Generator</h1>
+            <h1 data-translate-key="header_h1">Math Worksheet Generator</h1>
+            <div id="language-switcher">
+                <span class="flag-icon flag-icon-gb" data-lang="en"></span>
+                <span class="flag-icon flag-icon-de" data-lang="de"></span>
+                <span class="flag-icon flag-icon-ru" data-lang="ru"></span>
+            </div>
         </header>
 
         <main>
             <section id="topic-selection-section">
-                <h2>Select Topic</h2>
+                <h2 data-translate-key="topic_selection_h2">Select Topic</h2>
                 <div id="topic-grid" class="topic-grid">
                     <div class="topic-card" data-topic="multiplication-table">
-                        <h3>Multiplication Table</h3>
-                        <p>Pre-filled multiplication charts for practice</p>
+                        <h3 data-translate-key="multiplication_table_h3">Multiplication Table</h3>
+                        <p data-translate-key="multiplication_table_p">Pre-filled multiplication charts for practice</p>
                     </div>
                     <div class="topic-card" data-topic="addition-subtraction">
-                        <h3>Addition/Subtraction</h3>
-                        <p>Multi-digit addition and subtraction problems</p>
+                        <h3 data-translate-key="addition_subtraction_h3">Addition/Subtraction</h3>
+                        <p data-translate-key="addition_subtraction_p">Multi-digit addition and subtraction problems</p>
                     </div>
                     <div class="topic-card" data-topic="multiplication-division">
-                        <h3>Multiplication/Division</h3>
-                        <p>Columnar multiplication and division exercises</p>
+                        <h3 data-translate-key="multiplication_division_h3">Multiplication/Division</h3>
+                        <p data-translate-key="multiplication_division_p">Columnar multiplication and division exercises</p>
                     </div>
                     <div class="topic-card" data-topic="rational-canonical">
-                        <h3>Canonical Rational Numbers</h3>
-                        <p>Simplify fractions to lowest terms</p>
+                        <h3 data-translate-key="rational_canonical_h3">Canonical Rational Numbers</h3>
+                        <p data-translate-key="rational_canonical_p">Simplify fractions to lowest terms</p>
                     </div>
                     <div class="topic-card" data-topic="rational-operations">
-                        <h3>Rational Operations</h3>
-                        <p>Addition and subtraction of fractions</p>
+                        <h3 data-translate-key="rational_operations_h3">Rational Operations</h3>
+                        <p data-translate-key="rational_operations_p">Addition and subtraction of fractions</p>
                     </div>
                     <div class="topic-card" data-topic="rational-mult-div">
-                        <h3>Rational Multiplication/Division</h3>
-                        <p>Multiply and divide fractions</p>
+                        <h3 data-translate-key="rational_mult_div_h3">Rational Multiplication/Division</h3>
+                        <p data-translate-key="rational_mult_div_p">Multiply and divide fractions</p>
                     </div>
                     <div class="topic-card" data-topic="proportion">
-                        <h3>Proportion</h3>
-                        <p>Solve proportion problems with cross-multiplication</p>
+                        <h3 data-translate-key="proportion_h3">Proportion</h3>
+                        <p data-translate-key="proportion_p">Solve proportion problems with cross-multiplication</p>
                     </div>
                     <div class="topic-card" data-topic="decimal-rational">
-                        <h3>Decimal/Rational Conversion</h3>
-                        <p>Convert between decimals and fractions</p>
+                        <h3 data-translate-key="decimal_rational_h3">Decimal/Rational Conversion</h3>
+                        <p data-translate-key="decimal_rational_p">Convert between decimals and fractions</p>
                     </div>
                 </div>
             </section>
 
             <section id="controls-panel" class="controls">
-                <h2>Controls</h2>
+                <h2 data-translate-key="controls_panel_h2">Controls</h2>
                 <!-- Topic-specific controls will be populated here by JavaScript -->
                 <div id="common-controls">
-                    <label for="num-problems">Number of Problems:</label>
+                    <label for="num-problems" data-translate-key="num_problems_label">Number of Problems:</label>
                     <input
                         type="number"
                         id="num-problems"
@@ -68,16 +74,16 @@
             </section>
 
             <section id="actions-panel">
-                <button id="generate-button" class="button">
+                <button id="generate-button" class="button" data-translate-key="generate_button">
                     Generate Worksheet
                 </button>
-                <button id="print-button" class="button">
+                <button id="print-button" class="button" data-translate-key="print_button">
                     Print Worksheet
                 </button>
             </section>
 
             <section id="output-area" class="problems">
-                <h2>Generated Problems</h2>
+                <h2 data-translate-key="output_area_h2">Generated Problems</h2>
                 <div id="problems-container">
                     <!-- Problems will be inserted here -->
                 </div>
@@ -85,8 +91,8 @@
         </main>
 
         <footer>
-            <p>&copy; 2024 Math Worksheet Generator</p>
-            <p>Commit: <span id="commit-sha">__COMMIT_SHA__</span></p>
+            <p data-translate-key="footer_p_1">&copy; 2024 Math Worksheet Generator</p>
+            <p><span data-translate-key="footer_p_2">Commit: </span><span id="commit-sha">__COMMIT_SHA__</span></p>
         </footer>
 
         <script src="script.js?v=__COMMIT_SHA__"></script>
