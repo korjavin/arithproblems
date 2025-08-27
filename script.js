@@ -252,6 +252,39 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderGeometryControls() {
+      const t = translations.script.geometry;
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="geo-shape-mix">${t.shape_mix_label}</label>
+            <select id="geo-shape-mix">
+                <option value="mixed">${t.mixed_shapes_option}</option>
+                <option value="rectangles">${t.rectangles_only_option}</option>
+                <option value="squares">${t.squares_only_option}</option>
+                <option value="triangles">${t.triangles_only_option}</option>
+                <option value="circles">${t.circles_only_option}</option>
+            </select>
+        </div>
+        <div>
+            <label for="geo-calculation-type">${t.calculation_type_label}</label>
+            <select id="geo-calculation-type">
+                <option value="mixed">${t.mixed_calculations_option}</option>
+                <option value="area">${t.area_only_option}</option>
+                <option value="perimeter">${t.perimeter_only_option}</option>
+            </select>
+        </div>
+        <div>
+            <label for="geo-max-dimension">${t.max_dimension_label}</label>
+            <input type="number" id="geo-max-dimension" value="12" min="2" max="20">
+        </div>
+        <div>
+            <input type="checkbox" id="geo-whole-numbers-only" checked>
+            <label for="geo-whole-numbers-only">${t.whole_numbers_only_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -962,6 +995,127 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function generateGeometryProblems() {
+      const t = translations.script.geometry;
+      problemsContainer.innerHTML = '';
+      const shapeMixInput = document.getElementById('geo-shape-mix');
+      const calculationTypeInput = document.getElementById('geo-calculation-type');
+      const maxDimensionInput = document.getElementById('geo-max-dimension');
+      const wholeNumbersOnlyInput = document.getElementById('geo-whole-numbers-only');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const shapeMix = shapeMixInput.value;
+      const calculationType = calculationTypeInput.value;
+      const maxDimension = parseInt(maxDimensionInput.value, 10);
+      const wholeNumbersOnly = wholeNumbersOnlyInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(maxDimension) || maxDimension < 2) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_dimension}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+      function getRandomDimension() {
+          if (wholeNumbersOnly) {
+              return getRandomInt(2, maxDimension);
+          } else {
+              return Math.round((Math.random() * (maxDimension - 2) + 2) * 2) / 2; // 0.5 increments
+          }
+      }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid geometry-problem-grid';
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+      let generatedCount = 0;
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let currentShape;
+          if (shapeMix === 'mixed') {
+              const shapes = ['rectangles', 'squares', 'triangles', 'circles'];
+              currentShape = shapes[Math.floor(Math.random() * shapes.length)];
+          } else {
+              currentShape = shapeMix;
+          }
+
+          let currentCalculation;
+          if (calculationType === 'mixed') {
+              currentCalculation = Math.random() < 0.5 ? 'area' : 'perimeter';
+          } else {
+              currentCalculation = calculationType;
+          }
+
+          let problemHTML = '';
+          let answer = 0;
+
+          if (currentShape === 'rectangles') {
+              const length = getRandomDimension();
+              const width = getRandomDimension();
+              if (currentCalculation === 'area') {
+                  answer = length * width;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Rectangle: length = ${length}, width = ${width}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+              } else {
+                  answer = 2 * (length + width);
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Rectangle: length = ${length}, width = ${width}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+              }
+          } else if (currentShape === 'squares') {
+              const side = getRandomDimension();
+              if (currentCalculation === 'area') {
+                  answer = side * side;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Square: side = ${side}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+              } else {
+                  answer = 4 * side;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Square: side = ${side}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+              }
+          } else if (currentShape === 'triangles') {
+              if (currentCalculation === 'area') {
+                  const base = getRandomDimension();
+                  const height = getRandomDimension();
+                  answer = 0.5 * base * height;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Triangle: base = ${base}, height = ${height}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+              } else {
+                  // For perimeter, generate three sides of a triangle
+                  const side1 = getRandomDimension();
+                  const side2 = getRandomDimension();
+                  const side3 = getRandomDimension();
+                  answer = side1 + side2 + side3;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Triangle: sides = ${side1}, ${side2}, ${side3}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+              }
+          } else if (currentShape === 'circles') {
+              const radius = getRandomDimension();
+              const pi = 3.14;
+              if (currentCalculation === 'area') {
+                  answer = pi * radius * radius;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Circle: radius = ${radius}</span><br><span class="calculation-text">Area = πr² = </span><div class="answer-space"></div></div></div>`;
+              } else {
+                  answer = 2 * pi * radius;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Circle: radius = ${radius}</span><br><span class="calculation-text">Perimeter (circumference) = 2πr = </span><div class="answer-space"></div></div></div>`;
+              }
+          }
+
+          const roundedAnswer = Math.round(answer);
+          const answerDigitalRoot = digitalRoot(roundedAnswer);
+          digitalRoots.push({ digitalRoot: answerDigitalRoot });
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -989,6 +1143,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "proportion": renderProportionControls(); break;
       case "decimal-rational": renderDecimalRationalControls(); break;
       case "percentage": renderPercentageControls(); break;
+      case "geometry": renderGeometryControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -1012,6 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "proportion": generateProportionProblems(); break;
       case "decimal-rational": generateDecimalRationalProblems(); break;
       case "percentage": generatePercentageProblems(); break;
+      case "geometry": generateGeometryProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
