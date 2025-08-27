@@ -138,7 +138,11 @@
             "error_num_problems": "Bitte geben Sie eine gültige Anzahl von Problemen (1-50) ein.",
             "problems_title": "Prozentrechenaufgaben",
             "digital_root_grid_title": "Quersummen-Kontrollraster",
-            "digital_root_grid_subtitle": "(Finden Sie die Quersumme Ihrer endgültigen Antwort, gerundet auf die nächste ganze Zahl)"
+            "digital_root_grid_subtitle": "(Finden Sie die Quersumme Ihrer endgültigen Antwort, gerundet auf die nächste ganze Zahl)",
+            "of_text": "von",
+            "is_text": "ist",
+            "what_percent_text": "wieviel %",
+            "what_number_text": "welche Zahl"
         },
         "geometry": {
             "shape_mix_label": "Formmischung:",
@@ -158,7 +162,21 @@
             "error_num_problems": "Bitte geben Sie eine gültige Anzahl von Problemen (1-50) ein.",
             "problems_title": "Geometrieaufgaben - Fläche & Umfang",
             "digital_root_grid_title": "Quersummen-Kontrollraster",
-            "digital_root_grid_subtitle": "(Finden Sie die Quersumme Ihrer endgültigen Antwort, gerundet auf die nächste ganze Zahl. Für Kreise verwenden Sie π ≈ 3,14)"
+            "digital_root_grid_subtitle": "(Finden Sie die Quersumme Ihrer endgültigen Antwort, gerundet auf die nächste ganze Zahl. Für Kreise verwenden Sie π ≈ 3,14)",
+            "rectangle_text": "Rechteck",
+            "square_text": "Quadrat",
+            "triangle_text": "Dreieck",
+            "circle_text": "Kreis",
+            "length_text": "Länge",
+            "width_text": "Breite",
+            "side_text": "Seite",
+            "base_text": "Grundlinie",
+            "height_text": "Höhe",
+            "sides_text": "Seiten",
+            "radius_text": "Radius",
+            "area_text": "Fläche",
+            "perimeter_text": "Umfang",
+            "circumference_text": "Umfang"
         },
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",

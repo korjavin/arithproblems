@@ -958,20 +958,20 @@ document.addEventListener("DOMContentLoaded", () => {
               const percentage = getRandomPercentage();
               const number = getRandomInt(10, maxNumber);
               answer = Math.round((percentage / 100) * number);
-              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% of ${number} = </span><div class="answer-space"></div></div></div>`;
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% ${t.of_text} ${number} = </span><div class="answer-space"></div></div></div>`;
           } else if (currentProblemType === 'find-what-percent') {
               // Find what percent X is of Y (e.g., "15 is what % of 60?")
               const whole = getRandomInt(20, maxNumber);
               const percentage = getRandomPercentage();
               const part = Math.round((percentage / 100) * whole);
               answer = Math.round(percentage);
-              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${part} is what % of ${whole}?</span><div class="answer-space"></div></div></div>`;
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${part} ${t.is_text} ${t.what_percent_text} ${t.of_text} ${whole}?</span><div class="answer-space"></div></div></div>`;
           } else if (currentProblemType === 'find-whole') {
               // Find the whole when given part and percentage (e.g., "25% of what number is 20?")
               const percentage = getRandomPercentage();
               const part = getRandomInt(5, Math.floor(maxNumber * 0.6));
               answer = Math.round(part / (percentage / 100));
-              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% of what number is ${part}?</span><div class="answer-space"></div></div></div>`;
+              problemHTML = `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${percentage}% ${t.of_text} ${t.what_number_text} ${t.is_text} ${part}?</span><div class="answer-space"></div></div></div>`;
           }
 
           const answerDigitalRoot = digitalRoot(answer);
@@ -1054,43 +1054,43 @@ document.addEventListener("DOMContentLoaded", () => {
               const width = getRandomDimension();
               if (currentCalculation === 'area') {
                   answer = length * width;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Rectangle: length = ${length}, width = ${width}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${length}, ${t.width_text} = ${width}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>`;
               } else {
                   answer = 2 * (length + width);
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Rectangle: length = ${length}, width = ${width}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${length}, ${t.width_text} = ${width}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
               }
           } else if (currentShape === 'squares') {
               const side = getRandomDimension();
               if (currentCalculation === 'area') {
                   answer = side * side;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Square: side = ${side}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${side}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>`;
               } else {
                   answer = 4 * side;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Square: side = ${side}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${side}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
               }
           } else if (currentShape === 'triangles') {
               if (currentCalculation === 'area') {
                   const base = getRandomDimension();
                   const height = getRandomDimension();
                   answer = 0.5 * base * height;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Triangle: base = ${base}, height = ${height}</span><br><span class="calculation-text">Area = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.base_text} = ${base}, ${t.height_text} = ${height}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>`;
               } else {
                   // For perimeter, generate three sides of a triangle
                   const side1 = getRandomDimension();
                   const side2 = getRandomDimension();
                   const side3 = getRandomDimension();
                   answer = side1 + side2 + side3;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Triangle: sides = ${side1}, ${side2}, ${side3}</span><br><span class="calculation-text">Perimeter = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.sides_text} = ${side1}, ${side2}, ${side3}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
               }
           } else if (currentShape === 'circles') {
               const radius = getRandomDimension();
               const pi = 3.14;
               if (currentCalculation === 'area') {
                   answer = pi * radius * radius;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Circle: radius = ${radius}</span><br><span class="calculation-text">Area = πr² = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.circle_text}: ${t.radius_text} = ${radius}</span><br><span class="calculation-text">${t.area_text} = πr² = </span><div class="answer-space"></div></div></div>`;
               } else {
                   answer = 2 * pi * radius;
-                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">Circle: radius = ${radius}</span><br><span class="calculation-text">Perimeter (circumference) = 2πr = </span><div class="answer-space"></div></div></div>`;
+                  problemHTML = `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.circle_text}: ${t.radius_text} = ${radius}</span><br><span class="calculation-text">${t.circumference_text} = 2πr = </span><div class="answer-space"></div></div></div>`;
               }
           }
 
