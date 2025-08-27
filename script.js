@@ -285,6 +285,34 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderLinearEquationsControls() {
+      const t = translations.script.linear_equations;
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="eq-equation-type">${t.equation_type_label}</label>
+            <select id="eq-equation-type">
+                <option value="mixed">${t.mixed_equations_option}</option>
+                <option value="one-step">${t.one_step_option}</option>
+                <option value="two-step">${t.two_step_option}</option>
+                <option value="with-fractions">${t.with_fractions_option}</option>
+            </select>
+        </div>
+        <div>
+            <label for="eq-coefficient-range">${t.coefficient_range_label}</label>
+            <input type="number" id="eq-coefficient-range" value="5" min="1" max="10">
+        </div>
+        <div>
+            <label for="eq-solution-range">${t.solution_range_label}</label>
+            <input type="number" id="eq-solution-range" value="12" min="1" max="50">
+        </div>
+        <div>
+            <input type="checkbox" id="eq-allow-negative-solutions">
+            <label for="eq-allow-negative-solutions">${t.allow_negative_solutions_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -1116,6 +1144,114 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function generateLinearEquationsProblems() {
+      const t = translations.script.linear_equations;
+      problemsContainer.innerHTML = '';
+      const equationTypeInput = document.getElementById('eq-equation-type');
+      const coefficientRangeInput = document.getElementById('eq-coefficient-range');
+      const solutionRangeInput = document.getElementById('eq-solution-range');
+      const allowNegativeSolutionsInput = document.getElementById('eq-allow-negative-solutions');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const equationType = equationTypeInput.value;
+      const coefficientRange = parseInt(coefficientRangeInput.value, 10);
+      const solutionRange = parseInt(solutionRangeInput.value, 10);
+      const allowNegativeSolutions = allowNegativeSolutionsInput.checked;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(coefficientRange) || coefficientRange < 1 || coefficientRange > 10) { problemsContainer.innerHTML = `<p class="error-message">${t.error_coefficient_range}</p>`; return; }
+      if (isNaN(solutionRange) || solutionRange < 1 || solutionRange > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_solution_range}</p>`; return; }
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+      function getRandomCoefficient() { return getRandomInt(1, coefficientRange); }
+      function getRandomSolution() { 
+          const sol = getRandomInt(1, solutionRange);
+          return allowNegativeSolutions && Math.random() < 0.3 ? -sol : sol;
+      }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'arithmetic-grid linear-equations-problem-grid';
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+      let generatedCount = 0;
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let currentEquationType;
+          if (equationType === 'mixed') {
+              const types = ['one-step', 'two-step', 'with-fractions'];
+              currentEquationType = types[Math.floor(Math.random() * types.length)];
+          } else {
+              currentEquationType = equationType;
+          }
+
+          let problemHTML = '';
+          let solution = getRandomSolution();
+
+          if (currentEquationType === 'one-step') {
+              // Generate equations like: x + a = b, x - a = b, a - x = b
+              const operationType = Math.floor(Math.random() * 3);
+              if (operationType === 0) {
+                  // x + a = b
+                  const a = getRandomCoefficient();
+                  const b = solution + a;
+                  problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">x + ${a} = ${b}</span><div class="answer-space">x = </div></div></div>`;
+              } else if (operationType === 1) {
+                  // x - a = b  
+                  const a = getRandomCoefficient();
+                  const b = solution - a;
+                  problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">x - ${a} = ${b}</span><div class="answer-space">x = </div></div></div>`;
+              } else {
+                  // a - x = b, so x = a - b
+                  const a = Math.abs(solution) + getRandomCoefficient();
+                  const b = a - solution;
+                  problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">${a} - x = ${b}</span><div class="answer-space">x = </div></div></div>`;
+              }
+          } else if (currentEquationType === 'two-step') {
+              // Generate equations like: ax + b = c, ax - b = c
+              const a = getRandomCoefficient();
+              const b = getRandomCoefficient();
+              if (Math.random() < 0.5) {
+                  // ax + b = c
+                  const c = a * solution + b;
+                  problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">${a}x + ${b} = ${c}</span><div class="answer-space">x = </div></div></div>`;
+              } else {
+                  // ax - b = c
+                  const c = a * solution - b;
+                  problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">${a}x - ${b} = ${c}</span><div class="answer-space">x = </div></div></div>`;
+              }
+          } else if (currentEquationType === 'with-fractions') {
+              // Generate equations like: x/a + b = c
+              const a = getRandomInt(2, Math.min(coefficientRange, 5)); // Keep denominators reasonable
+              const b = getRandomCoefficient();
+              const c = Math.round(solution / a) + b;
+              solution = a * (c - b); // Adjust solution to be integer
+              problemHTML = `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">x/${a} + ${b} = ${c}</span><div class="answer-space">x = </div></div></div>`;
+          }
+
+          const solutionDigitalRoot = digitalRoot(Math.abs(solution));
+          digitalRoots.push({ digitalRoot: solutionDigitalRoot });
+          problemsHtmlArray.push(problemHTML);
+          generatedCount++;
+      }
+
+      gridContainer.innerHTML = problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -1144,6 +1280,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "decimal-rational": renderDecimalRationalControls(); break;
       case "percentage": renderPercentageControls(); break;
       case "geometry": renderGeometryControls(); break;
+      case "linear-equations": renderLinearEquationsControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -1168,6 +1305,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "decimal-rational": generateDecimalRationalProblems(); break;
       case "percentage": generatePercentageProblems(); break;
       case "geometry": generateGeometryProblems(); break;
+      case "linear-equations": generateLinearEquationsProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
