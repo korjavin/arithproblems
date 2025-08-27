@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       topicSpecificControlsContainer.innerHTML = `
         <div>
             <label for="ro-num-terms">${t.num_terms_label}</label>
-            <input type="number" id="ro-num-terms" value="2" min="2" max="2"> <!-- Forcing 2 for now -->
+            <input type="number" id="ro-num-terms" value="2" min="2" max="5">
         </div>
         <div>
             <label for="ro-max-val">${t.max_val_label}</label>
@@ -491,11 +491,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function generateRationalOperationsProblems() {
       const t = translations.script.rational_operations;
       problemsContainer.innerHTML = '';
+      const numTermsInput = document.getElementById('ro-num-terms');
       const maxValInput = document.getElementById('ro-max-val');
       const numberOfProblemsInput = document.getElementById('num-problems');
+      const numTerms = parseInt(numTermsInput.value, 10);
       const maxVal = parseInt(maxValInput.value, 10);
       const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
 
+      if (isNaN(numTerms) || numTerms < 2 || numTerms > 5) { problemsContainer.innerHTML = `<p class="error-message">Number of fractions must be between 2 and 5.</p>`; return; }
       if (isNaN(maxVal) || maxVal < 1) { problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val}</p>`; return; }
       if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; return; }
 
@@ -511,15 +514,37 @@ document.addEventListener("DOMContentLoaded", () => {
       let generatedCount = 0;
 
       for (let i = 0; i < numberOfProblems; i++) {
-          let n1 = getRandomInt(1, maxVal);
-          let d1 = getRandomInt(1, maxVal);
-          let n2 = getRandomInt(1, maxVal);
-          let d2 = getRandomInt(1, maxVal);
-          const currentOperation = Math.random() < 0.5 ? 'add' : 'subtract';
-          let resultN, resultD, opSymbol;
+          // Generate fractions and operations
+          const fractions = [];
+          const operations = [];
+          
+          for (let j = 0; j < numTerms; j++) {
+              fractions.push({
+                  numerator: getRandomInt(1, maxVal),
+                  denominator: getRandomInt(1, maxVal)
+              });
+              if (j < numTerms - 1) {
+                  operations.push(Math.random() < 0.5 ? 'add' : 'subtract');
+              }
+          }
 
-          if (currentOperation === 'add') { opSymbol = '+'; resultN = (n1 * d2) + (n2 * d1); resultD = d1 * d2; }
-          else { opSymbol = '&ndash;'; resultN = (n1 * d2) - (n2 * d1); resultD = d1 * d2; }
+          // Calculate the result step by step
+          let resultN = fractions[0].numerator;
+          let resultD = fractions[0].denominator;
+
+          for (let j = 1; j < numTerms; j++) {
+              const n2 = fractions[j].numerator;
+              const d2 = fractions[j].denominator;
+              const operation = operations[j - 1];
+
+              if (operation === 'add') {
+                  resultN = (resultN * d2) + (n2 * resultD);
+                  resultD = resultD * d2;
+              } else {
+                  resultN = (resultN * d2) - (n2 * resultD);
+                  resultD = resultD * d2;
+              }
+          }
 
           if (resultD === 0) { i--; continue; }
 
@@ -536,7 +561,16 @@ document.addEventListener("DOMContentLoaded", () => {
           else { const remainderNum = Math.abs(finalN) % finalD; controlSum = remainderNum + finalD; }
           controlSumsArray.push({ controlSum: controlSum });
 
-          const problemHTML = `<div class="fraction-operation-item"><div class="problem-content"><span class="fraction"><span class="numerator">${n1}</span><span class="denominator">${d1}</span></span><span class="operation-symbol">${opSymbol}</span><span class="fraction"><span class="numerator">${n2}</span><span class="denominator">${d2}</span></span> =</div><div class="calculation-space"></div></div>`;
+          // Build the problem HTML
+          let problemHTML = '<div class="fraction-operation-item"><div class="problem-content">';
+          for (let j = 0; j < numTerms; j++) {
+              problemHTML += `<span class="fraction"><span class="numerator">${fractions[j].numerator}</span><span class="denominator">${fractions[j].denominator}</span></span>`;
+              if (j < numTerms - 1) {
+                  const opSymbol = operations[j] === 'add' ? '+' : '&ndash;';
+                  problemHTML += `<span class="operation-symbol">${opSymbol}</span>`;
+              }
+          }
+          problemHTML += ' =</div><div class="calculation-space"></div></div>';
           problemsHtmlArray.push(problemHTML);
           generatedCount++;
       }
