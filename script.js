@@ -313,6 +313,36 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderWordProblemsControls() {
+      const t = translations.script.word_problems;
+      topicSpecificControlsContainer.innerHTML = `
+        <div>
+            <label for="wp-problem-category">${t.problem_category_label}</label>
+            <select id="wp-problem-category">
+                <option value="mixed">${t.mixed_categories_option}</option>
+                <option value="age">${t.age_problems_option}</option>
+                <option value="distance">${t.distance_problems_option}</option>
+                <option value="money">${t.money_problems_option}</option>
+                <option value="work">${t.work_rate_problems_option}</option>
+                <option value="mixture">${t.mixture_problems_option}</option>
+                <option value="geometry">${t.geometry_word_problems_option}</option>
+                <option value="number">${t.number_problems_option}</option>
+                <option value="percentage">${t.percentage_word_problems_option}</option>
+            </select>
+        </div>
+        <div>
+            <label for="wp-difficulty-level">${t.difficulty_level_label}</label>
+            <select id="wp-difficulty-level">
+                <option value="mixed">${t.mixed_difficulty_option}</option>
+                <option value="easy">${t.easy_level_option}</option>
+                <option value="medium">${t.medium_level_option}</option>
+                <option value="hard">${t.hard_level_option}</option>
+            </select>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -1252,6 +1282,323 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function generateWordProblemsProblems() {
+      const t = translations.script.word_problems;
+      problemsContainer.innerHTML = '';
+      const problemCategoryInput = document.getElementById('wp-problem-category');
+      const difficultyLevelInput = document.getElementById('wp-difficulty-level');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const problemCategory = problemCategoryInput.value;
+      const difficultyLevel = difficultyLevelInput.value;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) { 
+          problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems}</p>`; 
+          return; 
+      }
+
+      function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+      function getRandomFromArray(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+      function shuffleArray(arr) { const newArr = [...arr]; for (let i = newArr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [newArr[i], newArr[j]] = [newArr[j], newArr[i]]; } return newArr; }
+
+      // Define all available template keys by category
+      const templateCategories = {
+          age: ['age1', 'age2', 'age3', 'age4', 'age5'],
+          distance: ['distance1', 'distance2', 'distance3', 'distance4', 'distance5'],
+          money: ['money1', 'money2', 'money3', 'money4', 'money5'],
+          work: ['work1', 'work2', 'work3', 'work4'],
+          mixture: ['mixture1', 'mixture2', 'mixture3', 'mixture4'],
+          geometry: ['geometry1', 'geometry2', 'geometry3', 'geometry4'],
+          number: ['number1', 'number2', 'number3', 'number4'],
+          percentage: ['percent1', 'percent2', 'percent3', 'percent4']
+      };
+
+      let availableTemplates = [];
+      if (problemCategory === 'mixed') {
+          availableTemplates = Object.values(templateCategories).flat();
+      } else {
+          availableTemplates = templateCategories[problemCategory] || [];
+      }
+
+      if (availableTemplates.length === 0) {
+          problemsContainer.innerHTML = `<p class="error-message">No templates available for selected category</p>`;
+          return;
+      }
+
+      const shuffledTemplates = shuffleArray(availableTemplates);
+      const problemsHtmlArray = [];
+      const digitalRoots = [];
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          const templateKey = shuffledTemplates[i % shuffledTemplates.length];
+          const template = t.templates[templateKey];
+          
+          let problemData = generateProblemData(templateKey, t, difficultyLevel);
+          let problemText = fillTemplate(template, problemData);
+          let answer = problemData.answer;
+
+          const answerDigitalRoot = digitalRoot(Math.round(Math.abs(answer)));
+          digitalRoots.push({ digitalRoot: answerDigitalRoot });
+
+          const problemHTML = `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${problemText}</div><div class="answer-space">Answer: </div></div></div>`;
+          problemsHtmlArray.push(problemHTML);
+      }
+
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'word-problems-grid problems-grid';
+      gridContainer.innerHTML = `<h3>${t.problems_title}</h3>` + problemsHtmlArray.join('');
+      problemsContainer.appendChild(gridContainer);
+
+      if (digitalRoots.length > 0) {
+          const digitalRootContainer = document.createElement('div');
+          digitalRootContainer.className = 'digital-root-check-grid-container';
+          digitalRootContainer.innerHTML = `<h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p>`;
+          const drGrid = document.createElement('div');
+          drGrid.className = 'digital-root-check-grid';
+          digitalRoots.forEach(answer => { drGrid.innerHTML += `<div class="dr-cell">${answer.digitalRoot}</div>`; });
+          digitalRootContainer.appendChild(drGrid);
+          problemsContainer.appendChild(digitalRootContainer);
+      }
+
+      function fillTemplate(template, data) {
+          return template.replace(/{(\w+)}/g, (match, key) => {
+              return data.hasOwnProperty(key) ? data[key] : match;
+          });
+      }
+
+      function generateProblemData(templateKey, t, difficultyLevel) {
+          const difficultyMultiplier = difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 1.5 : difficultyLevel === 'hard' ? 2 : 1 + Math.random();
+          const getRandomName = (type = 'neutral') => getRandomFromArray(t.names[type]);
+          const getRandomObject = (type = 'items') => getRandomFromArray(t.objects[type]);
+
+          switch (templateKey) {
+              case 'age1': {
+                  const multiplier = getRandomInt(2, 4);
+                  const youngerAge = getRandomInt(5 * difficultyMultiplier, 15 * difficultyMultiplier);
+                  const olderAge = youngerAge * multiplier;
+                  const sum = youngerAge + olderAge;
+                  return { name1: getRandomName(), name2: getRandomName(), multiplier, sum, answer: olderAge };
+              }
+              case 'age2': {
+                  const diff = getRandomInt(3 * difficultyMultiplier, 10 * difficultyMultiplier);
+                  const years = getRandomInt(2, 8);
+                  const multiplier = getRandomInt(2, 3);
+                  const currentYounger = getRandomInt(8, 20);
+                  const currentOlder = currentYounger + diff;
+                  return { name1: getRandomName(), name2: getRandomName(), diff, years, multiplier, answer: currentOlder };
+              }
+              case 'age3': {
+                  const smaller = getRandomInt(10 * difficultyMultiplier, 30 * difficultyMultiplier);
+                  const larger = smaller + 1;
+                  const sum = smaller + larger;
+                  return { sum, answer: larger };
+              }
+              case 'age4': {
+                  const age1 = getRandomInt(20 * difficultyMultiplier, 50 * difficultyMultiplier);
+                  const diff = getRandomInt(2 * difficultyMultiplier, 12 * difficultyMultiplier);
+                  return { name1: getRandomName(), name2: getRandomName(), age1, diff, answer: age1 + (age1 - diff) };
+              }
+              case 'age5': {
+                  const years = getRandomInt(3, 10);
+                  const final_age = getRandomInt(20 * difficultyMultiplier, 60 * difficultyMultiplier);
+                  return { name1: getRandomName(), years, final_age, answer: final_age - years };
+              }
+              case 'distance1': {
+                  const time = getRandomInt(2 * difficultyMultiplier, 8 * difficultyMultiplier);
+                  const speed = getRandomInt(30, 80);
+                  const distance = speed * time;
+                  return { distance, time, answer: speed };
+              }
+              case 'distance2': {
+                  const speed1 = getRandomInt(40, 70);
+                  const speed2 = getRandomInt(30, 60);
+                  const time = getRandomInt(2 * difficultyMultiplier, 6 * difficultyMultiplier);
+                  return { speed1, speed2, time, answer: (speed1 + speed2) * time };
+              }
+              case 'distance3': {
+                  const distance1 = getRandomInt(100 * difficultyMultiplier, 300 * difficultyMultiplier);
+                  const distance2 = getRandomInt(80 * difficultyMultiplier, 250 * difficultyMultiplier);
+                  const time = getRandomInt(4 * difficultyMultiplier, 10 * difficultyMultiplier);
+                  return { distance1, distance2, time, answer: (distance1 + distance2) / time };
+              }
+              case 'distance4': {
+                  const speed = getRandomInt(3, 8);
+                  const distance = getRandomInt(12 * difficultyMultiplier, 48 * difficultyMultiplier);
+                  return { name: getRandomName(), speed, distance, answer: distance / speed };
+              }
+              case 'distance5': {
+                  const speed1 = getRandomInt(45, 70);
+                  const speed2 = getRandomInt(40, 65);
+                  const distance = getRandomInt(200 * difficultyMultiplier, 600 * difficultyMultiplier);
+                  return { distance, speed1, speed2, answer: distance / (speed1 + speed2) };
+              }
+              case 'money1': {
+                  const adult_price = getRandomInt(8 * difficultyMultiplier, 15 * difficultyMultiplier);
+                  const child_price = getRandomInt(3 * difficultyMultiplier, 7 * difficultyMultiplier);
+                  const adult_tickets = getRandomInt(20, 60);
+                  const child_tickets = getRandomInt(15, 45);
+                  const total_tickets = adult_tickets + child_tickets;
+                  const total_money = adult_tickets * adult_price + child_tickets * child_price;
+                  return { adult_price, child_price, total_tickets, total_money, answer: adult_tickets };
+              }
+              case 'money2': {
+                  const price1 = getRandomInt(2 * difficultyMultiplier, 8 * difficultyMultiplier);
+                  const price2 = getRandomInt(3 * difficultyMultiplier, 10 * difficultyMultiplier);
+                  const item1_count = getRandomInt(3, 12);
+                  const item2_count = getRandomInt(2, 8);
+                  const total_items = item1_count + item2_count;
+                  const total_cost = item1_count * price1 + item2_count * price2;
+                  const item1 = getRandomObject('items');
+                  const item2 = getRandomObject('food');
+                  return { item1, item2, price1, price2, total_items, total_cost, answer: item1_count };
+              }
+              case 'money3': {
+                  const quarters = getRandomInt(8, 25);
+                  const dimes = getRandomInt(10, 30);
+                  const amount = quarters * 0.25 + dimes * 0.10;
+                  const total_coins = quarters + dimes;
+                  return { name: getRandomName(), amount: amount.toFixed(2), total_coins, answer: quarters };
+              }
+              case 'money4': {
+                  const bill = getRandomInt(25 * difficultyMultiplier, 80 * difficultyMultiplier);
+                  const percent = getRandomInt(15, 25);
+                  return { bill, percent, answer: (bill * percent) / 100 };
+              }
+              case 'money5': {
+                  const amount = getRandomInt(10 * difficultyMultiplier, 50 * difficultyMultiplier);
+                  const weeks = getRandomInt(4, 16);
+                  return { name: getRandomName(), amount, weeks, answer: amount * weeks };
+              }
+              case 'work1': {
+                  const time1 = getRandomInt(3 * difficultyMultiplier, 12 * difficultyMultiplier);
+                  const time2 = getRandomInt(4 * difficultyMultiplier, 15 * difficultyMultiplier);
+                  return { name1: getRandomName(), name2: getRandomName(), time1, time2, answer: (time1 * time2) / (time1 + time2) };
+              }
+              case 'work2': {
+                  const time1 = getRandomInt(2 * difficultyMultiplier, 8 * difficultyMultiplier);
+                  const time2 = getRandomInt(3 * difficultyMultiplier, 10 * difficultyMultiplier);
+                  return { time1, time2, answer: (time1 * time2) / (time1 + time2) };
+              }
+              case 'work3': {
+                  const rooms = getRandomInt(2, 6);
+                  const time = getRandomInt(3 * difficultyMultiplier, 10 * difficultyMultiplier);
+                  const new_rooms = getRandomInt(3, 10);
+                  return { name: getRandomName(), rooms, time, new_rooms, answer: (new_rooms * time) / rooms };
+              }
+              case 'work4': {
+                  const items = getRandomInt(50 * difficultyMultiplier, 200 * difficultyMultiplier);
+                  const time = getRandomInt(3, 12);
+                  return { items, time, answer: items * time };
+              }
+              case 'mixture1': {
+                  const percent1 = getRandomInt(10, 40);
+                  const percent2 = getRandomInt(50, 90);
+                  const gallons = getRandomInt(5 * difficultyMultiplier, 20 * difficultyMultiplier);
+                  const target_percent = getRandomInt(percent1 + 5, percent2 - 5);
+                  const needed = (gallons * (target_percent - percent2)) / (percent1 - target_percent);
+                  return { percent1, gallons, percent2, target_percent, answer: Math.abs(needed) };
+              }
+              case 'mixture2': {
+                  const percent1 = getRandomInt(15, 35);
+                  const percent2 = getRandomInt(50, 80);
+                  const final_percent = getRandomInt(percent1 + 10, percent2 - 5);
+                  const total_volume = getRandomInt(20 * difficultyMultiplier, 60 * difficultyMultiplier);
+                  const volume1 = (total_volume * (final_percent - percent2)) / (percent1 - percent2);
+                  return { percent1, percent2, total_volume, final_percent, answer: Math.abs(volume1) };
+              }
+              case 'mixture3': {
+                  const price1 = getRandomInt(8 * difficultyMultiplier, 15 * difficultyMultiplier);
+                  const price2 = getRandomInt(12 * difficultyMultiplier, 20 * difficultyMultiplier);
+                  const total_pounds = getRandomInt(10, 30);
+                  const avg_price = getRandomInt(price1 + 1, price2 - 1);
+                  const pounds1 = (total_pounds * (avg_price - price2)) / (price1 - price2);
+                  return { price1, price2, total_pounds, avg_price, answer: Math.abs(pounds1) };
+              }
+              case 'mixture4': {
+                  const percent = getRandomInt(15, 45);
+                  const weight = getRandomInt(10 * difficultyMultiplier, 50 * difficultyMultiplier);
+                  return { percent, weight, answer: (weight * percent) / 100 };
+              }
+              case 'geometry1': {
+                  const diff = getRandomInt(3 * difficultyMultiplier, 12 * difficultyMultiplier);
+                  const width = getRandomInt(8 * difficultyMultiplier, 25 * difficultyMultiplier);
+                  const length = width + diff;
+                  const perimeter = 2 * (length + width);
+                  return { diff, perimeter, answer: width };
+              }
+              case 'geometry2': {
+                  const side1 = getRandomInt(5 * difficultyMultiplier, 20 * difficultyMultiplier);
+                  const side2 = getRandomInt(6 * difficultyMultiplier, 18 * difficultyMultiplier);
+                  const side3 = getRandomInt(4 * difficultyMultiplier, 22 * difficultyMultiplier);
+                  return { side1, side2, side3, answer: side1 + side2 + side3 };
+              }
+              case 'geometry3': {
+                  const side = getRandomInt(6 * difficultyMultiplier, 20 * difficultyMultiplier);
+                  const perimeter = side * 4;
+                  return { perimeter, answer: side };
+              }
+              case 'geometry4': {
+                  const radius = getRandomInt(3 * difficultyMultiplier, 12 * difficultyMultiplier);
+                  const area = Math.PI * radius * radius;
+                  return { radius, answer: Math.round(area * 100) / 100 };
+              }
+              case 'number1': {
+                  const diff = getRandomInt(3 * difficultyMultiplier, 15 * difficultyMultiplier);
+                  const smaller = getRandomInt(10 * difficultyMultiplier, 40 * difficultyMultiplier);
+                  const larger = smaller + diff;
+                  const sum = smaller + larger;
+                  return { diff, sum, answer: larger };
+              }
+              case 'number2': {
+                  const first = getRandomInt(4, 12) * 2; // Even number
+                  const second = first + 2;
+                  const product = first * second;
+                  return { product, answer: first };
+              }
+              case 'number3': {
+                  const middle = getRandomInt(5, 25) * 2 + 1; // Odd number
+                  const first = middle - 2;
+                  const third = middle + 2;
+                  const sum = first + middle + third;
+                  return { sum, answer: middle };
+              }
+              case 'number4': {
+                  const result = getRandomInt(20 * difficultyMultiplier, 100 * difficultyMultiplier);
+                  const multiplier = getRandomInt(2, 8);
+                  const addition = getRandomInt(5 * difficultyMultiplier, 25 * difficultyMultiplier);
+                  const answer = (result - addition) / multiplier;
+                  return { multiplier, addition, result, answer: Math.round(answer) };
+              }
+              case 'percent1': {
+                  const percent = getRandomInt(10, 95);
+                  const number = getRandomInt(20 * difficultyMultiplier, 200 * difficultyMultiplier);
+                  return { percent, number, answer: (percent * number) / 100 };
+              }
+              case 'percent2': {
+                  const whole = getRandomInt(50 * difficultyMultiplier, 300 * difficultyMultiplier);
+                  const percent = getRandomInt(15, 85);
+                  const part = (percent * whole) / 100;
+                  return { part: Math.round(part), whole, answer: percent };
+              }
+              case 'percent3': {
+                  const percent = getRandomInt(20, 80);
+                  const part = getRandomInt(15 * difficultyMultiplier, 120 * difficultyMultiplier);
+                  const whole = (part * 100) / percent;
+                  return { percent, part, answer: Math.round(whole) };
+              }
+              case 'percent4': {
+                  const original_price = getRandomInt(25 * difficultyMultiplier, 100 * difficultyMultiplier);
+                  const percent = getRandomInt(15, 50);
+                  const discount = (original_price * percent) / 100;
+                  const sale_price = original_price - discount;
+                  return { original_price, percent, answer: Math.round(sale_price * 100) / 100 };
+              }
+              default:
+                  return { answer: 0 };
+          }
+      }
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -1281,6 +1628,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "percentage": renderPercentageControls(); break;
       case "geometry": renderGeometryControls(); break;
       case "linear-equations": renderLinearEquationsControls(); break;
+      case "word-problems": renderWordProblemsControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -1306,6 +1654,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "percentage": generatePercentageProblems(); break;
       case "geometry": generateGeometryProblems(); break;
       case "linear-equations": generateLinearEquationsProblems(); break;
+      case "word-problems": generateWordProblemsProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
