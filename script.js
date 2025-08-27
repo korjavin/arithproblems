@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
           }
       });
       // also update title
-      const titleKey = document.title.dataset.translateKey;
+      const titleElement = document.querySelector('title');
+      const titleKey = titleElement ? titleElement.dataset.translateKey : null;
       if(titleKey) {
           const translation = titleKey.split('.').reduce((obj, i) => (obj ? obj[i] : null), translations);
           if(translation) {
