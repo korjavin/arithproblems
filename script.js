@@ -1527,9 +1527,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   return { diff, perimeter, answer: width };
               }
               case 'geometry2': {
-                  const side1 = getRandomInt(5 * difficultyMultiplier, 20 * difficultyMultiplier);
-                  const side2 = getRandomInt(6 * difficultyMultiplier, 18 * difficultyMultiplier);
-                  const side3 = getRandomInt(4 * difficultyMultiplier, 22 * difficultyMultiplier);
+                  const side1 = Math.round(getRandomInt(5 * difficultyMultiplier, 20 * difficultyMultiplier));
+                  const side2 = Math.round(getRandomInt(6 * difficultyMultiplier, 18 * difficultyMultiplier));
+                  const side3 = Math.round(getRandomInt(4 * difficultyMultiplier, 22 * difficultyMultiplier));
                   return { side1, side2, side3, answer: side1 + side2 + side3 };
               }
               case 'geometry3': {
@@ -1538,8 +1538,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   return { perimeter, answer: side };
               }
               case 'geometry4': {
-                  const radius = getRandomInt(3 * difficultyMultiplier, 12 * difficultyMultiplier);
-                  const area = Math.PI * radius * radius;
+                  const radius = Math.round(getRandomInt(3 * difficultyMultiplier, 12 * difficultyMultiplier));
+                  const area = 3.14 * radius * radius; // Use 3.14 as stated in problem
                   return { radius, answer: Math.round(area * 100) / 100 };
               }
               case 'number1': {
