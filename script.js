@@ -349,11 +349,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const digitsFactor2Input = document.getElementById('md-digits-factor2');
       const digitsDivisorInput = document.getElementById('md-digits-divisor');
       const digitsQuotientInput = document.getElementById('md-digits-quotient');
+      const noRemainderInput = document.getElementById('md-no-remainder');
       const numberOfProblemsInput = document.getElementById('num-problems');
       const digitsF1 = parseInt(digitsFactor1Input.value, 10);
       const digitsF2 = parseInt(digitsFactor2Input.value, 10);
       const digitsDiv = parseInt(digitsDivisorInput.value, 10);
       const digitsQuo = parseInt(digitsQuotientInput.value, 10);
+      const noRemainder = noRemainderInput.checked;
       const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
 
       if (isNaN(digitsF1) || digitsF1 < 1 || digitsF1 > 4 || isNaN(digitsF2) || digitsF2 < 1 || digitsF2 > 4) { problemsContainer.innerHTML = `<p class="error-message">${t.error_mult_digits}</p>`; return; }
@@ -384,10 +386,24 @@ document.addEventListener("DOMContentLoaded", () => {
               // Generate division problem
               let divisor = getRandomNumber(digitsDiv);
               let quotient = getRandomNumber(digitsQuo);
+              
+              // Ensure non-zero values
               if (divisor === 0) divisor = 1;
               if (quotient === 0) quotient = 1;
-              const dividend = divisor * quotient;
-              actualResult = quotient;
+              
+              let dividend, remainder;
+              if (noRemainder) {
+                  // For exact division, dividend = divisor × quotient
+                  dividend = divisor * quotient;
+                  remainder = 0;
+                  actualResult = quotient;
+              } else {
+                  // For division with remainder, add a small remainder
+                  remainder = Math.floor(Math.random() * (divisor - 1)) + 1;
+                  dividend = divisor * quotient + remainder;
+                  actualResult = quotient; // We still track quotient for digital root
+              }
+              
               problemHTML = `<div class="arith-problem division-problem-user"><div class="dividend">${dividend}</div><div class="divisor-container"><div class="divisor">${divisor}</div><div class="answer-line"></div><div class="answer-space"></div></div></div>`;
           }
           problemsHtmlArray.push(problemHTML);
