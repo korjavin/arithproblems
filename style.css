@@ -1053,3 +1053,44 @@ footer {
     max-width: 200px;
 }
 
+/* --- House Problems Styles --- */
+.house-problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    align-items: start;
+}
+
+.house-problem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+/* Print styles for house problems */
+@media print {
+    .house-problems-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px !important;
+        page-break-inside: avoid;
+    }
+
+    .house-problem {
+        break-inside: avoid;
+        margin-bottom: 15px;
+        box-shadow: none;
+        border: 1px solid #333;
+    }
+
+    .house-problem svg {
+        width: 180px !important;
+        height: 155px !important;
+    }
+}
+

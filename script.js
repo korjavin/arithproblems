@@ -343,6 +343,22 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  function renderHouseProblemsControls() {
+      const t = translations.script.house_problems;
+      topicSpecificControlsContainer.innerHTML = `
+          <div>
+              <label for="hp-range">${t.range_label}</label>
+              <select id="hp-range">
+                  <option value="1-10">${t.range_1_10}</option>
+                  <option value="1-20">${t.range_1_20}</option>
+                  <option value="1-50">${t.range_1_50}</option>
+                  <option value="1-100">${t.range_1_100}</option>
+              </select>
+          </div>
+          <p style="font-size:0.9em; color:#555;">${t.description}</p>
+      `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -1607,6 +1623,156 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   }
 
+  function generateHouseProblems() {
+      const t = translations.script.house_problems;
+      problemsContainer.innerHTML = '';
+      const rangeInput = document.getElementById('hp-range');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+      const range = rangeInput.value;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(numberOfProblems) || numberOfProblems < 1) {
+          problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems}</p>`;
+          return;
+      }
+      if (numberOfProblems > 50) {
+          problemsContainer.innerHTML = `<p class="error-message">${t.error_max_problems}</p>`;
+          return;
+      }
+
+      const [min, max] = range.split('-').map(n => parseInt(n, 10));
+
+      function getRandomNumber(minVal, maxVal) {
+          return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'house-problems-grid';
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          let num1, num2, sum, missingPosition;
+
+          // Generate two numbers within range that when added stay within range
+          do {
+              num1 = getRandomNumber(1, Math.floor(max / 2));
+              num2 = getRandomNumber(1, Math.floor(max / 2));
+              sum = num1 + num2;
+          } while (sum > max);
+
+          // Randomly choose which number to hide (0 = left, 1 = center/sum, 2 = right)
+          missingPosition = Math.floor(Math.random() * 3);
+
+          const houseDiv = document.createElement('div');
+          houseDiv.className = 'house-problem';
+
+          // Create SVG house
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('viewBox', '0 0 200 170');
+          svg.setAttribute('width', '200');
+          svg.setAttribute('height', '170');
+
+          // House body (made taller for 4 lines)
+          const houseBody = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          houseBody.setAttribute('x', '40');
+          houseBody.setAttribute('y', '60');
+          houseBody.setAttribute('width', '120');
+          houseBody.setAttribute('height', '100');
+          houseBody.setAttribute('fill', '#e8f4f8');
+          houseBody.setAttribute('stroke', '#333');
+          houseBody.setAttribute('stroke-width', '2');
+
+          // Roof
+          const roof = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+          roof.setAttribute('points', '30,60 100,10 170,60');
+          roof.setAttribute('fill', '#d4a574');
+          roof.setAttribute('stroke', '#333');
+          roof.setAttribute('stroke-width', '2');
+
+          // Door (smaller and positioned at bottom)
+          const door = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          door.setAttribute('x', '90');
+          door.setAttribute('y', '140');
+          door.setAttribute('width', '20');
+          door.setAttribute('height', '20');
+          door.setAttribute('fill', '#8B4513');
+          door.setAttribute('stroke', '#333');
+          door.setAttribute('stroke-width', '1');
+
+          // Window
+          const window = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          window.setAttribute('x', '60');
+          window.setAttribute('y', '80');
+          window.setAttribute('width', '15');
+          window.setAttribute('height', '15');
+          window.setAttribute('fill', '#87CEEB');
+          window.setAttribute('stroke', '#333');
+          window.setAttribute('stroke-width', '1');
+
+          // Numbers on roof
+          const leftNum = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          leftNum.setAttribute('x', '55');
+          leftNum.setAttribute('y', '45');
+          leftNum.setAttribute('text-anchor', 'middle');
+          leftNum.setAttribute('font-family', 'Arial, sans-serif');
+          leftNum.setAttribute('font-size', '16');
+          leftNum.setAttribute('font-weight', 'bold');
+          leftNum.textContent = missingPosition === 0 ? '?' : num1.toString();
+
+          const centerNum = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          centerNum.setAttribute('x', '100');
+          centerNum.setAttribute('y', '30');
+          centerNum.setAttribute('text-anchor', 'middle');
+          centerNum.setAttribute('font-family', 'Arial, sans-serif');
+          centerNum.setAttribute('font-size', '18');
+          centerNum.setAttribute('font-weight', 'bold');
+          centerNum.setAttribute('fill', '#d4a574');
+          centerNum.setAttribute('stroke', '#333');
+          centerNum.setAttribute('stroke-width', '0.5');
+          centerNum.textContent = missingPosition === 1 ? '?' : sum.toString();
+
+          const rightNum = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          rightNum.setAttribute('x', '145');
+          rightNum.setAttribute('y', '45');
+          rightNum.setAttribute('text-anchor', 'middle');
+          rightNum.setAttribute('font-family', 'Arial, sans-serif');
+          rightNum.setAttribute('font-size', '16');
+          rightNum.setAttribute('font-weight', 'bold');
+          rightNum.textContent = missingPosition === 2 ? '?' : num2.toString();
+
+          // Add elements to SVG first
+          svg.appendChild(houseBody);
+          svg.appendChild(roof);
+          svg.appendChild(door);
+          svg.appendChild(window);
+
+          // Add 4 lines for writing equations inside the house rectangle (on top)
+          for (let lineIndex = 0; lineIndex < 4; lineIndex++) {
+              const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              line.setAttribute('x1', '45');  // Start a bit inside the house wall
+              line.setAttribute('x2', '155'); // End a bit before the house wall
+              line.setAttribute('y1', (102 + lineIndex * 16).toString());  // Adjusted spacing and position
+              line.setAttribute('y2', (102 + lineIndex * 16).toString());
+              line.setAttribute('stroke', '#666');
+              line.setAttribute('stroke-width', '1');
+              svg.appendChild(line);
+          }
+
+          // Add numbers last so they're on top
+          svg.appendChild(leftNum);
+          svg.appendChild(centerNum);
+          svg.appendChild(rightNum);
+
+          houseDiv.appendChild(svg);
+          gridContainer.appendChild(houseDiv);
+      }
+
+      problemsContainer.appendChild(gridContainer);
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -1637,6 +1803,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "geometry": renderGeometryControls(); break;
       case "linear-equations": renderLinearEquationsControls(); break;
       case "word-problems": renderWordProblemsControls(); break;
+      case "house-problems": renderHouseProblemsControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -1663,6 +1830,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "geometry": generateGeometryProblems(); break;
       case "linear-equations": generateLinearEquationsProblems(); break;
       case "word-problems": generateWordProblemsProblems(); break;
+      case "house-problems": generateHouseProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
