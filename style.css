@@ -1094,3 +1094,44 @@ footer {
     }
 }
 
+/* --- Pyramid Problems Styles --- */
+.pyramid-problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    align-items: start;
+}
+
+.pyramid-problem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+}
+
+/* Print styles for pyramid problems */
+@media print {
+    .pyramid-problems-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        page-break-inside: avoid;
+    }
+
+    .pyramid-problem {
+        break-inside: avoid;
+        margin-bottom: 20px;
+        box-shadow: none;
+        border: 1px solid #333;
+    }
+
+    .pyramid-problem svg {
+        width: 280px !important;
+        height: 180px !important;
+    }
+}
+

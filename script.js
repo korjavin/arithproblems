@@ -359,6 +359,38 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
   }
 
+  function renderPyramidProblemsControls() {
+      const t = translations.script.pyramid_problems;
+      topicSpecificControlsContainer.innerHTML = `
+          <div>
+              <label for="pp-size">${t.pyramid_size_label}</label>
+              <select id="pp-size">
+                  <option value="3">${t.size_3}</option>
+                  <option value="4">${t.size_4}</option>
+                  <option value="5">${t.size_5}</option>
+              </select>
+          </div>
+          <div>
+              <label for="pp-range">${t.range_label}</label>
+              <select id="pp-range">
+                  <option value="1-10">${t.range_1_10}</option>
+                  <option value="1-20">${t.range_1_20}</option>
+                  <option value="1-50">${t.range_1_50}</option>
+              </select>
+          </div>
+          <div>
+              <label for="pp-missing">${t.missing_label}</label>
+              <select id="pp-missing">
+                  <option value="random">${t.missing_random}</option>
+                  <option value="top">${t.missing_top}</option>
+                  <option value="middle">${t.missing_middle}</option>
+                  <option value="bottom">${t.missing_bottom}</option>
+              </select>
+          </div>
+          <p style="font-size:0.9em; color:#555;">${t.description}</p>
+      `;
+  }
+
   // --- Helper Functions ---
   function gcd(a, b) {
       a = Math.abs(a);
@@ -1773,6 +1805,174 @@ document.addEventListener("DOMContentLoaded", () => {
       problemsContainer.appendChild(gridContainer);
   }
 
+  function generatePyramidProblems() {
+      const t = translations.script.pyramid_problems;
+      problemsContainer.innerHTML = '';
+      const sizeInput = document.getElementById('pp-size');
+      const rangeInput = document.getElementById('pp-range');
+      const missingInput = document.getElementById('pp-missing');
+      const numberOfProblemsInput = document.getElementById('num-problems');
+
+      const pyramidSize = parseInt(sizeInput.value, 10);
+      const range = rangeInput.value;
+      const missingType = missingInput.value;
+      const numberOfProblems = parseInt(numberOfProblemsInput.value, 10);
+
+      if (isNaN(numberOfProblems) || numberOfProblems < 1) {
+          problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems}</p>`;
+          return;
+      }
+      if (numberOfProblems > 20) {
+          problemsContainer.innerHTML = `<p class="error-message">${t.error_max_problems}</p>`;
+          return;
+      }
+
+      const [min, max] = range.split('-').map(n => parseInt(n, 10));
+
+      function getRandomNumber(minVal, maxVal) {
+          return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+      }
+
+      function buildPyramid(baseNumbers) {
+          const pyramid = [baseNumbers.slice()];
+
+          for (let layer = baseNumbers.length - 1; layer > 0; layer--) {
+              const nextLayer = [];
+              for (let i = 0; i < layer; i++) {
+                  nextLayer.push(pyramid[pyramid.length - 1][i] + pyramid[pyramid.length - 1][i + 1]);
+              }
+              pyramid.push(nextLayer);
+          }
+          return pyramid;
+      }
+
+      const h3Title = document.createElement('h3');
+      h3Title.textContent = t.problems_title;
+      problemsContainer.appendChild(h3Title);
+
+      const gridContainer = document.createElement('div');
+      gridContainer.className = 'pyramid-problems-grid';
+
+      for (let i = 0; i < numberOfProblems; i++) {
+          // Generate base numbers
+          const baseNumbers = [];
+          for (let j = 0; j < pyramidSize; j++) {
+              baseNumbers.push(getRandomNumber(1, Math.floor(max / pyramidSize)));
+          }
+
+          // Build complete pyramid
+          const completePyramid = buildPyramid(baseNumbers);
+
+          // Create display pyramid with missing numbers
+          const displayPyramid = completePyramid.map(layer => layer.slice());
+
+          // Determine which numbers to hide based on missing type
+          switch (missingType) {
+              case 'top':
+                  displayPyramid[displayPyramid.length - 1][0] = '?';
+                  break;
+              case 'middle':
+                  // Hide 1-2 numbers from middle layers
+                  for (let layer = 1; layer < displayPyramid.length - 1; layer++) {
+                      const hideCount = Math.random() < 0.5 ? 1 : 2;
+                      for (let h = 0; h < hideCount && h < displayPyramid[layer].length; h++) {
+                          const randomPos = Math.floor(Math.random() * displayPyramid[layer].length);
+                          displayPyramid[layer][randomPos] = '?';
+                      }
+                  }
+                  break;
+              case 'bottom':
+                  // Hide all numbers except the bottom layer (keep base numbers, hide all calculated layers)
+                  for (let layer = 1; layer < displayPyramid.length; layer++) {
+                      for (let pos = 0; pos < displayPyramid[layer].length; pos++) {
+                          displayPyramid[layer][pos] = '?';
+                      }
+                  }
+                  break;
+              case 'random':
+              default:
+                  // Hide 2-4 random numbers from any layer
+                  const totalPositions = completePyramid.flat().length;
+                  const hideCount = Math.min(Math.floor(totalPositions * 0.3), 4);
+                  const hiddenPositions = new Set();
+
+                  while (hiddenPositions.size < hideCount) {
+                      const layer = Math.floor(Math.random() * displayPyramid.length);
+                      const pos = Math.floor(Math.random() * displayPyramid[layer].length);
+                      const key = `${layer}-${pos}`;
+
+                      if (!hiddenPositions.has(key)) {
+                          hiddenPositions.add(key);
+                          displayPyramid[layer][pos] = '?';
+                      }
+                  }
+                  break;
+          }
+
+          const pyramidDiv = document.createElement('div');
+          pyramidDiv.className = 'pyramid-problem';
+
+          // Create SVG pyramid
+          const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          svg.setAttribute('viewBox', '0 0 300 200');
+          svg.setAttribute('width', '300');
+          svg.setAttribute('height', '200');
+
+          // Add decorative grass at bottom
+          const grass = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+          grass.setAttribute('x', '0');
+          grass.setAttribute('y', '190');
+          grass.setAttribute('width', '300');
+          grass.setAttribute('height', '10');
+          grass.setAttribute('fill', '#90EE90');
+          svg.appendChild(grass);
+
+          // Draw pyramid stones
+          const stoneSize = 40;
+          const stoneSpacing = 45;
+
+          for (let layerIndex = 0; layerIndex < displayPyramid.length; layerIndex++) {
+              const layer = displayPyramid[layerIndex];
+              const y = 180 - layerIndex * 35;
+              const startX = 150 - (layer.length * stoneSpacing) / 2 + stoneSpacing / 2;
+
+              for (let stoneIndex = 0; stoneIndex < layer.length; stoneIndex++) {
+                  const x = startX + stoneIndex * stoneSpacing;
+
+                  // Stone (ellipse for organic look)
+                  const stone = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                  stone.setAttribute('cx', x.toString());
+                  stone.setAttribute('cy', y.toString());
+                  stone.setAttribute('rx', (stoneSize / 2).toString());
+                  stone.setAttribute('ry', (stoneSize / 2.5).toString());
+                  stone.setAttribute('fill', '#D2B48C');
+                  stone.setAttribute('stroke', '#8B7355');
+                  stone.setAttribute('stroke-width', '2');
+                  svg.appendChild(stone);
+
+                  // Number on stone (only show if not missing)
+                  if (layer[stoneIndex] !== '?') {
+                      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                      text.setAttribute('x', x.toString());
+                      text.setAttribute('y', (y + 5).toString());
+                      text.setAttribute('text-anchor', 'middle');
+                      text.setAttribute('font-family', 'Arial, sans-serif');
+                      text.setAttribute('font-size', '14');
+                      text.setAttribute('font-weight', 'bold');
+                      text.setAttribute('fill', '#333');
+                      text.textContent = layer[stoneIndex].toString();
+                      svg.appendChild(text);
+                  }
+              }
+          }
+
+          pyramidDiv.appendChild(svg);
+          gridContainer.appendChild(pyramidDiv);
+      }
+
+      problemsContainer.appendChild(gridContainer);
+  }
+
   // --- Event Handlers ---
   function handleTopicCardClick(event) {
     const card = event.currentTarget;
@@ -1804,6 +2004,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "linear-equations": renderLinearEquationsControls(); break;
       case "word-problems": renderWordProblemsControls(); break;
       case "house-problems": renderHouseProblemsControls(); break;
+      case "pyramid-problems": renderPyramidProblemsControls(); break;
       default: console.error(translations.script.unknown_topic_error, currentTopic);
     }
   }
@@ -1831,6 +2032,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case "linear-equations": generateLinearEquationsProblems(); break;
       case "word-problems": generateWordProblemsProblems(); break;
       case "house-problems": generateHouseProblems(); break;
+      case "pyramid-problems": generatePyramidProblems(); break;
       default: console.error("Unknown topic for generation:", currentTopic); problemsContainer.innerHTML = `<p>${translations.script.unknown_topic_generation_error}</p>`;
     }
   }
