@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const topicKey = currentTopic.replace(/-/g, '_');
             if (translations.script[topicKey]) {
                 renderer(DOM.topicSpecificControlsContainer, translations.script[topicKey]);
+            } else {
+                // Fallback: render with empty translations object
+                renderer(DOM.topicSpecificControlsContainer, {});
             }
         }
     }
@@ -381,7 +384,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle || 'Sum of |x| + |y| digital roots for verification'}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${error.message}</p>`;
+            DOM.problemsContainer.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
         }
     }
 
