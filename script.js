@@ -352,12 +352,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 solutionRange: parseInt(document.getElementById('eq-solution-range').value, 10),
                 allowNegativeSolutions: document.getElementById('eq-allow-negative-solutions').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                includeBrackets: document.getElementById('eq-include-brackets').checked,
             };
 
             if (variableCount === 1) {
                 // Single variable parameters
                 params.equationType = document.getElementById('eq-equation-type').value;
-                params.includeBrackets = document.getElementById('eq-include-brackets').checked;
             } else {
                 // Multi-variable parameters
                 params.systemType = document.getElementById('eq-system-type').value;
