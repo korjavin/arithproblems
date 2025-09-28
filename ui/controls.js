@@ -200,33 +200,81 @@ export function renderGeometryControls(container, t) {
 export function renderLinearEquationsControls(container, t) {
     container.innerHTML = `
         <div>
-            <label for="eq-equation-type">${t.equation_type_label}</label>
-            <select id="eq-equation-type">
-                <option value="mixed">${t.mixed_equations_option}</option>
-                <option value="one-step">${t.one_step_option}</option>
-                <option value="two-step">${t.two_step_option}</option>
-                <option value="with-fractions">${t.with_fractions_option}</option>
-                <option value="with-brackets">${t.with_brackets_option || 'With Brackets'}</option>
+            <label for="eq-variable-count">${t.variable_count_label || 'Number of Variables:'}</label>
+            <select id="eq-variable-count">
+                <option value="1">1 Variable (x)</option>
+                <option value="2">2 Variables (x, y)</option>
+                <option value="3">3 Variables (x, y, z)</option>
+                <option value="4">4 Variables (x, y, z, w)</option>
             </select>
         </div>
-        <div>
-            <input type="checkbox" id="eq-include-brackets">
-            <label for="eq-include-brackets">${t.include_brackets_label || 'Include Bracket Equations'}</label>
+
+        <div id="eq-single-var-controls">
+            <div>
+                <label for="eq-equation-type">${t.equation_type_label || 'Equation Type:'}</label>
+                <select id="eq-equation-type">
+                    <option value="mixed">${t.mixed_equations_option || 'Mixed'}</option>
+                    <option value="one-step">${t.one_step_option || 'One Step'}</option>
+                    <option value="two-step">${t.two_step_option || 'Two Step'}</option>
+                    <option value="with-fractions">${t.with_fractions_option || 'With Fractions'}</option>
+                    <option value="with-brackets">${t.with_brackets_option || 'With Brackets'}</option>
+                </select>
+            </div>
+            <div>
+                <input type="checkbox" id="eq-include-brackets">
+                <label for="eq-include-brackets">${t.include_brackets_label || 'Include Bracket Equations'}</label>
+            </div>
         </div>
+
+        <div id="eq-multi-var-controls" style="display: none;">
+            <div>
+                <label for="eq-system-type">${t.system_type_label || 'System Type:'}</label>
+                <select id="eq-system-type">
+                    <option value="mixed">${t.mixed_systems_option || 'Mixed'}</option>
+                    <option value="elimination-friendly">${t.elimination_friendly_option || 'Elimination Friendly'}</option>
+                    <option value="substitution-friendly">${t.substitution_friendly_option || 'Substitution Friendly'}</option>
+                    <option value="general">${t.general_option || 'General'}</option>
+                </select>
+            </div>
+            <div>
+                <input type="checkbox" id="eq-integer-solutions-only" checked>
+                <label for="eq-integer-solutions-only">${t.integer_solutions_only_label || 'Integer Solutions Only'}</label>
+            </div>
+        </div>
+
         <div>
-            <label for="eq-coefficient-range">${t.coefficient_range_label}</label>
+            <label for="eq-coefficient-range">${t.coefficient_range_label || 'Coefficient Range:'}</label>
             <input type="number" id="eq-coefficient-range" value="5" min="1" max="10">
         </div>
         <div>
-            <label for="eq-solution-range">${t.solution_range_label}</label>
+            <label for="eq-solution-range">${t.solution_range_label || 'Solution Range:'}</label>
             <input type="number" id="eq-solution-range" value="12" min="1" max="50">
         </div>
         <div>
             <input type="checkbox" id="eq-allow-negative-solutions">
-            <label for="eq-allow-negative-solutions">${t.allow_negative_solutions_label}</label>
+            <label for="eq-allow-negative-solutions">${t.allow_negative_solutions_label || 'Allow Negative Solutions'}</label>
         </div>
-        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+        <p style="font-size:0.9em; color:#555;">${t.description || 'Generate linear equations with selectable number of variables (1-4).'}</p>
     `;
+
+    // Add event listener to toggle controls based on variable count
+    const variableCountSelect = container.querySelector('#eq-variable-count');
+    const singleVarControls = container.querySelector('#eq-single-var-controls');
+    const multiVarControls = container.querySelector('#eq-multi-var-controls');
+
+    function updateControlsVisibility() {
+        const count = parseInt(variableCountSelect.value);
+        if (count === 1) {
+            singleVarControls.style.display = 'block';
+            multiVarControls.style.display = 'none';
+        } else {
+            singleVarControls.style.display = 'none';
+            multiVarControls.style.display = 'block';
+        }
+    }
+
+    variableCountSelect.addEventListener('change', updateControlsVisibility);
+    updateControlsVisibility(); // Set initial state
 }
 
 export function renderLinearEquationsTwoVarsControls(container, t) {

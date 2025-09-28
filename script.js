@@ -10,8 +10,7 @@ import { generateProportionData } from './generators/proportion.js';
 import { generateDecimalRationalData } from './generators/decimal-rational.js';
 import { generatePercentageData } from './generators/percentage.js';
 import { generateGeometryData } from './generators/geometry.js';
-import { generateLinearEquationsData } from './generators/linear-equations.js';
-import { generateLinearEquationsTwoVarsData } from './generators/linear-equations-two-vars.js';
+import { generateLinearEquationsNVarsData } from './generators/linear-equations-n-vars.js';
 import { generateWordProblemsData } from './generators/word-problems.js';
 import { generateHouseProblemsData } from './generators/house-problems.js';
 import { generatePyramidProblemsData } from './generators/pyramid-problems.js';
@@ -43,7 +42,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "percentage": controls.renderPercentageControls,
         "geometry": controls.renderGeometryControls,
         "linear-equations": controls.renderLinearEquationsControls,
-        "linear-equations-two-vars": controls.renderLinearEquationsTwoVarsControls,
         "word-problems": controls.renderWordProblemsControls,
         "house-problems": controls.renderHouseProblemsControls,
         "pyramid-problems": controls.renderPyramidProblemsControls,
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         "percentage": renderPercentageProblems,
         "geometry": renderGeometryProblems,
         "linear-equations": renderLinearEquationsProblems,
-        "linear-equations-two-vars": renderLinearEquationsTwoVarsProblems,
         "word-problems": renderWordProblemsProblems,
         "house-problems": renderHouseProblems,
         "pyramid-problems": renderPyramidProblems,
@@ -346,42 +343,47 @@ document.addEventListener("DOMContentLoaded", async () => {
         const t = translations.script.linear_equations;
         DOM.problemsContainer.innerHTML = '';
         try {
-            const { problems, digitalRoots } = generateLinearEquationsData({
-                equationType: document.getElementById('eq-equation-type').value,
+            const variableCount = parseInt(document.getElementById('eq-variable-count').value);
+
+            // Prepare parameters based on variable count
+            const params = {
+                variableCount,
                 coefficientRange: parseInt(document.getElementById('eq-coefficient-range').value, 10),
                 solutionRange: parseInt(document.getElementById('eq-solution-range').value, 10),
                 allowNegativeSolutions: document.getElementById('eq-allow-negative-solutions').checked,
-                includeBrackets: document.getElementById('eq-include-brackets').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
-            });
+            };
 
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text}</span><br><span class="equation">${p.text}</span><div class="answer-space"></div></div></div>`).join('')}</div>`;
-
-            if (digitalRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+            if (variableCount === 1) {
+                // Single variable parameters
+                params.equationType = document.getElementById('eq-equation-type').value;
+                params.includeBrackets = document.getElementById('eq-include-brackets').checked;
+            } else {
+                // Multi-variable parameters
+                params.systemType = document.getElementById('eq-system-type').value;
+                params.integerSolutionsOnly = document.getElementById('eq-integer-solutions-only').checked;
             }
-        } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_coefficient_range || error.message}</p>`;
-        }
-    }
 
-    function renderLinearEquationsTwoVarsProblems(translations) {
-        const t = translations.script.linear_equations_two_vars || translations.script.linear_equations;
-        DOM.problemsContainer.innerHTML = '';
-        try {
-            const { problems, digitalRoots } = generateLinearEquationsTwoVarsData({
-                systemType: document.getElementById('eq2-system-type').value,
-                coefficientRange: parseInt(document.getElementById('eq2-coefficient-range').value, 10),
-                solutionRange: parseInt(document.getElementById('eq2-solution-range').value, 10),
-                allowNegativeSolutions: document.getElementById('eq2-allow-negative-solutions').checked,
-                integerSolutionsOnly: document.getElementById('eq2-integer-solutions-only').checked,
-                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
-            });
+            const { problems, digitalRoots } = generateLinearEquationsNVarsData(params);
 
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${t.solve_system_text || 'Solve the system:'}</span><br><div class="system-equations"><div class="equation">${p.equation1}</div><div class="equation">${p.equation2}</div></div><div class="answer-space"><br></div></div></div>`).join('')}</div>`;
+            // Render problems based on variable count
+            if (variableCount === 1) {
+                // Single variable equations
+                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text || 'Solve for x:'}</span><br><span class="equation">${p.text}</span><div class="answer-space"></div></div></div>`).join('')}</div>`;
+            } else {
+                // Multi-variable systems
+                const variableNames = ['x', 'y', 'z', 'w'].slice(0, variableCount);
+                const solveText = `Solve for ${variableNames.join(', ')}:`;
+
+                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount-1)}</div></div></div>`).join('')}</div>`;
+            }
 
             if (digitalRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle || 'Sum of |x| + |y| digital roots for verification'}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                const subtitle = variableCount === 1 ?
+                    (t.digital_root_grid_subtitle || 'Digital roots for verification') :
+                    `Sum of |${['x', 'y', 'z', 'w'].slice(0, variableCount).join('| + |')}| digital roots for verification`;
+
+                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
             DOM.problemsContainer.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
