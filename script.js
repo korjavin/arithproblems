@@ -367,11 +367,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.problemsContainer.innerHTML = '';
         try {
             const { problems, digitalRoots } = generateLinearEquationsTwoVarsData({
-                systemType: document.getElementById('eq-system-type').value,
-                coefficientRange: parseInt(document.getElementById('eq-coefficient-range').value, 10),
-                solutionRange: parseInt(document.getElementById('eq-solution-range').value, 10),
-                allowNegativeSolutions: document.getElementById('eq-allow-negative-solutions').checked,
-                integerSolutionsOnly: document.getElementById('eq-integer-solutions-only').checked,
+                systemType: document.getElementById('eq2-system-type').value,
+                coefficientRange: parseInt(document.getElementById('eq2-coefficient-range').value, 10),
+                solutionRange: parseInt(document.getElementById('eq2-solution-range').value, 10),
+                allowNegativeSolutions: document.getElementById('eq2-allow-negative-solutions').checked,
+                integerSolutionsOnly: document.getElementById('eq2-integer-solutions-only').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
 

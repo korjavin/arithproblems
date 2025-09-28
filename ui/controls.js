@@ -232,8 +232,8 @@ export function renderLinearEquationsControls(container, t) {
 export function renderLinearEquationsTwoVarsControls(container, t) {
     container.innerHTML = `
         <div>
-            <label for="eq-system-type">${t.system_type_label || 'System Type:'}</label>
-            <select id="eq-system-type">
+            <label for="eq2-system-type">${t.system_type_label || 'System Type:'}</label>
+            <select id="eq2-system-type">
                 <option value="mixed">${t.mixed_systems_option || 'Mixed'}</option>
                 <option value="elimination-friendly">${t.elimination_friendly_option || 'Elimination Friendly'}</option>
                 <option value="substitution-friendly">${t.substitution_friendly_option || 'Substitution Friendly'}</option>
@@ -241,20 +241,20 @@ export function renderLinearEquationsTwoVarsControls(container, t) {
             </select>
         </div>
         <div>
-            <input type="checkbox" id="eq-integer-solutions-only" checked>
-            <label for="eq-integer-solutions-only">${t.integer_solutions_only_label || 'Integer Solutions Only'}</label>
+            <input type="checkbox" id="eq2-integer-solutions-only" checked>
+            <label for="eq2-integer-solutions-only">${t.integer_solutions_only_label || 'Integer Solutions Only'}</label>
         </div>
         <div>
-            <label for="eq-coefficient-range">${t.coefficient_range_label || 'Coefficient Range:'}</label>
-            <input type="number" id="eq-coefficient-range" value="5" min="1" max="10">
+            <label for="eq2-coefficient-range">${t.coefficient_range_label || 'Coefficient Range:'}</label>
+            <input type="number" id="eq2-coefficient-range" value="5" min="1" max="10">
         </div>
         <div>
-            <label for="eq-solution-range">${t.solution_range_label || 'Solution Range:'}</label>
-            <input type="number" id="eq-solution-range" value="12" min="1" max="20">
+            <label for="eq2-solution-range">${t.solution_range_label || 'Solution Range:'}</label>
+            <input type="number" id="eq2-solution-range" value="12" min="1" max="20">
         </div>
         <div>
-            <input type="checkbox" id="eq-allow-negative-solutions">
-            <label for="eq-allow-negative-solutions">${t.allow_negative_solutions_label || 'Allow Negative Solutions'}</label>
+            <input type="checkbox" id="eq2-allow-negative-solutions">
+            <label for="eq2-allow-negative-solutions">${t.allow_negative_solutions_label || 'Allow Negative Solutions'}</label>
         </div>
         <p style="font-size:0.9em; color:#555;">${t.description || 'Generate systems of two linear equations with two variables (x, y).'}</p>
     `;
