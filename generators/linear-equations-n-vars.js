@@ -48,6 +48,18 @@ function formatCoefficient(coeff, variable, isFirst = false) {
     return `${sign}${absCoeff}${variable}`;
 }
 
+function formatConstant(constant, isFirst = false) {
+    if (isFirst) {
+        return constant.toString();
+    }
+
+    if (constant < 0) {
+        return ` - ${Math.abs(constant)}`;
+    } else {
+        return ` + ${constant}`;
+    }
+}
+
 function formatEquation(coefficients, constant, variables) {
     let equation = '';
     let hasTerms = false;
@@ -115,13 +127,13 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
         if (operationType === 0) { // x + a = b
             const a = getRandomCoefficient(coefficientRange);
             const b = solution + a;
-            return { text: `${variable} + ${a} = ${b}`, type: 'one-step' };
+            return { text: `${variable}${formatConstant(a)} = ${b}`, type: 'one-step' };
         } else if (operationType === 1) { // x - a = b
             const a = getRandomCoefficient(coefficientRange);
             const b = solution - a;
-            return { text: `${variable} - ${a} = ${b}`, type: 'one-step' };
+            return { text: `${variable}${formatConstant(-a)} = ${b}`, type: 'one-step' };
         } else { // a - x = b
-            const a = Math.abs(solution) + getRandomCoefficient(coefficientRange);
+            const a = Math.abs(solution) + Math.abs(getRandomCoefficient(coefficientRange));
             const b = a - solution;
             return { text: `${a} - ${variable} = ${b}`, type: 'one-step' };
         }
@@ -130,16 +142,16 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
         const b = getRandomCoefficient(coefficientRange);
         if (Math.random() < 0.5) { // ax + b = c
             const c = a * solution + b;
-            return { text: `${a}${variable} + ${b} = ${c}`, type: 'two-step' };
+            return { text: `${formatCoefficient(a, variable, true)}${formatConstant(b)} = ${c}`, type: 'two-step' };
         } else { // ax - b = c
             const c = a * solution - b;
-            return { text: `${a}${variable} - ${b} = ${c}`, type: 'two-step' };
+            return { text: `${formatCoefficient(a, variable, true)}${formatConstant(-b)} = ${c}`, type: 'two-step' };
         }
     } else if (currentType === 'with-fractions') {
         const a = getRandomInt(2, Math.min(coefficientRange, 5));
         const b = getRandomCoefficient(coefficientRange);
         const c = Math.round(solution / a) + b;
-        return { text: `${variable}/${a} + ${b} = ${c}`, type: 'with-fractions' };
+        return { text: `${variable}/${a}${formatConstant(b)} = ${c}`, type: 'with-fractions' };
     }
 }
 
