@@ -4,7 +4,7 @@
   "description": "This static web application is designed for teachers, parents, and students to quickly generate customized math worksheets. It covers comprehensive math topics from basic arithmetic to advanced rational number operations, allowing users to specify difficulty and problem parameters. Each worksheet is generated client-side (no backend needed) with integrated self-checking mechanisms using digital roots and control sums. The goal is to provide an offline-friendly tool that produces endless random problem sets with built-in verification for independent learning.",
   "main": "script.js",
   "scripts": {
-    "test": "node test-utils.js && node test-multiplication-table.js && node test-addition-subtraction.js && node test-multiplication-division.js && node test-rational-canonical.js && node test-rational-operations.js && node test-rational-mult-div.js && node test-proportion.js && node test-decimal-rational.js && node test-percentage.js && node test-geometry.js && node test-linear-equations.js && node test-word-problems.js && node test-house-problems.js && node test-pyramid-problems.js"
+    "test": "node test-utils.js && node test-multiplication-table.js && node test-addition-subtraction.js && node test-multiplication-division.js && node test-rational-canonical.js && node test-rational-operations.js && node test-rational-mult-div.js && node test-proportion.js && node test-decimal-rational.js && node test-percentage.js && node test-geometry.js && node test-linear-equations.js && node test-linear-equations-two-vars.js && node test-word-problems.js && node test-house-problems.js && node test-pyramid-problems.js"
   },
   "repository": {
     "type": "git",

@@ -200,13 +200,37 @@ export function renderGeometryControls(container, t) {
 export function renderLinearEquationsControls(container, t) {
     container.innerHTML = `
         <div>
-            <label for="eq-equation-type">${t.equation_type_label}</label>
-            <select id="eq-equation-type">
-                <option value="mixed">${t.mixed_equations_option}</option>
-                <option value="one-step">${t.one_step_option}</option>
-                <option value="two-step">${t.two_step_option}</option>
-                <option value="with-fractions">${t.with_fractions_option}</option>
+            <label for="eq-variable-count">${t.variable_count_label || 'Number of Variables:'}</label>
+            <select id="eq-variable-count">
+                <option value="one">${t.one_variable_option || 'One Variable (x)'}</option>
+                <option value="two">${t.two_variable_option || 'Two Variables (x, y)'}</option>
             </select>
+        </div>
+        <div id="eq-single-var-controls">
+            <div>
+                <label for="eq-equation-type">${t.equation_type_label}</label>
+                <select id="eq-equation-type">
+                    <option value="mixed">${t.mixed_equations_option}</option>
+                    <option value="one-step">${t.one_step_option}</option>
+                    <option value="two-step">${t.two_step_option}</option>
+                    <option value="with-fractions">${t.with_fractions_option}</option>
+                </select>
+            </div>
+        </div>
+        <div id="eq-two-var-controls" style="display: none;">
+            <div>
+                <label for="eq-system-type">${t.system_type_label || 'System Type:'}</label>
+                <select id="eq-system-type">
+                    <option value="mixed">${t.mixed_systems_option || 'Mixed'}</option>
+                    <option value="elimination-friendly">${t.elimination_friendly_option || 'Elimination Friendly'}</option>
+                    <option value="substitution-friendly">${t.substitution_friendly_option || 'Substitution Friendly'}</option>
+                    <option value="general">${t.general_option || 'General'}</option>
+                </select>
+            </div>
+            <div>
+                <input type="checkbox" id="eq-integer-solutions-only" checked>
+                <label for="eq-integer-solutions-only">${t.integer_solutions_only_label || 'Integer Solutions Only'}</label>
+            </div>
         </div>
         <div>
             <label for="eq-coefficient-range">${t.coefficient_range_label}</label>
@@ -222,6 +246,21 @@ export function renderLinearEquationsControls(container, t) {
         </div>
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
+
+    // Add event listener to toggle controls based on variable count
+    const variableCountSelect = container.querySelector('#eq-variable-count');
+    const singleVarControls = container.querySelector('#eq-single-var-controls');
+    const twoVarControls = container.querySelector('#eq-two-var-controls');
+
+    variableCountSelect.addEventListener('change', function() {
+        if (this.value === 'one') {
+            singleVarControls.style.display = 'block';
+            twoVarControls.style.display = 'none';
+        } else {
+            singleVarControls.style.display = 'none';
+            twoVarControls.style.display = 'block';
+        }
+    });
 }
 
 export function renderWordProblemsControls(container, t) {
