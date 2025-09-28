@@ -60,9 +60,14 @@ function formatConstant(constant, isFirst = false) {
     }
 }
 
-function formatEquation(coefficients, constant, variables) {
+function formatEquation(coefficients, constant, variables, includeBrackets = false) {
     let equation = '';
     let hasTerms = false;
+
+    // If brackets are enabled, randomly apply them to some equations
+    if (includeBrackets && Math.random() < 0.4) {
+        return formatEquationWithBrackets(coefficients, constant, variables);
+    }
 
     for (let i = 0; i < coefficients.length; i++) {
         if (coefficients[i] !== 0) {
@@ -78,6 +83,136 @@ function formatEquation(coefficients, constant, variables) {
 
     equation += ` = ${constant}`;
     return equation;
+}
+
+function formatEquationWithBrackets(coefficients, constant, variables) {
+    // Strategy: Group 2-3 terms in brackets with a coefficient
+    const nonZeroIndices = coefficients.map((coeff, index) => ({ coeff, index }))
+                                      .filter(item => item.coeff !== 0);
+
+    if (nonZeroIndices.length < 2) {
+        // Not enough terms for brackets, fall back to normal formatting
+        return formatEquation(coefficients, constant, variables, false);
+    }
+
+    const bracketType = Math.floor(Math.random() * 3);
+
+    if (bracketType === 0) {
+        // Type 1: a(x + y) + other terms
+        const groupSize = Math.min(2, nonZeroIndices.length);
+        const groupCoeff = Math.random() < 0.5 ? 2 : 3;
+
+        let equation = '';
+        let hasTerms = false;
+
+        // Create bracket group
+        let bracketTerms = '';
+        let bracketHasTerms = false;
+        for (let i = 0; i < groupSize; i++) {
+            const item = nonZeroIndices[i];
+            const termCoeff = Math.round(item.coeff / groupCoeff) || 1;
+            bracketTerms += formatCoefficient(termCoeff, variables[item.index], !bracketHasTerms);
+            bracketHasTerms = true;
+        }
+
+        if (bracketHasTerms) {
+            equation += `${groupCoeff}(${bracketTerms})`;
+            hasTerms = true;
+        }
+
+        // Add remaining terms
+        for (let i = groupSize; i < nonZeroIndices.length; i++) {
+            const item = nonZeroIndices[i];
+            equation += formatCoefficient(item.coeff, variables[item.index], !hasTerms);
+            hasTerms = true;
+        }
+
+        equation += ` = ${constant}`;
+        return equation;
+
+    } else if (bracketType === 1) {
+        // Type 2: (ax + by) + cz + ...
+        const groupSize = Math.min(2, nonZeroIndices.length);
+
+        let equation = '';
+        let hasTerms = false;
+
+        // Create bracket group without external coefficient
+        let bracketTerms = '';
+        let bracketHasTerms = false;
+        for (let i = 0; i < groupSize; i++) {
+            const item = nonZeroIndices[i];
+            bracketTerms += formatCoefficient(item.coeff, variables[item.index], !bracketHasTerms);
+            bracketHasTerms = true;
+        }
+
+        if (bracketHasTerms) {
+            equation += `(${bracketTerms})`;
+            hasTerms = true;
+        }
+
+        // Add remaining terms
+        for (let i = groupSize; i < nonZeroIndices.length; i++) {
+            const item = nonZeroIndices[i];
+            equation += formatCoefficient(item.coeff, variables[item.index], !hasTerms);
+            hasTerms = true;
+        }
+
+        equation += ` = ${constant}`;
+        return equation;
+
+    } else {
+        // Type 3: Multiple bracket groups (for 3+ variables)
+        if (nonZeroIndices.length >= 4) {
+            const group1Size = 2;
+            const group2Size = 2;
+
+            let equation = '';
+            let hasTerms = false;
+
+            // First bracket group
+            let bracketTerms1 = '';
+            let bracket1HasTerms = false;
+            for (let i = 0; i < group1Size; i++) {
+                const item = nonZeroIndices[i];
+                bracketTerms1 += formatCoefficient(item.coeff, variables[item.index], !bracket1HasTerms);
+                bracket1HasTerms = true;
+            }
+
+            if (bracket1HasTerms) {
+                equation += `(${bracketTerms1})`;
+                hasTerms = true;
+            }
+
+            // Second bracket group
+            let bracketTerms2 = '';
+            let bracket2HasTerms = false;
+            for (let i = group1Size; i < group1Size + group2Size && i < nonZeroIndices.length; i++) {
+                const item = nonZeroIndices[i];
+                bracketTerms2 += formatCoefficient(item.coeff, variables[item.index], !bracket2HasTerms);
+                bracket2HasTerms = true;
+            }
+
+            if (bracket2HasTerms) {
+                const sign = hasTerms ? (Math.random() < 0.5 ? ' + ' : ' - ') : '';
+                equation += `${sign}(${bracketTerms2})`;
+                hasTerms = true;
+            }
+
+            // Add remaining terms
+            for (let i = group1Size + group2Size; i < nonZeroIndices.length; i++) {
+                const item = nonZeroIndices[i];
+                equation += formatCoefficient(item.coeff, variables[item.index], !hasTerms);
+                hasTerms = true;
+            }
+
+            equation += ` = ${constant}`;
+            return equation;
+        } else {
+            // Fall back to type 1 for fewer variables
+            return formatEquationWithBrackets(coefficients, constant, variables);
+        }
+    }
 }
 
 function generateSingleVariableEquation(variableNames, equationType, coefficientRange, solutionRange, allowNegativeSolutions, includeBrackets) {
@@ -155,7 +290,7 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
     }
 }
 
-function generateSystemOfEquations(variableCount, variables, systemType, coefficientRange, solutionRange, allowNegativeSolutions, integerSolutionsOnly) {
+function generateSystemOfEquations(variableCount, variables, systemType, coefficientRange, solutionRange, allowNegativeSolutions, integerSolutionsOnly, includeBrackets = false) {
     let attempts = 0;
     const maxAttempts = 100;
 
@@ -233,7 +368,7 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
         // Generate equation strings
         const equations = [];
         for (let i = 0; i < variableCount; i++) {
-            equations.push(formatEquation(matrix[i], constants[i], variables));
+            equations.push(formatEquation(matrix[i], constants[i], variables, includeBrackets));
         }
 
         return {
@@ -251,7 +386,7 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
         solution[variables[i]] = 1;
         const coeffs = new Array(variableCount).fill(0);
         coeffs[i] = 1;
-        equations.push(formatEquation(coeffs, 1, variables));
+        equations.push(formatEquation(coeffs, 1, variables, includeBrackets));
     }
 
     return { equations, solution, type: 'fallback' };
@@ -299,7 +434,7 @@ export function generateLinearEquationsNVarsData({
         } else {
             // System of equations
             problemData = generateSystemOfEquations(
-                variableCount, variables, systemType, coefficientRange, solutionRange, allowNegativeSolutions, integerSolutionsOnly
+                variableCount, variables, systemType, coefficientRange, solutionRange, allowNegativeSolutions, integerSolutionsOnly, includeBrackets
             );
             // Sum of absolute values of all variables
             solutionSum = Object.values(problemData.solution).reduce((sum, val) => sum + Math.abs(val), 0);

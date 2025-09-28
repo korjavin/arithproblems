@@ -220,10 +220,6 @@ export function renderLinearEquationsControls(container, t) {
                     <option value="with-brackets">${t.with_brackets_option || 'With Brackets'}</option>
                 </select>
             </div>
-            <div>
-                <input type="checkbox" id="eq-include-brackets">
-                <label for="eq-include-brackets">${t.include_brackets_label || 'Include Bracket Equations'}</label>
-            </div>
         </div>
 
         <div id="eq-multi-var-controls" style="display: none;">
@@ -240,6 +236,11 @@ export function renderLinearEquationsControls(container, t) {
                 <input type="checkbox" id="eq-integer-solutions-only" checked>
                 <label for="eq-integer-solutions-only">${t.integer_solutions_only_label || 'Integer Solutions Only'}</label>
             </div>
+        </div>
+
+        <div>
+            <input type="checkbox" id="eq-include-brackets">
+            <label for="eq-include-brackets">${t.include_brackets_label || 'Include Bracket Equations'}</label>
         </div>
 
         <div>
