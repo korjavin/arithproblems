@@ -30,6 +30,8 @@
     "house_problems_p": "Finde die fehlende Zahl auf den Hausdächern - ideal für junge Lernende",
     "pyramid_problems_h3": "Zahlenpyramiden-Aufgaben",
     "pyramid_problems_p": "Baue Pyramiden durch schrittweises Addieren von Zahlen",
+    "simplify_equations_h3": "Gleichungen vereinfachen",
+    "simplify_equations_p": "Algebraische Ausdrücke mit Klammern und Variablen vereinfachen.",
     "controls_panel_h2": "Steuerung",
     "num_problems_label": "Anzahl der Probleme:",
     "generate_button": "Arbeitsblatt erstellen",
@@ -304,6 +306,14 @@
             "problems_title": "Zahlenpyramiden-Aufgaben",
             "error_invalid_num_problems": "Bitte geben Sie eine gültige Anzahl von Problemen ein (>= 1).",
             "error_max_problems": "Maximal 20 Probleme für dieses Format. Bitte wählen Sie eine kleinere Zahl."
+        },
+        "simplify_equations": {
+            "complexity_label": "Komplexität:",
+            "description": "Vereinfachen Sie die algebraischen Ausdrücke. Das Endergebnis sollte in der Form ax + b sein. Die Kontrollsumme ist die Quersumme von |a| + |b|.",
+            "problems_title": "Gleichungen vereinfachen",
+            "control_sum_grid_title": "Kontrollsummen-Raster",
+            "control_sum_grid_subtitle": "Auf ax + b vereinfachen, dann die Quersumme von |a| + |b| finden.",
+            "error_message": "Fehler beim Erstellen der Vereinfachungsaufgaben."
         },
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",

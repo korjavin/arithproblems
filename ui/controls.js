@@ -74,6 +74,16 @@ export function renderRationalCanonicalControls(container, t) {
     `;
 }
 
+export function renderSimplifyEquationsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="se-complexity">${t.complexity_label}</label>
+            <input type="range" id="se-complexity" value="1" min="1" max="5">
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderRationalOperationsControls(container, t) {
     container.innerHTML = `
         <div>
