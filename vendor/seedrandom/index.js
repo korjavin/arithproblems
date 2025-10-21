@@ -251,3 +251,6 @@ if ((typeof module) == 'object' && module.exports) {
   [],     // pool: entropy pool starts empty
   Math    // math: package containing random, pow, and seedrandom
 );
+
+// ES module export
+export default seedrandom;

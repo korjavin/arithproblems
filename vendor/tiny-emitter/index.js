@@ -63,5 +63,5 @@ E.prototype = {
   }
 };
 
-module.exports = E;
-module.exports.TinyEmitter = E;
+export default E;
+export { E as TinyEmitter };
