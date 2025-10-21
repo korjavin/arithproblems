@@ -22,6 +22,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
 
+var seedrandomExport;
+
 (function (global, pool, math) {
 //
 // The following constants are related to IEEE 754 limits.
@@ -231,6 +233,7 @@ mixkey(math.random(), pool);
 //
 if ((typeof module) == 'object' && module.exports) {
   module.exports = seedrandom;
+  seedrandomExport = seedrandom;
   // When in node.js, try using crypto package for autoseeding.
   try {
     nodecrypto = require('crypto');
@@ -240,6 +243,7 @@ if ((typeof module) == 'object' && module.exports) {
 } else {
   // When included as a plain script, set up Math.seedrandom global.
   math['seed' + rngname] = seedrandom;
+  seedrandomExport = seedrandom;
 }
 
 
@@ -253,4 +257,4 @@ if ((typeof module) == 'object' && module.exports) {
 );
 
 // ES module export
-export default seedrandom;
+export default seedrandomExport;
