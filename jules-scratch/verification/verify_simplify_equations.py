@@ -6,6 +6,7 @@ def run(playwright):
     page = browser.new_page()
 
     page.goto('http://localhost:8000')
+    page.wait_for_load_state('networkidle')
 
     # Wait for the main header to be visible
     header = page.get_by_role("heading", name="Math Worksheet Generator")

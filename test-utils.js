@@ -1,10 +1,6 @@
 import assert from 'assert';
 import { gcd, digitalRoot } from './utils.js';
 
-export { log } from 'console';
-export { default as assert } from 'assert';
-
-
 function testGcd() {
     assert.strictEqual(gcd(48, 18), 6, 'Test Case 1 Failed: gcd(48, 18)');
     assert.strictEqual(gcd(101, 103), 1, 'Test Case 2 Failed: gcd(101, 103)');
