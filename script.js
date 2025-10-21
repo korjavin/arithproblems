@@ -14,6 +14,7 @@ import { generateLinearEquationsNVarsData } from './generators/linear-equations-
 import { generateWordProblemsData } from './generators/word-problems.js';
 import { generateHouseProblemsData } from './generators/house-problems.js';
 import { generatePyramidProblemsData } from './generators/pyramid-problems.js';
+import { generateSimplifyEquationsData } from './generators/simplify-equations.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOM fully loaded and parsed");
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "word-problems": controls.renderWordProblemsControls,
         "house-problems": controls.renderHouseProblemsControls,
         "pyramid-problems": controls.renderPyramidProblemsControls,
+        "simplify-equations": controls.renderSimplifyEquationsControls,
     };
 
     const problemRenderers = {
@@ -62,6 +64,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "word-problems": renderWordProblemsProblems,
         "house-problems": renderHouseProblems,
         "pyramid-problems": renderPyramidProblems,
+        "simplify-equations": renderSimplifyEquationsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -478,6 +481,27 @@ document.addEventListener("DOMContentLoaded", async () => {
             DOM.problemsContainer.appendChild(gridContainer);
         } catch (error) {
             DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems || error.message}</p>`;
+        }
+    }
+
+    function renderSimplifyEquationsProblems(translations) {
+        const t = translations.script.simplify_equations;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateSimplifyEquationsData({
+                complexity: parseInt(document.getElementById('se-complexity').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid simplify-equations-problem-grid">`;
+            html += problems.map(p => `<div class="simplify-equation-item"><div class="problem-content"><span class="equation">${p.expression} = </span><div class="answer-space"></div></div></div>`).join('');
+            html += `</div>`;
+
+            if (controlSums.length > 0) {
+                html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
+            }
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;
         }
     }
 

@@ -30,6 +30,8 @@
     "house_problems_p": "Find missing numbers on house roofs - great for young learners",
     "pyramid_problems_h3": "Number Pyramid Problems",
     "pyramid_problems_p": "Build pyramids by adding numbers layer by layer",
+    "simplify_equations_h3": "Simplifying Equations",
+    "simplify_equations_p": "Simplify algebraic expressions with brackets and variables.",
     "controls_panel_h2": "Controls",
     "num_problems_label": "Number of Problems:",
     "generate_button": "Generate Worksheet",
@@ -304,6 +306,14 @@
             "problems_title": "Number Pyramid Problems",
             "error_invalid_num_problems": "Please enter a valid Number of Problems (>= 1).",
             "error_max_problems": "Max 20 problems for this format. Please choose a smaller number."
+        },
+        "simplify_equations": {
+            "complexity_label": "Complexity:",
+            "description": "Simplify the algebraic expressions. The final result should be in the form ax + b. The control sum is the digital root of |a| + |b|.",
+            "problems_title": "Simplifying Equations",
+            "control_sum_grid_title": "Control Sum Self-Check Grid",
+            "control_sum_grid_subtitle": "Simplify to ax + b, then find the digital root of |a| + |b|.",
+            "error_message": "Error generating simplification problems."
         },
         "unknown_topic_error": "Unknown topic selected:",
         "generate_button_clicked_for_topic": "Generate button clicked for topic:",
