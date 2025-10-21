@@ -3,7 +3,7 @@
  * Author: Jim Palmer (based on chunking idea from Dave Koelle)
  */
 /*jshint unused:false */
-module.exports = function naturalSort (a, b) {
+function naturalSort (a, b) {
 	"use strict";
 	var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
 		sre = /(^[ ]*|[ ]*$)/g,
@@ -19,7 +19,7 @@ module.exports = function naturalSort (a, b) {
 		yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
 		// numeric, hex or date detection
 		xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
-		yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+		yD = parseInt(y.match(hre), 16) || (xD && y.match(dre) && Date.parse(y)) || null,
 		oFxNcL, oFyNcL;
 	// first try and sort Hex codes or Dates
 	if (yD) {
@@ -42,4 +42,6 @@ module.exports = function naturalSort (a, b) {
 		if (oFxNcL > oFyNcL) { return 1; }
 	}
 	return 0;
-};
+}
+
+export default naturalSort;
