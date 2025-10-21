@@ -38,7 +38,7 @@ var defaultEscapeMapFn = function defaultEscapeMapFn(defaultEscapes, formatEscap
  * @param {function} params.escapeMapFn the function to modify the escape maps.
  * @return {string} the escaped string, ready to be used in LaTeX.
  */
-module.exports = function (str) {
+function escapeLatex(str) {
   var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
       _ref$preserveFormatti = _ref.preserveFormatting,
       preserveFormatting = _ref$preserveFormatti === undefined ? false : _ref$preserveFormatti,
@@ -77,4 +77,6 @@ module.exports = function (str) {
     _loop();
   }
   return result;
-};
+}
+
+export default escapeLatex;
