@@ -20,7 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOM fully loaded and parsed");
 
     const DOM = {
-        topicCards: document.querySelectorAll(".topic-card"),
+        topicItems: document.querySelectorAll(".topic-item"),
+        categoryHeaders: document.querySelectorAll(".category-header"),
         topicSpecificControlsContainer: document.getElementById("topic-specific-controls"),
         numProblemsInput: document.getElementById("num-problems"),
         generateButton: document.getElementById("generate-button"),
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         languageSwitcher: document.getElementById("language-switcher"),
     };
 
-    let currentTopic = "multiplication-table";
+    let currentTopic = "addition-subtraction";
 
     const topicControlsRenderers = {
         "multiplication-table": controls.renderMultiplicationTableControls,
@@ -84,10 +85,79 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function handleTopicChange(event) {
         currentTopic = event.currentTarget.dataset.topic;
-        DOM.topicCards.forEach(c => c.classList.remove("selected"));
+        DOM.topicItems.forEach(c => c.classList.remove("selected"));
         event.currentTarget.classList.add("selected");
         DOM.problemsContainer.innerHTML = "";
         renderCurrentTopicControls();
+
+        // Save selected topic to localStorage
+        localStorage.setItem('selectedTopic', currentTopic);
+    }
+
+    function handleCategoryToggle(event) {
+        const categoryHeader = event.currentTarget;
+        const category = categoryHeader.parentElement;
+        const isExpanded = category.classList.contains('expanded');
+
+        category.classList.toggle('expanded');
+
+        // Save expanded state to localStorage
+        const categoryName = category.dataset.category;
+        const expandedCategories = JSON.parse(localStorage.getItem('expandedCategories') || '[]');
+
+        if (isExpanded) {
+            // Remove from expanded list
+            const index = expandedCategories.indexOf(categoryName);
+            if (index > -1) {
+                expandedCategories.splice(index, 1);
+            }
+        } else {
+            // Add to expanded list
+            if (!expandedCategories.includes(categoryName)) {
+                expandedCategories.push(categoryName);
+            }
+        }
+
+        localStorage.setItem('expandedCategories', JSON.stringify(expandedCategories));
+    }
+
+    function restoreCategoryStates() {
+        const expandedCategories = JSON.parse(localStorage.getItem('expandedCategories') || '["basic-arithmetic"]');
+
+        expandedCategories.forEach(categoryName => {
+            const category = document.querySelector(`[data-category="${categoryName}"]`);
+            if (category) {
+                category.classList.add('expanded');
+            }
+        });
+    }
+
+    function restoreSelectedTopic() {
+        const savedTopic = localStorage.getItem('selectedTopic') || currentTopic;
+        const topicItem = document.querySelector(`[data-topic="${savedTopic}"]`);
+
+        if (topicItem) {
+            currentTopic = savedTopic;
+            topicItem.classList.add('selected');
+
+            // Ensure parent category is expanded
+            const category = topicItem.closest('.topic-category');
+            if (category) {
+                category.classList.add('expanded');
+            }
+        } else {
+            // Fallback to first topic
+            const firstTopic = document.querySelector('.topic-item');
+            if (firstTopic) {
+                firstTopic.classList.add('selected');
+                currentTopic = firstTopic.dataset.topic;
+
+                const category = firstTopic.closest('.topic-category');
+                if (category) {
+                    category.classList.add('expanded');
+                }
+            }
+        }
     }
 
     function handleGenerateClick() {
@@ -507,7 +577,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function initialize() {
-        DOM.topicCards.forEach(card => card.addEventListener("click", handleTopicChange));
+        // Attach event listeners
+        DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
+        DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
         DOM.generateButton.addEventListener("click", handleGenerateClick);
         DOM.printButton.addEventListener("click", () => window.print());
 
@@ -518,11 +590,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
 
-        const firstCard = document.querySelector(`[data-topic="${currentTopic}"]`);
-        if (firstCard) {
-            firstCard.classList.add("selected");
-        }
+        // Restore UI state
+        restoreCategoryStates();
+        restoreSelectedTopic();
 
+        // Initialize language and controls
         await i18n.setLanguage(i18n.getInitialLang(), renderCurrentTopicControls);
         console.log("App initialized.");
     }

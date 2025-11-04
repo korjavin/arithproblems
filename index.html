@@ -36,72 +36,112 @@
             </div>
         </header>
 
-        <main>
-            <section id="topic-selection-section">
+        <div class="app-container">
+            <aside id="topic-sidebar" class="topic-sidebar">
                 <h2 data-translate-key="topic_selection_h2">Select Topic</h2>
-                <div id="topic-grid" class="topic-grid">
-                    <div class="topic-card" data-topic="multiplication-table">
-                        <h3 data-translate-key="multiplication_table_h3">Multiplication Table</h3>
-                        <p data-translate-key="multiplication_table_p">Pre-filled multiplication charts for practice</p>
+                <nav class="topic-tree">
+                    <div class="topic-category" data-category="basic-arithmetic">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_basic_arithmetic">Basic Arithmetic</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="addition-subtraction">
+                                <span data-translate-key="addition_subtraction_h3">Addition/Subtraction</span>
+                            </li>
+                            <li class="topic-item" data-topic="multiplication-division">
+                                <span data-translate-key="multiplication_division_h3">Multiplication/Division</span>
+                            </li>
+                            <li class="topic-item" data-topic="multiplication-table">
+                                <span data-translate-key="multiplication_table_h3">Multiplication Table</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="addition-subtraction">
-                        <h3 data-translate-key="addition_subtraction_h3">Addition/Subtraction</h3>
-                        <p data-translate-key="addition_subtraction_p">Multi-digit addition and subtraction problems</p>
+
+                    <div class="topic-category" data-category="fractions">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_fractions">Fractions</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="rational-canonical">
+                                <span data-translate-key="rational_canonical_h3">Canonical Rational Numbers</span>
+                            </li>
+                            <li class="topic-item" data-topic="rational-operations">
+                                <span data-translate-key="rational_operations_h3">Rational Operations</span>
+                            </li>
+                            <li class="topic-item" data-topic="rational-mult-div">
+                                <span data-translate-key="rational_mult_div_h3">Rational Multiplication/Division</span>
+                            </li>
+                            <li class="topic-item" data-topic="decimal-rational">
+                                <span data-translate-key="decimal_rational_h3">Decimal/Rational Conversion</span>
+                            </li>
+                            <li class="topic-item" data-topic="proportion">
+                                <span data-translate-key="proportion_h3">Proportion</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="multiplication-division">
-                        <h3 data-translate-key="multiplication_division_h3">Multiplication/Division</h3>
-                        <p data-translate-key="multiplication_division_p">Columnar multiplication and division exercises</p>
+
+                    <div class="topic-category" data-category="percentages">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_percentages">Percentages</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="percentage">
+                                <span data-translate-key="percentage_h3">Percentage Calculations</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="rational-canonical">
-                        <h3 data-translate-key="rational_canonical_h3">Canonical Rational Numbers</h3>
-                        <p data-translate-key="rational_canonical_p">Simplify fractions to lowest terms</p>
+
+                    <div class="topic-category" data-category="geometry">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_geometry">Geometry</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="geometry">
+                                <span data-translate-key="geometry_h3">Basic Geometry</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="rational-operations">
-                        <h3 data-translate-key="rational_operations_h3">Rational Operations</h3>
-                        <p data-translate-key="rational_operations_p">Addition and subtraction of fractions</p>
+
+                    <div class="topic-category" data-category="algebra">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_algebra">Algebra</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="linear-equations">
+                                <span data-translate-key="linear_equations_h3">Linear Equations</span>
+                            </li>
+                            <li class="topic-item" data-topic="simplify-equations">
+                                <span data-translate-key="simplify_equations_h3">Simplifying Equations</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="rational-mult-div">
-                        <h3 data-translate-key="rational_mult_div_h3">Rational Multiplication/Division</h3>
-                        <p data-translate-key="rational_mult_div_p">Multiply and divide fractions</p>
+
+                    <div class="topic-category" data-category="word-problems">
+                        <div class="category-header">
+                            <span class="category-toggle">▶</span>
+                            <span class="category-name" data-translate-key="category_word_problems">Word Problems</span>
+                        </div>
+                        <ul class="topic-list">
+                            <li class="topic-item" data-topic="word-problems">
+                                <span data-translate-key="word_problems_h3">Word Problems</span>
+                            </li>
+                            <li class="topic-item" data-topic="house-problems">
+                                <span data-translate-key="house_problems_h3">House Number Problems</span>
+                            </li>
+                            <li class="topic-item" data-topic="pyramid-problems">
+                                <span data-translate-key="pyramid_problems_h3">Number Pyramid Problems</span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="topic-card" data-topic="proportion">
-                        <h3 data-translate-key="proportion_h3">Proportion</h3>
-                        <p data-translate-key="proportion_p">Solve proportion problems with cross-multiplication</p>
-                    </div>
-                    <div class="topic-card" data-topic="decimal-rational">
-                        <h3 data-translate-key="decimal_rational_h3">Decimal/Rational Conversion</h3>
-                        <p data-translate-key="decimal_rational_p">Convert between decimals and fractions</p>
-                    </div>
-                    <div class="topic-card" data-topic="percentage">
-                        <h3 data-translate-key="percentage_h3">Percentage Calculations</h3>
-                        <p data-translate-key="percentage_p">Find percentages and percentage relationships</p>
-                    </div>
-                    <div class="topic-card" data-topic="geometry">
-                        <h3 data-translate-key="geometry_h3">Basic Geometry</h3>
-                        <p data-translate-key="geometry_p">Calculate area and perimeter of shapes</p>
-                    </div>
-                    <div class="topic-card" data-topic="linear-equations">
-                        <h3 data-translate-key="linear_equations_h3">Linear Equations</h3>
-                        <p data-translate-key="linear_equations_p">Solve equations with 1-4 variables, from basic to advanced systems</p>
-                    </div>
-                    <div class="topic-card" data-topic="word-problems">
-                        <h3 data-translate-key="word_problems_h3">Word Problems</h3>
-                        <p data-translate-key="word_problems_p">Real-world math applications and story problems</p>
-                    </div>
-                    <div class="topic-card" data-topic="house-problems">
-                        <h3 data-translate-key="house_problems_h3">House Number Problems</h3>
-                        <p data-translate-key="house_problems_p">Find missing numbers on house roofs - great for young learners</p>
-                    </div>
-                    <div class="topic-card" data-topic="pyramid-problems">
-                        <h3 data-translate-key="pyramid_problems_h3">Number Pyramid Problems</h3>
-                        <p data-translate-key="pyramid_problems_p">Build pyramids by adding numbers layer by layer</p>
-                    </div>
-                    <div class="topic-card" data-topic="simplify-equations">
-                        <h3 data-translate-key="simplify_equations_h3">Simplifying Equations</h3>
-                        <p data-translate-key="simplify_equations_p">Simplify algebraic expressions with brackets and variables.</p>
-                    </div>
-                </div>
-            </section>
+                </nav>
+            </aside>
+
+            <main>
 
             <section id="controls-panel" class="controls">
                 <h2 data-translate-key="controls_panel_h2">Controls</h2>
@@ -135,7 +175,8 @@
                     <!-- Problems will be inserted here -->
                 </div>
             </section>
-        </main>
+            </main>
+        </div>
 
         <footer>
             <p data-translate-key="footer_p_1">&copy; 2024 Math Worksheet Generator</p>
