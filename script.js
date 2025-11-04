@@ -95,9 +95,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function handleCategoryToggle(event) {
+        event.stopPropagation();
         const categoryHeader = event.currentTarget;
         const category = categoryHeader.parentElement;
         const isExpanded = category.classList.contains('expanded');
+
+        console.log('Category toggle clicked:', category.dataset.category, 'Currently expanded:', isExpanded);
 
         category.classList.toggle('expanded');
 
@@ -119,6 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         localStorage.setItem('expandedCategories', JSON.stringify(expandedCategories));
+        console.log('Updated expanded categories:', expandedCategories);
     }
 
     function restoreCategoryStates() {
@@ -577,6 +581,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function initialize() {
+        console.log('Initializing app...');
+        console.log('Found topic items:', DOM.topicItems.length);
+        console.log('Found category headers:', DOM.categoryHeaders.length);
+
         // Attach event listeners
         DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
         DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
@@ -596,7 +604,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Initialize language and controls
         await i18n.setLanguage(i18n.getInitialLang(), renderCurrentTopicControls);
-        console.log("App initialized.");
+        console.log("App initialized successfully.");
     }
 
     initialize();
