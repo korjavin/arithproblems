@@ -8,7 +8,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding: 20px;
+    padding: 0;
     background-color: #f4f4f4;
     color: #333;
 }
@@ -54,10 +54,12 @@ header h1 {
 /* App Container - Sidebar Layout */
 .app-container {
     display: flex;
+    align-items: flex-start;
     max-width: 1400px;
     margin: 0 auto;
     gap: 0;
     min-height: calc(100vh - 120px);
+    background: #fff;
 }
 
 /* Topic Sidebar */
@@ -68,6 +70,7 @@ header h1 {
     padding: 20px 15px;
     overflow-y: auto;
     flex-shrink: 0;
+    height: 100%;
 }
 
 .topic-sidebar h2 {
@@ -128,12 +131,14 @@ header h1 {
     padding: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
 }
 
 .topic-category.expanded .topic-list {
-    max-height: 500px;
-    transition: max-height 0.3s ease-in;
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.3s ease-in, opacity 0.2s ease-in;
 }
 
 .topic-item {
