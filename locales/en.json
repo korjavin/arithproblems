@@ -32,6 +32,8 @@
     "pyramid_problems_p": "Build pyramids by adding numbers layer by layer",
     "simplify_equations_h3": "Simplifying Equations",
     "simplify_equations_p": "Simplify algebraic expressions with brackets and variables.",
+    "simplify_rationals_h3": "Simplifying Rationals",
+    "simplify_rationals_p": "Simplify rational expressions by canceling common factors.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -320,6 +322,14 @@
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Simplify to ax + b, then find the digital root of |a| + |b|.",
             "error_message": "Error generating simplification problems."
+        },
+        "simplify_rationals": {
+            "complexity_label": "Complexity:",
+            "description": "Simplify rational expressions by canceling common factors. Complexity ranges from simple numeric fractions (level 1) to complex algebraic expressions (level 5).",
+            "problems_title": "Simplifying Rational Expressions",
+            "control_sum_grid_title": "Control Sum Self-Check Grid",
+            "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",
+            "error_message": "Error generating rational simplification problems."
         },
         "unknown_topic_error": "Unknown topic selected:",
         "generate_button_clicked_for_topic": "Generate button clicked for topic:",

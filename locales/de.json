@@ -32,6 +32,8 @@
     "pyramid_problems_p": "Baue Pyramiden durch schrittweises Addieren von Zahlen",
     "simplify_equations_h3": "Gleichungen vereinfachen",
     "simplify_equations_p": "Algebraische Ausdrücke mit Klammern und Variablen vereinfachen.",
+    "simplify_rationals_h3": "Bruchterme vereinfachen",
+    "simplify_rationals_p": "Rationale Ausdrücke durch Kürzen gemeinsamer Faktoren vereinfachen.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -320,6 +322,14 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Auf ax + b vereinfachen, dann die Quersumme von |a| + |b| finden.",
             "error_message": "Fehler beim Erstellen der Vereinfachungsaufgaben."
+        },
+        "simplify_rationals": {
+            "complexity_label": "Komplexität:",
+            "description": "Vereinfachen Sie rationale Ausdrücke durch Kürzen gemeinsamer Faktoren. Die Komplexität reicht von einfachen numerischen Brüchen (Stufe 1) bis zu komplexen algebraischen Ausdrücken (Stufe 5).",
+            "problems_title": "Bruchterme vereinfachen",
+            "control_sum_grid_title": "Kontrollsummen-Raster",
+            "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
+            "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
         },
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",
