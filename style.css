@@ -51,12 +51,117 @@ header h1 {
     filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
 }
 
+/* App Container - Sidebar Layout */
+.app-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 0;
+    min-height: calc(100vh - 120px);
+}
+
+/* Topic Sidebar */
+.topic-sidebar {
+    width: 280px;
+    background: #f8f9fa;
+    border-right: 2px solid #dee2e6;
+    padding: 20px 15px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.topic-sidebar h2 {
+    margin: 0 0 20px 0;
+    font-size: 1.2em;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Topic Tree Navigation */
+.topic-tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.topic-category {
+    margin-bottom: 10px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    background: #e9ecef;
+    border-radius: 4px;
+    transition: background 0.2s;
+    user-select: none;
+}
+
+.category-header:hover {
+    background: #dee2e6;
+}
+
+.category-toggle {
+    display: inline-block;
+    width: 20px;
+    font-size: 12px;
+    transition: transform 0.2s;
+    color: #495057;
+}
+
+.topic-category.expanded .category-toggle {
+    transform: rotate(90deg);
+}
+
+.category-name {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95em;
+}
+
+.topic-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.topic-category.expanded .topic-list {
+    max-height: 500px;
+    transition: max-height 0.3s ease-in;
+}
+
+.topic-item {
+    padding: 8px 10px 8px 35px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-size: 0.9em;
+    color: #495057;
+}
+
+.topic-item:hover {
+    background: #e3f2fd;
+    border-left-color: #2196f3;
+}
+
+.topic-item.selected {
+    background: #e8f5e8;
+    border-left-color: #4caf50;
+    font-weight: 600;
+    color: #2e7d32;
+}
+
 main {
-    max-width: 800px;
-    margin: auto;
+    flex: 1;
     background: #fff;
     padding: 20px;
-    border-radius: 5px;
+    overflow-y: auto;
 }
 
 section {
@@ -71,48 +176,46 @@ h2 {
     color: #333;
 }
 
-/* Topic Selection Grid */
+/* Old Topic Grid Styles - Deprecated, kept for compatibility */
 .topic-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 15px;
-    margin-bottom: 20px;
+    display: none;
 }
 
 .topic-card {
-    background: #f8f9fa;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
+    display: none;
 }
 
-.topic-card:hover {
-    background: #e3f2fd;
-    border-color: #2196f3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+/* Responsive Design */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .topic-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #dee2e6;
+        max-height: 400px;
+    }
+
+    main {
+        padding: 15px;
+    }
 }
 
-.topic-card.selected {
-    background: #e8f5e8;
-    border-color: #4caf50;
-    box-shadow: 0 2px 8px rgba(76,175,80,0.3);
-}
+@media (max-width: 480px) {
+    .topic-sidebar {
+        padding: 15px 10px;
+    }
 
-.topic-card h3 {
-    margin: 0 0 10px 0;
-    color: #333;
-    font-size: 1.2em;
-}
+    .topic-item {
+        padding: 6px 8px 6px 25px;
+        font-size: 0.85em;
+    }
 
-.topic-card p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9em;
-    line-height: 1.4;
+    .category-name {
+        font-size: 0.9em;
+    }
 }
 
 /* Controls Panel */
@@ -498,7 +601,7 @@ footer {
 /* Print-specific styles */
 @media print {
     html, body { /* Ensure html and body can expand */
-        height: 100%; 
+        height: 100%;
     }
     body {
         position: relative; /* Needed for absolute positioning of children */
@@ -510,12 +613,17 @@ footer {
     }
 
     header,
+    .topic-sidebar,
     #topic-selection-section,
     .controls,
     #actions-panel,
     footer,
     nav /* if you add a nav */ {
         display: none !important;
+    }
+
+    .app-container {
+        display: block;
     }
 
     main {
