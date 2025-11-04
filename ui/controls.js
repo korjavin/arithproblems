@@ -393,3 +393,21 @@ export function renderPyramidProblemsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderSimplifyRationalsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="sr-complexity">${t.complexity_label}</label>
+            <input type="range" id="sr-complexity" value="1" min="1" max="5">
+            <span id="sr-complexity-value">1</span>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+
+    // Add event listener for dynamic updates
+    const complexitySlider = document.getElementById('sr-complexity');
+    const complexityValue = document.getElementById('sr-complexity-value');
+    complexitySlider.addEventListener('input', () => {
+        complexityValue.textContent = complexitySlider.value;
+    });
+}
