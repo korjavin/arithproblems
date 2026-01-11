@@ -643,27 +643,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             html += problems.map(p => {
                 let problemHtml = '<div class="mixed-operation-item"><div class="problem-expression">';
 
-                // Display the expression
+                // Display only the expression without answers
                 problemHtml += `<span class="expression">${p.expression} = </span>`;
 
-                // Show intermediate steps
-                if (p.intermediate !== undefined) {
-                    // 2-operation problem
-                    problemHtml += `<div class="intermediate-step">`;
-                    // Find which part is high priority and show that calculation
-                    const ops = p.operations;
-                    const nums = p.numbers;
-                    if (ops[1] === '×' || ops[1] === '÷') {
-                        problemHtml += `${nums[1]} ${ops[1]} ${nums[2]} = ${p.intermediate}`;
-                    }
-                    problemHtml += `</div>`;
-                } else if (p.intermediate1 !== undefined) {
-                    // 3-operation problem
-                    problemHtml += `<div class="intermediate-step">`;
-                    problemHtml += `${p.intermediate1} ${p.operations[1]} ${p.intermediate2}`;
-                    problemHtml += `</div>`;
-                }
-
+                // Show empty answer space for student to fill in
                 problemHtml += '<div class="answer-space"></div></div></div>';
                 return problemHtml;
             }).join('');
