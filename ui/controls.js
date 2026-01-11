@@ -411,3 +411,39 @@ export function renderSimplifyRationalsControls(container, t) {
         complexityValue.textContent = complexitySlider.value;
     });
 }
+
+export function renderMixedOperationsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="mo-number-range">${t.number_range_label}</label>
+            <select id="mo-number-range">
+                <option value="1-10">${t.range_1_10}</option>
+                <option value="1-20" selected>${t.range_1_20}</option>
+                <option value="1-50">${t.range_1_50}</option>
+                <option value="1-100">${t.range_1_100}</option>
+            </select>
+        </div>
+        <div>
+            <label for="mo-num-operations">${t.num_operations_label}</label>
+            <select id="mo-num-operations">
+                <option value="2" selected>${t.two_operations}</option>
+                <option value="3">${t.three_operations}</option>
+            </select>
+        </div>
+        <div>
+            <label for="mo-operation-mix">${t.operation_mix_label}</label>
+            <select id="mo-operation-mix">
+                <option value="all" selected>${t.all_operations}</option>
+                <option value="mult-add">${t.mult_add_only}</option>
+                <option value="mult-sub">${t.mult_sub_only}</option>
+                <option value="div-add">${t.div_add_only}</option>
+                <option value="div-sub">${t.div_sub_only}</option>
+            </select>
+        </div>
+        <div>
+            <input type="checkbox" id="mo-ensure-even-division" checked>
+            <label for="mo-ensure-even-division">${t.ensure_even_division_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

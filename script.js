@@ -16,6 +16,7 @@ import { generateHouseProblemsData } from './generators/house-problems.js';
 import { generatePyramidProblemsData } from './generators/pyramid-problems.js';
 import { generateSimplifyEquationsData } from './generators/simplify-equations.js';
 import { generateSimplifyRationalsData } from './generators/simplify-rationals.js';
+import { generateMixedOperationsData } from './generators/mixed-operations.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOM fully loaded and parsed");
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "pyramid-problems": controls.renderPyramidProblemsControls,
         "simplify-equations": controls.renderSimplifyEquationsControls,
         "simplify-rationals": controls.renderSimplifyRationalsControls,
+        "mixed-operations": controls.renderMixedOperationsControls,
     };
 
     const problemRenderers = {
@@ -69,6 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "pyramid-problems": renderPyramidProblems,
         "simplify-equations": renderSimplifyEquationsProblems,
         "simplify-rationals": renderSimplifyRationalsProblems,
+        "mixed-operations": renderMixedOperationsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -299,7 +302,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             let html = `<h3>${t.problems_title}</h3>`;
             if (problems.length < numberOfProblems && avoidWholeNums) {
-                 html += `<p class="warning-message">${t.warning_generation.replace('{generatedCount}', problems.length).replace('{numberOfProblems}', numberOfProblems)}</p>`;
+                html += `<p class="warning-message">${t.warning_generation.replace('{generatedCount}', problems.length).replace('{numberOfProblems}', numberOfProblems)}</p>`;
             }
             html += `<div class="arithmetic-grid fraction-problem-grid">${problems.map(p => `<div class="fraction-operation-item"><div class="problem-content"><span class="fraction"><span class="numerator">${p.n1}</span><span class="denominator">${p.d1}</span></span><span class="operation-symbol">${p.operation === 'multiply' ? '&times;' : '&divide;'}</span><span class="fraction"><span class="numerator">${p.n2}</span><span class="denominator">${p.d2}</span></span> =</div><div class="calculation-space"></div></div>`).join('')}</div>`;
             if (controlSumsArray.length > 0) {
@@ -455,7 +458,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const variableNames = ['x', 'y', 'z', 'w'].slice(0, variableCount);
                 const solveText = `Solve for ${variableNames.join(', ')}:`;
 
-                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount-1)}</div></div></div>`).join('')}</div>`;
+                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount - 1)}</div></div></div>`).join('')}</div>`;
             }
 
             if (digitalRoots.length > 0) {
@@ -544,7 +547,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const startX = 150 - (layer.length * stoneSpacing) / 2 + stoneSpacing / 2;
                     layer.forEach((stoneValue, stoneIndex) => {
                         const x = startX + stoneIndex * stoneSpacing;
-                        svgContent += `<ellipse cx="${x}" cy="${y}" rx="${stoneSize/2}" ry="${stoneSize/2.5}" fill="#D2B48C" stroke="#8B7355" stroke-width="2"></ellipse>`;
+                        svgContent += `<ellipse cx="${x}" cy="${y}" rx="${stoneSize / 2}" ry="${stoneSize / 2.5}" fill="#D2B48C" stroke="#8B7355" stroke-width="2"></ellipse>`;
                         if (stoneValue !== '?') {
                             svgContent += `<text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">${stoneValue}</text>`;
                         }
@@ -617,6 +620,60 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (controlSums.length > 0) {
                 html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;
+        }
+    }
+
+    function renderMixedOperationsProblems(translations) {
+        const t = translations.script.mixed_operations;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, answerRoots } = generateMixedOperationsData({
+                numberRange: document.getElementById('mo-number-range').value,
+                numOperations: parseInt(document.getElementById('mo-num-operations').value, 10),
+                operationMix: document.getElementById('mo-operation-mix').value,
+                ensureEvenDivision: document.getElementById('mo-ensure-even-division').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            let html = `<h3>${t.problems_title}</h3><div class="mixed-operations-grid">`;
+
+            html += problems.map(p => {
+                let problemHtml = '<div class="mixed-operation-item"><div class="problem-expression">';
+
+                // Display the expression
+                problemHtml += `<span class="expression">${p.expression} = </span>`;
+
+                // Show intermediate steps
+                if (p.intermediate !== undefined) {
+                    // 2-operation problem
+                    problemHtml += `<div class="intermediate-step">`;
+                    // Find which part is high priority and show that calculation
+                    const ops = p.operations;
+                    const nums = p.numbers;
+                    if (ops[1] === '×' || ops[1] === '÷') {
+                        problemHtml += `${nums[1]} ${ops[1]} ${nums[2]} = ${p.intermediate}`;
+                    }
+                    problemHtml += `</div>`;
+                } else if (p.intermediate1 !== undefined) {
+                    // 3-operation problem
+                    problemHtml += `<div class="intermediate-step">`;
+                    problemHtml += `${p.intermediate1} ${p.operations[1]} ${p.intermediate2}`;
+                    problemHtml += `</div>`;
+                }
+
+                problemHtml += '<div class="answer-space"></div></div></div>';
+                return problemHtml;
+            }).join('');
+
+            html += `</div>`;
+
+            if (answerRoots.length > 0) {
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${answerRoots.map(a => `<div class="dr-cell">${a.root}</div>`).join('')}</div></div>`;
+            }
+
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;

@@ -8,6 +8,8 @@
     "addition_subtraction_p": "Mehrstellige Additions- und Subtraktionsprobleme",
     "multiplication_division_h3": "Multiplikation/Division",
     "multiplication_division_p": "Schriftliche Multiplikations- und Divisionsübungen",
+    "mixed_operations_h3": "Gemischte Rechenoperationen",
+    "mixed_operations_p": "Lerne die Vorrangsregeln mit kombinierten Rechenoperationen",
     "rational_canonical_h3": "Kanonische Rationale Zahlen",
     "rational_canonical_p": "Brüche auf den kleinsten gemeinsamen Nenner kürzen",
     "rational_operations_h3": "Rationale Operationen",
@@ -236,16 +238,79 @@
             "digital_root_grid_title": "Digitale Wurzel Selbstkontroll-Raster",
             "digital_root_grid_subtitle": "(Finden Sie die digitale Wurzel Ihres Endergebnisses, auf ganze Zahl gerundet)",
             "names": {
-                "male": ["Hans", "Klaus", "Peter", "Thomas", "Michael", "Andreas", "Stefan", "Martin", "Christian", "Frank"],
-                "female": ["Anna", "Maria", "Petra", "Sabine", "Andrea", "Monika", "Gabriele", "Susanne", "Christine", "Barbara"],
-                "neutral": ["Alex", "Sam", "Chris", "Pat", "Robin", "Casey", "Taylor", "Jordan", "Morgan", "Riley"]
+                "male": [
+                    "Hans",
+                    "Klaus",
+                    "Peter",
+                    "Thomas",
+                    "Michael",
+                    "Andreas",
+                    "Stefan",
+                    "Martin",
+                    "Christian",
+                    "Frank"
+                ],
+                "female": [
+                    "Anna",
+                    "Maria",
+                    "Petra",
+                    "Sabine",
+                    "Andrea",
+                    "Monika",
+                    "Gabriele",
+                    "Susanne",
+                    "Christine",
+                    "Barbara"
+                ],
+                "neutral": [
+                    "Alex",
+                    "Sam",
+                    "Chris",
+                    "Pat",
+                    "Robin",
+                    "Casey",
+                    "Taylor",
+                    "Jordan",
+                    "Morgan",
+                    "Riley"
+                ]
             },
             "objects": {
-                "fruits": ["Äpfel", "Orangen", "Bananen", "Birnen", "Pfirsiche"],
-                "vehicles": ["Autos", "Lastwagen", "Fahrräder", "Boote", "Flugzeuge"],
-                "items": ["Bücher", "Stifte", "Spielzeug", "Stühle", "Tische"],
-                "animals": ["Hunde", "Katzen", "Vögel", "Fische", "Pferde"],
-                "food": ["Pizzen", "Sandwiches", "Kekse", "Kuchen", "Burger"]
+                "fruits": [
+                    "Äpfel",
+                    "Orangen",
+                    "Bananen",
+                    "Birnen",
+                    "Pfirsiche"
+                ],
+                "vehicles": [
+                    "Autos",
+                    "Lastwagen",
+                    "Fahrräder",
+                    "Boote",
+                    "Flugzeuge"
+                ],
+                "items": [
+                    "Bücher",
+                    "Stifte",
+                    "Spielzeug",
+                    "Stühle",
+                    "Tische"
+                ],
+                "animals": [
+                    "Hunde",
+                    "Katzen",
+                    "Vögel",
+                    "Fische",
+                    "Pferde"
+                ],
+                "food": [
+                    "Pizzen",
+                    "Sandwiches",
+                    "Kekse",
+                    "Kuchen",
+                    "Burger"
+                ]
             },
             "templates": {
                 "age1": "{name1} ist {multiplier} mal so alt wie {name2}. Die Summe ihrer Alter ist {sum}. Wie alt ist {name1}?",
@@ -330,6 +395,28 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
             "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
+        },
+        "mixed_operations": {
+            "number_range_label": "Zahlenbereich:",
+            "range_1_10": "1-10 (Sehr leicht)",
+            "range_1_20": "1-20 (Leicht)",
+            "range_1_50": "1-50 (Mittel)",
+            "range_1_100": "1-100 (Schwer)",
+            "num_operations_label": "Anzahl der Rechenoperationen:",
+            "two_operations": "2 Rechenoperationen",
+            "three_operations": "3 Rechenoperationen",
+            "operation_mix_label": "Operationsmischung:",
+            "all_operations": "Alle Operationen (×, ÷, +, −)",
+            "mult_add_only": "Nur Multiplikation + Addition",
+            "mult_sub_only": "Nur Multiplikation + Subtraktion",
+            "div_add_only": "Nur Division + Addition",
+            "div_sub_only": "Nur Division + Subtraktion",
+            "ensure_even_division_label": "Nur ganzzahlige Division (Keine Reste)",
+            "description": "Übe die Vorrangsregeln! Punkt- vor Strichrechnung: Multiplikation und Division werden vor Addition und Subtraktion ausgeführt. Zwischenschritte zeigen die richtige Reihenfolge. Quersummen prüfen dein Endergebnis.",
+            "problems_title": "Gemischte Rechenoperationen - Vorrangsregeln",
+            "digital_root_grid_title": "Quersummen-Selbstprüfungsraster",
+            "digital_root_grid_subtitle": "Finde die Quersumme deiner Lösung zur Überprüfung",
+            "error_message": "Fehler beim Generieren von gemischten Rechenaufgaben."
         },
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",
