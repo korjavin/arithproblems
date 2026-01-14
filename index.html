@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title data-translate-key="title">Math Worksheet Generator</title>
-        <link rel="stylesheet" href="style.css" />
-        <script type="importmap">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-translate-key="title">Math Worksheet Generator</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="style.css" />
+    <script type="importmap">
         {
             "imports": {
                 "mathjs": "./vendor/mathjs/index.js",
@@ -25,139 +27,135 @@
             }
         }
         </script>
-    </head>
-    <body>
-        <header>
-            <h1 data-translate-key="header_h1">Math Worksheet Generator</h1>
-            <div id="language-switcher">
-                <span class="language-flag" data-lang="en" title="English">🇬🇧</span>
-                <span class="language-flag" data-lang="de" title="Deutsch">🇩🇪</span>
-                <span class="language-flag" data-lang="ru" title="Русский">🇷🇺</span>
-            </div>
-        </header>
+</head>
 
-        <div class="app-container">
-            <aside id="topic-sidebar" class="topic-sidebar">
-                <h2 data-translate-key="topic_selection_h2">Select Topic</h2>
-                <nav class="topic-tree">
-                    <div class="topic-category" data-category="basic-arithmetic">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_basic_arithmetic">Basic Arithmetic</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="addition-subtraction">
-                                <span data-translate-key="addition_subtraction_h3">Addition/Subtraction</span>
-                            </li>
-                            <li class="topic-item" data-topic="multiplication-division">
-                                <span data-translate-key="multiplication_division_h3">Multiplication/Division</span>
-                            </li>
-                            <li class="topic-item" data-topic="multiplication-table">
-                                <span data-translate-key="multiplication_table_h3">Multiplication Table</span>
-                            </li>
-                        </ul>
+<body>
+    <header>
+        <h1 data-translate-key="header_h1">Math Worksheet Generator</h1>
+        <div id="language-switcher">
+            <span class="language-flag" data-lang="en" title="English">🇬🇧</span>
+            <span class="language-flag" data-lang="de" title="Deutsch">🇩🇪</span>
+            <span class="language-flag" data-lang="ru" title="Русский">🇷🇺</span>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <aside id="topic-sidebar" class="topic-sidebar">
+            <h2 data-translate-key="topic_selection_h2">Select Topic</h2>
+            <nav class="topic-tree">
+                <div class="topic-category" data-category="basic-arithmetic">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_basic_arithmetic">Basic
+                            Arithmetic</span>
                     </div>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="addition-subtraction">
+                            <span data-translate-key="addition_subtraction_h3">Addition/Subtraction</span>
+                        </li>
+                        <li class="topic-item" data-topic="multiplication-division">
+                            <span data-translate-key="multiplication_division_h3">Multiplication/Division</span>
+                        </li>
+                        <li class="topic-item" data-topic="multiplication-table">
+                            <span data-translate-key="multiplication_table_h3">Multiplication Table</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div class="topic-category" data-category="fractions">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_fractions">Fractions</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="rational-canonical">
-                                <span data-translate-key="rational_canonical_h3">Canonical Rational Numbers</span>
-                            </li>
-                            <li class="topic-item" data-topic="rational-operations">
-                                <span data-translate-key="rational_operations_h3">Rational Operations</span>
-                            </li>
-                            <li class="topic-item" data-topic="rational-mult-div">
-                                <span data-translate-key="rational_mult_div_h3">Rational Multiplication/Division</span>
-                            </li>
-                            <li class="topic-item" data-topic="decimal-rational">
-                                <span data-translate-key="decimal_rational_h3">Decimal/Rational Conversion</span>
-                            </li>
-                            <li class="topic-item" data-topic="proportion">
-                                <span data-translate-key="proportion_h3">Proportion</span>
-                            </li>
-                        </ul>
+                <div class="topic-category" data-category="fractions">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_fractions">Fractions</span>
                     </div>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="rational-canonical">
+                            <span data-translate-key="rational_canonical_h3">Canonical Rational Numbers</span>
+                        </li>
+                        <li class="topic-item" data-topic="rational-operations">
+                            <span data-translate-key="rational_operations_h3">Rational Operations</span>
+                        </li>
+                        <li class="topic-item" data-topic="rational-mult-div">
+                            <span data-translate-key="rational_mult_div_h3">Rational Multiplication/Division</span>
+                        </li>
+                        <li class="topic-item" data-topic="decimal-rational">
+                            <span data-translate-key="decimal_rational_h3">Decimal/Rational Conversion</span>
+                        </li>
+                        <li class="topic-item" data-topic="proportion">
+                            <span data-translate-key="proportion_h3">Proportion</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div class="topic-category" data-category="percentages">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_percentages">Percentages</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="percentage">
-                                <span data-translate-key="percentage_h3">Percentage Calculations</span>
-                            </li>
-                        </ul>
+                <div class="topic-category" data-category="percentages">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_percentages">Percentages</span>
                     </div>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="percentage">
+                            <span data-translate-key="percentage_h3">Percentage Calculations</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div class="topic-category" data-category="geometry">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_geometry">Geometry</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="geometry">
-                                <span data-translate-key="geometry_h3">Basic Geometry</span>
-                            </li>
-                        </ul>
+                <div class="topic-category" data-category="geometry">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_geometry">Geometry</span>
                     </div>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="geometry">
+                            <span data-translate-key="geometry_h3">Basic Geometry</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div class="topic-category" data-category="algebra">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_algebra">Algebra</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="linear-equations">
-                                <span data-translate-key="linear_equations_h3">Linear Equations</span>
-                            </li>
-                            <li class="topic-item" data-topic="simplify-equations">
-                                <span data-translate-key="simplify_equations_h3">Simplifying Equations</span>
-                            </li>
-                            <li class="topic-item" data-topic="simplify-rationals">
-                                <span data-translate-key="simplify_rationals_h3">Simplifying Rationals</span>
-                            </li>
-                        </ul>
+                <div class="topic-category" data-category="algebra">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_algebra">Algebra</span>
                     </div>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="linear-equations">
+                            <span data-translate-key="linear_equations_h3">Linear Equations</span>
+                        </li>
+                        <li class="topic-item" data-topic="simplify-equations">
+                            <span data-translate-key="simplify_equations_h3">Simplifying Equations</span>
+                        </li>
+                        <li class="topic-item" data-topic="simplify-rationals">
+                            <span data-translate-key="simplify_rationals_h3">Simplifying Rationals</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div class="topic-category" data-category="word-problems">
-                        <div class="category-header">
-                            <span class="category-toggle">▶</span>
-                            <span class="category-name" data-translate-key="category_word_problems">Word Problems</span>
-                        </div>
-                        <ul class="topic-list">
-                            <li class="topic-item" data-topic="word-problems">
-                                <span data-translate-key="word_problems_h3">Word Problems</span>
-                            </li>
-                            <li class="topic-item" data-topic="house-problems">
-                                <span data-translate-key="house_problems_h3">House Number Problems</span>
-                            </li>
-                            <li class="topic-item" data-topic="pyramid-problems">
-                                <span data-translate-key="pyramid_problems_h3">Number Pyramid Problems</span>
-                            </li>
-                        </ul>
+                <div class="topic-category" data-category="word-problems">
+                    <div class="category-header">
+                        <span class="category-toggle">▶</span>
+                        <span class="category-name" data-translate-key="category_word_problems">Word Problems</span>
                     </div>
-                </nav>
-            </aside>
+                    <ul class="topic-list">
+                        <li class="topic-item" data-topic="word-problems">
+                            <span data-translate-key="word_problems_h3">Word Problems</span>
+                        </li>
+                        <li class="topic-item" data-topic="house-problems">
+                            <span data-translate-key="house_problems_h3">House Number Problems</span>
+                        </li>
+                        <li class="topic-item" data-topic="pyramid-problems">
+                            <span data-translate-key="pyramid_problems_h3">Number Pyramid Problems</span>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
 
-            <main>
+        <main>
 
             <section id="controls-panel" class="controls">
                 <h2 data-translate-key="controls_panel_h2">Controls</h2>
                 <!-- Topic-specific controls will be populated here by JavaScript -->
                 <div id="common-controls">
                     <label for="num-problems" data-translate-key="num_problems_label">Number of Problems:</label>
-                    <input
-                        type="number"
-                        id="num-problems"
-                        value="10"
-                        min="1"
-                        max="100"
-                    />
+                    <input type="number" id="num-problems" value="10" min="1" max="100" />
                 </div>
                 <!-- Placeholder for topic specific controls -->
                 <div id="topic-specific-controls"></div>
@@ -178,14 +176,15 @@
                     <!-- Problems will be inserted here -->
                 </div>
             </section>
-            </main>
-        </div>
+        </main>
+    </div>
 
-        <footer>
-            <p data-translate-key="footer_p_1">&copy; 2024 Math Worksheet Generator</p>
-            <p><span data-translate-key="footer_p_2">Commit: </span><span id="commit-sha">__COMMIT_SHA__</span></p>
-        </footer>
+    <footer>
+        <p data-translate-key="footer_p_1">&copy; 2024 Math Worksheet Generator</p>
+        <p><span data-translate-key="footer_p_2">Commit: </span><span id="commit-sha">__COMMIT_SHA__</span></p>
+    </footer>
 
-        <script type="module" src="script.js?v=__COMMIT_SHA__"></script>
-    </body>
+    <script type="module" src="script.js?v=__COMMIT_SHA__"></script>
+</body>
+
 </html>
