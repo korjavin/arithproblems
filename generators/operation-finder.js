@@ -74,10 +74,27 @@ function buildExpressionString(numbers, showCircles = true) {
 }
 
 /**
+ * Check if division operations have no remainders
+ */
+function isValidProblem(numbers, operations) {
+    for (let i = 0; i < operations.length; i++) {
+        if (operations[i] === '÷') {
+            const divisor = numbers[i + 1];
+            const dividend = numbers[i];
+
+            if (divisor === 0) return false;
+            // CRITICAL: Division must be exact (no remainder)
+            if (dividend % divisor !== 0) return false;
+        }
+    }
+    return true;
+}
+
+/**
  * Generate one operation finder problem
  */
 function generateOneProblem(numberCount, numberRange, allowedOperations) {
-    const maxAttempts = 100;
+    const maxAttempts = 500; // Increased since we reject division with remainders
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         // Generate random numbers
@@ -90,6 +107,11 @@ function generateOneProblem(numberCount, numberRange, allowedOperations) {
         const operations = [];
         for (let i = 0; i < numberCount - 1; i++) {
             operations.push(getRandomOperation(allowedOperations));
+        }
+
+        // IMPORTANT: Check that division has no remainders
+        if (!isValidProblem(numbers, operations)) {
+            continue; // Skip this problem, try again
         }
 
         // Calculate result
