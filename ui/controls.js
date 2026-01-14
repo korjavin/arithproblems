@@ -447,3 +447,46 @@ export function renderMixedOperationsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderOperationFinderControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="of-number-count">${t.number_count_label}</label>
+            <select id="of-number-count">
+                <option value="3" selected>${t.count_3}</option>
+                <option value="4">${t.count_4}</option>
+                <option value="5">${t.count_5}</option>
+            </select>
+        </div>
+        <div>
+            <label for="of-number-range">${t.number_range_label}</label>
+            <select id="of-number-range">
+                <option value="1-10">${t.range_1_10}</option>
+                <option value="1-20" selected>${t.range_1_20}</option>
+                <option value="1-50">${t.range_1_50}</option>
+            </select>
+        </div>
+        <div>
+            <label>${t.allowed_operations_label}</label>
+            <div style="margin-left: 20px;">
+                <div>
+                    <input type="checkbox" id="of-allow-add" checked>
+                    <label for="of-allow-add">${t.allow_addition}</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="of-allow-sub" checked>
+                    <label for="of-allow-sub">${t.allow_subtraction}</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="of-allow-mult" checked>
+                    <label for="of-allow-mult">${t.allow_multiplication}</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="of-allow-div" checked>
+                    <label for="of-allow-div">${t.allow_division}</label>
+                </div>
+            </div>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

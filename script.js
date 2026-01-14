@@ -17,6 +17,7 @@ import { generatePyramidProblemsData } from './generators/pyramid-problems.js';
 import { generateSimplifyEquationsData } from './generators/simplify-equations.js';
 import { generateSimplifyRationalsData } from './generators/simplify-rationals.js';
 import { generateMixedOperationsData } from './generators/mixed-operations.js';
+import { generateOperationFinderData } from './generators/operation-finder.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOM fully loaded and parsed");
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "simplify-equations": controls.renderSimplifyEquationsControls,
         "simplify-rationals": controls.renderSimplifyRationalsControls,
         "mixed-operations": controls.renderMixedOperationsControls,
+        "operation-finder": controls.renderOperationFinderControls,
     };
 
     const problemRenderers = {
@@ -72,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "simplify-equations": renderSimplifyEquationsProblems,
         "simplify-rationals": renderSimplifyRationalsProblems,
         "mixed-operations": renderMixedOperationsProblems,
+        "operation-finder": renderOperationFinderProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -656,6 +659,52 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (answerRoots.length > 0) {
                 html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${answerRoots.map(a => `<div class="dr-cell">${a.root}</div>`).join('')}</div></div>`;
             }
+
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;
+        }
+    }
+
+    function renderOperationFinderProblems(translations) {
+        const t = translations.script.operation_finder;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const numberCount = parseInt(document.getElementById('of-number-count').value, 10);
+            const numberRange = document.getElementById('of-number-range').value;
+            const numberOfProblems = parseInt(DOM.numProblemsInput.value, 10);
+
+            // Get allowed operations from checkboxes
+            const allowedOperations = [];
+            if (document.getElementById('of-allow-add').checked) allowedOperations.push('+');
+            if (document.getElementById('of-allow-sub').checked) allowedOperations.push('-');
+            if (document.getElementById('of-allow-mult').checked) allowedOperations.push('×');
+            if (document.getElementById('of-allow-div').checked) allowedOperations.push('÷');
+
+            if (allowedOperations.length === 0) {
+                DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || 'Please select at least one operation.'}</p>`;
+                return;
+            }
+
+            const { problems } = generateOperationFinderData({
+                numberCount,
+                numberRange,
+                allowedOperations,
+                numberOfProblems
+            });
+
+            let html = `<h3>${t.problems_title}</h3><div class="operation-finder-grid">`;
+
+            html += problems.map(p => {
+                return `<div class="operation-finder-item">
+                    <div class="problem-content">
+                        <span class="expression">${p.expression} = ${p.result}</span>
+                    </div>
+                    <div class="answer-space"></div>
+                </div>`;
+            }).join('');
+
+            html += `</div>`;
 
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {

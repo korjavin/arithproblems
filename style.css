@@ -1248,3 +1248,70 @@ footer {
     }
 }
 
+/* --- Styles for Operation Finder Problems --- */
+.operation-finder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px 20px;
+    padding-top: 15px;
+    align-items: start;
+}
+
+.operation-finder-item {
+    font-size: 1.3em;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 6em;
+}
+
+.operation-finder-item .problem-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.operation-finder-item .expression {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    letter-spacing: 0.05em;
+}
+
+.operation-finder-item .answer-space {
+    flex-grow: 1;
+    width: 100%;
+    min-height: 2.5em;
+    border-top: 1px dashed #ccc;
+    padding-top: 5px;
+}
+
+/* Print styles for operation finder */
+@media print {
+    .operation-finder-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15mm 10mm;
+    }
+    
+    .operation-finder-item {
+        font-size: 12pt;
+        padding: 8px;
+        page-break-inside: avoid;
+    }
+    
+    .operation-finder-item .expression {
+        font-size: 11pt;
+    }
+    
+    .operation-finder-item .answer-space {
+        min-height: 1.5cm;
+    }
+}
