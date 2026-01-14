@@ -667,7 +667,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function renderOperationFinderProblems(translations) {
-        const t = translations.script.operation_finder;
+        const t = translations.script?.operation_finder || {};
         DOM.problemsContainer.innerHTML = '';
         try {
             const numberCount = parseInt(document.getElementById('of-number-count').value, 10);
@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems
             });
 
-            let html = `<h3>${t.problems_title}</h3><div class="operation-finder-grid">`;
+            let html = `<h3>${t.problems_title || 'Operation Finder'}</h3><div class="operation-finder-grid">`;
 
             html += problems.map(p => {
                 return `<div class="operation-finder-item">
