@@ -1004,8 +1004,8 @@ footer {
     }
 
     .digital-root-check-grid {
-        display: flex !important;
-        flex-wrap: wrap;
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(10mm, max-content));
         justify-content: center;
         gap: 3mm;
     }
@@ -1015,9 +1015,9 @@ footer {
         font-size: 10pt;
         font-weight: bold;
         border: 0.3mm solid #999;
-        min-width: 8mm;
-        height: 5mm;
-        padding: 0 2mm;
+        width: 10mm;
+        height: 8mm;
+        padding: 0;
         display: flex;
         align-items: center;
         justify-content: center;
