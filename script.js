@@ -613,7 +613,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
         DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
         DOM.generateButton.addEventListener("click", handleGenerateClick);
-        DOM.printButton.addEventListener("click", () => window.print());
+        DOM.printButton.addEventListener("click", () => {
+            // Calculate optimal column count for print layout
+            // Target ratio: 3:4 (columns:rows), meaning rows/cols should be ~1.33
+            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
+
+            if (problemGrid) {
+                const problemItems = problemGrid.children;
+                const problemCount = problemItems.length;
+
+                // Find optimal column count that gives ratio closest to 3:4 (0.75)
+                let bestCols = 2;
+                let bestRatio = Infinity;
+                const targetRatio = 0.75; // 3:4 = 0.75
+
+                for (let cols = 1; cols <= Math.min(5, problemCount); cols++) {
+                    const rows = Math.ceil(problemCount / cols);
+                    const ratio = cols / rows;
+                    const diff = Math.abs(ratio - targetRatio);
+
+                    if (diff < bestRatio) {
+                        bestRatio = diff;
+                        bestCols = cols;
+                    }
+                }
+
+                // Set CSS variable for print columns
+                problemGrid.style.setProperty('--print-cols', bestCols);
+
+                console.log(`Print layout: ${problemCount} problems, ${bestCols} columns`);
+            }
+
+            window.print();
+        });
 
         DOM.languageSwitcher.addEventListener('click', (e) => {
             const lang = e.target.dataset.lang;

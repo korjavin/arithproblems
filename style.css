@@ -34,21 +34,22 @@ header h1 {
     display: flex;
     gap: 10px;
     z-index: 100;
-    font-size: 24px; /* This will control the size of the flags */
+    font-size: 24px;
+    /* This will control the size of the flags */
 }
 
 #language-switcher .language-flag {
     cursor: pointer;
     font-size: 28px;
     transition: transform 0.2s, filter 0.2s;
-    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
     border-radius: 4px;
     padding: 2px;
 }
 
 #language-switcher .language-flag:hover {
     transform: scale(1.1);
-    filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 
 /* App Container - Sidebar Layout */
@@ -274,10 +275,12 @@ h2 {
 }
 
 #problems-container {
-    min-height: 100px; /* Placeholder height */
+    min-height: 100px;
+    /* Placeholder height */
     padding: 10px;
     border: 1px dashed #ccc;
-    background-color: #fff; /* White background for the content area */
+    background-color: #fff;
+    /* White background for the content area */
 }
 
 #problems-container h3 {
@@ -295,8 +298,10 @@ h2 {
 .problem {
     padding: 8px 0;
     border-bottom: 1px solid #eee;
-    font-size: 1.1em; /* Slightly larger font for problems */
-    display: flex; /* For better alignment of problem parts if needed */
+    font-size: 1.1em;
+    /* Slightly larger font for problems */
+    display: flex;
+    /* For better alignment of problem parts if needed */
     align-items: center;
 }
 
@@ -306,7 +311,8 @@ h2 {
 
 .problem .blank {
     display: inline-block;
-    width: 70px; /* Adjust width as needed */
+    width: 70px;
+    /* Adjust width as needed */
     border-bottom: 1px solid #333;
     margin-left: 5px;
     margin-right: 5px;
@@ -324,7 +330,8 @@ h2 {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    font-size: 0.9em; /* Adjust as needed */
+    font-size: 0.9em;
+    /* Adjust as needed */
 }
 
 .multiplication-chart th,
@@ -332,7 +339,8 @@ h2 {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
-    min-width: 30px; /* Ensure cells are not too small */
+    min-width: 30px;
+    /* Ensure cells are not too small */
     height: 30px;
 }
 
@@ -346,56 +354,79 @@ h2 {
 }
 
 .multiplication-chart td.prefilled {
-    background-color: #e0ffe0; /* A light green background */
+    background-color: #e0ffe0;
+    /* A light green background */
     font-weight: bold;
-    color: #228B22; /* Forest green text color */
+    color: #228B22;
+    /* Forest green text color */
 }
 
 
 /* --- Styles for Columnar Addition/Subtraction & Multiplication Problems --- */
-#problems-container .arithmetic-grid { /* Applied to a div inside #problems-container */
+#problems-container .arithmetic-grid {
+    /* Applied to a div inside #problems-container */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Adjust minmax for desired problem width */
-    gap: 30px 25px; /* Row gap, Column gap */
-    align-items: start; /* Align items to the start of their grid cell */
-    padding-top: 15px; /* Space from the "Addition & Subtraction Problems" header */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    /* Adjust minmax for desired problem width */
+    gap: 30px 25px;
+    /* Row gap, Column gap */
+    align-items: start;
+    /* Align items to the start of their grid cell */
+    padding-top: 15px;
+    /* Space from the "Addition & Subtraction Problems" header */
 }
 
 .arith-problem {
-    font-family: 'Courier New', Courier, monospace; /* Monospaced font for alignment */
-    font-size: 1.6em; /* Larger font for clarity */
+    font-family: 'Courier New', Courier, monospace;
+    /* Monospaced font for alignment */
+    font-size: 1.6em;
+    /* Larger font for clarity */
     line-height: 1.3;
-    /* display: inline-block; */ /* Not needed if parent is grid */
+    /* display: inline-block; */
+    /* Not needed if parent is grid */
     text-align: right;
-    /* padding: 10px; */ /* Let grid gap handle spacing */
-    /* border: 1px solid #f0f0f0; */ /* Optional border around each problem */
+    /* padding: 10px; */
+    /* Let grid gap handle spacing */
+    /* border: 1px solid #f0f0f0; */
+    /* Optional border around each problem */
     /* border-radius: 3px; */
     /* background-color: #fdfdfd; */
-    min-width: 100px; /* Ensure a minimum width based on font and digits */
-    margin: 0 auto; /* Center in grid cell if cell is wider */
+    min-width: 100px;
+    /* Ensure a minimum width based on font and digits */
+    margin: 0 auto;
+    /* Center in grid cell if cell is wider */
 }
 
 .arith-problem .operand-1 {
-    padding-right: 5px; /* Align with operand-2 numbers */
-    margin-bottom: 2px; /* Small space before operator line */
+    padding-right: 5px;
+    /* Align with operand-2 numbers */
+    margin-bottom: 2px;
+    /* Small space before operator line */
 }
 
 .arith-problem .operator-operand2 {
     display: flex;
-    /* justify-content: space-between; */ /* Operator will be on left of operand2 */
-    align-items: flex-end; /* Align along the bottom of the numbers */
+    /* justify-content: space-between; */
+    /* Operator will be on left of operand2 */
+    align-items: flex-end;
+    /* Align along the bottom of the numbers */
     width: 100%;
 }
 
 .arith-problem .operator {
-    padding-right: 10px; /* Space between operator and operand2's start */
-    min-width: 1em; /* Ensure operator takes some space */
+    padding-right: 10px;
+    /* Space between operator and operand2's start */
+    min-width: 1em;
+    /* Ensure operator takes some space */
     text-align: left;
     color: #333;
 }
+
 .arith-problem .operand-2 {
-    flex-grow: 1; /* Operand 2 takes remaining space to ensure right alignment */
-    padding-right: 5px; /* Consistent with operand-1 */
+    flex-grow: 1;
+    /* Operand 2 takes remaining space to ensure right alignment */
+    padding-right: 5px;
+    /* Consistent with operand-1 */
 }
 
 
@@ -407,22 +438,26 @@ h2 {
 }
 
 .arith-problem .answer-space {
-    min-height: 3.5em; /* Generous space for writing the answer and carry/borrow marks */
+    min-height: 3.5em;
+    /* Generous space for writing the answer and carry/borrow marks */
     /* background-color: #f0f8ff; /* Light blue for answer space, optional */
 }
 
 /* Style for linear division problems when they are grid items */
 .arithmetic-grid .division-problem {
-    font-size: 1.2em; /* Or adjust to match .problem style */
+    font-size: 1.2em;
+    /* Or adjust to match .problem style */
     padding: 10px 8px;
     text-align: left;
     border: 1px solid #f0f0f0;
     background-color: #fdfdfd;
     border-radius: 3px;
-    min-height: 3em; /* Try to match height of columnar problems */
+    min-height: 3em;
+    /* Try to match height of columnar problems */
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align content (numbering + problem) to the left */
+    justify-content: flex-start;
+    /* Align content (numbering + problem) to the left */
 }
 
 .arithmetic-grid .division-problem .blank {
@@ -447,7 +482,8 @@ h2 {
 
 .division-problem-user .divisor-container {
     position: relative;
-    padding-left: 12px; /* Space for the separator */
+    padding-left: 12px;
+    /* Space for the separator */
 }
 
 .division-problem-user .divisor-container::before {
@@ -455,7 +491,8 @@ h2 {
     position: absolute;
     left: 0;
     top: 0;
-    height: 1.5em; /* approximate height of a line of text */
+    height: 1.5em;
+    /* approximate height of a line of text */
     width: 2.5px;
     background-color: #000;
 }
@@ -465,15 +502,18 @@ h2 {
 }
 
 .division-problem-user .answer-line {
-    border-top: 2.5px solid #000; /* Horizontal line for the answer */
+    border-top: 2.5px solid #000;
+    /* Horizontal line for the answer */
 }
 
 .division-problem-user .answer-space {
-    min-height: 3.5em; /* Space for the answer */
+    min-height: 3.5em;
+    /* Space for the answer */
 }
 
 .warning-message {
-    color: #8a6d3b; /* Bootstrap warning color */
+    color: #8a6d3b;
+    /* Bootstrap warning color */
     background-color: #fcf8e3;
     border: 1px solid #faebcc;
     padding: 10px;
@@ -492,12 +532,15 @@ h2 {
 
 .digital-root-check-grid-container h4 {
     margin-top: 0;
-    margin-bottom: 5px; /* Reduced margin */
+    margin-bottom: 5px;
+    /* Reduced margin */
     font-size: 1.1em;
     color: #333;
     text-align: center;
 }
-.digital-root-check-grid-container p { /* For the Mult/Div explanation text */
+
+.digital-root-check-grid-container p {
+    /* For the Mult/Div explanation text */
     text-align: center;
     font-size: 0.85em;
     color: #555;
@@ -507,22 +550,29 @@ h2 {
 .digital-root-check-grid {
     display: grid;
     /* Dynamically set column count via JS or try to match problem grid: */
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Match problem grid */
-    gap: 10px 25px; /* Smaller gap for DR grid cells; Row gap, Column gap */
-    justify-items: center; /* Center cells horizontally */
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    /* Match problem grid */
+    gap: 10px 25px;
+    /* Smaller gap for DR grid cells; Row gap, Column gap */
+    justify-items: center;
+    /* Center cells horizontally */
 }
 
 .dr-cell {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 1.4em; /* Prominent display */
+    font-size: 1.4em;
+    /* Prominent display */
     font-weight: bold;
     color: #0056b3;
     background-color: #fff;
     border: 1px solid #d4d4d4;
     border-radius: 4px;
-    padding: 8px 5px; /* Adjust padding */
-    min-width: 40px; /* Ensure a decent width */
-    height: 40px; /* Ensure a decent height */
+    padding: 8px 5px;
+    /* Adjust padding */
+    min-width: 40px;
+    /* Ensure a decent width */
+    height: 40px;
+    /* Ensure a decent height */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -533,7 +583,8 @@ h2 {
 .fraction-problem-grid {
     /* Uses .arithmetic-grid styles by sharing the class */
     /* We can add specific overrides here if needed */
-    gap: 20px 15px; /* Potentially different gap */
+    gap: 20px 15px;
+    /* Potentially different gap */
 }
 
 .fraction-problem-item {
@@ -543,48 +594,67 @@ h2 {
     border-radius: 4px;
     background-color: #fdfdfd;
     display: flex;
-    flex-direction: column; /* Stack problem content and calculation space */
-    align-items: center;    /* Center the problem content horizontally */
-    justify-content: flex-start; /* Align content to the top, allowing calculation-space to fill below */
-    min-height: 7em; /* Significantly increased height for calculation space */
+    flex-direction: column;
+    /* Stack problem content and calculation space */
+    align-items: center;
+    /* Center the problem content horizontally */
+    justify-content: flex-start;
+    /* Align content to the top, allowing calculation-space to fill below */
+    min-height: 7em;
+    /* Significantly increased height for calculation space */
 }
 
 .fraction-problem-item .problem-content {
     display: flex;
-    align-items: center; /* Vertically align fraction and equals sign */
+    align-items: center;
+    /* Vertically align fraction and equals sign */
     /* font-size: 1.2em; /* Already inherited or can be set on fraction-problem-item */
-    margin-bottom: 5px; /* Small space before calculation area */
-    width: 100%; /* Ensure it takes width for justify-content if needed */
-    justify-content: center; /* Center the fraction and equals sign group */
+    margin-bottom: 5px;
+    /* Small space before calculation area */
+    width: 100%;
+    /* Ensure it takes width for justify-content if needed */
+    justify-content: center;
+    /* Center the fraction and equals sign group */
 }
 
 .fraction-problem-item .calculation-space {
-    flex-grow: 1; /* Takes up remaining vertical space */
-    width: 100%;  /* Full width for scribbling */
+    flex-grow: 1;
+    /* Takes up remaining vertical space */
+    width: 100%;
+    /* Full width for scribbling */
     /* border-top: 1px dashed #ccc; /* Optional: visual separator for the calculation area */
-    min-height: 2em; /* Ensure some minimum space even if flex-grow doesn't give much */
+    min-height: 2em;
+    /* Ensure some minimum space even if flex-grow doesn't give much */
 }
 
 /* Styling for the fraction itself */
 .fraction {
     display: inline-block;
     text-align: center;
-    vertical-align: middle; /* Align with surrounding text */
-    margin: 0 8px; /* Space around the fraction */
-    font-family: 'Courier New', Courier, monospace; /* Good for consistent width */
-    position: relative; /* For absolute positioning of the vinculum (line) if chosen */
+    vertical-align: middle;
+    /* Align with surrounding text */
+    margin: 0 8px;
+    /* Space around the fraction */
+    font-family: 'Courier New', Courier, monospace;
+    /* Good for consistent width */
+    position: relative;
+    /* For absolute positioning of the vinculum (line) if chosen */
 }
 
 .fraction .numerator,
 .fraction .denominator {
     display: block;
-    padding: 0 5px; /* Padding around number */
-    line-height: 1.1; /* Snug line height */
-    font-size: 1.1em; /* Slightly larger numbers */
+    padding: 0 5px;
+    /* Padding around number */
+    line-height: 1.1;
+    /* Snug line height */
+    font-size: 1.1em;
+    /* Slightly larger numbers */
 }
 
 .fraction .numerator {
-    border-bottom: 2px solid #333; /* Vinculum (fraction line) */
+    border-bottom: 2px solid #333;
+    /* Vinculum (fraction line) */
     padding-bottom: 2px;
 }
 
@@ -605,169 +675,399 @@ footer {
 
 /* Print-specific styles */
 @media print {
-    html, body { /* Ensure html and body can expand */
-        height: 100%;
+
+    /* === Basic page setup === */
+    @page {
+        size: A4;
+        margin: 5mm;
     }
+
+    html,
     body {
-        position: relative; /* Needed for absolute positioning of children */
+        height: 100%;
+        margin: 0;
         padding: 0;
-        background-color: #fff; /* Ensure white background for printing */
-        font-size: 12pt; /* Adjust base font size for print */
-        display: flex; /* Make body a flex container to manage main's height */
+    }
+
+    body {
+        position: relative;
+        background-color: #fff;
+        font-size: 12pt;
+        display: flex;
         flex-direction: column;
     }
 
+    /* === Hide non-printable elements === */
     header,
     .topic-sidebar,
     #topic-selection-section,
     .controls,
     #actions-panel,
     footer,
-    nav /* if you add a nav */ {
+    nav,
+    #problems-container>h3 {
         display: none !important;
     }
 
     .app-container {
         display: block;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
+    /* === Main content area === */
     main {
         max-width: 100%;
-        margin: 0; /* Standard browser print margins will apply outside <html> */
-        padding: 10mm 10mm 0 10mm; /* Add some padding, but bottom padding handled by #problems-container or fixed key */
+        margin: 0;
+        padding: 0;
         border: none;
         box-shadow: none;
-        display: flex; /* Use flexbox on main */
+        display: flex;
         flex-direction: column;
-        flex-grow: 1; /* Allow main to grow if body is flex */
-        /* Attempt to make main fill the page height minus space for fixed key */
-        /* 100vh in print context is one page. Subtract estimated fixed key height + bottom margin */
-        min-height: calc(100vh - 60mm); /* 50mm was padding, key itself is ~10-15mm high. Adjust as needed. */
+        flex-grow: 1;
+        min-height: 100vh;
     }
 
-    #output-area { /* This contains #problems-container */
+    #output-area {
         border: none;
         padding: 0;
         background-color: #fff;
-        flex-grow: 1; /* Allow output area to take space in main */
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
-    
+
+    /* === Squared grid background (math exercise book) === */
     #problems-container {
         min-height: auto;
         border: none;
-        padding-bottom: 10mm; /* Reduced padding since we're no longer using fixed positioning */
-        flex-grow: 1; /* Allow problems container to take available space in #output-area */
-        display: flex; 
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
+        display: flex;
         flex-direction: column;
+        /* Squared grid pattern - 5mm cells with faint lines */
+        background-image:
+            linear-gradient(to right, #d0d0d0 1px, transparent 1px),
+            linear-gradient(to bottom, #d0d0d0 1px, transparent 1px);
+        background-size: 5mm 5mm;
+        background-color: #fff;
+        /* Force background to print */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
     }
 
+    /* === Problem grid layout with dynamic columns === */
+    /* CSS variables set by JavaScript based on problem count */
     #problems-container .arithmetic-grid,
-    #problems-container .fraction-problem-grid { 
-        /* display: grid !important; -- Already ensured above or inherited */
-        grid-template-columns: repeat(4, 1fr); /* Example: 4 columns for print, adjust as needed */
-        /* gap: 15mm 8mm; /* More generous spacing for print */
-        /* padding-top: 5mm; */ /* Let align-content handle spacing */
-        flex-grow: 1; /* Make the grid itself take available vertical space in #problems-container */
-        align-content: space-around; /* Distribute space between rows */
-        gap: 10mm 8mm !important; /* Adjust gap for row and column, row gap increased */
-    }
-
-    .problem { /* This is for the old linear problem style, might not be needed if all are grid */
-        page-break-inside: avoid; /* Try to keep problems from splitting across pages */
-        padding: 5px 0; /* Adjust padding for print */
-    }
-
-    .arith-problem {
-        font-size: 14pt; /* Ensure good print size */
-        border: none; /* Remove borders for cleaner print */
-        padding: 5px 0; /* Adjust padding for print */
+    #problems-container .fraction-problem-grid,
+    #problems-container .proportion-problem-grid,
+    #problems-container .decimal-rational-problem-grid,
+    #problems-container .percentage-problem-grid,
+    #problems-container .geometry-problem-grid,
+    #problems-container .linear-equations-problem-grid,
+    #problems-container .simplify-equations-problem-grid,
+    #problems-container .simplify-rationals-problem-grid {
+        display: grid !important;
+        /* Default: 3 columns, will be overridden by inline style based on problem count */
+        grid-template-columns: repeat(var(--print-cols, 3), 1fr);
+        /* Row gap larger than column gap for 3:4 proportion (row:col = 4:3) */
+        gap: 18mm 6mm;
+        flex-grow: 1;
+        align-content: space-evenly;
+        padding: 3mm 0;
         page-break-inside: avoid;
     }
-    .arith-problem .answer-space {
-        min-height: 1.8cm; /* Specific height for print answer */
-    }
-    .arith-problem .problem-line {
-        border-bottom-width: 2px;
+
+    /* === Arithmetic problems (addition, subtraction, multiplication, division) === */
+    .arith-problem {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 18pt;
+        /* Sized to fit ~2 characters per 5mm cell */
+        line-height: 5mm;
+        /* Match grid cell height */
+        border: none;
+        padding: 0;
+        page-break-inside: avoid;
+        text-align: right;
     }
 
-    /* Print-specific adjustments for Digital Root Grid */
+    .arith-problem .operand-1,
+    .arith-problem .operand-2 {
+        line-height: 5mm;
+        padding-right: 0;
+    }
+
+    .arith-problem .operator-operand2 {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .arith-problem .operator {
+        padding-right: 2mm;
+        line-height: 5mm;
+    }
+
+    .arith-problem .problem-line {
+        border-bottom: 0.5mm solid #333;
+        margin-top: 1mm;
+        margin-bottom: 2mm;
+    }
+
+    .arith-problem .answer-space {
+        min-height: 15mm;
+        /* 3 rows of cells for answer space */
+    }
+
+    /* === Division problem specific styles === */
+    .arith-problem.division-problem-user {
+        display: flex;
+        align-items: flex-start;
+        text-align: center;
+    }
+
+    .division-problem-user .dividend {
+        padding: 0 3mm;
+        line-height: 5mm;
+    }
+
+    .division-problem-user .divisor-container::before {
+        height: 5mm;
+        width: 0.5mm;
+    }
+
+    .division-problem-user .answer-line {
+        border-top: 0.5mm solid #333;
+    }
+
+    /* === Fraction problems === */
+    .fraction-problem-item,
+    .fraction-operation-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14pt;
+        border: none;
+        page-break-inside: avoid;
+        min-height: 20mm;
+        padding: 0;
+        background-color: transparent;
+    }
+
+    .fraction {
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .fraction .numerator,
+    .fraction .denominator {
+        font-size: 14pt;
+        line-height: 5mm;
+        padding: 0 2mm;
+    }
+
+    .fraction .numerator {
+        border-bottom: 0.4mm solid #333;
+        padding-bottom: 1mm;
+    }
+
+    .fraction .denominator {
+        padding-top: 1mm;
+    }
+
+    .fraction-operation-item .operation-symbol {
+        font-size: 16pt;
+        margin: 0 3mm;
+    }
+
+    .calculation-space {
+        min-height: 10mm;
+    }
+
+    /* === Linear equations === */
+    .linear-equation-item,
+    .linear-equation-system {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        line-height: 5mm;
+        border: none;
+        padding: 2mm;
+        page-break-inside: avoid;
+        background-color: transparent;
+    }
+
+    .linear-equation-item .equation-text,
+    .linear-equation-system .equation-text {
+        font-size: 10pt;
+        line-height: 5mm;
+    }
+
+    .linear-equation-item .equation,
+    .linear-equation-system .equation {
+        font-size: 12pt;
+        line-height: 5mm;
+    }
+
+    .linear-equation-item .answer-space,
+    .linear-equation-system .answer-space {
+        min-height: 10mm;
+    }
+
+    /* === Proportion problems === */
+    .proportion-problem-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        border: none;
+        padding: 2mm;
+        page-break-inside: avoid;
+        background-color: transparent;
+        min-height: 20mm;
+    }
+
+    .proportion {
+        font-size: 14pt;
+        line-height: 5mm;
+    }
+
+    /* === Decimal/Rational conversion === */
+    .decimal-rational-problem-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        border: none;
+        padding: 2mm;
+        page-break-inside: avoid;
+        background-color: transparent;
+        min-height: 15mm;
+    }
+
+    .decimal-number {
+        font-size: 14pt;
+        line-height: 5mm;
+    }
+
+    /* === Simplify equations === */
+    .simplify-equation-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        line-height: 5mm;
+        border: none;
+        padding: 2mm;
+        page-break-inside: avoid;
+        background-color: transparent;
+    }
+
+    /* === Simplify rationals === */
+    .simplify-rational-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        line-height: 5mm;
+        border: none;
+        padding: 2mm;
+        page-break-inside: avoid;
+        background-color: transparent;
+    }
+
+    .problem {
+        page-break-inside: avoid;
+        padding: 2mm 0;
+    }
+
+    /* === Digital Root section (horizontal, bottom) === */
     .digital-root-check-grid-container {
-        margin-top: 8mm;
-        padding: 3mm;
-        border: 1px solid #ccc;
-        background-color: #fff;
+        margin-top: auto;
+        /* Push to bottom */
+        padding: 2mm 3mm;
+        border-top: 0.5mm solid #999;
+        background-color: rgba(255, 255, 255, 0.9);
         page-break-before: avoid;
         page-break-after: avoid;
-    }
-    .digital-root-check-grid-container h4 {
-        font-size: 12pt;
-    }
-    .digital-root-check-grid-container p {
-        font-size: 9pt;
-    }
-    .digital-root-check-grid {
-        /* Match column count of problem grid in print, e.g., repeat(4, 1fr) */
-        grid-template-columns: repeat(6, 1fr); /* More columns to fit more items per row */
-        gap: 3mm 3mm; /* Reduced gap */
-    }
-    .dr-cell {
-        font-size: 10pt;
-        border: 1px solid #bbb;
-        min-width: 8mm;
-        height: 8mm;
-        padding: 1mm;
         page-break-inside: avoid;
+    }
+
+    .digital-root-check-grid-container h4 {
+        font-size: 10pt;
+        margin: 0 0 2mm 0;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .digital-root-check-grid-container p {
+        font-size: 8pt;
+        margin: 0 0 2mm 0;
+    }
+
+    .digital-root-check-grid {
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3mm;
+    }
+
+    .dr-cell {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 10pt;
+        font-weight: bold;
+        border: 0.3mm solid #999;
+        min-width: 8mm;
+        height: 5mm;
+        padding: 0 2mm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
     }
 
     /* --- Styles for Rational Operations Problems --- */
     /* .fraction-problem-grid (from canonical) can be reused if styling is similar */
 
     .fraction-operation-item {
-        font-size: 1.2em; /* Base font size for the item */
+        font-size: 1.2em;
+        /* Base font size for the item */
         padding: 10px;
         border: 1px solid #e0e0e0;
         border-radius: 4px;
         background-color: #fdfdfd;
         display: flex;
-        flex-direction: column; 
-        align-items: center;    
-        justify-content: flex-start; 
-        min-height: 7em; /* Consistent with simplification problems for vertical space */
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 7em;
+        /* Consistent with simplification problems for vertical space */
     }
 
     .fraction-operation-item .problem-content {
         display: flex;
-        align-items: center; 
+        align-items: center;
         justify-content: center;
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
         width: 100%;
         /* font-size for fractions within is handled by .fraction class */
     }
 
     .fraction-operation-item .operation-symbol {
-        font-size: 1.5em; /* Make operator stand out from fraction numbers */
+        font-size: 1.5em;
+        /* Make operator stand out from fraction numbers */
         font-weight: bold;
-        margin: 0 10px; 
+        margin: 0 10px;
         color: #333;
-        line-height: 1; /* Ensure it aligns well vertically with fractions */
+        line-height: 1;
+        /* Ensure it aligns well vertically with fractions */
     }
 
     /* .fraction styles are reused */
     /* .calculation-space style (if added to HTML structure) is reused from .fraction-problem-item .calculation-space */
 
 
-     /* Print specific for fractions */
-             .fraction-problem-grid { /* This assumes .fraction-problem-grid is a class on the same element as .arithmetic-grid or a child */
-                 display: grid !important; /* Ensure grid display */
-                 /* Assuming grid-template-columns is set similar to .arithmetic-grid if it's a top-level problem grid */
-                 /* If it's just a class on .arithmetic-grid, this display:grid might be redundant but harmless */
-                 gap: 15mm 10mm; 
-             }
+    /* Print specific for fractions */
+    .fraction-problem-grid {
+        /* This assumes .fraction-problem-grid is a class on the same element as .arithmetic-grid or a child */
+        display: grid !important;
+        /* Ensure grid display */
+        /* Assuming grid-template-columns is set similar to .arithmetic-grid if it's a top-level problem grid */
+        /* If it's just a class on .arithmetic-grid, this display:grid might be redundant but harmless */
+        gap: 15mm 10mm;
+    }
 
-        /* Styles for Control Sum Key Grid (Fractions) */
-        .control-sum-key-container {
+    /* Styles for Control Sum Key Grid (Fractions) */
+    .control-sum-key-container {
         margin-top: 30px;
         padding: 15px;
         border: 1px solid #e0e0e0;
@@ -777,12 +1077,14 @@ footer {
 
     .control-sum-key-container h4 {
         margin-top: 0;
-        margin-bottom: 5px; 
+        margin-bottom: 5px;
         font-size: 1.1em;
         color: #333;
         text-align: center;
     }
-    .control-sum-key-container p { /* For the explanation text */
+
+    .control-sum-key-container p {
+        /* For the explanation text */
         text-align: center;
         font-size: 0.85em;
         color: #555;
@@ -791,88 +1093,103 @@ footer {
 
     .control-sum-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Match problem grid */
-        gap: 10px 15px; /* Row gap, Column gap */
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        /* Match problem grid */
+        gap: 10px 15px;
+        /* Row gap, Column gap */
         justify-items: center;
     }
 
     .control-sum-cell {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 1.4em; 
+        font-size: 1.4em;
         font-weight: bold;
-        color: #0056b3; /* Consistent with DR cell color */
+        color: #0056b3;
+        /* Consistent with DR cell color */
         background-color: #fff;
         border: 1px solid #d4d4d4;
         border-radius: 4px;
-        padding: 8px 5px; 
-        min-width: 40px; 
-        height: 40px; 
+        padding: 8px 5px;
+        min-width: 40px;
+        height: 40px;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
     }
+
     .fraction-problem-item {
         font-size: 12pt;
         border: none;
         page-break-inside: avoid;
-        min-height: 2.5cm; /* Adjusted min-height for print */
+        min-height: 2.5cm;
+        /* Adjusted min-height for print */
     }
-    .fraction .numerator, .fraction .denominator {
+
+    .fraction .numerator,
+    .fraction .denominator {
         font-size: 13pt;
     }
+
     .fraction .numerator {
-        border-bottom-width: 1.5px; /* Slightly thinner for print */
+        border-bottom-width: 1.5px;
+        /* Slightly thinner for print */
     }
 
     /* Print specific for fraction operations */
     .fraction-operation-item {
         font-size: 12pt;
         border: none;
-        min-height: 2.5cm; 
+        min-height: 2.5cm;
         page-break-inside: avoid;
     }
+
     .fraction-operation-item .operation-symbol {
-        font-size: 1.3em; 
-        margin: 0 6px; /* Adjusted margin for print */
+        font-size: 1.3em;
+        margin: 0 6px;
+        /* Adjusted margin for print */
     }
+
     /* .fraction print styles are inherited */
     /* .calculation-space print styles are inherited */
 
     /* Print specific for proportion problems */
     .proportion-problem-grid {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 columns for print */
+        grid-template-columns: repeat(2, 1fr) !important;
+        /* 2 columns for print */
         gap: 20mm 15mm !important;
     }
-    
+
     .proportion-problem-item {
         font-size: 11pt;
         border: 1px solid #ccc;
-        min-height: 2.5cm; /* Reduced from 6cm since we removed sections */
+        min-height: 2.5cm;
+        /* Reduced from 6cm since we removed sections */
         page-break-inside: avoid;
-        padding: 6mm; /* Reduced padding */
+        padding: 6mm;
+        /* Reduced padding */
     }
-    
+
     .proportion-problem-item .problem-header {
         font-size: 11pt;
         margin-bottom: 5mm;
     }
-    
+
     .proportion {
         font-size: 1.2em;
     }
-    
+
     .answer-section .answer-line {
         border-bottom-width: 1.5px;
         min-width: 60px;
     }
-    
+
     .control-check-section {
         border-top: 1px dashed #999;
         padding-top: 5mm;
     }
-    
+
     .cross-check-line .check-answer-line {
         border-bottom-width: 1px;
         min-width: 40px;
@@ -881,10 +1198,11 @@ footer {
     /* Print specific for decimal/rational problems */
     .decimal-rational-problem-grid {
         display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 columns for print */
+        grid-template-columns: repeat(2, 1fr) !important;
+        /* 2 columns for print */
         gap: 15mm 10mm !important;
     }
-    
+
     .decimal-rational-problem-item {
         font-size: 11pt;
         border: 1px solid #ccc;
@@ -892,13 +1210,13 @@ footer {
         page-break-inside: avoid;
         padding: 6mm;
     }
-    
+
     .fraction-display,
     .decimal-display {
         font-size: 1.1em;
         margin-bottom: 4mm;
     }
-    
+
     .fraction-display .answer-space,
     .decimal-display .answer-space {
         border-bottom-width: 1.5px;
@@ -917,62 +1235,77 @@ footer {
         padding: 3mm;
         page-break-inside: avoid !important;
         page-break-before: avoid;
-        clear: both; 
+        clear: both;
     }
-    .digital-root-check-grid-container h4, /* Shared style for h4 in key containers */
+
+    .digital-root-check-grid-container h4,
+    /* Shared style for h4 in key containers */
     .control-sum-key-container h4 {
         font-size: 12pt;
     }
-    .digital-root-check-grid-container p, /* Shared style for p in key containers */
+
+    .digital-root-check-grid-container p,
+    /* Shared style for p in key containers */
     .control-sum-key-container p {
         font-size: 9pt;
     }
 
     .digital-root-check-grid,
     .control-sum-grid {
-        display: grid !important; 
-        grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)) !important; /* Use auto-fill to adapt */
-        gap: 3mm !important; 
-        list-style-type: none !important; 
-        padding: 0 !important; 
-        margin: 0 auto !important; /* Center grid if its container is wider */
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)) !important;
+        /* Use auto-fill to adapt */
+        gap: 3mm !important;
+        list-style-type: none !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+        /* Center grid if its container is wider */
         max-width: 100%;
     }
 
     .dr-cell,
     .control-sum-cell {
-        display: flex; 
+        display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid #ccc; 
-        font-size: 8pt; /* Even smaller if needed */
-        height: 0.7cm;       
-        padding: 1mm; 
+        border: 1px solid #ccc;
+        font-size: 8pt;
+        /* Even smaller if needed */
+        height: 0.7cm;
+        padding: 1mm;
         page-break-inside: avoid;
-        overflow: hidden; 
+        overflow: hidden;
         text-overflow: ellipsis;
-        margin: 0; 
+        margin: 0;
     }
 
     /* New style for the comma-separated line of sums in rational sections' keys */
     /* This targets the <p class="control-sum-line"> inside the key container */
     .control-sum-key-container .control-sum-line {
-        font-size: 8pt;          /* Small font for the compact list */
-        text-align: center;      /* Center the text block */
-        word-wrap: break-word;   /* Allow long line of numbers to wrap */
-        line-height: 1.3;        /* Adjust line height for wrapped text */
-        padding: 1mm 3mm;      /* Give it a little horizontal padding within the fixed footer */
-        margin: 0 auto;          /* Center the paragraph block if its container is wider */
-        max-width: 90%;          /* Prevent it from touching edges of the footer container */
+        font-size: 8pt;
+        /* Small font for the compact list */
+        text-align: center;
+        /* Center the text block */
+        word-wrap: break-word;
+        /* Allow long line of numbers to wrap */
+        line-height: 1.3;
+        /* Adjust line height for wrapped text */
+        padding: 1mm 3mm;
+        /* Give it a little horizontal padding within the fixed footer */
+        margin: 0 auto;
+        /* Center the paragraph block if its container is wider */
+        max-width: 90%;
+        /* Prevent it from touching edges of the footer container */
     }
 
 
-    h1, h2 {
+    h1,
+    h2 {
         /* Optionally style headers differently for print or hide them if part of .controls */
     }
 }
 
-.range-inputs > div {
+.range-inputs>div {
     display: flex;
     align-items: center;
 }
@@ -982,7 +1315,7 @@ footer {
     margin-bottom: 5px;
 }
 
-.range-inputs div > label {
+.range-inputs div>label {
     margin-bottom: 0;
     margin-right: 5px;
 }
@@ -996,7 +1329,8 @@ footer {
 /* --- Styles for Proportion Problems --- */
 .proportion-problem-grid {
     /* Uses .arithmetic-grid styles by sharing the class */
-    gap: 25px 20px; /* Potentially different gap for proportion problems */
+    gap: 25px 20px;
+    /* Potentially different gap for proportion problems */
 }
 
 .proportion-problem-item {
@@ -1007,7 +1341,8 @@ footer {
     background-color: #fdfdfd;
     display: flex;
     flex-direction: column;
-    min-height: 4em; /* Reduced since we removed answer and control check sections */
+    min-height: 4em;
+    /* Reduced since we removed answer and control check sections */
 }
 
 .proportion-problem-item .problem-header {
@@ -1116,7 +1451,8 @@ footer {
 /* --- Styles for Decimal/Rational Conversion Problems --- */
 .decimal-rational-problem-grid {
     /* Uses .arithmetic-grid styles by sharing the class */
-    gap: 20px 15px; /* Adjust gap for decimal/rational problems */
+    gap: 20px 15px;
+    /* Adjust gap for decimal/rational problems */
 }
 
 .decimal-rational-problem-item {
@@ -1127,7 +1463,8 @@ footer {
     background-color: #fdfdfd;
     display: flex;
     flex-direction: column;
-    min-height: 4em; /* Further reduced height since no conversion prompt */
+    min-height: 4em;
+    /* Further reduced height since no conversion prompt */
 }
 
 .decimal-rational-problem-item .problem-content {
@@ -1247,4 +1584,3 @@ footer {
         height: 180px !important;
     }
 }
-
