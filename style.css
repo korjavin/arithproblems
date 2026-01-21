@@ -774,10 +774,10 @@ footer {
         /* Default: 3 columns, will be overridden by inline style based on problem count */
         grid-template-columns: repeat(var(--print-cols, 3), 1fr);
         /* Row gap larger than column gap for 3:4 proportion (row:col = 4:3) */
-        gap: 18mm 6mm;
+        gap: 20mm 6mm;
         flex-grow: 1;
         align-content: space-evenly;
-        padding: 3mm 0;
+        padding: 5mm 0;
         page-break-inside: avoid;
     }
 
@@ -785,6 +785,7 @@ footer {
     .arith-problem {
         font-family: 'Courier New', Courier, monospace;
         font-size: 18pt;
+        \n font-weight: bold;
         /* Sized to fit ~2 characters per 5mm cell */
         line-height: 5mm;
         /* Match grid cell height */
@@ -847,11 +848,13 @@ footer {
     .fraction-operation-item {
         font-family: 'Courier New', Courier, monospace;
         font-size: 14pt;
+        font-weight: bold;
         border: none;
         page-break-inside: avoid;
         min-height: 20mm;
         padding: 0;
-        background-color: transparent;
+        background-color: transparent !important;
+        background: none !important;
     }
 
     .fraction {
@@ -861,6 +864,7 @@ footer {
     .fraction .numerator,
     .fraction .denominator {
         font-size: 14pt;
+        font-weight: bold;
         line-height: 5mm;
         padding: 0 2mm;
     }
@@ -887,12 +891,13 @@ footer {
     .linear-equation-item,
     .linear-equation-system {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 12pt;
+        font-size: 11pt;
+        font-weight: bold;
         line-height: 5mm;
         border: none;
-        padding: 2mm;
+        padding: 0;
         page-break-inside: avoid;
-        background-color: transparent;
+        background-color: transparent !important;
     }
 
     .linear-equation-item .equation-text,
@@ -915,11 +920,12 @@ footer {
     /* === Proportion problems === */
     .proportion-problem-item {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 12pt;
+        font-size: 11pt;
+        font-weight: bold;
         border: none;
-        padding: 2mm;
+        padding: 0;
         page-break-inside: avoid;
-        background-color: transparent;
+        background-color: transparent !important;
         min-height: 20mm;
     }
 
@@ -931,11 +937,12 @@ footer {
     /* === Decimal/Rational conversion === */
     .decimal-rational-problem-item {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 12pt;
+        font-size: 11pt;
+        font-weight: bold;
         border: none;
-        padding: 2mm;
+        padding: 0;
         page-break-inside: avoid;
-        background-color: transparent;
+        background-color: transparent !important;
         min-height: 15mm;
     }
 
@@ -947,23 +954,25 @@ footer {
     /* === Simplify equations === */
     .simplify-equation-item {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 12pt;
+        font-size: 11pt;
+        font-weight: bold;
         line-height: 5mm;
         border: none;
-        padding: 2mm;
+        padding: 0;
         page-break-inside: avoid;
-        background-color: transparent;
+        background-color: transparent !important;
     }
 
     /* === Simplify rationals === */
     .simplify-rational-item {
         font-family: 'Courier New', Courier, monospace;
-        font-size: 12pt;
+        font-size: 11pt;
+        font-weight: bold;
         line-height: 5mm;
         border: none;
-        padding: 2mm;
+        padding: 0;
         page-break-inside: avoid;
-        background-color: transparent;
+        background-color: transparent !important;
     }
 
     .problem {
