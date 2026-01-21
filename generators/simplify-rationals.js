@@ -70,11 +70,12 @@ function generateLevel1() {
     const simplifiedNum = numeratorCoeff;
     const simplifiedDen = denominatorCoeff;
 
-    const expression = `\\frac{${num}x}{${den}x}`;
+    const numerator = `${num}x`;
+    const denominator = `${den}x`;
     const controlSum = digitalRoot(simplifiedNum + simplifiedDen);
 
     return {
-        problem: { expression },
+        problem: { numerator, denominator },
         controlSum
     };
 }
@@ -106,7 +107,8 @@ function generateLevel2() {
         simplifiedNumVar = numeratorVar === 'xy' ? 'y' : '';
     }
 
-    const expression = `\\frac{${num}${numeratorVar}}{${den}${denominatorVar}}`;
+    const numerator = `${num}${numeratorVar}`;
+    const denominator = `${den}${denominatorVar}`;
 
     // Simplified form coefficients
     const simplifiedNum = numeratorCoeff;
@@ -115,7 +117,7 @@ function generateLevel2() {
     const controlSum = digitalRoot(simplifiedNum + simplifiedDen);
 
     return {
-        problem: { expression },
+        problem: { numerator, denominator },
         controlSum
     };
 }
@@ -139,11 +141,12 @@ function generateLevel3() {
 
     // For variety, sometimes make it a simple ratio
     if (Math.random() > 0.5) {
-        const expression = `\\frac{${num1}${xTerm} + ${num2}}{${den1}${xTerm} + ${den2}}`;
+        const numerator = `${num1}${xTerm} + ${num2}`;
+        const denominator = `${den1}${xTerm} + ${den2}`;
         const controlSum = digitalRoot(commonFactor); // Simplifies to commonFactor
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     } else {
@@ -152,11 +155,12 @@ function generateLevel3() {
         const coeff1 = randomInt(2, 6);
         const coeff2 = randomInt(2, 6);
 
-        const expression = `\\frac{${factorNum * coeff1}x + ${factorNum * coeff2}}{${coeff1}x + ${coeff2}}`;
+        const numerator = `${factorNum * coeff1}x + ${factorNum * coeff2}`;
+        const denominator = `${coeff1}x + ${coeff2}`;
         const controlSum = digitalRoot(factorNum); // Simplifies to factorNum
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     }
@@ -172,25 +176,27 @@ function generateLevel4() {
     if (type === 0) {
         // Difference of squares: (x² - a²)/(x + a) = x - a
         const a = randomInt(2, 6);
-        const expression = `\\frac{x² - ${a * a}}{x + ${a}}`;
+        const numerator = `x² - ${a * a}`;
+        const denominator = `x + ${a}`;
 
         // Simplifies to x - a, control sum based on coefficient of x (1) and constant (-a)
         const controlSum = digitalRoot(1 + a);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     } else if (type === 1) {
         // Difference of squares: (x² - a²)/(x - a) = x + a
         const a = randomInt(2, 6);
-        const expression = `\\frac{x² - ${a * a}}{x - ${a}}`;
+        const numerator = `x² - ${a * a}`;
+        const denominator = `x - ${a}`;
 
         // Simplifies to x + a
         const controlSum = digitalRoot(1 + a);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     } else {
@@ -200,13 +206,14 @@ function generateLevel4() {
         const b = d + e;
         const c = d * e;
 
-        const expression = `\\frac{x² + ${b}x + ${c}}{x + ${d}}`;
+        const numerator = `x² + ${b}x + ${c}`;
+        const denominator = `x + ${d}`;
 
         // Simplifies to x + e
         const controlSum = digitalRoot(1 + e);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     }
@@ -224,26 +231,28 @@ function generateLevel5() {
         const a = randomInt(2, 5);
         const coeff = randomInt(2, 4);
 
-        const expression = `\\frac{${coeff}x² + ${coeff * a}x}{x² - ${a * a}}`;
+        const numerator = `${coeff}x² + ${coeff * a}x`;
+        const denominator = `x² - ${a * a}`;
 
         // Simplifies to (coeff·x)/(x - a), control sum from coeff + a
         const controlSum = digitalRoot(coeff + a);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     } else if (type === 1) {
         // (x² - bx)/(x² - b²) = x/(x + b)
         const b = randomInt(2, 6);
 
-        const expression = `\\frac{x² - ${b}x}{x² - ${b * b}}`;
+        const numerator = `x² - ${b}x`;
+        const denominator = `x² - ${b * b}`;
 
         // Simplifies to x/(x + b), control sum from 1 + b
         const controlSum = digitalRoot(1 + b);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     } else {
@@ -257,13 +266,14 @@ function generateLevel5() {
         const d1 = a;
         const d2 = a * b;
 
-        const expression = `\\frac{${c1}x² + ${c2}x + ${c3}}{${d1}x + ${d2}}`;
+        const numerator = `${c1}x² + ${c2}x + ${c3}`;
+        const denominator = `${d1}x + ${d2}`;
 
         // Simplifies to x + b
         const controlSum = digitalRoot(1 + b);
 
         return {
-            problem: { expression },
+            problem: { numerator, denominator },
             controlSum
         };
     }

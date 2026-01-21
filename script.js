@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             let html = `<h3>${t.problems_title}</h3>`;
             if (problems.length < numberOfProblems && avoidWholeNums) {
-                 html += `<p class="warning-message">${t.warning_generation.replace('{generatedCount}', problems.length).replace('{numberOfProblems}', numberOfProblems)}</p>`;
+                html += `<p class="warning-message">${t.warning_generation.replace('{generatedCount}', problems.length).replace('{numberOfProblems}', numberOfProblems)}</p>`;
             }
             html += `<div class="arithmetic-grid fraction-problem-grid">${problems.map(p => `<div class="fraction-operation-item"><div class="problem-content"><span class="fraction"><span class="numerator">${p.n1}</span><span class="denominator">${p.d1}</span></span><span class="operation-symbol">${p.operation === 'multiply' ? '&times;' : '&divide;'}</span><span class="fraction"><span class="numerator">${p.n2}</span><span class="denominator">${p.d2}</span></span> =</div><div class="calculation-space"></div></div>`).join('')}</div>`;
             if (controlSumsArray.length > 0) {
@@ -455,7 +455,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const variableNames = ['x', 'y', 'z', 'w'].slice(0, variableCount);
                 const solveText = `Solve for ${variableNames.join(', ')}:`;
 
-                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount-1)}</div></div></div>`).join('')}</div>`;
+                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount - 1)}</div></div></div>`).join('')}</div>`;
             }
 
             if (digitalRoots.length > 0) {
@@ -544,7 +544,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     const startX = 150 - (layer.length * stoneSpacing) / 2 + stoneSpacing / 2;
                     layer.forEach((stoneValue, stoneIndex) => {
                         const x = startX + stoneIndex * stoneSpacing;
-                        svgContent += `<ellipse cx="${x}" cy="${y}" rx="${stoneSize/2}" ry="${stoneSize/2.5}" fill="#D2B48C" stroke="#8B7355" stroke-width="2"></ellipse>`;
+                        svgContent += `<ellipse cx="${x}" cy="${y}" rx="${stoneSize / 2}" ry="${stoneSize / 2.5}" fill="#D2B48C" stroke="#8B7355" stroke-width="2"></ellipse>`;
                         if (stoneValue !== '?') {
                             svgContent += `<text x="${x}" y="${y + 5}" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">${stoneValue}</text>`;
                         }
@@ -591,7 +591,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
             let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid simplify-rationals-problem-grid">`;
-            html += problems.map(p => `<div class="simplify-rational-item"><div class="problem-content"><span class="equation">\\[${p.expression}\\]</span><div class="answer-space"></div></div></div>`).join('');
+            html += problems.map(p => `<div class="simplify-rational-item"><div class="problem-content"><span class="fraction"><span class="numerator">${p.numerator}</span><span class="denominator">${p.denominator}</span></span> <span class="equals">=</span><div class="answer-space"></div></div></div>`).join('');
             html += `</div>`;
 
             if (controlSums.length > 0) {

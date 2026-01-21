@@ -22,9 +22,10 @@ function testGenerateSimplifyRationalsData() {
 
         // Test each problem structure
         result.problems.forEach((problem, i) => {
-            assert(problem.expression, `Problem ${i} should have an expression property`);
-            assert(typeof problem.expression === 'string', `Problem ${i} expression should be a string`);
-            assert(problem.expression.includes('\\frac'), `Problem ${i} should contain a fraction`);
+            assert(problem.numerator, `Problem ${i} should have a numerator property`);
+            assert(problem.denominator, `Problem ${i} should have a denominator property`);
+            assert(typeof problem.numerator === 'string', `Problem ${i} numerator should be a string`);
+            assert(typeof problem.denominator === 'string', `Problem ${i} denominator should be a string`);
         });
 
         // Test each control sum
