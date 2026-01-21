@@ -70,7 +70,7 @@ function getCoefficients(node) {
     } else if (node.isConstantNode) {
         b = node.value;
     } else {
-         // Fallback for more complex nodes if needed
+        // Fallback for more complex nodes if needed
         try {
             const evaluated = node.evaluate();
             if (typeof evaluated === 'number') {
@@ -92,20 +92,27 @@ export function generateSimplifyEquationsData({ complexity, numberOfProblems }) 
         let expression;
         let simplified;
         let node;
-        let a=0, b=0;
+        let a = 0, b = 0;
 
         // Try to generate a valid expression
         try {
             expression = generateExpression(complexity);
             simplified = math.simplify(expression);
             node = math.parse(simplified.toString());
-            [a, b] = getCoefficients(node);
+
+            // Extract coefficients by evaluating at x=0 and x=1
+            // For ax + b: at x=0 we get b, at x=1 we get a+b
+            b = node.evaluate({ x: 0 });
+            const aPlusB = node.evaluate({ x: 1 });
+            a = aPlusB - b;
         } catch (e) {
             // If something fails, just try again with a simple one
             expression = '2*x + 3*x + 5';
             simplified = math.simplify(expression);
             node = math.parse(simplified.toString());
-            [a, b] = getCoefficients(node);
+            b = node.evaluate({ x: 0 });
+            const aPlusB = node.evaluate({ x: 1 });
+            a = aPlusB - b;
         }
 
         problems.push({
