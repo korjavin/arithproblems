@@ -22,31 +22,9 @@ function testGenerateSimplifyRationalsData() {
 
         // Test each problem structure
         result.problems.forEach((problem, i) => {
-            assert(problem.type, `Problem ${i} should have a type property`);
-            assert(['single', 'operation'].includes(problem.type), `Problem ${i} type should be 'single' or 'operation'`);
-
-            if (problem.type === 'single') {
-                assert(typeof problem.numerator === 'string', `Problem ${i} numerator should be a string`);
-                assert(typeof problem.denominator === 'string', `Problem ${i} denominator should be a string`);
-                assert(problem.numerator.length > 0, `Problem ${i} numerator should not be empty`);
-                assert(problem.denominator.length > 0, `Problem ${i} denominator should not be empty`);
-            } else if (problem.type === 'operation') {
-                assert(Array.isArray(problem.fractions), `Problem ${i} fractions should be an array`);
-                assert(Array.isArray(problem.operations), `Problem ${i} operations should be an array`);
-                assert(problem.fractions.length > 1, `Problem ${i} should have at least 2 fractions`);
-                assert(problem.operations.length === problem.fractions.length - 1, `Problem ${i} should have n-1 operations for n fractions`);
-
-                // Check each fraction
-                problem.fractions.forEach((frac, j) => {
-                    assert(typeof frac.numerator === 'string', `Fraction ${j} numerator should be a string`);
-                    assert(typeof frac.denominator === 'string', `Fraction ${j} denominator should be a string`);
-                });
-
-                // Check operations are valid
-                problem.operations.forEach((op, j) => {
-                    assert(['+', '-', '·', '÷'].includes(op), `Operation ${j} should be a valid operator, got ${op}`);
-                });
-            }
+            assert(problem.expression, `Problem ${i} should have an expression property`);
+            assert(typeof problem.expression === 'string', `Problem ${i} expression should be a string`);
+            assert(problem.expression.includes('\\frac'), `Problem ${i} should contain a fraction`);
         });
 
         // Test each control sum
@@ -62,11 +40,6 @@ function testGenerateSimplifyRationalsData() {
 
     const result3 = generateSimplifyRationalsData({ complexity: 5, numberOfProblems: 50 });
     assert.strictEqual(result3.problems.length, 50, 'Should handle larger number of problems');
-
-    // Test that higher complexity levels include operation types
-    const result4 = generateSimplifyRationalsData({ complexity: 3, numberOfProblems: 20 });
-    const hasOperationType = result4.problems.some(p => p.type === 'operation');
-    assert(hasOperationType, 'Complexity 3+ should include problems with operations');
 
     // Test invalid inputs
     try {

@@ -591,27 +591,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
             let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid simplify-rationals-problem-grid">`;
-
-            html += problems.map(p => {
-                let problemHtml = '<div class="simplify-rational-item"><div class="problem-content">';
-
-                if (p.type === 'single') {
-                    // Single fraction
-                    problemHtml += `<span class="fraction"><span class="numerator">${p.numerator}</span><span class="denominator">${p.denominator}</span></span>`;
-                } else if (p.type === 'operation') {
-                    // Multiple fractions with operations
-                    p.fractions.forEach((frac, i) => {
-                        if (i > 0) {
-                            problemHtml += ` <span class="operator">${p.operations[i - 1]}</span> `;
-                        }
-                        problemHtml += `<span class="fraction"><span class="numerator">${frac.numerator}</span><span class="denominator">${frac.denominator}</span></span>`;
-                    });
-                }
-
-                problemHtml += ' = <div class="answer-space"></div></div></div>';
-                return problemHtml;
-            }).join('');
-
+            html += problems.map(p => `<div class="simplify-rational-item"><div class="problem-content"><span class="equation">\\[${p.expression}\\]</span><div class="answer-space"></div></div></div>`).join('');
             html += `</div>`;
 
             if (controlSums.length > 0) {
