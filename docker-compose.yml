@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tgwebapp:
-    image: ghcr.io/korjavin/arithproblems:c541097183dee2a4f4f8946f63d5e5434cfc6179
+    image: ghcr.io/korjavin/arithproblems:cb482bf596df939d1cbf660539c46c15de76a990
     container_name: arithproblems
     networks:
       - vaultwarden_default
