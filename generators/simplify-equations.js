@@ -63,12 +63,43 @@ function getCoefficients(node) {
         const [rightA, rightB] = getCoefficients(node.args[1]);
         a = leftA - rightA;
         b = leftB - rightB;
-    } else if (node.isOperatorNode && node.op === '*' && node.args[1].isSymbolNode && node.args[1].name === 'x') {
-        a = node.args[0].value || 1; // Coefficient
+    } else if (node.isOperatorNode && node.op === '*') {
+        // Handle multiplication: could be a*x, a*(x+b), (x+b)*a, etc.
+        const left = node.args[0];
+        const right = node.args[1];
+
+        // Check if right side is x or contains x
+        if (right.isSymbolNode && right.name === 'x') {
+            // Simple case: a*x where a is a constant
+            a = left.value || 1;
+        } else if (right.isParenthesisNode || right.isOperatorNode) {
+            // Case: a*(x+b) - need to expand
+            const multiplier = left.value || (left.isConstantNode ? left.value : 1);
+            const [innerA, innerB] = getCoefficients(right.isParenthesisNode ? right.content : right);
+            a = multiplier * innerA;
+            b = multiplier * innerB;
+        } else if (left.isSymbolNode && left.name === 'x') {
+            // Case: x*a (reversed)
+            a = right.value || 1;
+        } else if (left.isParenthesisNode || left.isOperatorNode) {
+            // Case: (x+b)*a - need to expand
+            const multiplier = right.value || (right.isConstantNode ? right.value : 1);
+            const [innerA, innerB] = getCoefficients(left.isParenthesisNode ? left.content : left);
+            a = multiplier * innerA;
+            b = multiplier * innerB;
+        }
     } else if (node.isSymbolNode && node.name === 'x') {
         a = 1;
     } else if (node.isConstantNode) {
         b = node.value;
+    } else if (node.isParenthesisNode) {
+        // Recursively process content inside parentheses
+        return getCoefficients(node.content);
+    } else if (node.isUnaryMinus) {
+        // Handle unary minus: -expr
+        const [innerA, innerB] = getCoefficients(node.args[0]);
+        a = -innerA;
+        b = -innerB;
     } else {
         // Fallback for more complex nodes if needed
         try {
