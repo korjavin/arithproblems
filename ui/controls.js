@@ -411,3 +411,20 @@ export function renderSimplifyRationalsControls(container, t) {
         complexityValue.textContent = complexitySlider.value;
     });
 }
+export function renderMixedOperationsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="mo-num-operations">${t.num_operations_label}</label>
+            <input type="number" id="mo-num-operations" value="3" min="1" max="10">
+        </div>
+        <div>
+            <label for="mo-coefficient-range">${t.coefficient_range_label}</label>
+            <input type="number" id="mo-coefficient-range" value="10" min="2" max="50">
+        </div>
+        <div>
+            <input type="checkbox" id="mo-allow-negative">
+            <label for="mo-allow-negative">${t.allow_negative_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

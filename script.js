@@ -2,6 +2,7 @@ import * as i18n from './i18n.js';
 import * as controls from './ui/controls.js';
 import { generateMultiplicationTableData } from './generators/multiplication-table.js';
 import { generateAdditionSubtractionData } from './generators/addition-subtraction.js';
+import { generateMixedOperationsData } from './generators/mixed-operations.js';
 import { generateMultiplicationDivisionData } from './generators/multiplication-division.js';
 import { generateRationalCanonicalData } from './generators/rational-canonical.js';
 import { generateRationalOperationsData } from './generators/rational-operations.js';
@@ -36,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const topicControlsRenderers = {
         "multiplication-table": controls.renderMultiplicationTableControls,
         "addition-subtraction": controls.renderAdditionSubtractionControls,
+        "mixed-operations": controls.renderMixedOperationsControls,
         "multiplication-division": controls.renderMultiplicationDivisionControls,
         "rational-canonical": controls.renderRationalCanonicalControls,
         "rational-operations": controls.renderRationalOperationsControls,
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const problemRenderers = {
         "multiplication-table": renderMultiplicationTableProblems,
         "addition-subtraction": renderAdditionSubtractionProblems,
+        "mixed-operations": renderMixedOperationsProblems,
         "multiplication-division": renderMultiplicationDivisionProblems,
         "rational-canonical": renderRationalCanonicalProblems,
         "rational-operations": renderRationalOperationsProblems,
@@ -210,6 +213,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (error) {
             DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_digits || error.message}</p>`;
+        }
+    }
+
+    function renderMixedOperationsProblems(translations) {
+        const t = translations.script.mixed_operations;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, answerRoots } = generateMixedOperationsData({
+                numOperations: parseInt(document.getElementById('mo-num-operations').value, 10),
+                coefficientMax: parseInt(document.getElementById('mo-coefficient-range').value, 10),
+                allowNegative: document.getElementById('mo-allow-negative').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10)
+            });
+
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid mixed-operations-grid">${problems.map(p =>
+                `<div class="arith-problem mixed-op-problem">
+                    <div class="operation-text">${p.expression} = </div>
+                    <div class="answer-space"></div>
+                </div>`
+            ).join('')}</div>`;
+
+            if (answerRoots.length > 0) {
+                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
+            }
+        } catch (error) {
+            console.error(error);
+            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_num_operations || error.message}</p>`;
         }
     }
 

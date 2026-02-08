@@ -469,6 +469,13 @@ h2 {
     /* e.g., if multiplication needs more answer space than addition */
 }
 
+.mixed-op-problem {
+    text-align: left; /* Override arith-problem right align */
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
 /* --- Styles for User-Requested Division Problems --- */
 .arith-problem.division-problem-user {
     display: flex;
@@ -769,7 +776,8 @@ footer {
     #problems-container .geometry-problem-grid,
     #problems-container .linear-equations-problem-grid,
     #problems-container .simplify-equations-problem-grid,
-    #problems-container .simplify-rationals-problem-grid {
+    #problems-container .simplify-rationals-problem-grid,
+    #problems-container .mixed-operations-grid {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
         grid-template-columns: repeat(var(--print-cols, 3), 1fr);
@@ -1592,4 +1600,12 @@ footer {
         width: 280px !important;
         height: 180px !important;
     }
+}
+.mixed-op-problem .answer-space {
+    flex-grow: 1;
+    border-bottom: 1px solid #333;
+    min-width: 60px;
+    margin-left: 10px;
+    height: 1.5em;
+    min-height: auto;
 }

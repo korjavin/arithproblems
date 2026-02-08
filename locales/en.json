@@ -6,6 +6,8 @@
     "multiplication_table_p": "Pre-filled multiplication charts for practice",
     "addition_subtraction_h3": "Addition/Subtraction",
     "addition_subtraction_p": "Multi-digit addition and subtraction problems",
+    "mixed_operations_h3": "Mixed Operations",
+    "mixed_operations_p": "Practice mixed operations and order of operations.",
     "multiplication_division_h3": "Multiplication/Division",
     "multiplication_division_p": "Columnar multiplication and division exercises",
     "rational_canonical_h3": "Canonical Rational Numbers",
@@ -65,6 +67,15 @@
             "error_invalid_num_problems": "Please enter a valid Number of Problems (>= 1).",
             "error_max_problems": "Max 50 problems for this format. Please choose a smaller number.",
             "digital_root_grid_title": "Digital Root Self-Check Grid"
+        },
+        "mixed_operations": {
+            "num_operations_label": "Number of Operations (1-4):",
+            "coefficient_range_label": "Coefficient Range (Max):",
+            "allow_negative_label": "Allow Negative Results",
+            "description": "Solve problems with mixed operations (+, -, &times;, &divide;). Follow the order of operations.",
+            "problems_title": "Mixed Operations Problems",
+            "digital_root_grid_title": "Digital Root Self-Check Grid",
+            "error_num_operations": "Number of operations must be between 1 and 10."
         },
         "multiplication_division": {
             "multiplication_title": "Multiplication:",
@@ -236,16 +247,79 @@
             "digital_root_grid_title": "Digital Root Self-Check Grid",
             "digital_root_grid_subtitle": "(Find digital root of your final answer, rounded to nearest whole number)",
             "names": {
-                "male": ["John", "Mike", "David", "Tom", "Alex", "Sam", "Chris", "Mark", "Paul", "Steve"],
-                "female": ["Sarah", "Lisa", "Emma", "Anna", "Kate", "Mary", "Jane", "Amy", "Lucy", "Rose"],
-                "neutral": ["Alex", "Sam", "Chris", "Pat", "Robin", "Casey", "Taylor", "Jordan", "Morgan", "Riley"]
+                "male": [
+                    "John",
+                    "Mike",
+                    "David",
+                    "Tom",
+                    "Alex",
+                    "Sam",
+                    "Chris",
+                    "Mark",
+                    "Paul",
+                    "Steve"
+                ],
+                "female": [
+                    "Sarah",
+                    "Lisa",
+                    "Emma",
+                    "Anna",
+                    "Kate",
+                    "Mary",
+                    "Jane",
+                    "Amy",
+                    "Lucy",
+                    "Rose"
+                ],
+                "neutral": [
+                    "Alex",
+                    "Sam",
+                    "Chris",
+                    "Pat",
+                    "Robin",
+                    "Casey",
+                    "Taylor",
+                    "Jordan",
+                    "Morgan",
+                    "Riley"
+                ]
             },
             "objects": {
-                "fruits": ["apples", "oranges", "bananas", "pears", "peaches"],
-                "vehicles": ["cars", "trucks", "bikes", "boats", "planes"],
-                "items": ["books", "pens", "toys", "chairs", "tables"],
-                "animals": ["dogs", "cats", "birds", "fish", "horses"],
-                "food": ["pizzas", "sandwiches", "cookies", "cakes", "burgers"]
+                "fruits": [
+                    "apples",
+                    "oranges",
+                    "bananas",
+                    "pears",
+                    "peaches"
+                ],
+                "vehicles": [
+                    "cars",
+                    "trucks",
+                    "bikes",
+                    "boats",
+                    "planes"
+                ],
+                "items": [
+                    "books",
+                    "pens",
+                    "toys",
+                    "chairs",
+                    "tables"
+                ],
+                "animals": [
+                    "dogs",
+                    "cats",
+                    "birds",
+                    "fish",
+                    "horses"
+                ],
+                "food": [
+                    "pizzas",
+                    "sandwiches",
+                    "cookies",
+                    "cakes",
+                    "burgers"
+                ]
             },
             "templates": {
                 "age1": "{name1} is {multiplier} times as old as {name2}. The sum of their ages is {sum}. How old is {name1}?",
