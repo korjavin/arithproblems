@@ -23,6 +23,17 @@ function testDigitalRoot() {
     assert.strictEqual(digitalRoot(0), 0, 'Test Case 5 Failed: digitalRoot(0)');
     assert.strictEqual(digitalRoot(-123), 6, 'Test Case 6 Failed: digitalRoot(-123)');
     assert.strictEqual(digitalRoot(-99), 9, 'Test Case 7 Failed: digitalRoot(-99)');
+
+    // Additional Edge Cases
+    assert.strictEqual(digitalRoot(-5), 5, 'Test Case 8 Failed: digitalRoot(-5)');
+    assert.strictEqual(digitalRoot(-0), 0, 'Test Case 9 Failed: digitalRoot(-0)');
+    assert.strictEqual(digitalRoot(10), 1, 'Test Case 10 Failed: digitalRoot(10)');
+    assert.strictEqual(digitalRoot(-10), 1, 'Test Case 11 Failed: digitalRoot(-10)');
+    assert.strictEqual(digitalRoot("123"), 6, 'Test Case 12 Failed: digitalRoot("123")');
+    assert.strictEqual(digitalRoot("-123"), 6, 'Test Case 13 Failed: digitalRoot("-123")');
+    assert.strictEqual(digitalRoot(1000000000), 1, 'Test Case 14 Failed: digitalRoot(1000000000)');
+    assert.strictEqual(digitalRoot(-1000000000), 1, 'Test Case 15 Failed: digitalRoot(-1000000000)');
+
     console.log('All digitalRoot tests passed!');
 }
 
