@@ -19,7 +19,6 @@ import { generateSimplifyEquationsData } from './generators/simplify-equations.j
 import { generateSimplifyRationalsData } from './generators/simplify-rationals.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOM fully loaded and parsed");
 
     const DOM = {
         topicItems: document.querySelectorAll(".topic-item"),
@@ -106,8 +105,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const category = categoryHeader.parentElement;
         const isExpanded = category.classList.contains('expanded');
 
-        console.log('Category toggle clicked:', category.dataset.category, 'Currently expanded:', isExpanded);
-
         category.classList.toggle('expanded');
 
         // Save expanded state to localStorage
@@ -128,7 +125,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         localStorage.setItem('expandedCategories', JSON.stringify(expandedCategories));
-        console.log('Updated expanded categories:', expandedCategories);
     }
 
     function restoreCategoryStates() {
@@ -635,10 +631,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function initialize() {
-        console.log('Initializing app...');
-        console.log('Found topic items:', DOM.topicItems.length);
-        console.log('Found category headers:', DOM.categoryHeaders.length);
-
         // Attach event listeners
         DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
         DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
@@ -688,7 +680,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Initialize language and controls
         await i18n.setLanguage(i18n.getInitialLang(), renderCurrentTopicControls);
-        console.log("App initialized successfully.");
     }
 
     initialize();
