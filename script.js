@@ -670,8 +670,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 // Set CSS variable for print columns
                 problemGrid.style.setProperty('--print-cols', bestCols);
-
-                console.log(`Print layout: ${problemCount} problems, ${bestCols} columns`);
             }
 
             window.print();
