@@ -1,0 +1,41 @@
+import { digitalRoot as oldDigitalRoot } from './utils.js';
+
+function newDigitalRoot(n) {
+    let num = Math.abs(n);
+    if (num === 0) return 0;
+    let root = num % 9;
+    return root === 0 ? 9 : root;
+}
+
+const N = 10000000;
+const testCases = [123, 99, 493193, 5, 0, -123, -99, 123456789, 987654321];
+
+console.log('Testing correctness...');
+for (let tc of testCases) {
+    if (oldDigitalRoot(tc) !== newDigitalRoot(tc)) {
+        console.error(`Mismatch for ${tc}: old=${oldDigitalRoot(tc)}, new=${newDigitalRoot(tc)}`);
+        process.exit(1);
+    }
+}
+console.log('Correctness verified.\n');
+
+console.log('Running benchmark...');
+const startOld = process.hrtime.bigint();
+let sumOld = 0;
+for (let i = 0; i < N; i++) {
+    sumOld += oldDigitalRoot(testCases[i % testCases.length]);
+}
+const endOld = process.hrtime.bigint();
+const timeOldMs = Number(endOld - startOld) / 1000000;
+
+const startNew = process.hrtime.bigint();
+let sumNew = 0;
+for (let i = 0; i < N; i++) {
+    sumNew += newDigitalRoot(testCases[i % testCases.length]);
+}
+const endNew = process.hrtime.bigint();
+const timeNewMs = Number(endNew - startNew) / 1000000;
+
+console.log(`Old digitalRoot: ${timeOldMs.toFixed(2)} ms`);
+console.log(`New digitalRoot: ${timeNewMs.toFixed(2)} ms`);
+console.log(`Speedup: ${(timeOldMs / timeNewMs).toFixed(2)}x`);
