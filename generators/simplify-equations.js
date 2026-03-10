@@ -49,7 +49,7 @@ function generateExpression(complexity, depth = 0) {
 }
 
 // Helper function to extract coefficients 'a' and 'b' from 'ax + b'
-function getCoefficients(node) {
+export function getCoefficients(node) {
     let a = 0;
     let b = 0;
 
