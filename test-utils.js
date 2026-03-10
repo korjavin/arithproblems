@@ -12,6 +12,11 @@ function testGcd() {
     assert.strictEqual(gcd(-48, 18), 6, 'Test Case 8 Failed: gcd(-48, 18)');
     assert.strictEqual(gcd(48, -18), 6, 'Test Case 9 Failed: gcd(48, -18)');
     assert.strictEqual(gcd(-48, -18), 6, 'Test Case 10 Failed: gcd(-48, -18)');
+    assert.strictEqual(gcd(0, -5), 5, 'Test Case 11 Failed: gcd(0, -5)');
+    assert.strictEqual(gcd(-10, 0), 10, 'Test Case 12 Failed: gcd(-10, 0)');
+    assert.strictEqual(gcd(-0, 0), 0, 'Test Case 13 Failed: gcd(-0, 0)');
+    assert.strictEqual(gcd(0, -0), 0, 'Test Case 14 Failed: gcd(0, -0)');
+    assert.strictEqual(gcd(-0, -0), 0, 'Test Case 15 Failed: gcd(-0, -0)');
     console.log('All gcd tests passed!');
 }
 
