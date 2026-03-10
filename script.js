@@ -34,6 +34,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let currentTopic = "addition-subtraction";
 
+    function showError(message) {
+        DOM.problemsContainer.textContent = '';
+        const p = document.createElement('p');
+        p.className = 'error-message';
+        p.textContent = message;
+        DOM.problemsContainer.appendChild(p);
+    }
+
     const topicControlsRenderers = {
         "multiplication-table": controls.renderMultiplicationTableControls,
         "addition-subtraction": controls.renderAdditionSubtractionControls,
@@ -212,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_digits || error.message}</p>`;
+            showError(t.error_invalid_digits || error.message);
         }
     }
 
@@ -239,7 +247,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         } catch (error) {
             console.error(error);
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_num_operations || error.message}</p>`;
+            showError(t.error_num_operations || error.message);
         }
     }
 
@@ -260,7 +268,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_mult_digits || error.message}</p>`;
+            showError(t.error_mult_digits || error.message);
         }
     }
 
@@ -284,7 +292,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val || error.message}</p>`;
+            showError(t.error_max_val || error.message);
         }
     }
 
@@ -312,7 +320,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val || error.message}</p>`;
+            showError(t.error_max_val || error.message);
         }
     }
 
@@ -337,7 +345,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_val || error.message}</p>`;
+            showError(t.error_max_val || error.message);
         }
     }
 
@@ -371,7 +379,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_base || error.message}</p>`;
+            showError(t.error_max_base || error.message);
         }
     }
 
@@ -396,7 +404,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_decimal_places || error.message}</p>`;
+            showError(t.error_max_decimal_places || error.message);
         }
     }
 
@@ -419,7 +427,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_number || error.message}</p>`;
+            showError(t.error_max_number || error.message);
         }
     }
 
@@ -445,7 +453,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_max_dimension || error.message}</p>`;
+            showError(t.error_max_dimension || error.message);
         }
     }
 
@@ -496,7 +504,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">Error: ${error.message}</p>`;
+            showError(`Error: ${error.message}`);
         }
     }
 
@@ -515,7 +523,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_num_problems || error.message}</p>`;
+            showError(t.error_num_problems || error.message);
         }
     }
 
@@ -543,7 +551,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>`;
             DOM.problemsContainer.appendChild(gridContainer);
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems || error.message}</p>`;
+            showError(t.error_invalid_num_problems || error.message);
         }
     }
 
@@ -587,7 +595,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>`;
             DOM.problemsContainer.appendChild(gridContainer);
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_invalid_num_problems || error.message}</p>`;
+            showError(t.error_invalid_num_problems || error.message);
         }
     }
 
@@ -608,7 +616,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;
+            showError(t.error_message || error.message);
         }
     }
 
@@ -629,7 +637,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            DOM.problemsContainer.innerHTML = `<p class="error-message">${t.error_message || error.message}</p>`;
+            showError(t.error_message || error.message);
         }
     }
 
