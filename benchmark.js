@@ -1,10 +1,12 @@
-import { digitalRoot as oldDigitalRoot } from './utils.js';
+import { digitalRoot as newDigitalRoot } from './utils.js';
 
-function newDigitalRoot(n) {
-    let num = Math.abs(n);
-    if (num === 0) return 0;
-    let root = num % 9;
-    return root === 0 ? 9 : root;
+function oldDigitalRoot(n) {
+    let num = Math.abs(n); // Ensure positive for the digit summing process
+    let sum = num;
+    while (sum >= 10) {
+        sum = String(sum).split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
+    }
+    return sum;
 }
 
 const N = 10000000;
