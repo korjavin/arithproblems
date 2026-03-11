@@ -639,6 +639,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     async function initialize() {
+
         // Attach event listeners
         DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
         DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
