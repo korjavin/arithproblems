@@ -2,10 +2,27 @@ let translations = {};
 const supportedLangs = ['en', 'de', 'ru'];
 let currentLang = 'en'; // default
 
+const keyCache = new Map();
+
+function getTranslation(key) {
+    let parts = keyCache.get(key);
+    if (!parts) {
+        parts = key.split('.');
+        keyCache.set(key, parts);
+    }
+
+    let result = translations;
+    for (let i = 0, len = parts.length; i < len; i++) {
+        if (!result) return null;
+        result = result[parts[i]];
+    }
+    return result;
+}
+
 async function applyTranslations() {
     document.querySelectorAll('[data-translate-key]').forEach(element => {
         const key = element.getAttribute('data-translate-key');
-        const translation = key.split('.').reduce((obj, i) => (obj ? obj[i] : null), translations);
+        const translation = getTranslation(key);
         if (translation) {
             element.innerHTML = translation;
         }
@@ -14,7 +31,7 @@ async function applyTranslations() {
     const titleElement = document.querySelector('title');
     const titleKey = titleElement ? titleElement.dataset.translateKey : null;
     if(titleKey) {
-        const translation = titleKey.split('.').reduce((obj, i) => (obj ? obj[i] : null), translations);
+        const translation = getTranslation(titleKey);
         if(translation) {
             document.title = translation;
         }
