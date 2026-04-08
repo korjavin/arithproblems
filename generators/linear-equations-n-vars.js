@@ -1,20 +1,16 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 function getRandomCoefficient(coefficientRange, allowZero = false) {
     if (allowZero) {
         return getRandomInt(-coefficientRange, coefficientRange);
     }
     const val = getRandomInt(1, coefficientRange);
-    return Math.random() < 0.5 ? val : -val;
+    return getRandomInt(0, 1) === 0 ? val : -val;
 }
 
 function getRandomSolution(solutionRange, allowNegativeSolutions) {
     const sol = getRandomInt(1, solutionRange);
-    return allowNegativeSolutions && Math.random() < 0.3 ? -sol : sol;
+    return allowNegativeSolutions && getRandomInt(1, 100) <= 30 ? -sol : sol;
 }
 
 function getVariableNames(count) {
@@ -65,7 +61,7 @@ function formatEquation(coefficients, constant, variables, includeBrackets = fal
     let hasTerms = false;
 
     // If brackets are enabled, randomly apply them to some equations
-    if (includeBrackets && Math.random() < 0.4) {
+    if (includeBrackets && getRandomInt(1, 100) <= 40) {
         return formatEquationWithBrackets(coefficients, constant, variables);
     }
 
@@ -95,12 +91,12 @@ function formatEquationWithBrackets(coefficients, constant, variables) {
         return formatEquation(coefficients, constant, variables, false);
     }
 
-    const bracketType = Math.floor(Math.random() * 3);
+    const bracketType = getRandomInt(0, 2);
 
     if (bracketType === 0) {
         // Type 1: a(x + y) + other terms
         const groupSize = Math.min(2, nonZeroIndices.length);
-        const groupCoeff = Math.random() < 0.5 ? 2 : 3;
+        const groupCoeff = getRandomInt(0, 1) === 0 ? 2 : 3;
 
         let equation = '';
         let hasTerms = false;
@@ -194,7 +190,7 @@ function formatEquationWithBrackets(coefficients, constant, variables) {
             }
 
             if (bracket2HasTerms) {
-                const sign = hasTerms ? (Math.random() < 0.5 ? ' + ' : ' - ') : '';
+                const sign = hasTerms ? (getRandomInt(0, 1) === 0 ? ' + ' : ' - ') : '';
                 equation += `${sign}(${bracketTerms2})`;
                 hasTerms = true;
             }
@@ -220,8 +216,8 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
     const variable = variableNames[0];
 
     // Handle bracket equations for single variable
-    if (includeBrackets && (equationType === 'with-brackets' || (equationType === 'mixed' && Math.random() < 0.2))) {
-        const bracketType = Math.floor(Math.random() * 5);
+    if (includeBrackets && (equationType === 'with-brackets' || (equationType === 'mixed' && getRandomInt(1, 100) <= 20))) {
+        const bracketType = getRandomInt(0, 4);
 
         if (bracketType === 0) { // a(x + b) = c
             const a = getRandomCoefficient(coefficientRange);
@@ -255,10 +251,10 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
 
     // Standard single variable equations
     const availableTypes = ['one-step', 'two-step', 'with-fractions'];
-    const currentType = equationType === 'mixed' ? availableTypes[Math.floor(Math.random() * availableTypes.length)] : equationType;
+    const currentType = equationType === 'mixed' ? getRandomFromArray(availableTypes) : equationType;
 
     if (currentType === 'one-step') {
-        const operationType = Math.floor(Math.random() * 3);
+        const operationType = getRandomInt(0, 2);
         if (operationType === 0) { // x + a = b
             const a = getRandomCoefficient(coefficientRange);
             const b = solution + a;
@@ -275,7 +271,7 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
     } else if (currentType === 'two-step') {
         const a = getRandomCoefficient(coefficientRange);
         const b = getRandomCoefficient(coefficientRange);
-        if (Math.random() < 0.5) { // ax + b = c
+        if (getRandomInt(0, 1) === 0) { // ax + b = c
             const c = a * solution + b;
             return { text: `${formatCoefficient(a, variable, true)}${formatConstant(b)} = ${c}`, type: 'two-step' };
         } else { // ax - b = c
@@ -313,9 +309,9 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
             if (systemType === 'elimination-friendly' && i > 0) {
                 // Make some coefficients the same or opposite for elimination
                 const prevRow = matrix[i - 1];
-                if (Math.random() < 0.5) {
+                if (getRandomInt(0, 1) === 0) {
                     // Same coefficient for easy elimination
-                    const colIndex = Math.floor(Math.random() * variableCount);
+                    const colIndex = getRandomInt(0, variableCount - 1);
                     row[colIndex] = prevRow[colIndex];
                     for (let j = 0; j < variableCount; j++) {
                         if (j !== colIndex) {
@@ -324,7 +320,7 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
                     }
                 } else {
                     // Opposite coefficient for easy elimination
-                    const colIndex = Math.floor(Math.random() * variableCount);
+                    const colIndex = getRandomInt(0, variableCount - 1);
                     row[colIndex] = -prevRow[colIndex];
                     for (let j = 0; j < variableCount; j++) {
                         if (j !== colIndex) {
@@ -334,10 +330,10 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
                 }
             } else if (systemType === 'substitution-friendly' && i === 0) {
                 // Make first equation easy for substitution (coefficient of 1 or -1)
-                const varIndex = Math.floor(Math.random() * variableCount);
+                const varIndex = getRandomInt(0, variableCount - 1);
                 for (let j = 0; j < variableCount; j++) {
                     if (j === varIndex) {
-                        row[j] = Math.random() < 0.5 ? 1 : -1;
+                        row[j] = getRandomInt(0, 1) === 0 ? 1 : -1;
                     } else {
                         row[j] = getRandomCoefficient(coefficientRange);
                     }

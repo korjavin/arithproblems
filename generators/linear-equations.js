@@ -1,8 +1,4 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 function getRandomCoefficient(coefficientRange) {
     return getRandomInt(1, coefficientRange);
@@ -10,7 +6,7 @@ function getRandomCoefficient(coefficientRange) {
 
 function getRandomSolution(solutionRange, allowNegativeSolutions) {
     const sol = getRandomInt(1, solutionRange);
-    return allowNegativeSolutions && Math.random() < 0.3 ? -sol : sol;
+    return allowNegativeSolutions && getRandomInt(1, 100) <= 30 ? -sol : sol;
 }
 
 export function generateLinearEquationsData({ equationType, coefficientRange, solutionRange, allowNegativeSolutions, includeBrackets, numberOfProblems }) {
@@ -32,13 +28,13 @@ export function generateLinearEquationsData({ equationType, coefficientRange, so
     }
 
     for (let i = 0; i < numberOfProblems; i++) {
-        const currentEquationType = equationType === 'mixed' ? availableTypes[Math.floor(Math.random() * availableTypes.length)] : equationType;
+        const currentEquationType = equationType === 'mixed' ? getRandomFromArray(availableTypes) : equationType;
 
         let problemData = { type: currentEquationType };
         let solution = getRandomSolution(solutionRange, allowNegativeSolutions);
 
         if (currentEquationType === 'one-step') {
-            const operationType = Math.floor(Math.random() * 3);
+            const operationType = getRandomInt(0, 2);
             if (operationType === 0) { // x + a = b
                 const a = getRandomCoefficient(coefficientRange);
                 const b = solution + a;
@@ -55,7 +51,7 @@ export function generateLinearEquationsData({ equationType, coefficientRange, so
         } else if (currentEquationType === 'two-step') {
             const a = getRandomCoefficient(coefficientRange);
             const b = getRandomCoefficient(coefficientRange);
-            if (Math.random() < 0.5) { // ax + b = c
+            if (getRandomInt(0, 1) === 0) { // ax + b = c
                 const c = a * solution + b;
                 problemData = { ...problemData, text: `${a}x + ${b} = ${c}` };
             } else { // ax - b = c
@@ -69,7 +65,7 @@ export function generateLinearEquationsData({ equationType, coefficientRange, so
             solution = a * (c - b); // Adjust solution to be an integer
             problemData = { ...problemData, text: `x/${a} + ${b} = ${c}` };
         } else if (currentEquationType === 'with-brackets') {
-            const bracketType = Math.floor(Math.random() * 5);
+            const bracketType = getRandomInt(0, 4);
 
             if (bracketType === 0) { // a(x + b) = c
                 const a = getRandomCoefficient(coefficientRange);

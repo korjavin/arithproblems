@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { gcd, digitalRoot } from './utils.js';
+import { gcd, digitalRoot, getRandomInt, getRandomNumberByDigits, getRandomFromArray, shuffleArray } from './utils.js';
 
 function testGcd() {
     assert.strictEqual(gcd(48, 18), 6, 'Test Case 1 Failed: gcd(48, 18)');
@@ -42,9 +42,62 @@ function testDigitalRoot() {
     console.log('All digitalRoot tests passed!');
 }
 
+function testRandomInt() {
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomInt(1, 10);
+        assert(val >= 1 && val <= 10, `getRandomInt(1, 10) returned ${val}`);
+    }
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomInt(-5, 5);
+        assert(val >= -5 && val <= 5, `getRandomInt(-5, 5) returned ${val}`);
+    }
+    assert.strictEqual(getRandomInt(5, 5), 5, 'getRandomInt(5, 5) should be 5');
+    console.log('All getRandomInt tests passed!');
+}
+
+function testGetRandomNumberByDigits() {
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomNumberByDigits(1, true);
+        assert(val >= 1 && val <= 9, `getRandomNumberByDigits(1, true) returned ${val}`);
+    }
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomNumberByDigits(1, false);
+        assert(val >= 0 && val <= 9, `getRandomNumberByDigits(1, false) returned ${val}`);
+    }
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomNumberByDigits(3);
+        assert(val >= 100 && val <= 999, `getRandomNumberByDigits(3) returned ${val}`);
+    }
+    console.log('All getRandomNumberByDigits tests passed!');
+}
+
+function testGetRandomFromArray() {
+    const arr = [1, 2, 3, 4, 5];
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomFromArray(arr);
+        assert(arr.includes(val), `getRandomFromArray([1,2,3,4,5]) returned ${val}`);
+    }
+    assert.strictEqual(getRandomFromArray([]), undefined, 'getRandomFromArray([]) should return undefined');
+    console.log('All getRandomFromArray tests passed!');
+}
+
+function testShuffleArray() {
+    const arr = [1, 2, 3, 4, 5];
+    const shuffled = shuffleArray(arr);
+    assert.strictEqual(shuffled.length, arr.length, 'Shuffled array should have same length');
+    assert(shuffled.every(x => arr.includes(x)), 'Shuffled array should have same elements');
+    // Not strictly true that it must be different, but for [1,2,3,4,5] it's very likely.
+    // We won't assert it's different to avoid flaky tests.
+    console.log('All shuffleArray tests passed!');
+}
+
 try {
     testGcd();
     testDigitalRoot();
+    testRandomInt();
+    testGetRandomNumberByDigits();
+    testGetRandomFromArray();
+    testShuffleArray();
     console.log('All tests passed!');
 } catch (error) {
     console.error(error.message);

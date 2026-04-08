@@ -1,6 +1,4 @@
-function getRandomNumber(minVal, maxVal) {
-    return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
-}
+import { getRandomInt } from '../utils.js';
 
 export function generateHouseProblemsData({ range, numberOfProblems }) {
     if (!range || typeof range !== 'string' || !range.includes('-')) {
@@ -22,13 +20,13 @@ export function generateHouseProblemsData({ range, numberOfProblems }) {
 
         // Generate two numbers that, when added, stay within the max range
         do {
-            num1 = getRandomNumber(1, Math.floor(max / 2));
-            num2 = getRandomNumber(1, Math.floor(max / 2));
+            num1 = getRandomInt(1, Math.floor(max / 2));
+            num2 = getRandomInt(1, Math.floor(max / 2));
             sum = num1 + num2;
         } while (sum > max);
 
         // Randomly choose which number to hide (0 = left, 1 = center/sum, 2 = right)
-        const missingPosition = Math.floor(Math.random() * 3);
+        const missingPosition = getRandomInt(0, 2);
 
         problems.push({
             num1,

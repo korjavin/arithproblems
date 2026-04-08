@@ -1,15 +1,11 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 function getRandomDimension(maxDimension, wholeNumbersOnly) {
     if (wholeNumbersOnly) {
         return getRandomInt(2, maxDimension);
     }
     // 0.5 increments
-    return Math.round((Math.random() * (maxDimension - 2) + 2) * 2) / 2;
+    return Math.round((getRandomInt(0, (maxDimension - 2) * 2) / 2 + 2) * 2) / 2;
 }
 
 export function generateGeometryData({ shapeMix, calculationType, maxDimension, wholeNumbersOnly, numberOfProblems }) {
@@ -25,8 +21,8 @@ export function generateGeometryData({ shapeMix, calculationType, maxDimension, 
     const availableShapes = ['rectangles', 'squares', 'triangles', 'circles'];
 
     for (let i = 0; i < numberOfProblems; i++) {
-        const currentShape = shapeMix === 'mixed' ? availableShapes[Math.floor(Math.random() * availableShapes.length)] : shapeMix;
-        const currentCalculation = calculationType === 'mixed' ? (Math.random() < 0.5 ? 'area' : 'perimeter') : calculationType;
+        const currentShape = shapeMix === 'mixed' ? getRandomFromArray(availableShapes) : shapeMix;
+        const currentCalculation = calculationType === 'mixed' ? (getRandomInt(0, 1) === 0 ? 'area' : 'perimeter') : calculationType;
 
         let problemData = { type: currentShape, calculation: currentCalculation };
         let answer = 0;

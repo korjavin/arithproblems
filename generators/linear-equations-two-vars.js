@@ -1,20 +1,16 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 function getRandomCoefficient(coefficientRange, allowZero = false) {
     if (allowZero) {
         return getRandomInt(-coefficientRange, coefficientRange);
     }
     const val = getRandomInt(1, coefficientRange);
-    return Math.random() < 0.5 ? val : -val;
+    return getRandomInt(0, 1) === 0 ? val : -val;
 }
 
 function getRandomSolution(solutionRange, allowNegativeSolutions) {
     const sol = getRandomInt(1, solutionRange);
-    return allowNegativeSolutions && Math.random() < 0.3 ? -sol : sol;
+    return allowNegativeSolutions && getRandomInt(1, 100) <= 30 ? -sol : sol;
 }
 
 function formatCoefficient(coeff, variable, isFirst = false) {
@@ -82,7 +78,7 @@ export function generateLinearEquationsTwoVarsData({
 
     for (let i = 0; i < numberOfProblems; i++) {
         const currentSystemType = systemType === 'mixed' ?
-            availableTypes[Math.floor(Math.random() * availableTypes.length)] :
+            getRandomFromArray(availableTypes) :
             systemType;
 
         let x, y, a1, b1, c1, a2, b2, c2;
@@ -97,28 +93,28 @@ export function generateLinearEquationsTwoVarsData({
 
             if (currentSystemType === 'elimination-friendly') {
                 // Make coefficients that are easy to eliminate
-                if (Math.random() < 0.5) {
+                if (getRandomInt(0, 1) === 0) {
                     // Same x coefficients
                     a1 = getRandomCoefficient(coefficientRange);
-                    a2 = Math.random() < 0.5 ? a1 : -a1;
+                    a2 = getRandomInt(0, 1) === 0 ? a1 : -a1;
                     b1 = getRandomCoefficient(coefficientRange);
                     b2 = getRandomCoefficient(coefficientRange);
                 } else {
                     // Same y coefficients
                     b1 = getRandomCoefficient(coefficientRange);
-                    b2 = Math.random() < 0.5 ? b1 : -b1;
+                    b2 = getRandomInt(0, 1) === 0 ? b1 : -b1;
                     a1 = getRandomCoefficient(coefficientRange);
                     a2 = getRandomCoefficient(coefficientRange);
                 }
             } else if (currentSystemType === 'substitution-friendly') {
                 // Make one coefficient 1 or -1 for easy substitution
-                if (Math.random() < 0.5) {
-                    a1 = Math.random() < 0.5 ? 1 : -1;
+                if (getRandomInt(0, 1) === 0) {
+                    a1 = getRandomInt(0, 1) === 0 ? 1 : -1;
                     b1 = getRandomCoefficient(coefficientRange);
                     a2 = getRandomCoefficient(coefficientRange);
                     b2 = getRandomCoefficient(coefficientRange);
                 } else {
-                    b1 = Math.random() < 0.5 ? 1 : -1;
+                    b1 = getRandomInt(0, 1) === 0 ? 1 : -1;
                     a1 = getRandomCoefficient(coefficientRange);
                     a2 = getRandomCoefficient(coefficientRange);
                     b2 = getRandomCoefficient(coefficientRange);

@@ -1,6 +1,4 @@
-function getRandomNumber(minVal, maxVal) {
-    return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
-}
+import { getRandomInt } from '../utils.js';
 
 function buildPyramid(baseNumbers) {
     const pyramid = [baseNumbers.slice()];
@@ -34,7 +32,7 @@ export function generatePyramidProblemsData({ pyramidSize, range, missingType, n
     for (let i = 0; i < numberOfProblems; i++) {
         const baseNumbers = [];
         for (let j = 0; j < pyramidSize; j++) {
-            baseNumbers.push(getRandomNumber(min, Math.floor(max / pyramidSize)));
+            baseNumbers.push(getRandomInt(min, Math.floor(max / pyramidSize)));
         }
 
         const completePyramid = buildPyramid(baseNumbers);
@@ -46,9 +44,9 @@ export function generatePyramidProblemsData({ pyramidSize, range, missingType, n
                 break;
             case 'middle':
                 for (let layer = 1; layer < displayPyramid.length - 1; layer++) {
-                    const hideCount = Math.random() < 0.5 ? 1 : 2;
+                    const hideCount = getRandomInt(0, 1) === 0 ? 1 : 2;
                     for (let h = 0; h < hideCount && h < displayPyramid[layer].length; h++) {
-                        const randomPos = Math.floor(Math.random() * displayPyramid[layer].length);
+                        const randomPos = getRandomInt(0, displayPyramid[layer].length - 1);
                         displayPyramid[layer][randomPos] = '?';
                     }
                 }
@@ -66,8 +64,8 @@ export function generatePyramidProblemsData({ pyramidSize, range, missingType, n
                 const hideCount = Math.min(Math.floor(totalPositions * 0.3), 4);
                 const hiddenPositions = new Set();
                 while (hiddenPositions.size < hideCount) {
-                    const layer = Math.floor(Math.random() * displayPyramid.length);
-                    const pos = Math.floor(Math.random() * displayPyramid[layer].length);
+                    const layer = getRandomInt(0, displayPyramid.length - 1);
+                    const pos = getRandomInt(0, displayPyramid[layer].length - 1);
                     const key = `${layer}-${pos}`;
                     if (!hiddenPositions.has(key)) {
                         hiddenPositions.add(key);

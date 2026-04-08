@@ -1,8 +1,4 @@
-import { gcd, digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { gcd, digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 export function generateProportionData({ maxBase, maxMultiplier, simplifyRatios, numberOfProblems }) {
     if (isNaN(maxBase) || maxBase < 1 || maxBase > 15) {
@@ -39,7 +35,7 @@ export function generateProportionData({ maxBase, maxMultiplier, simplifyRatios,
         const d = b * k;
 
         const positions = ['a', 'b', 'c', 'd'];
-        const hiddenPosition = positions[Math.floor(Math.random() * 4)];
+        const hiddenPosition = getRandomFromArray(positions);
 
         let solution = 0;
         switch (hiddenPosition) {

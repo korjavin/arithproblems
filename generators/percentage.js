@@ -1,14 +1,11 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 function getRandomPercentage(wholePercentsOnly) {
     if (wholePercentsOnly) {
         return getRandomInt(1, 99);
     }
-    return Math.round((Math.random() * 99 + 1) * 10) / 10; // 1 decimal place
+    // 0.1 increments
+    return Math.round((getRandomInt(10, 1000) / 10) * 10) / 10;
 }
 
 export function generatePercentageData({ problemType, maxNumber, wholePercentsOnly, numberOfProblems }) {
@@ -25,7 +22,7 @@ export function generatePercentageData({ problemType, maxNumber, wholePercentsOn
     for (let i = 0; i < numberOfProblems; i++) {
         const currentProblemType =
             problemType === 'mixed'
-                ? ['find-percent', 'find-what-percent', 'find-whole'][Math.floor(Math.random() * 3)]
+                ? getRandomFromArray(['find-percent', 'find-what-percent', 'find-whole'])
                 : problemType;
 
         let problemData = {};

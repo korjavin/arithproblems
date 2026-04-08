@@ -1,22 +1,17 @@
-import { digitalRoot } from '../utils.js';
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 import { create, all } from 'mathjs';
 
 const math = create(all);
 
-// Function to generate a random integer within a given range
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 // Function to generate a random operator
 function getRandomOperator() {
     const operators = ['+', '-']; // Stick to + and - for simplicity for now
-    return operators[getRandomInt(0, operators.length - 1)];
+    return getRandomFromArray(operators);
 }
 
 // Function to generate a simple term
 function generateTerm(complexity) {
-    if (Math.random() < 0.5) {
+    if (getRandomInt(0, 1) === 0) {
         return getRandomInt(1, 10 * complexity);
     } else {
         const coeff = getRandomInt(1, 5 * complexity);
@@ -31,7 +26,7 @@ function generateExpression(complexity, depth = 0) {
 
     for (let i = 0; i < numTerms; i++) {
         let term;
-        if (depth < complexity && Math.random() < 0.4) {
+        if (depth < complexity && getRandomInt(1, 100) <= 40) {
             // Add a multiplier to the bracket
             const multiplier = getRandomInt(2, 5);
             term = `${multiplier}*(${generateExpression(complexity, depth + 1)})`;
