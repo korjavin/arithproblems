@@ -56,11 +56,12 @@ export function getRandomInt(min, max) {
  */
 export function getRandomNumberByDigits(numDigits, avoidZero = true) {
     if (numDigits <= 0) return avoidZero ? 1 : 0;
-    const min = Math.pow(10, numDigits - 1);
+
+    let min = Math.pow(10, numDigits - 1);
     const max = Math.pow(10, numDigits) - 1;
 
-    if (numDigits === 1 && avoidZero) {
-        return getRandomInt(1, 9);
+    if (numDigits === 1 && !avoidZero) {
+        min = 0;
     }
 
     return getRandomInt(min, max);

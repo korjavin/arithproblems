@@ -60,10 +60,13 @@ function testGetRandomNumberByDigits() {
         const val = getRandomNumberByDigits(1, true);
         assert(val >= 1 && val <= 9, `getRandomNumberByDigits(1, true) returned ${val}`);
     }
-    for (let i = 0; i < 100; i++) {
+    let zeroFound = false;
+    for (let i = 0; i < 200; i++) {
         const val = getRandomNumberByDigits(1, false);
         assert(val >= 0 && val <= 9, `getRandomNumberByDigits(1, false) returned ${val}`);
+        if (val === 0) zeroFound = true;
     }
+    assert(zeroFound, 'getRandomNumberByDigits(1, false) should eventually return 0');
     for (let i = 0; i < 100; i++) {
         const val = getRandomNumberByDigits(3);
         assert(val >= 100 && val <= 999, `getRandomNumberByDigits(3) returned ${val}`);
