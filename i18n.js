@@ -24,7 +24,7 @@ async function applyTranslations() {
         const key = element.getAttribute('data-translate-key');
         const translation = getTranslation(key);
         if (translation) {
-            element.innerHTML = translation;
+            element.textContent = translation;
         }
     });
     // also update title

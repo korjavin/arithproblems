@@ -45,7 +45,7 @@
     "generate_button": "Создать задания",
     "print_button": "Распечатать задания",
     "output_area_h2": "Созданные задачи",
-    "footer_p_1": "&copy; 2024 Генератор математических заданий",
+    "footer_p_1": "© 2024 Генератор математических заданий",
     "footer_p_2": "Коммит: ",
     "script": {
         "multiplication_table": {
@@ -54,7 +54,7 @@
             "to_label": "До:",
             "percent_hints_label": "Процент подсказок (%):",
             "chart_description": "Таблица будет частично заполнена для облегчения обучения.",
-            "chart_title": "Таблица умножения (от {fromFactor} &times; {fromFactor} до {toFactor} &times; {toFactor})"
+            "chart_title": "Таблица умножения (от {fromFactor} × {fromFactor} до {toFactor} × {toFactor})"
         },
         "addition_subtraction": {
             "digits_num1_label": "Цифр в числе 1:",
@@ -80,7 +80,7 @@
             "error_num_problems": "Пожалуйста, введите допустимое количество задач (1-50).",
             "problems_title": "Задачи на умножение и деление",
             "digital_root_grid_title": "Сетка контрольных сумм для самопроверки",
-            "digital_root_grid_subtitle": "(КС произведения для &times;, КС частного для &divide;)"
+            "digital_root_grid_subtitle": "(КС произведения для ×, КС частного для ÷)"
         },
         "rational_canonical": {
             "max_val_label": "Максимальное значение для числителя/знаменателя:",
