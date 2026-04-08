@@ -1,8 +1,4 @@
-import { gcd } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { gcd, getRandomInt } from '../utils.js';
 
 export function calculateControlSum(numerator, denominator) {
     if (denominator === 0) return NaN;
@@ -36,7 +32,7 @@ export function generateRationalOperationsData({ numTerms, maxVal, numberOfProbl
                 denominator: getRandomInt(1, maxVal),
             });
             if (j < numTerms - 1) {
-                operations.push(Math.random() < 0.5 ? 'add' : 'subtract');
+                operations.push(getRandomInt(0, 1) === 0 ? 'add' : 'subtract');
             }
         }
 

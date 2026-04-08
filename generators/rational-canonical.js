@@ -1,8 +1,4 @@
-import { gcd } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { gcd, getRandomInt } from '../utils.js';
 
 function calculateControlSum(numerator, denominator) {
     if (denominator === 0) return NaN;

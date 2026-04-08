@@ -1,4 +1,4 @@
-import { gcd, digitalRoot } from '../utils.js';
+import { gcd, digitalRoot, getRandomInt } from '../utils.js';
 
 /**
  * Generate problems for simplifying rational expressions
@@ -59,9 +59,9 @@ export function generateSimplifyRationalsData({ complexity, numberOfProblems }) 
  * Example: 6x/9x = 2/3
  */
 function generateLevel1() {
-    const numeratorCoeff = randomInt(2, 20);
-    const denominatorCoeff = randomInt(2, 20);
-    const commonFactor = randomInt(2, 5);
+    const numeratorCoeff = getRandomInt(2, 20);
+    const denominatorCoeff = getRandomInt(2, 20);
+    const commonFactor = getRandomInt(2, 5);
 
     const num = numeratorCoeff * commonFactor;
     const den = denominatorCoeff * commonFactor;
@@ -85,22 +85,22 @@ function generateLevel1() {
  * Example: 12xy/8x = 3y/2
  */
 function generateLevel2() {
-    const numeratorCoeff = randomInt(2, 15);
-    const denominatorCoeff = randomInt(2, 15);
-    const commonFactor = randomInt(2, 4);
+    const numeratorCoeff = getRandomInt(2, 15);
+    const denominatorCoeff = getRandomInt(2, 15);
+    const commonFactor = getRandomInt(2, 4);
 
     const num = numeratorCoeff * commonFactor;
     const den = denominatorCoeff * commonFactor;
 
     const variables = ['xy', 'x', 'xy²', 'x²y'];
-    const numeratorVar = variables[randomInt(0, 1)]; // xy or x
-    const hasCommonVar = Math.random() > 0.5;
+    const numeratorVar = variables[getRandomInt(0, 1)]; // xy or x
+    const hasCommonVar = getRandomInt(0, 1) === 0;
 
     let denominatorVar;
     let simplifiedNumVar;
 
     if (numeratorVar === 'xy' && hasCommonVar) {
-        denominatorVar = Math.random() > 0.5 ? 'x' : 'y';
+        denominatorVar = getRandomInt(0, 1) === 0 ? 'x' : 'y';
         simplifiedNumVar = denominatorVar === 'x' ? 'y' : 'x';
     } else {
         denominatorVar = 'x';
@@ -127,20 +127,20 @@ function generateLevel2() {
  * Example: (6x + 12)/(3x + 6) = 2
  */
 function generateLevel3() {
-    const a = randomInt(2, 8);
-    const b = randomInt(2, 8);
-    const commonFactor = randomInt(2, 5);
+    const a = getRandomInt(2, 8);
+    const b = getRandomInt(2, 8);
+    const commonFactor = getRandomInt(2, 5);
 
     const num1 = a * commonFactor;
     const num2 = b * commonFactor;
     const den1 = a;
     const den2 = b;
 
-    const useX = Math.random() > 0.3;
+    const useX = getRandomInt(1, 100) > 30;
     const xTerm = useX ? 'x' : '';
 
     // For variety, sometimes make it a simple ratio
-    if (Math.random() > 0.5) {
+    if (getRandomInt(0, 1) === 0) {
         const numerator = `${num1}${xTerm} + ${num2}`;
         const denominator = `${den1}${xTerm} + ${den2}`;
         const controlSum = digitalRoot(commonFactor); // Simplifies to commonFactor
@@ -151,9 +151,9 @@ function generateLevel3() {
         };
     } else {
         // (ax + b)/(cx + d) where we can factor out from numerator
-        const factorNum = randomInt(2, 4);
-        const coeff1 = randomInt(2, 6);
-        const coeff2 = randomInt(2, 6);
+        const factorNum = getRandomInt(2, 4);
+        const coeff1 = getRandomInt(2, 6);
+        const coeff2 = getRandomInt(2, 6);
 
         const numerator = `${factorNum * coeff1}x + ${factorNum * coeff2}`;
         const denominator = `${coeff1}x + ${coeff2}`;
@@ -171,11 +171,11 @@ function generateLevel3() {
  * Example: (x² - 4)/(x + 2) = x - 2
  */
 function generateLevel4() {
-    const type = randomInt(0, 2);
+    const type = getRandomInt(0, 2);
 
     if (type === 0) {
         // Difference of squares: (x² - a²)/(x + a) = x - a
-        const a = randomInt(2, 6);
+        const a = getRandomInt(2, 6);
         const numerator = `x² - ${a * a}`;
         const denominator = `x + ${a}`;
 
@@ -188,7 +188,7 @@ function generateLevel4() {
         };
     } else if (type === 1) {
         // Difference of squares: (x² - a²)/(x - a) = x + a
-        const a = randomInt(2, 6);
+        const a = getRandomInt(2, 6);
         const numerator = `x² - ${a * a}`;
         const denominator = `x - ${a}`;
 
@@ -201,8 +201,8 @@ function generateLevel4() {
         };
     } else {
         // Factored trinomial: (x² + bx + c)/(x + d) where d divides the trinomial
-        const d = randomInt(2, 5);
-        const e = randomInt(2, 5);
+        const d = getRandomInt(2, 5);
+        const e = getRandomInt(2, 5);
         const b = d + e;
         const c = d * e;
 
@@ -224,12 +224,12 @@ function generateLevel4() {
  * Example: (2x² + 8x)/(x² - 16) = 2x/(x - 4)
  */
 function generateLevel5() {
-    const type = randomInt(0, 2);
+    const type = getRandomInt(0, 2);
 
     if (type === 0) {
         // (ax² + bax)/(x² - a²) = ax/(x - a)
-        const a = randomInt(2, 5);
-        const coeff = randomInt(2, 4);
+        const a = getRandomInt(2, 5);
+        const coeff = getRandomInt(2, 4);
 
         const numerator = `${coeff}x² + ${coeff * a}x`;
         const denominator = `x² - ${a * a}`;
@@ -243,7 +243,7 @@ function generateLevel5() {
         };
     } else if (type === 1) {
         // (x² - bx)/(x² - b²) = x/(x + b)
-        const b = randomInt(2, 6);
+        const b = getRandomInt(2, 6);
 
         const numerator = `x² - ${b}x`;
         const denominator = `x² - ${b * b}`;
@@ -257,8 +257,8 @@ function generateLevel5() {
         };
     } else {
         // (ax² + 2abx + ab²)/(ax + ab) = (x + b)
-        const a = randomInt(2, 4);
-        const b = randomInt(2, 5);
+        const a = getRandomInt(2, 4);
+        const b = getRandomInt(2, 5);
 
         const c1 = a;
         const c2 = 2 * a * b;
@@ -279,9 +279,3 @@ function generateLevel5() {
     }
 }
 
-/**
- * Generate random integer between min and max (inclusive)
- */
-function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}

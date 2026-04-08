@@ -1,3 +1,5 @@
+import { getRandomInt, shuffleArray } from '../utils.js';
+
 export function generateMultiplicationTableData({ fromFactor, toFactor, percentHints }) {
     if (isNaN(fromFactor) || fromFactor < 1) {
         fromFactor = 1;
@@ -26,14 +28,11 @@ export function generateMultiplicationTableData({ fromFactor, toFactor, percentH
     }
 
     // Shuffle coordinates to pick random cells to pre-fill
-    for (let i = allCellCoordinates.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allCellCoordinates[i], allCellCoordinates[j]] = [allCellCoordinates[j], allCellCoordinates[i]];
-    }
+    const shuffledCoordinates = shuffleArray(allCellCoordinates);
 
     const cellsToPreFill = new Set();
-    for (let i = 0; i < cellsToFillCount && i < allCellCoordinates.length; i++) {
-        cellsToPreFill.add(`${allCellCoordinates[i][0]}-${allCellCoordinates[i][1]}`);
+    for (let i = 0; i < cellsToFillCount && i < shuffledCoordinates.length; i++) {
+        cellsToPreFill.add(`${shuffledCoordinates[i][0]}-${shuffledCoordinates[i][1]}`);
     }
 
     const rows = [];

@@ -1,13 +1,4 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomNumber(numDigits) {
-    if (numDigits <= 0) return 1;
-    const min = Math.pow(10, numDigits - 1);
-    const max = Math.pow(10, numDigits) - 1;
-    // Special case for 1-digit numbers to avoid 0
-    if (min === 1) return Math.floor(Math.random() * 9) + 1;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomNumberByDigits } from '../utils.js';
 
 export function generateMultiplicationDivisionData({
     digitsF1,
@@ -34,10 +25,10 @@ export function generateMultiplicationDivisionData({
         let problemData;
         let actualResult;
 
-        if (Math.random() < 0.5) {
+        if (getRandomInt(0, 1) === 0) {
             // Generate multiplication problem
-            const factor1 = getRandomNumber(digitsF1);
-            const factor2 = getRandomNumber(digitsF2);
+            const factor1 = getRandomNumberByDigits(digitsF1);
+            const factor2 = getRandomNumberByDigits(digitsF2);
             actualResult = factor1 * factor2;
             problemData = {
                 type: 'multiplication',
@@ -47,8 +38,8 @@ export function generateMultiplicationDivisionData({
             };
         } else {
             // Generate division problem
-            let divisor = getRandomNumber(digitsDiv);
-            let quotient = getRandomNumber(digitsQuo);
+            let divisor = getRandomNumberByDigits(digitsDiv);
+            let quotient = getRandomNumberByDigits(digitsQuo);
 
             if (divisor === 0) divisor = 1; // Avoid division by zero
             if (quotient === 0) quotient = 1;
@@ -58,7 +49,7 @@ export function generateMultiplicationDivisionData({
                 dividend = divisor * quotient;
                 actualResult = quotient;
             } else {
-                const remainder = Math.floor(Math.random() * (divisor - 1)) + 1;
+                const remainder = getRandomInt(1, divisor - 1);
                 dividend = divisor * quotient + remainder;
                 actualResult = quotient; // We track the quotient for the digital root
             }

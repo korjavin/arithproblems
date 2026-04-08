@@ -1,11 +1,7 @@
-import { digitalRoot } from '../utils.js';
+import { digitalRoot, getRandomInt } from '../utils.js';
 import { create, all } from 'mathjs';
 
 const math = create(all);
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 // Function to find factors of a number
 function getFactors(num) {
@@ -44,7 +40,7 @@ export function generateMixedOperationsData({ numOperations, coefficientMax, all
             let op;
             if (k > 0 && (ops[k - 1] === '*' || ops[k - 1] === '/')) {
                 // If previous was * or /, current must be + or -
-                op = Math.random() < 0.5 ? '+' : '-';
+                op = getRandomInt(0, 1) === 0 ? '+' : '-';
             } else {
                 op = operators[getRandomInt(0, 3)];
             }

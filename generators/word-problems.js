@@ -1,21 +1,4 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function getRandomFromArray(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function shuffleArray(arr) {
-    const newArr = [...arr];
-    for (let i = newArr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-    }
-    return newArr;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray, shuffleArray } from '../utils.js';
 
 function fillTemplate(template, data) {
     return template.replace(/{(\w+)}/g, (match, key) => {
@@ -24,7 +7,7 @@ function fillTemplate(template, data) {
 }
 
 function generateProblemData(templateKey, t, difficultyLevel) {
-    const difficultyMultiplier = difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 1.5 : difficultyLevel === 'hard' ? 2 : 1 + Math.random();
+    const difficultyMultiplier = difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 1.5 : difficultyLevel === 'hard' ? 2 : 1 + (getRandomInt(0, 100) / 100);
     function roundToWhole(num) { return Math.round(num); }
     const getRandomName = (type = 'neutral') => getRandomFromArray(t.names[type]);
     const getRandomObject = (type = 'items') => getRandomFromArray(t.objects[type]);

@@ -1,8 +1,4 @@
-import { gcd, digitalRoot } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { gcd, digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 const TERMINATING_DENOMINATORS = [2, 4, 5, 8, 10, 16, 20, 25, 40, 50, 100, 125, 200, 250, 400, 500, 1000];
 
@@ -21,7 +17,7 @@ export function generateDecimalRationalData({ problemMix, maxDecimalPlaces, term
 
     while (problems.length < numberOfProblems && attempts < maxAttempts) {
         attempts++;
-        const problemType = (problemMix === 'mixed') ? (Math.random() < 0.5 ? 'fraction-to-decimal' : 'decimal-to-fraction') : problemMix;
+        const problemType = (problemMix === 'mixed') ? (getRandomInt(0, 1) === 0 ? 'fraction-to-decimal' : 'decimal-to-fraction') : problemMix;
 
         let problemData = null;
         let checkNumber = 0;
@@ -29,7 +25,7 @@ export function generateDecimalRationalData({ problemMix, maxDecimalPlaces, term
         if (problemType === 'fraction-to-decimal') {
             let denominator, numerator;
             if (terminatingOnly) {
-                denominator = TERMINATING_DENOMINATORS[getRandomInt(0, TERMINATING_DENOMINATORS.length - 1)];
+                denominator = getRandomFromArray(TERMINATING_DENOMINATORS);
                 numerator = getRandomInt(1, denominator - 1);
             } else {
                 denominator = getRandomInt(2, 20);

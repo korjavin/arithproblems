@@ -1,8 +1,4 @@
-import { gcd } from '../utils.js';
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { gcd, getRandomInt } from '../utils.js';
 
 function calculateControlSum(numerator, denominator) {
     if (denominator === 0) return NaN;
@@ -32,7 +28,7 @@ export function generateRationalMultDivData({ maxVal, avoidWholeNums, numberOfPr
         let n2 = getRandomInt(1, maxVal);
         let d2 = getRandomInt(1, maxVal);
 
-        const operation = Math.random() < 0.5 ? 'multiply' : 'divide';
+        const operation = getRandomInt(0, 1) === 0 ? 'multiply' : 'divide';
         let resultN, resultD;
 
         if (operation === 'multiply') {

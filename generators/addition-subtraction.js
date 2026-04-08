@@ -1,11 +1,4 @@
-import { digitalRoot } from '../utils.js';
-
-function getRandomNumber(numDigits) {
-    if (numDigits <= 0) return 0;
-    const min = Math.pow(10, numDigits - 1);
-    const max = Math.pow(10, numDigits) - 1;
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+import { digitalRoot, getRandomInt, getRandomNumberByDigits } from '../utils.js';
 
 export function generateAdditionSubtractionData({ digits1, digits2, numberOfProblems }) {
     if (isNaN(digits1) || digits1 < 1 || digits1 > 7 || isNaN(digits2) || digits2 < 1 || digits2 > 7) {
@@ -19,9 +12,9 @@ export function generateAdditionSubtractionData({ digits1, digits2, numberOfProb
     const answerRoots = [];
 
     for (let i = 0; i < numberOfProblems; i++) {
-        let num1 = getRandomNumber(digits1);
-        let num2 = getRandomNumber(digits2);
-        const isAddition = Math.random() < 0.5;
+        let num1 = getRandomNumberByDigits(digits1, false);
+        let num2 = getRandomNumberByDigits(digits2, false);
+        const isAddition = getRandomInt(0, 1) === 0;
         let operator, actualResult;
 
         if (isAddition) {
