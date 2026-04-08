@@ -1,7 +1,8 @@
 import { digitalRoot as newDigitalRoot } from './utils.js';
 
+// Inefficient version for benchmarking baseline
 function oldDigitalRoot(n) {
-    let num = Math.abs(n); // Ensure positive for the digit summing process
+    let num = Math.abs(n);
     let sum = num;
     while (sum >= 10) {
         sum = String(sum).split('').reduce((acc, digit) => acc + parseInt(digit, 10), 0);
