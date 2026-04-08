@@ -24,6 +24,11 @@ export function getRandomInt(min, max) {
     const range = max - min + 1;
     if (range <= 0) return min;
 
+    // Fallback for environments without globalThis.crypto (like older Node.js)
+    if (!globalThis.crypto || !globalThis.crypto.getRandomValues) {
+        return Math.floor(Math.random() * range) + min;
+    }
+
     const requestBytes = Math.ceil(Math.log2(range) / 8);
     if (!requestBytes) return min;
 
