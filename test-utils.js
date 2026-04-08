@@ -52,6 +52,14 @@ function testRandomInt() {
         assert(val >= -5 && val <= 5, `getRandomInt(-5, 5) returned ${val}`);
     }
     assert.strictEqual(getRandomInt(5, 5), 5, 'getRandomInt(5, 5) should be 5');
+
+    // Fractional inputs
+    for (let i = 0; i < 100; i++) {
+        const val = getRandomInt(4.5, 15.8);
+        assert(Number.isInteger(val), `getRandomInt(4.5, 15.8) returned non-integer ${val}`);
+        assert(val >= 4 && val <= 15, `getRandomInt(4.5, 15.8) returned out-of-bounds ${val}`);
+    }
+
     console.log('All getRandomInt tests passed!');
 }
 

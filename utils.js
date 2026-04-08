@@ -21,6 +21,8 @@ export function digitalRoot(n) {
  * @returns {number}
  */
 export function getRandomInt(min, max) {
+    min = Math.floor(min);
+    max = Math.floor(max);
     const range = max - min + 1;
     if (range <= 0) return min;
 
