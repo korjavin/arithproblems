@@ -47,7 +47,7 @@
     "generate_button": "Generate Worksheet",
     "print_button": "Print Worksheet",
     "output_area_h2": "Generated Problems",
-    "footer_p_1": "&copy; 2024 Math Worksheet Generator",
+    "footer_p_1": "© 2024 Math Worksheet Generator",
     "footer_p_2": "Commit: ",
     "script": {
         "multiplication_table": {
@@ -56,7 +56,7 @@
             "to_label": "To:",
             "percent_hints_label": "Percent of hints (%):",
             "chart_description": "The chart will be partially pre-filled to help learning.",
-            "chart_title": "Multiplication Chart ({fromFactor} &times; {fromFactor} to {toFactor} &times; {toFactor})"
+            "chart_title": "Multiplication Chart ({fromFactor} × {fromFactor} to {toFactor} × {toFactor})"
         },
         "addition_subtraction": {
             "digits_num1_label": "Digits in Number 1:",
@@ -72,7 +72,7 @@
             "num_operations_label": "Number of Operations (1-4):",
             "coefficient_range_label": "Coefficient Range (Max):",
             "allow_negative_label": "Allow Negative Results",
-            "description": "Solve problems with mixed operations (+, -, &times;, &divide;). Follow the order of operations.",
+            "description": "Solve problems with mixed operations (+, -, ×, ÷). Follow the order of operations.",
             "problems_title": "Mixed Operations Problems",
             "digital_root_grid_title": "Digital Root Self-Check Grid",
             "error_num_operations": "Number of operations must be between 1 and 10."
@@ -91,7 +91,7 @@
             "error_num_problems": "Please enter a valid Number of Problems (1-50).",
             "problems_title": "Multiplication & Division Problems",
             "digital_root_grid_title": "Digital Root Self-Check Grid",
-            "digital_root_grid_subtitle": "(Product DR for &times;, Quotient DR for &divide;)"
+            "digital_root_grid_subtitle": "(Product DR for ×, Quotient DR for ÷)"
         },
         "rational_canonical": {
             "max_val_label": "Max Value for Numerator/Denominator:",

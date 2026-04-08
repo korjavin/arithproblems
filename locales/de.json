@@ -45,7 +45,7 @@
     "generate_button": "Arbeitsblatt erstellen",
     "print_button": "Arbeitsblatt drucken",
     "output_area_h2": "Erstellte Probleme",
-    "footer_p_1": "&copy; 2024 Mathe-Arbeitsblatt-Generator",
+    "footer_p_1": "© 2024 Mathe-Arbeitsblatt-Generator",
     "footer_p_2": "Commit: ",
     "script": {
         "multiplication_table": {
@@ -54,7 +54,7 @@
             "to_label": "Bis:",
             "percent_hints_label": "Prozentsatz der Hinweise (%):",
             "chart_description": "Die Tabelle wird teilweise vorausgefüllt, um das Lernen zu erleichtern.",
-            "chart_title": "Multiplikationstabelle ({fromFactor} &times; {fromFactor} bis {toFactor} &times; {toFactor})"
+            "chart_title": "Multiplikationstabelle ({fromFactor} × {fromFactor} bis {toFactor} × {toFactor})"
         },
         "addition_subtraction": {
             "digits_num1_label": "Ziffern in Zahl 1:",
@@ -80,7 +80,7 @@
             "error_num_problems": "Bitte geben Sie eine gültige Anzahl von Problemen (1-50) ein.",
             "problems_title": "Multiplikations- & Divisionsaufgaben",
             "digital_root_grid_title": "Quersummen-Kontrollraster",
-            "digital_root_grid_subtitle": "(Produkt-QS für &times;, Quotienten-QS für &divide;)"
+            "digital_root_grid_subtitle": "(Produkt-QS für ×, Quotienten-QS für ÷)"
         },
         "rational_canonical": {
             "max_val_label": "Maximalwert für Zähler/Nenner:",

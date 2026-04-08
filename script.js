@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const toFactor = parseInt(document.getElementById('mt-to-factor').value, 10);
         const percentHints = parseInt(document.getElementById('mt-percent-hints').value, 10);
         const tableData = generateMultiplicationTableData({ fromFactor, toFactor, percentHints });
-        let html = `<h3>${t.chart_title.replace('{fromFactor}', fromFactor).replace('{toFactor}', toFactor)}</h3><table class="multiplication-chart"><thead><tr><th>&times;</th>`;
+        let html = `<h3>${t.chart_title.replaceAll('{fromFactor}', fromFactor).replaceAll('{toFactor}', toFactor)}</h3><table class="multiplication-chart"><thead><tr><th>&times;</th>`;
         tableData.headers.forEach(h => { html += `<th>${h}</th>`; });
         html += '</tr></thead><tbody>';
         tableData.rows.forEach(row => {
