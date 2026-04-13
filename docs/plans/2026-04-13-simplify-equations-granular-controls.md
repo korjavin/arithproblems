@@ -57,9 +57,9 @@ Replace the single complexity slider in the Simplifying Equations section with i
 **Files:**
 - Modify: `script.js`
 
-- [ ] Update `renderSimplifyEquationsProblems` (lines 598-617) to read from new control IDs (`se-num-operations`, `se-include-brackets`, `se-coefficient-range`, `se-bracket-depth`) and pass them to the updated generator function
-- [ ] Write tests verifying the new controls are read correctly
-- [ ] Run project test suite - must pass before task 4
+- [x] Update `renderSimplifyEquationsProblems` (lines 598-617) to read from new control IDs (`se-num-operations`, `se-include-brackets`, `se-coefficient-range`, `se-bracket-depth`) and pass them to the updated generator function
+- [x] Write tests verifying the new controls are read correctly
+- [x] Run project test suite - must pass before task 4
 
 ### Task 4: Update translations for all 3 locales
 

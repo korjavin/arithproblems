@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { readFileSync } from 'fs';
 import { generateSimplifyEquationsData, getCoefficients } from './generators/simplify-equations.js';
 
 function testGetCoefficientsErrorPath() {
@@ -123,9 +124,40 @@ function testGenerateSimplifyEquationsData() {
     console.log('--- All tests for generateSimplifyEquationsData passed ---');
 }
 
+function testScriptReadsCorrectControlIDs() {
+    console.log('--- Running tests for script.js control ID wiring ---');
+    const scriptContent = readFileSync('./script.js', 'utf8');
+
+    // Extract the renderSimplifyEquationsProblems function body
+    const fnMatch = scriptContent.match(/function renderSimplifyEquationsProblems[\s\S]*?^    \}/m);
+    assert(fnMatch, 'renderSimplifyEquationsProblems function should exist in script.js');
+    const fnBody = fnMatch[0];
+
+    // Verify all new control IDs are referenced
+    const expectedIDs = ['se-num-operations', 'se-include-brackets', 'se-bracket-depth', 'se-coefficient-range'];
+    for (const id of expectedIDs) {
+        assert(fnBody.includes(id), `script.js renderSimplifyEquationsProblems should reference control '${id}'`);
+    }
+    console.log('Test Passed: All granular control IDs are referenced in renderSimplifyEquationsProblems');
+
+    // Verify old complexity control is NOT referenced
+    assert(!fnBody.includes('se-complexity'), 'script.js renderSimplifyEquationsProblems should NOT reference old se-complexity control');
+    console.log('Test Passed: Old se-complexity control is no longer referenced');
+
+    // Verify the generator is called with correct parameter names
+    const expectedParams = ['numOperations', 'includeBrackets', 'bracketDepth', 'coefficientRange', 'numberOfProblems'];
+    for (const param of expectedParams) {
+        assert(fnBody.includes(param), `Generator call should include parameter '${param}'`);
+    }
+    console.log('Test Passed: Generator is called with all correct parameter names');
+
+    console.log('--- All script.js control ID wiring tests passed ---');
+}
+
 try {
     testGetCoefficientsErrorPath();
     testGenerateSimplifyEquationsData();
+    testScriptReadsCorrectControlIDs();
 } catch (error) {
     console.error(error.message);
     process.exit(1);
