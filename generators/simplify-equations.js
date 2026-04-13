@@ -10,28 +10,28 @@ function getRandomOperator() {
 }
 
 // Function to generate a simple term
-function generateTerm(complexity) {
+function generateTerm(coefficientRange) {
     if (getRandomInt(0, 1) === 0) {
-        return getRandomInt(1, 10 * complexity);
+        return getRandomInt(1, coefficientRange);
     } else {
-        const coeff = getRandomInt(1, 5 * complexity);
+        const coeff = getRandomInt(1, Math.max(1, Math.floor(coefficientRange / 2)));
         return `${coeff}*x`;
     }
 }
 
 // Function to generate a more complex expression, potentially with brackets
-function generateExpression(complexity, depth = 0) {
-    const numTerms = getRandomInt(2, 2 + complexity);
+function generateExpression({ numOperations, includeBrackets, bracketDepth, coefficientRange }, depth = 0) {
+    const numTerms = numOperations;
     let expression = '';
 
     for (let i = 0; i < numTerms; i++) {
         let term;
-        if (depth < complexity && getRandomInt(1, 100) <= 40) {
+        if (includeBrackets && depth < bracketDepth && getRandomInt(1, 100) <= 40) {
             // Add a multiplier to the bracket
             const multiplier = getRandomInt(2, 5);
-            term = `${multiplier}*(${generateExpression(complexity, depth + 1)})`;
+            term = `${multiplier}*(${generateExpression({ numOperations, includeBrackets, bracketDepth, coefficientRange }, depth + 1)})`;
         } else {
-            term = generateTerm(complexity);
+            term = generateTerm(coefficientRange);
         }
 
         if (i > 0) {
@@ -110,7 +110,7 @@ export function getCoefficients(node) {
 }
 
 
-export function generateSimplifyEquationsData({ complexity, numberOfProblems }) {
+export function generateSimplifyEquationsData({ numOperations, includeBrackets, bracketDepth, coefficientRange, numberOfProblems }) {
     const problems = [];
     const controlSums = [];
 
@@ -122,7 +122,7 @@ export function generateSimplifyEquationsData({ complexity, numberOfProblems }) 
 
         // Try to generate a valid expression
         try {
-            expression = generateExpression(complexity);
+            expression = generateExpression({ numOperations, includeBrackets, bracketDepth, coefficientRange });
             simplified = math.simplify(expression);
             node = math.parse(simplified.toString());
 

@@ -45,12 +45,12 @@ Replace the single complexity slider in the Simplifying Equations section with i
 **Files:**
 - Modify: `generators/simplify-equations.js`
 
-- [ ] Change `generateSimplifyEquationsData` signature from `{ complexity, numberOfProblems }` to `{ numOperations, includeBrackets, bracketDepth, coefficientRange, numberOfProblems }`
-- [ ] Update `generateTerm(complexity)` to accept `coefficientRange` instead of `complexity`, use `getRandomInt(1, coefficientRange)` for numeric terms and `getRandomInt(1, Math.max(1, Math.floor(coefficientRange / 2)))` for variable coefficients
-- [ ] Update `generateExpression(complexity, depth)` to accept `{ numOperations, includeBrackets, bracketDepth, coefficientRange }` and use `numOperations` for term count, only generate brackets when `includeBrackets` is true, and limit depth to `bracketDepth`
-- [ ] Remove the old complexity-based logic entirely
-- [ ] Write tests covering the new parameter combinations: no brackets, with brackets at various depths, different coefficient ranges, different operation counts
-- [ ] Run project test suite - must pass before task 3
+- [x] Change `generateSimplifyEquationsData` signature from `{ complexity, numberOfProblems }` to `{ numOperations, includeBrackets, bracketDepth, coefficientRange, numberOfProblems }`
+- [x] Update `generateTerm(complexity)` to accept `coefficientRange` instead of `complexity`, use `getRandomInt(1, coefficientRange)` for numeric terms and `getRandomInt(1, Math.max(1, Math.floor(coefficientRange / 2)))` for variable coefficients
+- [x] Update `generateExpression(complexity, depth)` to accept `{ numOperations, includeBrackets, bracketDepth, coefficientRange }` and use `numOperations` for term count, only generate brackets when `includeBrackets` is true, and limit depth to `bracketDepth`
+- [x] Remove the old complexity-based logic entirely
+- [x] Write tests covering the new parameter combinations: no brackets, with brackets at various depths, different coefficient ranges, different operation counts
+- [x] Run project test suite - must pass before task 3
 
 ### Task 3: Wire up UI controls to generator
 
