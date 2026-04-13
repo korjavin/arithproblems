@@ -105,6 +105,54 @@ function testGenerateSimplifyEquationsData() {
     assert(avgLongLen > avgShortLen, `Test Case 13 Failed: 6-operation expressions (avg ${avgLongLen}) should be longer than 2-operation (avg ${avgShortLen})`);
     console.log('Test Case 13 Passed: more numOperations produces longer expressions');
 
+    // Test case 14: Invalid numOperations - too low
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 1, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 5 });
+    }, /Invalid number of operations/, 'Test Case 14 Failed: numOperations=1 should throw');
+    console.log('Test Case 14 Passed: numOperations=1 throws');
+
+    // Test case 15: Invalid numOperations - too high
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 7, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 5 });
+    }, /Invalid number of operations/, 'Test Case 15 Failed: numOperations=7 should throw');
+    console.log('Test Case 15 Passed: numOperations=7 throws');
+
+    // Test case 16: Invalid numOperations - NaN
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: NaN, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 5 });
+    }, /Invalid number of operations/, 'Test Case 16 Failed: numOperations=NaN should throw');
+    console.log('Test Case 16 Passed: numOperations=NaN throws');
+
+    // Test case 17: Invalid bracketDepth
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 2, includeBrackets: true, bracketDepth: 0, coefficientRange: 10, numberOfProblems: 5 });
+    }, /Invalid bracket depth/, 'Test Case 17 Failed: bracketDepth=0 should throw');
+    console.log('Test Case 17 Passed: bracketDepth=0 throws');
+
+    // Test case 18: Invalid coefficientRange - too low
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 2, numberOfProblems: 5 });
+    }, /Invalid coefficient range/, 'Test Case 18 Failed: coefficientRange=2 should throw');
+    console.log('Test Case 18 Passed: coefficientRange=2 throws');
+
+    // Test case 19: Invalid coefficientRange - too high
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 100, numberOfProblems: 5 });
+    }, /Invalid coefficient range/, 'Test Case 19 Failed: coefficientRange=100 should throw');
+    console.log('Test Case 19 Passed: coefficientRange=100 throws');
+
+    // Test case 20: Invalid numberOfProblems
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 0 });
+    }, /Invalid number of problems/, 'Test Case 20 Failed: numberOfProblems=0 should throw');
+    console.log('Test Case 20 Passed: numberOfProblems=0 throws');
+
+    // Test case 21: Invalid numberOfProblems - too high
+    assert.throws(() => {
+        generateSimplifyEquationsData({ numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 51 });
+    }, /Invalid number of problems/, 'Test Case 21 Failed: numberOfProblems=51 should throw');
+    console.log('Test Case 21 Passed: numberOfProblems=51 throws');
+
     console.log('--- All tests for generateSimplifyEquationsData passed ---');
 }
 

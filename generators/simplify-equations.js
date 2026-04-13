@@ -45,6 +45,19 @@ function generateExpression(opts, depth = 0) {
 }
 
 export function generateSimplifyEquationsData({ numOperations, includeBrackets, bracketDepth, coefficientRange, numberOfProblems }) {
+    if (isNaN(numOperations) || numOperations < 2 || numOperations > 6) {
+        throw new Error('Invalid number of operations.');
+    }
+    if (isNaN(bracketDepth) || bracketDepth < 1 || bracketDepth > 3) {
+        throw new Error('Invalid bracket depth.');
+    }
+    if (isNaN(coefficientRange) || coefficientRange < 5 || coefficientRange > 50) {
+        throw new Error('Invalid coefficient range.');
+    }
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        throw new Error('Invalid number of problems.');
+    }
+
     const problems = [];
     const controlSums = [];
 
