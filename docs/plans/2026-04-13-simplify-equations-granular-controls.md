@@ -75,8 +75,8 @@ Replace the single complexity slider in the Simplifying Equations section with i
 
 ### Task 5: Verify acceptance criteria
 
-- [ ] Run full test suite (`npm test`)
-- [ ] Run linter if configured
+- [x] Run full test suite (`npm test`)
+- [x] Run linter if configured (no project-level linter found)
 
 ### Task 6: Update documentation
 
