@@ -80,5 +80,5 @@ Replace the single complexity slider in the Simplifying Equations section with i
 
 ### Task 6: Update documentation
 
-- [ ] Update CLAUDE.md if internal patterns changed
-- [ ] Move this plan to `docs/plans/completed/`
+- [x] Update CLAUDE.md if internal patterns changed (no changes needed - follows existing patterns)
+- [x] Move this plan to `docs/plans/completed/`
