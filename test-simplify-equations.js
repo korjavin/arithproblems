@@ -1,50 +1,6 @@
 import assert from 'assert';
 import { readFileSync } from 'fs';
-import { generateSimplifyEquationsData, getCoefficients } from './generators/simplify-equations.js';
-
-function testGetCoefficientsErrorPath() {
-    console.log('--- Running tests for getCoefficients error path ---');
-
-    // Create a mock node that does not match any known types and throws on evaluate
-    const mockNode = {
-        isOperatorNode: false,
-        isSymbolNode: false,
-        isConstantNode: false,
-        isParenthesisNode: false,
-        isUnaryMinus: false,
-        evaluate: () => {
-            throw new Error('Mock evaluation error');
-        }
-    };
-
-    const [a, b] = getCoefficients(mockNode);
-    assert.strictEqual(a, 0, 'Test Case Failed: getCoefficients should return a=0 on evaluation error');
-    assert.strictEqual(b, 0, 'Test Case Failed: getCoefficients should return b=0 on evaluation error');
-
-    // Also test a mock node that returns a non-number
-    const mockNodeNonNumber = {
-        evaluate: () => {
-            return 'not a number';
-        }
-    };
-
-    const [a2, b2] = getCoefficients(mockNodeNonNumber);
-    assert.strictEqual(a2, 0, 'Test Case Failed: getCoefficients should return a=0 when evaluation is not a number');
-    assert.strictEqual(b2, 0, 'Test Case Failed: getCoefficients should return b=0 when evaluation is not a number');
-
-    // And test a mock node that works
-    const mockNodeWorks = {
-        evaluate: () => {
-            return 42;
-        }
-    };
-
-    const [a3, b3] = getCoefficients(mockNodeWorks);
-    assert.strictEqual(a3, 0, 'Test Case Failed: getCoefficients should return a=0 when evaluation is successful');
-    assert.strictEqual(b3, 42, 'Test Case Failed: getCoefficients should return b=42 when evaluation is successful');
-
-    console.log('Test Case Passed: getCoefficients gracefully handles unsupported nodes and evaluation errors');
-}
+import { generateSimplifyEquationsData } from './generators/simplify-equations.js';
 
 function testGenerateSimplifyEquationsData() {
     console.log('--- Running tests for generateSimplifyEquationsData ---');
@@ -121,6 +77,34 @@ function testGenerateSimplifyEquationsData() {
     }
     console.log('Test Case 10 Passed: Brackets with depth 2');
 
+    // Test case 11: includeBrackets=true should produce some expressions with parentheses
+    params = { numOperations: 4, includeBrackets: true, bracketDepth: 2, coefficientRange: 10, numberOfProblems: 50 };
+    result = generateSimplifyEquationsData(params);
+    const hasBrackets = result.problems.some(p => p.expression.includes('('));
+    assert(hasBrackets, 'Test Case 11 Failed: With includeBrackets=true and 50 problems, at least one should contain brackets');
+    console.log('Test Case 11 Passed: includeBrackets=true produces brackets');
+
+    // Test case 12: coefficientRange constrains coefficient values
+    params = { numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 5, numberOfProblems: 30 };
+    result = generateSimplifyEquationsData(params);
+    for (const p of result.problems) {
+        // Extract all numbers from expression (before ⋅ replacement, numbers are plain digits)
+        const numbers = p.expression.match(/\d+/g) || [];
+        for (const numStr of numbers) {
+            const num = parseInt(numStr, 10);
+            assert(num <= 5, `Test Case 12 Failed: Coefficient ${num} in "${p.expression}" exceeds range 5`);
+        }
+    }
+    console.log('Test Case 12 Passed: coefficientRange constrains coefficient values');
+
+    // Test case 13: more numOperations produces longer expressions
+    const short = generateSimplifyEquationsData({ numOperations: 2, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 20 });
+    const long = generateSimplifyEquationsData({ numOperations: 6, includeBrackets: false, bracketDepth: 1, coefficientRange: 10, numberOfProblems: 20 });
+    const avgShortLen = short.problems.reduce((sum, p) => sum + p.expression.length, 0) / short.problems.length;
+    const avgLongLen = long.problems.reduce((sum, p) => sum + p.expression.length, 0) / long.problems.length;
+    assert(avgLongLen > avgShortLen, `Test Case 13 Failed: 6-operation expressions (avg ${avgLongLen}) should be longer than 2-operation (avg ${avgShortLen})`);
+    console.log('Test Case 13 Passed: more numOperations produces longer expressions');
+
     console.log('--- All tests for generateSimplifyEquationsData passed ---');
 }
 
@@ -181,7 +165,6 @@ function testLocaleTranslationKeys() {
 }
 
 try {
-    testGetCoefficientsErrorPath();
     testGenerateSimplifyEquationsData();
     testScriptReadsCorrectControlIDs();
     testLocaleTranslationKeys();
