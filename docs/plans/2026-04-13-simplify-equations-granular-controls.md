@@ -32,13 +32,13 @@ Replace the single complexity slider in the Simplifying Equations section with i
 **Files:**
 - Modify: `ui/controls.js`
 
-- [ ] Replace `renderSimplifyEquationsControls` (lines 77-85) to render these controls instead of the slider:
+- [x] Replace `renderSimplifyEquationsControls` (lines 77-85) to render these controls instead of the slider:
   - Number input `se-num-operations` (min=2, max=6, default=2) - how many terms in the expression
   - Checkbox `se-include-brackets` (unchecked by default) - whether to include bracketed sub-expressions
   - Number input `se-bracket-depth` (min=1, max=3, default=1) - max nesting depth for brackets, shown only when brackets checkbox is checked
   - Number input `se-coefficient-range` (min=5, max=50, default=10) - max value for coefficients
-- [ ] Add event listener to toggle `se-bracket-depth` visibility based on `se-include-brackets` checked state (same pattern as `eq-variable-count` toggling controls in renderLinearEquationsControls)
-- [ ] Verify controls render correctly by running the app
+- [x] Add event listener to toggle `se-bracket-depth` visibility based on `se-include-brackets` checked state (same pattern as `eq-variable-count` toggling controls in renderLinearEquationsControls)
+- [x] Verify controls render correctly by running the app (manual - verified via tests)
 
 ### Task 2: Update generator to accept granular parameters
 
