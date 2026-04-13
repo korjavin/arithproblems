@@ -154,10 +154,37 @@ function testScriptReadsCorrectControlIDs() {
     console.log('--- All script.js control ID wiring tests passed ---');
 }
 
+function testLocaleTranslationKeys() {
+    console.log('--- Running tests for locale translation keys ---');
+
+    const locales = ['en', 'ru', 'de'];
+    const requiredKeys = ['num_operations_label', 'include_brackets_label', 'bracket_depth_label', 'coefficient_range_label', 'description'];
+    const removedKeys = ['complexity_label'];
+
+    for (const locale of locales) {
+        const data = JSON.parse(readFileSync(`./locales/${locale}.json`, 'utf8'));
+        const se = data.script.simplify_equations;
+
+        for (const key of requiredKeys) {
+            assert(se[key], `${locale}.json simplify_equations should have key '${key}'`);
+            assert(typeof se[key] === 'string' && se[key].length > 0, `${locale}.json simplify_equations.${key} should be a non-empty string`);
+        }
+
+        for (const key of removedKeys) {
+            assert(!se[key], `${locale}.json simplify_equations should NOT have old key '${key}'`);
+        }
+
+        console.log(`Test Passed: ${locale}.json has correct simplify_equations translation keys`);
+    }
+
+    console.log('--- All locale translation key tests passed ---');
+}
+
 try {
     testGetCoefficientsErrorPath();
     testGenerateSimplifyEquationsData();
     testScriptReadsCorrectControlIDs();
+    testLocaleTranslationKeys();
 } catch (error) {
     console.error(error.message);
     process.exit(1);

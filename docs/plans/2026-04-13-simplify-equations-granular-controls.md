@@ -68,10 +68,10 @@ Replace the single complexity slider in the Simplifying Equations section with i
 - Modify: `locales/ru.json`
 - Modify: `locales/de.json`
 
-- [ ] Add new translation keys under `simplify_equations` in the controls section for: `num_operations_label`, `include_brackets_label`, `bracket_depth_label`, `coefficient_range_label`
-- [ ] Remove old `complexity_label` key from all locales
-- [ ] Update `description` text in all locales to reflect the new controls
-- [ ] Run project test suite - must pass before task 5
+- [x] Add new translation keys under `simplify_equations` in the controls section for: `num_operations_label`, `include_brackets_label`, `bracket_depth_label`, `coefficient_range_label`
+- [x] Remove old `complexity_label` key from all locales
+- [x] Update `description` text in all locales to reflect the new controls
+- [x] Run project test suite - must pass before task 5
 
 ### Task 5: Verify acceptance criteria
 
