@@ -77,11 +77,33 @@ export function renderRationalCanonicalControls(container, t) {
 export function renderSimplifyEquationsControls(container, t) {
     container.innerHTML = `
         <div>
-            <label for="se-complexity">${t.complexity_label}</label>
-            <input type="range" id="se-complexity" value="1" min="1" max="5">
+            <label for="se-num-operations">${t.num_operations_label || 'Number of Operations:'}</label>
+            <input type="number" id="se-num-operations" value="2" min="2" max="6">
+        </div>
+        <div>
+            <input type="checkbox" id="se-include-brackets">
+            <label for="se-include-brackets">${t.include_brackets_label || 'Include Brackets'}</label>
+        </div>
+        <div id="se-bracket-depth-container" style="display: none;">
+            <label for="se-bracket-depth">${t.bracket_depth_label || 'Max Bracket Depth:'}</label>
+            <input type="number" id="se-bracket-depth" value="1" min="1" max="3">
+        </div>
+        <div>
+            <label for="se-coefficient-range">${t.coefficient_range_label || 'Coefficient Range (Max):'}</label>
+            <input type="number" id="se-coefficient-range" value="10" min="5" max="50">
         </div>
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
+
+    const includeBracketsCheckbox = container.querySelector('#se-include-brackets');
+    const bracketDepthContainer = container.querySelector('#se-bracket-depth-container');
+
+    function updateBracketDepthVisibility() {
+        bracketDepthContainer.style.display = includeBracketsCheckbox.checked ? 'block' : 'none';
+    }
+
+    includeBracketsCheckbox.addEventListener('change', updateBracketDepthVisibility);
+    updateBracketDepthVisibility();
 }
 
 export function renderRationalOperationsControls(container, t) {

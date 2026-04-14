@@ -390,8 +390,11 @@
             "error_max_problems": "Max 20 problems for this format. Please choose a smaller number."
         },
         "simplify_equations": {
-            "complexity_label": "Complexity:",
-            "description": "Simplify the algebraic expressions. The final result should be in the form ax + b. The control sum is the digital root of |a| + |b|.",
+            "num_operations_label": "Number of Operations (2-6):",
+            "include_brackets_label": "Include Brackets",
+            "bracket_depth_label": "Max Bracket Depth (1-3):",
+            "coefficient_range_label": "Coefficient Range (Max):",
+            "description": "Simplify algebraic expressions by combining like terms. Configure the number of operations, whether to include brackets, and the coefficient range. The control sum is the digital root of |a| + |b|.",
             "problems_title": "Simplifying Equations",
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Simplify to ax + b, then find the digital root of |a| + |b|.",

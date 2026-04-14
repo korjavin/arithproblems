@@ -11,7 +11,7 @@ This static web application is designed for teachers, parents, and students to q
 - **Custom Difficulty**: Adjust numeric ranges, digit counts, and enable/disable features to set precise difficulty levels.
 - **Self-Checking System**: Digital root and control sum grids for student self-verification without answer keys.
 - **Optimized Print Layout**: Professional print formatting with improved page utilization and space efficiency.
-- **Comprehensive Coverage**: 8 different math topics from basic arithmetic to advanced rational operations.
+- **Comprehensive Coverage**: Math topics from basic arithmetic to advanced rational operations.
 - **Self-Contained**: Pure client-side application - no server required, works offline.
 
 ## Recent Enhancements
@@ -47,6 +47,9 @@ Clean proportion problems in the form a/b = c/d where students solve for the mis
 
 ### 8. Decimal/Rational Conversion
 Bidirectional conversion between decimals and fractions with support for terminating decimals. Features digital root checking for both formats.
+
+### 9. Simplify Equations
+Simplify algebraic expressions by combining like terms to the form ax + b. Configure the number of operations (2-6), whether to include bracketed sub-expressions with adjustable nesting depth (1-3), and the coefficient range (5-50). Features control sum verification using the digital root of |a| + |b|.
 
 ## User Interface
 

@@ -600,7 +600,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.problemsContainer.innerHTML = '';
         try {
             const { problems, controlSums } = generateSimplifyEquationsData({
-                complexity: parseInt(document.getElementById('se-complexity').value, 10),
+                numOperations: parseInt(document.getElementById('se-num-operations').value, 10),
+                includeBrackets: document.getElementById('se-include-brackets').checked,
+                bracketDepth: parseInt(document.getElementById('se-bracket-depth').value, 10),
+                coefficientRange: parseInt(document.getElementById('se-coefficient-range').value, 10),
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
             let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid simplify-equations-problem-grid">`;

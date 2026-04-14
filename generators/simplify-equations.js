@@ -10,28 +10,29 @@ function getRandomOperator() {
 }
 
 // Function to generate a simple term
-function generateTerm(complexity) {
+function generateTerm(coefficientRange) {
     if (getRandomInt(0, 1) === 0) {
-        return getRandomInt(1, 10 * complexity);
+        return getRandomInt(1, coefficientRange);
     } else {
-        const coeff = getRandomInt(1, 5 * complexity);
+        const coeff = getRandomInt(1, Math.max(1, Math.floor(coefficientRange / 2)));
         return `${coeff}*x`;
     }
 }
 
 // Function to generate a more complex expression, potentially with brackets
-function generateExpression(complexity, depth = 0) {
-    const numTerms = getRandomInt(2, 2 + complexity);
+function generateExpression(opts, depth = 0) {
+    const { numOperations, includeBrackets, bracketDepth, coefficientRange } = opts;
     let expression = '';
 
-    for (let i = 0; i < numTerms; i++) {
+    for (let i = 0; i < numOperations; i++) {
         let term;
-        if (depth < complexity && getRandomInt(1, 100) <= 40) {
-            // Add a multiplier to the bracket
+        if (includeBrackets && depth < bracketDepth && getRandomInt(1, 100) <= 40) {
+            // Add a multiplier to the bracket; use fewer terms inside to avoid exponential growth
             const multiplier = getRandomInt(2, 5);
-            term = `${multiplier}*(${generateExpression(complexity, depth + 1)})`;
+            const innerOpts = { ...opts, numOperations: Math.max(2, Math.min(3, numOperations - 1)) };
+            term = `${multiplier}*(${generateExpression(innerOpts, depth + 1)})`;
         } else {
-            term = generateTerm(complexity);
+            term = generateTerm(coefficientRange);
         }
 
         if (i > 0) {
@@ -43,74 +44,20 @@ function generateExpression(complexity, depth = 0) {
     return expression;
 }
 
-// Helper function to extract coefficients 'a' and 'b' from 'ax + b'
-export function getCoefficients(node) {
-    let a = 0;
-    let b = 0;
-
-    if (node.isOperatorNode && node.op === '+') {
-        const [leftA, leftB] = getCoefficients(node.args[0]);
-        const [rightA, rightB] = getCoefficients(node.args[1]);
-        a = leftA + rightA;
-        b = leftB + rightB;
-    } else if (node.isOperatorNode && node.op === '-') {
-        const [leftA, leftB] = getCoefficients(node.args[0]);
-        const [rightA, rightB] = getCoefficients(node.args[1]);
-        a = leftA - rightA;
-        b = leftB - rightB;
-    } else if (node.isOperatorNode && node.op === '*') {
-        // Handle multiplication: could be a*x, a*(x+b), (x+b)*a, etc.
-        const left = node.args[0];
-        const right = node.args[1];
-
-        // Check if right side is x or contains x
-        if (right.isSymbolNode && right.name === 'x') {
-            // Simple case: a*x where a is a constant
-            a = left.value || 1;
-        } else if (right.isParenthesisNode || right.isOperatorNode) {
-            // Case: a*(x+b) - need to expand
-            const multiplier = left.value || (left.isConstantNode ? left.value : 1);
-            const [innerA, innerB] = getCoefficients(right.isParenthesisNode ? right.content : right);
-            a = multiplier * innerA;
-            b = multiplier * innerB;
-        } else if (left.isSymbolNode && left.name === 'x') {
-            // Case: x*a (reversed)
-            a = right.value || 1;
-        } else if (left.isParenthesisNode || left.isOperatorNode) {
-            // Case: (x+b)*a - need to expand
-            const multiplier = right.value || (right.isConstantNode ? right.value : 1);
-            const [innerA, innerB] = getCoefficients(left.isParenthesisNode ? left.content : left);
-            a = multiplier * innerA;
-            b = multiplier * innerB;
-        }
-    } else if (node.isSymbolNode && node.name === 'x') {
-        a = 1;
-    } else if (node.isConstantNode) {
-        b = node.value;
-    } else if (node.isParenthesisNode) {
-        // Recursively process content inside parentheses
-        return getCoefficients(node.content);
-    } else if (node.isUnaryMinus) {
-        // Handle unary minus: -expr
-        const [innerA, innerB] = getCoefficients(node.args[0]);
-        a = -innerA;
-        b = -innerB;
-    } else {
-        // Fallback for more complex nodes if needed
-        try {
-            const evaluated = node.evaluate();
-            if (typeof evaluated === 'number') {
-                b = evaluated;
-            }
-        } catch (e) {
-            // ignore
-        }
+export function generateSimplifyEquationsData({ numOperations, includeBrackets, bracketDepth, coefficientRange, numberOfProblems }) {
+    if (isNaN(numOperations) || numOperations < 2 || numOperations > 6) {
+        throw new Error('Invalid number of operations.');
     }
-    return [a, b];
-}
+    if (isNaN(bracketDepth) || bracketDepth < 1 || bracketDepth > 3) {
+        throw new Error('Invalid bracket depth.');
+    }
+    if (isNaN(coefficientRange) || coefficientRange < 5 || coefficientRange > 50) {
+        throw new Error('Invalid coefficient range.');
+    }
+    if (isNaN(numberOfProblems) || numberOfProblems < 1 || numberOfProblems > 50) {
+        throw new Error('Invalid number of problems.');
+    }
 
-
-export function generateSimplifyEquationsData({ complexity, numberOfProblems }) {
     const problems = [];
     const controlSums = [];
 
@@ -122,7 +69,7 @@ export function generateSimplifyEquationsData({ complexity, numberOfProblems }) 
 
         // Try to generate a valid expression
         try {
-            expression = generateExpression(complexity);
+            expression = generateExpression({ numOperations, includeBrackets, bracketDepth, coefficientRange });
             simplified = math.simplify(expression);
             node = math.parse(simplified.toString());
 

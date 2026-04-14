@@ -121,7 +121,8 @@ const mockTranslations = {
     missing_middle: 'Middle',
     missing_bottom: 'Bottom',
     num_operations_label: 'Num Ops',
-    allow_negative_label: 'Allow Neg'
+    allow_negative_label: 'Allow Neg',
+    bracket_depth_label: 'Bracket Depth'
 };
 
 function testControls() {
@@ -130,7 +131,7 @@ function testControls() {
         { name: 'renderAdditionSubtractionControls', func: controls.renderAdditionSubtractionControls, expected: ['as-digits-num1', 'as-digits-num2'] },
         { name: 'renderMultiplicationDivisionControls', func: controls.renderMultiplicationDivisionControls, expected: ['md-digits-factor1', 'md-digits-factor2', 'md-digits-divisor', 'md-digits-quotient', 'md-no-remainder'] },
         { name: 'renderRationalCanonicalControls', func: controls.renderRationalCanonicalControls, expected: ['rc-max-val', 'rc-ensure-reducible'] },
-        { name: 'renderSimplifyEquationsControls', func: controls.renderSimplifyEquationsControls, expected: ['se-complexity'] },
+        { name: 'renderSimplifyEquationsControls', func: controls.renderSimplifyEquationsControls, expected: ['se-num-operations', 'se-include-brackets', 'se-bracket-depth', 'se-coefficient-range'] },
         { name: 'renderRationalOperationsControls', func: controls.renderRationalOperationsControls, expected: ['ro-num-terms', 'ro-max-val'] },
         { name: 'renderRationalMultDivControls', func: controls.renderRationalMultDivControls, expected: ['rmd-max-val', 'rmd-avoid-whole-nums'] },
         { name: 'renderProportionControls', func: controls.renderProportionControls, expected: ['prop-max-base', 'prop-max-multiplier', 'prop-simplify-ratios'] },

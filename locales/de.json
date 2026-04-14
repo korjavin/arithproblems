@@ -316,8 +316,11 @@
             "error_max_problems": "Maximal 20 Probleme für dieses Format. Bitte wählen Sie eine kleinere Zahl."
         },
         "simplify_equations": {
-            "complexity_label": "Komplexität:",
-            "description": "Vereinfachen Sie die algebraischen Ausdrücke. Das Endergebnis sollte in der Form ax + b sein. Die Kontrollsumme ist die Quersumme von |a| + |b|.",
+            "num_operations_label": "Anzahl der Operationen (2-6):",
+            "include_brackets_label": "Klammern einbeziehen",
+            "bracket_depth_label": "Max. Klammertiefe (1-3):",
+            "coefficient_range_label": "Koeffizientenbereich (Max.):",
+            "description": "Vereinfachen Sie algebraische Ausdrücke durch Zusammenfassen gleichartiger Terme. Konfigurieren Sie die Anzahl der Operationen, ob Klammern verwendet werden und den Koeffizientenbereich. Die Kontrollsumme ist die Quersumme von |a| + |b|.",
             "problems_title": "Gleichungen vereinfachen",
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Auf ax + b vereinfachen, dann die Quersumme von |a| + |b| finden.",
