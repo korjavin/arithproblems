@@ -39,6 +39,6 @@ for (let i = 0; i < N; i++) {
 const endNew = process.hrtime.bigint();
 const timeNewMs = Number(endNew - startNew) / 1000000;
 
-console.log(`Old digitalRoot: ${timeOldMs.toFixed(2)} ms`);
-console.log(`New digitalRoot: ${timeNewMs.toFixed(2)} ms`);
+console.log(`Old digitalRoot: ${timeOldMs.toFixed(2)} ms (sum=${sumOld})`);
+console.log(`New digitalRoot: ${timeNewMs.toFixed(2)} ms (sum=${sumNew})`);
 console.log(`Speedup: ${(timeOldMs / timeNewMs).toFixed(2)}x`);
