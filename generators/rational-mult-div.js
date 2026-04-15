@@ -1,6 +1,6 @@
 import { gcd, getRandomInt } from '../utils.js';
 
-function calculateControlSum(numerator, denominator) {
+export function calculateControlSum(numerator, denominator) {
     if (denominator === 0) return NaN;
     if (numerator === 0) return denominator;
     if (denominator === 1) return 1;
