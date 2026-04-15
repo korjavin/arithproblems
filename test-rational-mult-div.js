@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { generateRationalMultDivData } from './generators/rational-mult-div.js';
+import { generateRationalMultDivData, calculateControlSum } from './generators/rational-mult-div.js';
 import { gcd } from './utils.js';
 
 function testProblemGeneration() {
@@ -52,10 +52,24 @@ function testInputValidation() {
     console.log('All input validation tests passed!');
 }
 
+function testControlSumCalculation() {
+    console.log('Testing calculateControlSum...');
+    assert.ok(Number.isNaN(calculateControlSum(1, 0)), 'Test Case C1 Failed: Should return NaN when denominator is 0');
+    assert.ok(Number.isNaN(calculateControlSum(0, 0)), 'Test Case C2 Failed: Should return NaN when denominator is 0');
+    assert.strictEqual(calculateControlSum(0, 5), 5, 'Test Case C3 Failed: Should return denominator when numerator is 0');
+    assert.strictEqual(calculateControlSum(5, 1), 1, 'Test Case C4 Failed: Should return 1 when denominator is 1');
+    assert.strictEqual(calculateControlSum(3, 5), 8, 'Test Case C5 Failed: Should return |num| + den when |num| < den');
+    assert.strictEqual(calculateControlSum(-3, 5), 8, 'Test Case C6 Failed: Should return |num| + den when |num| < den');
+    assert.strictEqual(calculateControlSum(7, 5), 7, 'Test Case C7 Failed: Should return (|num| % den) + den when |num| >= den');
+    assert.strictEqual(calculateControlSum(-7, 5), 7, 'Test Case C8 Failed: Should return (|num| % den) + den when |num| >= den');
+    console.log('All control sum tests passed!');
+}
+
 try {
     testProblemGeneration();
     testAvoidWholeNums();
     testInputValidation();
+    testControlSumCalculation();
     console.log('All rational multiplication/division tests passed!');
 } catch (error) {
     console.error(error.message);
