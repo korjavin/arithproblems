@@ -1,7 +1,33 @@
 import { digitalRoot, getRandomInt } from '../utils.js';
-import { create, all } from 'mathjs';
 
-const math = create(all);
+// Safely evaluates an arithmetic expression given numbers and operators
+function evaluateExpression(numbers, ops) {
+    let currentNums = [...numbers];
+    let currentOps = [...ops];
+
+    for (let k = 0; k < currentOps.length; k++) {
+        if (currentOps[k] === '*' || currentOps[k] === '/') {
+            const a = currentNums[k];
+            const b = currentNums[k + 1];
+            const res = currentOps[k] === '*' ? a * b : a / b;
+
+            currentNums.splice(k, 2, res);
+            currentOps.splice(k, 1);
+            k--;
+        }
+    }
+
+    let result = currentNums[0];
+    for (let k = 0; k < currentOps.length; k++) {
+        const b = currentNums[k + 1];
+        if (currentOps[k] === '+') {
+            result += b;
+        } else if (currentOps[k] === '-') {
+            result -= b;
+        }
+    }
+    return result;
+}
 
 // Function to find factors of a number
 function getFactors(num) {
@@ -134,15 +160,9 @@ export function generateMixedOperationsData({ numOperations, coefficientMax, all
         }
 
         // Evaluate for validation
-        // Prepare string for mathjs (needs standard operators)
-        let evalStr = numbers[0].toString();
-        for (let k = 0; k < ops.length; k++) {
-            evalStr += ` ${ops[k]} ${numbers[k + 1]}`;
-        }
-
         let result;
         try {
-            result = math.evaluate(evalStr);
+            result = evaluateExpression(numbers, ops);
         } catch (e) {
             continue; // Should not happen with our construction but safe to skip
         }
