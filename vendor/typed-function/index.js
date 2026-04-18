@@ -1010,32 +1010,44 @@ function create() {
    * @return {function} Returns a wrapped function
    */
   function compileArgsPreprocessing(params, fn) {
-    let fnConvert = fn;
+    let fnPreprocess = fn;
 
-    // TODO: can we make this wrapper function smarter/simpler?
+    const hasConversions = params.some(p => p.hasConversion);
+    const restParam = hasRestParam(params);
 
-    if (params.some(p => p.hasConversion)) {
-      const restParam = hasRestParam(params);
+    if (hasConversions) {
       const compiledConversions = params.map(compileArgConversion);
-      fnConvert = function convertArgs() {
-        const args = [];
-        const last = restParam ? arguments.length - 1 : arguments.length;
-        for (let i = 0; i < last; i++) {
-          args[i] = compiledConversions[i](arguments[i]);
-        }
-        if (restParam) {
-          args[last] = arguments[last].map(compiledConversions[last]);
-        }
-        return fn.apply(this, args);
-      };
-    }
-    let fnPreprocess = fnConvert;
-    if (hasRestParam(params)) {
+      const offset = params.length - 1;
+
+      if (restParam) {
+        fnPreprocess = function preprocessArgs() {
+          const args = [];
+          for (let i = 0; i < offset; i++) {
+            args[i] = compiledConversions[i](arguments[i]);
+          }
+          const rest = [];
+          for (let i = offset; i < arguments.length; i++) {
+            rest.push(compiledConversions[offset](arguments[i]));
+          }
+          args.push(rest);
+          return fn.apply(this, args);
+        };
+      } else {
+        fnPreprocess = function preprocessArgs() {
+          const args = [];
+          for (let i = 0; i < arguments.length; i++) {
+            args[i] = compiledConversions[i](arguments[i]);
+          }
+          return fn.apply(this, args);
+        };
+      }
+    } else if (restParam) {
       const offset = params.length - 1;
       fnPreprocess = function preprocessRestParams() {
-        return fnConvert.apply(this, slice(arguments, 0, offset).concat([slice(arguments, offset)]));
+        return fn.apply(this, slice(arguments, 0, offset).concat([slice(arguments, offset)]));
       };
     }
+
     return fnPreprocess;
   }
 
