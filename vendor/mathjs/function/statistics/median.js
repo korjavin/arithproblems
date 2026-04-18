@@ -3,14 +3,15 @@ import { flatten } from '../../utils/array.js';
 import { factory } from '../../utils/factory.js';
 import { improveErrorMessage } from './utils/improveErrorMessage.js';
 var name = 'median';
-var dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect'];
+var dependencies = ['typed', 'add', 'divide', 'compare', 'partitionSelect', 'mapSlices'];
 export var createMedian = /* #__PURE__ */factory(name, dependencies, _ref => {
   var {
     typed,
     add,
     divide,
     compare,
-    partitionSelect
+    partitionSelect,
+    mapSlices
   } = _ref;
   /**
    * Recursively calculate the median of an n-dimensional array
@@ -93,9 +94,11 @@ export var createMedian = /* #__PURE__ */factory(name, dependencies, _ref => {
     'Array | Matrix': _median,
     // median([a, b, c, d, ...], dim)
     'Array | Matrix, number | BigNumber': function Array__Matrix_number__BigNumber(array, dim) {
-      // TODO: implement median(A, dim)
-      throw new Error('median(A, dim) is not yet supported');
-      // return reduce(arguments[0], arguments[1], ...)
+      try {
+        return mapSlices(array, dim, _median);
+      } catch (err) {
+        throw improveErrorMessage(err, 'median');
+      }
     },
     // median(a, b, c, d, ...)
     '...': function _(args) {

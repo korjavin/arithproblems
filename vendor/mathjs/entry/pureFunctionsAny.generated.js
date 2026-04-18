@@ -1700,6 +1700,7 @@ export var median = /* #__PURE__ */createMedian({
   add,
   compare,
   divide,
+  mapSlices,
   partitionSelect,
   typed
 });
