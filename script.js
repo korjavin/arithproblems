@@ -211,10 +211,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         const numberOfProblems = parseInt(DOM.numProblemsInput.value, 10);
         try {
             const { problems, answerRoots } = generateAdditionSubtractionData({ digits1, digits2, numberOfProblems });
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid">${problems.map(p => `<div class="arith-problem"><div class="operand-1">${p.num1}</div><div class="operator-operand2"><span class="operator">${p.operator}</span><span class="operand-2">${p.num2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`).join('')}</div>`;
-            if (answerRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
+
+            let problemsHtml = `<h3>${t.problems_title}</h3><div class="arithmetic-grid">`;
+            for (let i = 0; i < problems.length; i++) {
+                const p = problems[i];
+                problemsHtml += `<div class="arith-problem"><div class="operand-1">${p.num1}</div><div class="operator-operand2"><span class="operator">${p.operator}</span><span class="operand-2">${p.num2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>`;
             }
+            problemsHtml += `</div>`;
+
+            if (answerRoots.length > 0) {
+                let rootsHtml = `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><div class="digital-root-check-grid">`;
+                for (let i = 0; i < answerRoots.length; i++) {
+                    rootsHtml += `<div class="dr-cell">${answerRoots[i].root}</div>`;
+                }
+                rootsHtml += `</div></div>`;
+                problemsHtml += rootsHtml;
+            }
+            DOM.problemsContainer.innerHTML = problemsHtml;
         } catch (error) {
             showError(t.error_invalid_digits || error.message);
         }

@@ -20,5 +20,8 @@
   "homepage": "https://github.com/korjavin/arithproblems#readme",
   "dependencies": {
     "mathjs": "^15.0.0"
+  },
+  "devDependencies": {
+    "jsdom": "^29.0.2"
   }
 }
