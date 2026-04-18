@@ -295,8 +295,11 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
 
         // Generate solution vector
         const solution = [];
+        let solutionSum = 0;
         for (let i = 0; i < variableCount; i++) {
-            solution.push(getRandomSolution(solutionRange, allowNegativeSolutions));
+            const val = getRandomSolution(solutionRange, allowNegativeSolutions);
+            solution.push(val);
+            solutionSum += Math.abs(val);
         }
 
         // Generate coefficient matrix
@@ -370,6 +373,7 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
         return {
             equations,
             solution: Object.fromEntries(variables.map((variable, i) => [variable, solution[i]])),
+            solutionSum,
             type: systemType
         };
 
@@ -378,14 +382,16 @@ function generateSystemOfEquations(variableCount, variables, systemType, coeffic
     // Fallback system
     const equations = [];
     const solution = {};
+    let solutionSum = 0;
     for (let i = 0; i < variableCount; i++) {
         solution[variables[i]] = 1;
+        solutionSum += 1;
         const coeffs = new Array(variableCount).fill(0);
         coeffs[i] = 1;
         equations.push(formatEquation(coeffs, 1, variables, includeBrackets));
     }
 
-    return { equations, solution, type: 'fallback' };
+    return { equations, solution, solutionSum, type: 'fallback' };
 }
 
 export function generateLinearEquationsNVarsData({
@@ -433,7 +439,7 @@ export function generateLinearEquationsNVarsData({
                 variableCount, variables, systemType, coefficientRange, solutionRange, allowNegativeSolutions, integerSolutionsOnly, includeBrackets
             );
             // Sum of absolute values of all variables
-            solutionSum = Object.values(problemData.solution).reduce((sum, val) => sum + Math.abs(val), 0);
+            solutionSum = problemData.solutionSum;
         }
 
         problems.push(problemData);
