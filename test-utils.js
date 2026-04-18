@@ -79,6 +79,13 @@ function testGetRandomNumberByDigits() {
         const val = getRandomNumberByDigits(3);
         assert(val >= 100 && val <= 999, `getRandomNumberByDigits(3) returned ${val}`);
     }
+
+    // Edge cases
+    assert.strictEqual(getRandomNumberByDigits(-1, true), 1, 'getRandomNumberByDigits(-1, true) should be 1');
+    assert.strictEqual(getRandomNumberByDigits(-1, false), 0, 'getRandomNumberByDigits(-1, false) should be 0');
+    assert.strictEqual(getRandomNumberByDigits(0, true), 1, 'getRandomNumberByDigits(0, true) should be 1');
+    assert.strictEqual(getRandomNumberByDigits(0, false), 0, 'getRandomNumberByDigits(0, false) should be 0');
+
     console.log('All getRandomNumberByDigits tests passed!');
 }
 
