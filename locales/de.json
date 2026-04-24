@@ -1,6 +1,9 @@
 {
     "title": "Mathe-Arbeitsblatt-Generator",
     "header_h1": "Mathe-Arbeitsblatt-Generator",
+    "tagline": "Druckbare Aufgaben · mit Selbstkontrolle",
+    "proverb_en": "Übung macht den Meister",
+    "empty_hint": "Wähle ein Thema, passe die Einstellungen an und drücke „Erstellen“.",
     "topic_selection_h2": "Thema auswählen",
     "multiplication_table_h3": "Multiplikationstabelle",
     "multiplication_table_p": "Vorausgefüllte Multiplikationstabellen zum Üben",

@@ -1,6 +1,9 @@
 {
     "title": "Math Worksheet Generator",
     "header_h1": "Math Worksheet Generator",
+    "tagline": "Printable practice · self-check built in",
+    "proverb_en": "Practice makes perfect",
+    "empty_hint": "Pick a topic, adjust the controls, then press Generate to create a worksheet.",
     "topic_selection_h2": "Select Topic",
     "multiplication_table_h3": "Multiplication Table",
     "multiplication_table_p": "Pre-filled multiplication charts for practice",

@@ -7,6 +7,8 @@
     <title data-translate-key="title">Math Worksheet Generator</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="design-system/colors_and_type.css" />
+    <link rel="stylesheet" href="styles/skin.css" />
     <script type="importmap">
         {
             "imports": {
@@ -31,8 +33,14 @@
 
 <body>
     <header>
-        <h1 data-translate-key="header_h1">Math Worksheet Generator</h1>
-        <div id="language-switcher">
+        <div class="header-brand">
+            <div class="brand-mark" aria-hidden="true">∑</div>
+            <div>
+                <h1 data-translate-key="header_h1">Math Worksheet Generator</h1>
+                <div class="tagline" data-translate-key="tagline">Printable practice · self-check built in</div>
+            </div>
+        </div>
+        <div id="language-switcher" role="tablist">
             <span class="language-flag" data-lang="en" title="English">🇬🇧</span>
             <span class="language-flag" data-lang="de" title="Deutsch">🇩🇪</span>
             <span class="language-flag" data-lang="ru" title="Русский">🇷🇺</span>
@@ -153,7 +161,11 @@
 
         <main>
 
-            <section id="controls-panel" class="controls">
+            <section id="controls-panel" class="controls panel">
+                <div class="panel-title">
+                    <span data-translate-key="controls_panel_h2">Controls</span>
+                    <span class="topic-badge" id="topic-badge"></span>
+                </div>
                 <h2 data-translate-key="controls_panel_h2">Controls</h2>
                 <!-- Topic-specific controls will be populated here by JavaScript -->
                 <div id="common-controls">
@@ -165,18 +177,24 @@
             </section>
 
             <section id="actions-panel">
-                <button id="generate-button" class="button" data-translate-key="generate_button">
-                    Generate Worksheet
+                <button id="generate-button" class="button button-primary">
+                    <span data-translate-key="generate_button">Generate Worksheet</span>
+                    <span class="hotkey" aria-hidden="true">G</span>
                 </button>
-                <button id="print-button" class="button" data-translate-key="print_button">
-                    Print Worksheet
+                <button id="print-button" class="button button-secondary">
+                    <span data-translate-key="print_button">Print Worksheet</span>
+                    <span class="hotkey" aria-hidden="true">⌘P</span>
                 </button>
             </section>
 
-            <section id="output-area" class="problems">
+            <section id="output-area" class="problems panel">
                 <h2 data-translate-key="output_area_h2">Generated Problems</h2>
                 <div id="problems-container">
-                    <!-- Problems will be inserted here -->
+                    <div class="problems-empty">
+                        <div class="proverb">Übung macht den Meister</div>
+                        <div class="proverb-en" data-translate-key="proverb_en">Practice makes perfect</div>
+                        <div class="hint-text" data-translate-key="empty_hint">Pick a topic, adjust the controls, then press Generate to create a worksheet.</div>
+                    </div>
                 </div>
             </section>
         </main>

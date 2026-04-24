@@ -29,9 +29,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         printButton: document.getElementById("print-button"),
         problemsContainer: document.getElementById("problems-container"),
         languageSwitcher: document.getElementById("language-switcher"),
+        topicBadge: document.getElementById("topic-badge"),
     };
 
     let currentTopic = "addition-subtraction";
+
+    function syncTopicBadge() {
+        if (!DOM.topicBadge) return;
+        const selected = document.querySelector(`.topic-item[data-topic="${currentTopic}"] [data-translate-key]`);
+        DOM.topicBadge.textContent = selected ? selected.textContent : "";
+    }
+
+    function syncLanguageFlag(lang) {
+        if (!DOM.languageSwitcher) return;
+        DOM.languageSwitcher.querySelectorAll(".language-flag").forEach(f => {
+            f.classList.toggle("active", f.dataset.lang === lang);
+        });
+    }
 
     function showError(message) {
         DOM.problemsContainer.textContent = '';
@@ -102,6 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         event.currentTarget.classList.add("selected");
         DOM.problemsContainer.innerHTML = "";
         renderCurrentTopicControls();
+        syncTopicBadge();
 
         // Save selected topic to localStorage
         localStorage.setItem('selectedTopic', currentTopic);
@@ -695,7 +710,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.languageSwitcher.addEventListener('click', (e) => {
             const lang = e.target.dataset.lang;
             if (lang) {
-                i18n.setLanguage(lang, renderCurrentTopicControls);
+                syncLanguageFlag(lang);
+                i18n.setLanguage(lang, (tr) => {
+                    renderCurrentTopicControls(tr);
+                    syncTopicBadge();
+                });
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.matches('input, select, textarea')) return;
+            if (e.key === 'g' || e.key === 'G') {
+                e.preventDefault();
+                DOM.generateButton.click();
             }
         });
 
@@ -704,7 +731,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         restoreSelectedTopic();
 
         // Initialize language and controls
-        await i18n.setLanguage(i18n.getInitialLang(), renderCurrentTopicControls);
+        const initialLang = i18n.getInitialLang();
+        syncLanguageFlag(initialLang);
+        await i18n.setLanguage(initialLang, (tr) => {
+            renderCurrentTopicControls(tr);
+            syncTopicBadge();
+        });
     }
 
     initialize();
