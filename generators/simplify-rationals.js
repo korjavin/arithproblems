@@ -1,281 +1,201 @@
-import { gcd, digitalRoot, getRandomInt } from '../utils.js';
+import { digitalRoot, getRandomInt } from '../utils.js';
+
+const FORM_MONOMIAL = 'monomial';
+const FORM_BINOMIAL = 'binomial';
+const FORM_QUADRATIC = 'quadratic';
 
 /**
- * Generate problems for simplifying rational expressions
- * @param {Object} params - Generation parameters
- * @param {number} params.complexity - Complexity level (1-5)
- * @param {number} params.numberOfProblems - Number of problems to generate
- * @returns {Object} - { problems: Array, controlSums: Array }
+ * Generate problems for simplifying rational expressions.
+ *
+ * @param {Object} params
+ * @param {boolean} [params.includeMonomials]   include fractions like 6x/9x or 12xy/8x
+ * @param {boolean} [params.includeBinomials]   include fractions like (6x+12)/(3x+6)
+ * @param {boolean} [params.includeQuadratics]  include difference of squares / factorable trinomials
+ * @param {number}  [params.coefficientRange]   max coefficient appearing in the unsimplified problem (5..50)
+ * @param {number}  params.numberOfProblems
+ * @returns {{ problems: Array, controlSums: Array }}
  */
-export function generateSimplifyRationalsData({ complexity, numberOfProblems }) {
-    if (!complexity || complexity < 1 || complexity > 5) {
-        throw new Error('Complexity must be between 1 and 5');
-    }
+export function generateSimplifyRationalsData({
+    includeMonomials = true,
+    includeBinomials = true,
+    includeQuadratics = false,
+    coefficientRange = 10,
+    numberOfProblems,
+}) {
     if (!numberOfProblems || numberOfProblems < 1) {
         throw new Error('Number of problems must be at least 1');
+    }
+    if (isNaN(coefficientRange) || coefficientRange < 5 || coefficientRange > 50) {
+        throw new Error('Coefficient range must be between 5 and 50');
+    }
+
+    const enabledForms = [];
+    if (includeMonomials) enabledForms.push(FORM_MONOMIAL);
+    if (includeBinomials) enabledForms.push(FORM_BINOMIAL);
+    if (includeQuadratics) enabledForms.push(FORM_QUADRATIC);
+
+    if (enabledForms.length === 0) {
+        throw new Error('At least one problem form must be enabled');
     }
 
     const problems = [];
     const controlSums = [];
 
     for (let i = 0; i < numberOfProblems; i++) {
-        let problem;
-        let controlSum;
+        const form = enabledForms[getRandomInt(0, enabledForms.length - 1)];
+        let result;
 
-        switch (complexity) {
-            case 1:
-                // Simple numeric coefficients: ax/bx = a/b
-                ({ problem, controlSum } = generateLevel1());
-                break;
-            case 2:
-                // Numeric with multiple variables: axy/bx = ay/b
-                ({ problem, controlSum } = generateLevel2());
-                break;
-            case 3:
-                // Common factor in numerator and denominator: (ax + ay)/(bx + by)
-                ({ problem, controlSum } = generateLevel3());
-                break;
-            case 4:
-                // Difference of squares or simple trinomials
-                ({ problem, controlSum } = generateLevel4());
-                break;
-            case 5:
-                // More complex expressions with multiple factors
-                ({ problem, controlSum } = generateLevel5());
-                break;
-            default:
-                throw new Error('Invalid complexity level');
+        if (form === FORM_MONOMIAL) {
+            result = getRandomInt(0, 1) === 0
+                ? generateMonomial(coefficientRange)
+                : generateMonomialWithVariables(coefficientRange);
+        } else if (form === FORM_BINOMIAL) {
+            result = generateBinomial(coefficientRange);
+        } else {
+            result = getRandomInt(0, 1) === 0
+                ? generateQuadraticSimple(coefficientRange)
+                : generateQuadraticComplex(coefficientRange);
         }
 
-        problems.push(problem);
-        controlSums.push({ controlSum });
+        problems.push(result.problem);
+        controlSums.push({ controlSum: result.controlSum });
     }
 
     return { problems, controlSums };
 }
 
-/**
- * Level 1: Simple numeric coefficients
- * Example: 6x/9x = 2/3
- */
-function generateLevel1() {
-    const numeratorCoeff = getRandomInt(2, 20);
-    const denominatorCoeff = getRandomInt(2, 20);
-    const commonFactor = getRandomInt(2, 5);
+// Monomial: ax / bx → a/b
+function generateMonomial(maxCoeff) {
+    const maxSimplified = Math.max(2, Math.floor(maxCoeff / 2));
+    const simpNum = getRandomInt(2, maxSimplified);
+    const simpDen = getRandomInt(2, maxSimplified);
+    const maxCF = Math.max(2, Math.floor(maxCoeff / Math.max(simpNum, simpDen)));
+    const commonFactor = getRandomInt(2, Math.min(5, maxCF));
 
-    const num = numeratorCoeff * commonFactor;
-    const den = denominatorCoeff * commonFactor;
-
-    // Simplified form
-    const simplifiedNum = numeratorCoeff;
-    const simplifiedDen = denominatorCoeff;
-
-    const numerator = `${num}x`;
-    const denominator = `${den}x`;
-    const controlSum = digitalRoot(simplifiedNum + simplifiedDen);
+    const num = simpNum * commonFactor;
+    const den = simpDen * commonFactor;
 
     return {
-        problem: { numerator, denominator },
-        controlSum
+        problem: { numerator: `${num}x`, denominator: `${den}x` },
+        controlSum: digitalRoot(simpNum + simpDen),
     };
 }
 
-/**
- * Level 2: Multiple variables with numeric coefficients
- * Example: 12xy/8x = 3y/2
- */
-function generateLevel2() {
-    const numeratorCoeff = getRandomInt(2, 15);
-    const denominatorCoeff = getRandomInt(2, 15);
-    const commonFactor = getRandomInt(2, 4);
+// Monomial with multiple variables: a·xy / b·x → (a/b)·y
+function generateMonomialWithVariables(maxCoeff) {
+    const maxSimplified = Math.max(2, Math.floor(maxCoeff / 2));
+    const simpNum = getRandomInt(2, maxSimplified);
+    const simpDen = getRandomInt(2, maxSimplified);
+    const maxCF = Math.max(2, Math.floor(maxCoeff / Math.max(simpNum, simpDen)));
+    const commonFactor = getRandomInt(2, Math.min(4, maxCF));
 
-    const num = numeratorCoeff * commonFactor;
-    const den = denominatorCoeff * commonFactor;
+    const num = simpNum * commonFactor;
+    const den = simpDen * commonFactor;
 
-    const variables = ['xy', 'x', 'xy²', 'x²y'];
-    const numeratorVar = variables[getRandomInt(0, 1)]; // xy or x
-    const hasCommonVar = getRandomInt(0, 1) === 0;
-
-    let denominatorVar;
-    let simplifiedNumVar;
-
-    if (numeratorVar === 'xy' && hasCommonVar) {
-        denominatorVar = getRandomInt(0, 1) === 0 ? 'x' : 'y';
-        simplifiedNumVar = denominatorVar === 'x' ? 'y' : 'x';
-    } else {
-        denominatorVar = 'x';
-        simplifiedNumVar = numeratorVar === 'xy' ? 'y' : '';
-    }
-
-    const numerator = `${num}${numeratorVar}`;
-    const denominator = `${den}${denominatorVar}`;
-
-    // Simplified form coefficients
-    const simplifiedNum = numeratorCoeff;
-    const simplifiedDen = denominatorCoeff;
-
-    const controlSum = digitalRoot(simplifiedNum + simplifiedDen);
+    const denVar = getRandomInt(0, 1) === 0 ? 'x' : 'y';
 
     return {
-        problem: { numerator, denominator },
-        controlSum
+        problem: { numerator: `${num}xy`, denominator: `${den}${denVar}` },
+        controlSum: digitalRoot(simpNum + simpDen),
     };
 }
 
-/**
- * Level 3: Common factor in binomials
- * Example: (6x + 12)/(3x + 6) = 2
- */
-function generateLevel3() {
-    const a = getRandomInt(2, 8);
-    const b = getRandomInt(2, 8);
-    const commonFactor = getRandomInt(2, 5);
+// Binomial with common factor: (cf·a·x + cf·b) / (a·x + b) → cf
+//                              or (cf·c1·x + cf·c2) / (c1·x + c2) → cf (same shape, separate branch keeps variety)
+function generateBinomial(maxCoeff) {
+    const variant = getRandomInt(0, 1);
 
-    const num1 = a * commonFactor;
-    const num2 = b * commonFactor;
-    const den1 = a;
-    const den2 = b;
-
-    const useX = getRandomInt(1, 100) > 30;
-    const xTerm = useX ? 'x' : '';
-
-    // For variety, sometimes make it a simple ratio
-    if (getRandomInt(0, 1) === 0) {
-        const numerator = `${num1}${xTerm} + ${num2}`;
-        const denominator = `${den1}${xTerm} + ${den2}`;
-        const controlSum = digitalRoot(commonFactor); // Simplifies to commonFactor
+    if (variant === 0) {
+        const maxAB = Math.max(2, Math.floor(maxCoeff / 2));
+        const a = getRandomInt(2, Math.min(6, maxAB));
+        const b = getRandomInt(2, Math.min(6, maxAB));
+        const maxCF = Math.max(2, Math.floor(maxCoeff / Math.max(a, b)));
+        const cf = getRandomInt(2, Math.min(5, maxCF));
 
         return {
-            problem: { numerator, denominator },
-            controlSum
-        };
-    } else {
-        // (ax + b)/(cx + d) where we can factor out from numerator
-        const factorNum = getRandomInt(2, 4);
-        const coeff1 = getRandomInt(2, 6);
-        const coeff2 = getRandomInt(2, 6);
-
-        const numerator = `${factorNum * coeff1}x + ${factorNum * coeff2}`;
-        const denominator = `${coeff1}x + ${coeff2}`;
-        const controlSum = digitalRoot(factorNum); // Simplifies to factorNum
-
-        return {
-            problem: { numerator, denominator },
-            controlSum
+            problem: { numerator: `${a * cf}x + ${b * cf}`, denominator: `${a}x + ${b}` },
+            controlSum: digitalRoot(cf),
         };
     }
+
+    const maxFactor = Math.max(2, Math.floor(maxCoeff / 2));
+    const factorNum = getRandomInt(2, Math.min(4, maxFactor));
+    const maxCoeffs = Math.max(2, Math.floor(maxCoeff / factorNum));
+    const coeff1 = getRandomInt(2, Math.min(6, maxCoeffs));
+    const coeff2 = getRandomInt(2, Math.min(6, maxCoeffs));
+
+    return {
+        problem: {
+            numerator: `${factorNum * coeff1}x + ${factorNum * coeff2}`,
+            denominator: `${coeff1}x + ${coeff2}`,
+        },
+        controlSum: digitalRoot(factorNum),
+    };
 }
 
-/**
- * Level 4: Difference of squares or factored expressions
- * Example: (x² - 4)/(x + 2) = x - 2
- */
-function generateLevel4() {
+// Difference of squares or simple factorable trinomial.
+function generateQuadraticSimple(maxCoeff) {
+    const maxSqrt = Math.max(2, Math.floor(Math.sqrt(maxCoeff)));
     const type = getRandomInt(0, 2);
 
     if (type === 0) {
-        // Difference of squares: (x² - a²)/(x + a) = x - a
-        const a = getRandomInt(2, 6);
-        const numerator = `x² - ${a * a}`;
-        const denominator = `x + ${a}`;
-
-        // Simplifies to x - a, control sum based on coefficient of x (1) and constant (-a)
-        const controlSum = digitalRoot(1 + a);
-
+        const a = getRandomInt(2, Math.min(6, maxSqrt));
         return {
-            problem: { numerator, denominator },
-            controlSum
-        };
-    } else if (type === 1) {
-        // Difference of squares: (x² - a²)/(x - a) = x + a
-        const a = getRandomInt(2, 6);
-        const numerator = `x² - ${a * a}`;
-        const denominator = `x - ${a}`;
-
-        // Simplifies to x + a
-        const controlSum = digitalRoot(1 + a);
-
-        return {
-            problem: { numerator, denominator },
-            controlSum
-        };
-    } else {
-        // Factored trinomial: (x² + bx + c)/(x + d) where d divides the trinomial
-        const d = getRandomInt(2, 5);
-        const e = getRandomInt(2, 5);
-        const b = d + e;
-        const c = d * e;
-
-        const numerator = `x² + ${b}x + ${c}`;
-        const denominator = `x + ${d}`;
-
-        // Simplifies to x + e
-        const controlSum = digitalRoot(1 + e);
-
-        return {
-            problem: { numerator, denominator },
-            controlSum
+            problem: { numerator: `x² - ${a * a}`, denominator: `x + ${a}` },
+            controlSum: digitalRoot(1 + a),
         };
     }
+    if (type === 1) {
+        const a = getRandomInt(2, Math.min(6, maxSqrt));
+        return {
+            problem: { numerator: `x² - ${a * a}`, denominator: `x - ${a}` },
+            controlSum: digitalRoot(1 + a),
+        };
+    }
+
+    // (x² + (d+e)x + d·e) / (x + d) → x + e
+    const d = getRandomInt(2, Math.min(5, maxSqrt));
+    const e = getRandomInt(2, Math.min(5, maxSqrt));
+    return {
+        problem: { numerator: `x² + ${d + e}x + ${d * e}`, denominator: `x + ${d}` },
+        controlSum: digitalRoot(1 + e),
+    };
 }
 
-/**
- * Level 5: More complex expressions
- * Example: (2x² + 8x)/(x² - 16) = 2x/(x - 4)
- */
-function generateLevel5() {
+// More complex quadratic simplifications.
+function generateQuadraticComplex(maxCoeff) {
+    const maxSqrt = Math.max(2, Math.floor(Math.sqrt(maxCoeff)));
     const type = getRandomInt(0, 2);
 
     if (type === 0) {
-        // (ax² + bax)/(x² - a²) = ax/(x - a)
-        const a = getRandomInt(2, 5);
-        const coeff = getRandomInt(2, 4);
-
-        const numerator = `${coeff}x² + ${coeff * a}x`;
-        const denominator = `x² - ${a * a}`;
-
-        // Simplifies to (coeff·x)/(x - a), control sum from coeff + a
-        const controlSum = digitalRoot(coeff + a);
-
+        // (coeff·x² + coeff·a·x) / (x² - a²) → coeff·x / (x - a)
+        const a = getRandomInt(2, Math.min(5, maxSqrt));
+        const maxCoeffVar = Math.max(2, Math.floor(maxCoeff / Math.max(a, 1)));
+        const coeff = getRandomInt(2, Math.min(4, maxCoeffVar));
         return {
-            problem: { numerator, denominator },
-            controlSum
-        };
-    } else if (type === 1) {
-        // (x² - bx)/(x² - b²) = x/(x + b)
-        const b = getRandomInt(2, 6);
-
-        const numerator = `x² - ${b}x`;
-        const denominator = `x² - ${b * b}`;
-
-        // Simplifies to x/(x + b), control sum from 1 + b
-        const controlSum = digitalRoot(1 + b);
-
-        return {
-            problem: { numerator, denominator },
-            controlSum
-        };
-    } else {
-        // (ax² + 2abx + ab²)/(ax + ab) = (x + b)
-        const a = getRandomInt(2, 4);
-        const b = getRandomInt(2, 5);
-
-        const c1 = a;
-        const c2 = 2 * a * b;
-        const c3 = a * b * b;
-        const d1 = a;
-        const d2 = a * b;
-
-        const numerator = `${c1}x² + ${c2}x + ${c3}`;
-        const denominator = `${d1}x + ${d2}`;
-
-        // Simplifies to x + b
-        const controlSum = digitalRoot(1 + b);
-
-        return {
-            problem: { numerator, denominator },
-            controlSum
+            problem: { numerator: `${coeff}x² + ${coeff * a}x`, denominator: `x² - ${a * a}` },
+            controlSum: digitalRoot(coeff + a),
         };
     }
-}
+    if (type === 1) {
+        // (x² - b·x) / (x² - b²) → x / (x + b)
+        const b = getRandomInt(2, Math.min(6, maxSqrt));
+        return {
+            problem: { numerator: `x² - ${b}x`, denominator: `x² - ${b * b}` },
+            controlSum: digitalRoot(1 + b),
+        };
+    }
 
+    // (a·x² + 2·a·b·x + a·b²) / (a·x + a·b) → x + b
+    const maxA = Math.max(2, Math.floor(maxCoeff / 4));
+    const a = getRandomInt(2, Math.min(4, maxA));
+    const maxB = Math.max(2, Math.floor(Math.sqrt(maxCoeff / a)));
+    const b = getRandomInt(2, Math.min(5, maxB));
+    return {
+        problem: {
+            numerator: `${a}x² + ${2 * a * b}x + ${a * b * b}`,
+            denominator: `${a}x + ${a * b}`,
+        },
+        controlSum: digitalRoot(1 + b),
+    };
+}

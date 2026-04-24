@@ -330,8 +330,11 @@
             "error_message": "Fehler beim Erstellen der Vereinfachungsaufgaben."
         },
         "simplify_rationals": {
-            "complexity_label": "Komplexität:",
-            "description": "Vereinfachen Sie rationale Ausdrücke durch Kürzen gemeinsamer Faktoren. Die Komplexität reicht von einfachen numerischen Brüchen (Stufe 1) bis zu komplexen algebraischen Ausdrücken (Stufe 5).",
+            "include_monomials_label": "Monome einbeziehen (z. B. 6x / 9x)",
+            "include_binomials_label": "Binome einbeziehen (z. B. (6x + 12) / (3x + 6))",
+            "include_quadratics_label": "Quadratische Terme einbeziehen (z. B. (x² − 4) / (x + 2))",
+            "coefficient_range_label": "Koeffizientenbereich (Max.):",
+            "description": "Vereinfachen Sie rationale Ausdrücke durch Kürzen gemeinsamer Faktoren. Wählen Sie, welche Aufgabenformen enthalten sein sollen, und legen Sie den maximalen Koeffizienten im ungekürzten Bruch fest. Die Kontrollsumme ist die Quersumme der gekürzten Zähler- und Nennerkoeffizienten.",
             "problems_title": "Bruchterme vereinfachen",
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",

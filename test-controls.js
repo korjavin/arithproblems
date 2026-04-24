@@ -143,7 +143,7 @@ function testControls() {
         { name: 'renderWordProblemsControls', func: controls.renderWordProblemsControls, expected: ['wp-problem-category', 'wp-difficulty-level'] },
         { name: 'renderHouseProblemsControls', func: controls.renderHouseProblemsControls, expected: ['hp-range'] },
         { name: 'renderPyramidProblemsControls', func: controls.renderPyramidProblemsControls, expected: ['pp-size', 'pp-range', 'pp-missing'] },
-        { name: 'renderSimplifyRationalsControls', func: controls.renderSimplifyRationalsControls, expected: ['sr-complexity'] },
+        { name: 'renderSimplifyRationalsControls', func: controls.renderSimplifyRationalsControls, expected: ['sr-include-monomials', 'sr-include-binomials', 'sr-include-quadratics', 'sr-coefficient-range'] },
         { name: 'renderMixedOperationsControls', func: controls.renderMixedOperationsControls, expected: ['mo-num-operations', 'mo-coefficient-range', 'mo-allow-negative'] }
     ];
 

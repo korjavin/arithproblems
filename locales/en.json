@@ -404,8 +404,11 @@
             "error_message": "Error generating simplification problems."
         },
         "simplify_rationals": {
-            "complexity_label": "Complexity:",
-            "description": "Simplify rational expressions by canceling common factors. Complexity ranges from simple numeric fractions (level 1) to complex algebraic expressions (level 5).",
+            "include_monomials_label": "Include Monomials (e.g., 6x / 9x)",
+            "include_binomials_label": "Include Binomials (e.g., (6x + 12) / (3x + 6))",
+            "include_quadratics_label": "Include Quadratics (e.g., (x² − 4) / (x + 2))",
+            "coefficient_range_label": "Coefficient Range (Max):",
+            "description": "Simplify rational expressions by canceling common factors. Pick which problem forms to include and set the maximum coefficient that appears in the unsimplified fraction. The control sum is the digital root of the simplified numerator and denominator coefficients.",
             "problems_title": "Simplifying Rational Expressions",
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",

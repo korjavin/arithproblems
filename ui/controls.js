@@ -419,19 +419,23 @@ export function renderPyramidProblemsControls(container, t) {
 export function renderSimplifyRationalsControls(container, t) {
     container.innerHTML = `
         <div>
-            <label for="sr-complexity">${t.complexity_label}</label>
-            <input type="range" id="sr-complexity" value="1" min="1" max="5">
-            <span id="sr-complexity-value">1</span>
+            <input type="checkbox" id="sr-include-monomials" checked>
+            <label for="sr-include-monomials">${t.include_monomials_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="sr-include-binomials" checked>
+            <label for="sr-include-binomials">${t.include_binomials_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="sr-include-quadratics">
+            <label for="sr-include-quadratics">${t.include_quadratics_label}</label>
+        </div>
+        <div>
+            <label for="sr-coefficient-range">${t.coefficient_range_label}</label>
+            <input type="number" id="sr-coefficient-range" value="10" min="5" max="50">
         </div>
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
-
-    // Add event listener for dynamic updates
-    const complexitySlider = document.getElementById('sr-complexity');
-    const complexityValue = document.getElementById('sr-complexity-value');
-    complexitySlider.addEventListener('input', () => {
-        complexityValue.textContent = complexitySlider.value;
-    });
 }
 export function renderMixedOperationsControls(container, t) {
     container.innerHTML = `

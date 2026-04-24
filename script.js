@@ -652,7 +652,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.problemsContainer.innerHTML = '';
         try {
             const { problems, controlSums } = generateSimplifyRationalsData({
-                complexity: parseInt(document.getElementById('sr-complexity').value, 10),
+                includeMonomials: document.getElementById('sr-include-monomials').checked,
+                includeBinomials: document.getElementById('sr-include-binomials').checked,
+                includeQuadratics: document.getElementById('sr-include-quadratics').checked,
+                coefficientRange: parseInt(document.getElementById('sr-coefficient-range').value, 10),
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
             let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid simplify-rationals-problem-grid">`;
