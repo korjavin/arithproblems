@@ -215,8 +215,11 @@ function generateSingleVariableEquation(variableNames, equationType, coefficient
     const solution = getRandomSolution(solutionRange, allowNegativeSolutions);
     const variable = variableNames[0];
 
-    // Handle bracket equations for single variable
-    if (includeBrackets && (equationType === 'with-brackets' || (equationType === 'mixed' && getRandomInt(1, 100) <= 20))) {
+    // Handle bracket equations for single variable.
+    // "with-brackets" is an explicit user choice and must honor itself even when the
+    // master checkbox is off — otherwise the caller falls through to a currentType that
+    // matches no branch and returns undefined.
+    if (equationType === 'with-brackets' || (includeBrackets && equationType === 'mixed' && getRandomInt(1, 100) <= 20)) {
         const bracketType = getRandomInt(0, 4);
 
         if (bracketType === 0) { // a(x + b) = c

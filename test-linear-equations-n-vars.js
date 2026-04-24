@@ -92,6 +92,26 @@ function testBracketEquations() {
         }
     });
 
+    // Regression: equationType="with-brackets" must also work when the master
+    // includeBrackets checkbox is off — the dropdown choice is authoritative.
+    const withoutCheckbox = generateLinearEquationsNVarsData({
+        variableCount: 1,
+        equationType: 'with-brackets',
+        coefficientRange: 5,
+        solutionRange: 10,
+        allowNegativeSolutions: false,
+        includeBrackets: false,
+        numberOfProblems: 10
+    });
+    withoutCheckbox.problems.forEach((problem, index) => {
+        if (!problem || !problem.text) {
+            throw new Error(`Problem ${index} should have text even when includeBrackets=false`);
+        }
+        if (!problem.text.includes('(')) {
+            throw new Error(`Problem ${index} should contain parentheses when equationType='with-brackets'`);
+        }
+    });
+
     console.log('All bracket equation tests passed!');
 }
 
