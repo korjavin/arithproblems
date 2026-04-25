@@ -785,9 +785,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 // A4 portrait minus the 5mm @page margins ≈ 200mm ≈ 756px at 96dpi.
                 const PRINT_PAGE_PX = 756;
                 const GAP_PX = 25; // ~6mm column gap
+                // 10% safety buffer: screen and print font sizes aren't always identical,
+                // so pad the estimate to avoid marginal-fit items wrapping in print.
+                const paddedItemPx = Math.ceil(maxItemPx * 1.1);
                 const maxColsByWidth = Math.max(
                     1,
-                    Math.floor((PRINT_PAGE_PX + GAP_PX) / (maxItemPx + GAP_PX))
+                    Math.floor((PRINT_PAGE_PX + GAP_PX) / (paddedItemPx + GAP_PX))
                 );
 
                 // Find column count closest to 3:4 ratio within the width cap

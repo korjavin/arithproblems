@@ -1035,6 +1035,13 @@ footer {
         vertical-align: baseline;
     }
 
+    /* Screen uses 1.2em on .puzzle for emphasis; neutralize it in print so the
+       font matches the item (14pt) and the on-screen width measurement stays
+       accurate. */
+    .operator-puzzle-item .puzzle {
+        font-size: 1em;
+    }
+
     .problem {
         page-break-inside: avoid;
         padding: 2mm 0;
