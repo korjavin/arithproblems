@@ -463,6 +463,10 @@ export function renderNumberSequencesControls(container, t) {
             <label for="ns-max-value">${t.max_value_label}</label>
             <input type="number" id="ns-max-value" value="100" min="20" max="1000">
         </div>
+        <div>
+            <input type="checkbox" id="ns-allow-negative">
+            <label for="ns-allow-negative">${t.allow_negative_label}</label>
+        </div>
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }

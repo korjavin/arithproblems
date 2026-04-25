@@ -101,6 +101,33 @@ function testMaxValueRespected() {
     });
 }
 
+function testAllowNegativeFalseKeepsTermsNonNegative() {
+    const { problems } = generateNumberSequencesData({
+        types: ['arithmetic', 'geometric', 'squares', 'fibonacci'],
+        numTerms: 4,
+        maxValue: 200,
+        allowNegative: false,
+        numberOfProblems: 80,
+    });
+    problems.forEach((p, i) => {
+        p.terms.concat([p.answer]).forEach((t, j) => {
+            assert(t >= 0, `problem ${i} (${p.type}) term ${j} (${t}) should be non-negative when allowNegative=false`);
+        });
+    });
+}
+
+function testAllowNegativeTrueProducesSomeNegatives() {
+    const { problems } = generateNumberSequencesData({
+        types: ['arithmetic'],
+        numTerms: 4,
+        maxValue: 100,
+        allowNegative: true,
+        numberOfProblems: 80,
+    });
+    const someNegative = problems.some(p => p.terms.concat([p.answer]).some(t => t < 0));
+    assert(someNegative, 'expected at least one negative value across 80 AP problems with allowNegative=true');
+}
+
 function testInvalidInputs() {
     assert.throws(() => generateNumberSequencesData({ types: [], numTerms: 4, maxValue: 100, numberOfProblems: 5 }));
     assert.throws(() => generateNumberSequencesData({ types: ['unknown'], numTerms: 4, maxValue: 100, numberOfProblems: 5 }));
@@ -115,5 +142,7 @@ testGeometricCorrectness();
 testSquaresCorrectness();
 testFibonacciCorrectness();
 testMaxValueRespected();
+testAllowNegativeFalseKeepsTermsNonNegative();
+testAllowNegativeTrueProducesSomeNegatives();
 testInvalidInputs();
 console.log('All number-sequences tests passed.');

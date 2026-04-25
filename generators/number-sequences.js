@@ -1,12 +1,17 @@
 import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
-function generateArithmetic({ numTerms, maxValue }) {
+function generateArithmetic({ numTerms, maxValue, allowNegative }) {
+    const aMin = allowNegative ? -Math.min(20, maxValue) : 0;
+    const aMax = Math.min(20, maxValue);
+    const dMin = allowNegative ? -9 : 1;
+    const dMax = 9;
     for (let attempt = 0; attempt < 60; attempt++) {
-        const a = getRandomInt(-Math.min(20, maxValue), Math.min(20, maxValue));
-        const d = getRandomInt(-9, 9);
+        const a = getRandomInt(aMin, aMax);
+        const d = getRandomInt(dMin, dMax);
         if (d === 0) continue;
         const terms = Array.from({ length: numTerms + 1 }, (_, i) => a + i * d);
-        if (terms.every(t => Math.abs(t) <= maxValue)) {
+        const ok = terms.every(t => Math.abs(t) <= maxValue && (allowNegative || t >= 0));
+        if (ok) {
             return { terms: terms.slice(0, numTerms), answer: terms[numTerms], type: 'arithmetic' };
         }
     }
@@ -14,14 +19,15 @@ function generateArithmetic({ numTerms, maxValue }) {
     return { terms: terms.slice(0, numTerms), answer: terms[numTerms], type: 'arithmetic' };
 }
 
-function generateGeometric({ numTerms, maxValue }) {
-    const ratios = [2, 3, -2];
+function generateGeometric({ numTerms, maxValue, allowNegative }) {
+    const ratios = allowNegative ? [2, 3, -2] : [2, 3];
     for (let attempt = 0; attempt < 60; attempt++) {
         const a = getRandomInt(1, Math.min(5, maxValue));
         const r = getRandomFromArray(ratios);
         const terms = [a];
         for (let i = 1; i <= numTerms; i++) terms.push(terms[i - 1] * r);
-        if (terms.every(t => Math.abs(t) <= maxValue)) {
+        const ok = terms.every(t => Math.abs(t) <= maxValue && (allowNegative || t >= 0));
+        if (ok) {
             return { terms: terms.slice(0, numTerms), answer: terms[numTerms], type: 'geometric' };
         }
     }
@@ -64,7 +70,7 @@ const generators = {
     fibonacci: generateFibonacci,
 };
 
-export function generateNumberSequencesData({ types, numTerms, maxValue, numberOfProblems }) {
+export function generateNumberSequencesData({ types, numTerms, maxValue, allowNegative = false, numberOfProblems }) {
     if (!Array.isArray(types) || types.length === 0) {
         throw new Error('At least one sequence type must be selected.');
     }
@@ -87,7 +93,7 @@ export function generateNumberSequencesData({ types, numTerms, maxValue, numberO
 
     for (let i = 0; i < numberOfProblems; i++) {
         const type = valid[getRandomInt(0, valid.length - 1)];
-        const problem = generators[type]({ numTerms, maxValue });
+        const problem = generators[type]({ numTerms, maxValue, allowNegative });
         problems.push(problem);
         controlSums.push({ controlSum: digitalRoot(problem.answer) });
     }

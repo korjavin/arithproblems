@@ -664,6 +664,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 types,
                 numTerms: parseInt(document.getElementById('ns-num-terms').value, 10),
                 maxValue: parseInt(document.getElementById('ns-max-value').value, 10),
+                allowNegative: document.getElementById('ns-allow-negative').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
 
