@@ -878,6 +878,11 @@ footer {
         width: auto;
     }
 
+    .fraction-problem-item .fraction:first-child,
+    .fraction-operation-item .fraction:first-child {
+        margin-left: 0;
+    }
+
     .fraction {
         font-family: 'Courier New', Courier, monospace;
     }
@@ -1045,41 +1050,25 @@ footer {
         background-color: #fff;
     }
 
-    /* --- Styles for Rational Operations Problems --- */
-    /* .fraction-problem-grid (from canonical) can be reused if styling is similar */
-
+    /* --- Styles for Rational Operations Problems (print) --- */
     .fraction-operation-item {
-        font-size: 1.2em;
-        /* Base font size for the item */
-        padding: 10px;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        background-color: #fdfdfd;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: flex-start;
         min-height: 7em;
-        /* Consistent with simplification problems for vertical space */
     }
 
     .fraction-operation-item .problem-content {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         margin-bottom: 5px;
-        width: 100%;
-        /* font-size for fractions within is handled by .fraction class */
     }
 
     .fraction-operation-item .operation-symbol {
-        font-size: 1.5em;
-        /* Make operator stand out from fraction numbers */
         font-weight: bold;
-        margin: 0 10px;
-        color: #333;
         line-height: 1;
-        /* Ensure it aligns well vertically with fractions */
     }
 
     /* .fraction styles are reused */
