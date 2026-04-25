@@ -43,6 +43,8 @@
     "number_sequences_p": "Find the next term in a sequence (arithmetic, geometric, squares, Fibonacci-like).",
     "operator_puzzles_h3": "Operator Puzzles",
     "operator_puzzles_p": "Fill in the missing operators (and brackets, if enabled) to make the equation true.",
+    "compare_expressions_h3": "Compare Expressions",
+    "compare_expressions_p": "Fill in <, >, or = between two expressions. Quick mental-math drill.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -417,6 +419,16 @@
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",
             "error_message": "Error generating rational simplification problems."
+        },
+        "compare_expressions": {
+            "num_operands_label": "Operands per side:",
+            "max_operand_label": "Max operand value:",
+            "allow_multiplication_label": "Include multiplication",
+            "allow_brackets_label": "Allow brackets",
+            "allow_negative_label": "Allow negative results",
+            "description": "Fill in <, >, or = between the two expressions. About a quarter of problems are intentionally engineered as equalities to keep the answer mix varied.",
+            "problems_title": "Compare Expressions",
+            "error_message": "Error generating comparison problems."
         },
         "operator_puzzles": {
             "num_operands_label": "Number of operands:",

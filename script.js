@@ -19,6 +19,7 @@ import { generateSimplifyEquationsData } from './generators/simplify-equations.j
 import { generateSimplifyRationalsData } from './generators/simplify-rationals.js';
 import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
+import { generateCompareExpressionsData } from './generators/compare-expressions.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -77,6 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "simplify-rationals": controls.renderSimplifyRationalsControls,
         "number-sequences": controls.renderNumberSequencesControls,
         "operator-puzzles": controls.renderOperatorPuzzlesControls,
+        "compare-expressions": controls.renderCompareExpressionsControls,
     };
 
     const problemRenderers = {
@@ -99,6 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "simplify-rationals": renderSimplifyRationalsProblems,
         "number-sequences": renderNumberSequencesProblems,
         "operator-puzzles": renderOperatorPuzzlesProblems,
+        "compare-expressions": renderCompareExpressionsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -653,6 +656,42 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    function renderCompareExpressionsProblems(translations) {
+        const t = translations.script.compare_expressions;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems } = generateCompareExpressionsData({
+                numOperands: parseInt(document.getElementById('cmp-num-operands').value, 10),
+                maxOperand: parseInt(document.getElementById('cmp-max-operand').value, 10),
+                allowMultiplication: document.getElementById('cmp-allow-multiplication').checked,
+                allowBrackets: document.getElementById('cmp-allow-brackets').checked,
+                allowNegative: document.getElementById('cmp-allow-negative').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            const opSymbol = (op) => op === '*' ? '×' : op;
+            const formatSide = (side) => {
+                let s = '';
+                for (let i = 0; i < side.operands.length; i++) {
+                    if (i === side.bracketStart) s += '(';
+                    s += side.operands[i];
+                    if (i === side.bracketEnd) s += ')';
+                    if (i < side.operators.length) s += ' ' + opSymbol(side.operators[i]) + ' ';
+                }
+                return s;
+            };
+
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid compare-expressions-problem-grid">`;
+            html += problems.map(p =>
+                `<div class="compare-expression-item"><div class="problem-content"><span class="puzzle">${formatSide(p.left)} <span class="cmp-blank"></span> ${formatSide(p.right)}</span></div></div>`
+            ).join('');
+            html += `</div>`;
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
     function renderOperatorPuzzlesProblems(translations) {
         const t = translations.script.operator_puzzles;
         DOM.problemsContainer.innerHTML = '';
@@ -765,7 +804,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.printButton.addEventListener("click", () => {
             // Calculate optimal column count for print layout
             // Target ratio: 3:4 (columns:rows), meaning rows/cols should be ~1.33
-            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .operator-puzzles-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
+            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .operator-puzzles-problem-grid, .compare-expressions-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
 
             if (problemGrid) {
                 const problemItems = Array.from(problemGrid.children);

@@ -41,6 +41,8 @@
     "number_sequences_p": "Finde das nächste Glied einer Folge (arithmetisch, geometrisch, Quadratzahlen, Fibonacci-artig).",
     "operator_puzzles_h3": "Rechenzeichen-Rätsel",
     "operator_puzzles_p": "Setze die fehlenden Rechenzeichen (und ggf. Klammern) so ein, dass die Gleichung stimmt.",
+    "compare_expressions_h3": "Ausdrücke vergleichen",
+    "compare_expressions_p": "Setze <, > oder = zwischen die beiden Ausdrücke. Schnelle Kopfrechen-Übung.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -343,6 +345,16 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
             "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
+        },
+        "compare_expressions": {
+            "num_operands_label": "Operanden pro Seite:",
+            "max_operand_label": "Maximaler Operandenwert:",
+            "allow_multiplication_label": "Multiplikation einbeziehen",
+            "allow_brackets_label": "Klammern erlauben",
+            "allow_negative_label": "Negative Ergebnisse erlauben",
+            "description": "Setze <, > oder = zwischen die beiden Ausdrücke. Etwa ein Viertel der Aufgaben wird gezielt als Gleichheit erzeugt, damit die Antworten vielfältig bleiben.",
+            "problems_title": "Ausdrücke vergleichen",
+            "error_message": "Fehler beim Erstellen der Vergleichsaufgaben."
         },
         "operator_puzzles": {
             "num_operands_label": "Anzahl der Operanden:",

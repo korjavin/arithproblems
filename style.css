@@ -779,6 +779,7 @@ footer {
     #problems-container .simplify-rationals-problem-grid,
     #problems-container .number-sequences-problem-grid,
     #problems-container .operator-puzzles-problem-grid,
+    #problems-container .compare-expressions-problem-grid,
     #problems-container .mixed-operations-grid {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
@@ -1038,8 +1039,29 @@ footer {
     /* Screen uses 1.2em on .puzzle for emphasis; neutralize it in print so the
        font matches the item (14pt) and the on-screen width measurement stays
        accurate. */
-    .operator-puzzle-item .puzzle {
+    .operator-puzzle-item .puzzle,
+    .compare-expression-item .puzzle {
         font-size: 1em;
+    }
+
+    /* === Compare expressions === */
+    .compare-expression-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14pt;
+        font-weight: bold;
+        line-height: 5mm;
+        border: none;
+        padding: 0;
+        page-break-inside: avoid;
+        background-color: transparent !important;
+    }
+
+    .compare-expression-item .cmp-blank {
+        display: inline-block;
+        width: 8mm;
+        border-bottom: 0.4mm solid #333;
+        margin: 0 1mm;
+        vertical-align: baseline;
     }
 
     .problem {
@@ -1386,13 +1408,15 @@ footer {
     text-align: center;
 }
 
-/* --- Operator puzzles (screen) --- */
-.operator-puzzle-item .puzzle {
+/* --- Operator puzzles & comparisons (screen) --- */
+.operator-puzzle-item .puzzle,
+.compare-expression-item .puzzle {
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.2em;
 }
 
-.operator-puzzle-item .op-blank {
+.operator-puzzle-item .op-blank,
+.compare-expression-item .cmp-blank {
     display: inline-block;
     width: 1.4em;
     border-bottom: 2px solid #333;

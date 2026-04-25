@@ -437,6 +437,32 @@ export function renderSimplifyRationalsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+export function renderCompareExpressionsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="cmp-num-operands">${t.num_operands_label}</label>
+            <input type="number" id="cmp-num-operands" value="2" min="1" max="4">
+        </div>
+        <div>
+            <label for="cmp-max-operand">${t.max_operand_label}</label>
+            <input type="number" id="cmp-max-operand" value="10" min="2" max="30">
+        </div>
+        <div>
+            <input type="checkbox" id="cmp-allow-multiplication" checked>
+            <label for="cmp-allow-multiplication">${t.allow_multiplication_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cmp-allow-brackets">
+            <label for="cmp-allow-brackets">${t.allow_brackets_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cmp-allow-negative">
+            <label for="cmp-allow-negative">${t.allow_negative_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderOperatorPuzzlesControls(container, t) {
     container.innerHTML = `
         <div>
