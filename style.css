@@ -801,6 +801,10 @@ footer {
         padding: 0;
         page-break-inside: avoid;
         text-align: right;
+        /* Pin item to left edge of its grid cell; text-align keeps digits right-aligned inside the item. */
+        margin: 0;
+        justify-self: start;
+        min-width: 0;
     }
 
     .arith-problem .operand-1,
@@ -863,6 +867,15 @@ footer {
         padding: 0;
         background-color: transparent !important;
         background: none !important;
+        /* Override non-print align-items: center so content sits at the left edge of its cell. */
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .fraction-problem-item .problem-content,
+    .fraction-operation-item .problem-content {
+        justify-content: flex-start;
+        width: auto;
     }
 
     .fraction {
