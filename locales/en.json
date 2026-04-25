@@ -39,6 +39,8 @@
     "simplify_equations_p": "Simplify algebraic expressions with brackets and variables.",
     "simplify_rationals_h3": "Simplifying Rationals",
     "simplify_rationals_p": "Simplify rational expressions by canceling common factors.",
+    "number_sequences_h3": "Number Sequences",
+    "number_sequences_p": "Find the next term in a sequence (arithmetic, geometric, squares, Fibonacci-like).",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -413,6 +415,19 @@
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",
             "error_message": "Error generating rational simplification problems."
+        },
+        "number_sequences": {
+            "type_arithmetic_label": "Arithmetic (constant difference)",
+            "type_geometric_label": "Geometric (constant ratio)",
+            "type_squares_label": "Squares",
+            "type_fibonacci_label": "Fibonacci-like (sum of previous two)",
+            "num_terms_label": "Visible Terms:",
+            "max_value_label": "Max Value:",
+            "description": "Find the next term in each sequence. Pick which sequence types to include, the number of visible terms, and the maximum allowed value.",
+            "problems_title": "Number Sequences",
+            "control_sum_grid_title": "Digital Root Self-Check Grid",
+            "control_sum_grid_subtitle": "Find the digital root of the next term (use absolute value if negative).",
+            "error_message": "Error generating sequence problems."
         },
         "unknown_topic_error": "Unknown topic selected:",
         "generate_button_clicked_for_topic": "Generate button clicked for topic:",

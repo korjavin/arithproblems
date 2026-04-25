@@ -37,6 +37,8 @@
     "simplify_equations_p": "Algebraische Ausdrücke mit Klammern und Variablen vereinfachen.",
     "simplify_rationals_h3": "Bruchterme vereinfachen",
     "simplify_rationals_p": "Rationale Ausdrücke durch Kürzen gemeinsamer Faktoren vereinfachen.",
+    "number_sequences_h3": "Zahlenfolgen",
+    "number_sequences_p": "Finde das nächste Glied einer Folge (arithmetisch, geometrisch, Quadratzahlen, Fibonacci-artig).",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -339,6 +341,19 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
             "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
+        },
+        "number_sequences": {
+            "type_arithmetic_label": "Arithmetisch (gleicher Abstand)",
+            "type_geometric_label": "Geometrisch (gleicher Faktor)",
+            "type_squares_label": "Quadratzahlen",
+            "type_fibonacci_label": "Fibonacci-artig (Summe der zwei vorigen)",
+            "num_terms_label": "Sichtbare Glieder:",
+            "max_value_label": "Maximalwert:",
+            "description": "Finde das nächste Glied jeder Folge. Wähle die Folgentypen, die Anzahl sichtbarer Glieder und den höchsten erlaubten Wert.",
+            "problems_title": "Zahlenfolgen",
+            "control_sum_grid_title": "Quersummen-Raster",
+            "control_sum_grid_subtitle": "Finde die Quersumme des nächsten Glieds (bei negativem Wert den Betrag verwenden).",
+            "error_message": "Fehler beim Erstellen der Folgenaufgaben."
         },
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",

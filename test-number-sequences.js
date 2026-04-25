@@ -1,0 +1,119 @@
+import { generateNumberSequencesData } from './generators/number-sequences.js';
+import assert from 'assert';
+
+function testBasicShape() {
+    const { problems, controlSums } = generateNumberSequencesData({
+        types: ['arithmetic'],
+        numTerms: 4,
+        maxValue: 100,
+        numberOfProblems: 10,
+    });
+    assert.strictEqual(problems.length, 10);
+    assert.strictEqual(controlSums.length, 10);
+    problems.forEach((p, i) => {
+        assert(Array.isArray(p.terms), `problem ${i} terms array`);
+        assert.strictEqual(p.terms.length, 4, `problem ${i} numTerms`);
+        assert(Number.isInteger(p.answer), `problem ${i} answer is integer`);
+        assert.strictEqual(p.type, 'arithmetic', `problem ${i} type`);
+    });
+    controlSums.forEach((cs, i) => {
+        assert.strictEqual(typeof cs.controlSum, 'number');
+        assert(cs.controlSum >= 0 && cs.controlSum <= 9, `problem ${i} control sum 0-9`);
+    });
+}
+
+function testArithmeticCorrectness() {
+    const { problems } = generateNumberSequencesData({
+        types: ['arithmetic'],
+        numTerms: 5,
+        maxValue: 200,
+        numberOfProblems: 30,
+    });
+    problems.forEach((p, i) => {
+        const d = p.terms[1] - p.terms[0];
+        for (let j = 2; j < p.terms.length; j++) {
+            assert.strictEqual(p.terms[j] - p.terms[j - 1], d, `problem ${i} AP: term ${j}`);
+        }
+        assert.strictEqual(p.answer, p.terms[p.terms.length - 1] + d, `problem ${i} AP: answer matches`);
+    });
+}
+
+function testGeometricCorrectness() {
+    const { problems } = generateNumberSequencesData({
+        types: ['geometric'],
+        numTerms: 4,
+        maxValue: 500,
+        numberOfProblems: 30,
+    });
+    problems.forEach((p, i) => {
+        assert(p.terms[0] !== 0, `problem ${i} GP: first term non-zero`);
+        const r = p.terms[1] / p.terms[0];
+        for (let j = 2; j < p.terms.length; j++) {
+            assert.strictEqual(p.terms[j], p.terms[j - 1] * r, `problem ${i} GP: term ${j}`);
+        }
+        assert.strictEqual(p.answer, p.terms[p.terms.length - 1] * r, `problem ${i} GP: answer matches`);
+    });
+}
+
+function testSquaresCorrectness() {
+    const { problems } = generateNumberSequencesData({
+        types: ['squares'],
+        numTerms: 4,
+        maxValue: 200,
+        numberOfProblems: 20,
+    });
+    problems.forEach((p, i) => {
+        const start = Math.round(Math.sqrt(p.terms[0]));
+        for (let j = 0; j < p.terms.length; j++) {
+            assert.strictEqual(p.terms[j], (start + j) ** 2, `problem ${i} squares: term ${j}`);
+        }
+        assert.strictEqual(p.answer, (start + p.terms.length) ** 2, `problem ${i} squares: answer matches`);
+    });
+}
+
+function testFibonacciCorrectness() {
+    const { problems } = generateNumberSequencesData({
+        types: ['fibonacci'],
+        numTerms: 5,
+        maxValue: 500,
+        numberOfProblems: 20,
+    });
+    problems.forEach((p, i) => {
+        for (let j = 2; j < p.terms.length; j++) {
+            assert.strictEqual(p.terms[j], p.terms[j - 1] + p.terms[j - 2], `problem ${i} fib: term ${j}`);
+        }
+        const expected = p.terms[p.terms.length - 1] + p.terms[p.terms.length - 2];
+        assert.strictEqual(p.answer, expected, `problem ${i} fib: answer matches`);
+    });
+}
+
+function testMaxValueRespected() {
+    const { problems } = generateNumberSequencesData({
+        types: ['arithmetic', 'geometric', 'squares', 'fibonacci'],
+        numTerms: 4,
+        maxValue: 100,
+        numberOfProblems: 50,
+    });
+    problems.forEach((p, i) => {
+        p.terms.concat([p.answer]).forEach((t, j) => {
+            assert(Math.abs(t) <= 100, `problem ${i} term ${j} (${t}) within maxValue`);
+        });
+    });
+}
+
+function testInvalidInputs() {
+    assert.throws(() => generateNumberSequencesData({ types: [], numTerms: 4, maxValue: 100, numberOfProblems: 5 }));
+    assert.throws(() => generateNumberSequencesData({ types: ['unknown'], numTerms: 4, maxValue: 100, numberOfProblems: 5 }));
+    assert.throws(() => generateNumberSequencesData({ types: ['arithmetic'], numTerms: 2, maxValue: 100, numberOfProblems: 5 }));
+    assert.throws(() => generateNumberSequencesData({ types: ['arithmetic'], numTerms: 4, maxValue: 5, numberOfProblems: 5 }));
+    assert.throws(() => generateNumberSequencesData({ types: ['arithmetic'], numTerms: 4, maxValue: 100, numberOfProblems: 0 }));
+}
+
+testBasicShape();
+testArithmeticCorrectness();
+testGeometricCorrectness();
+testSquaresCorrectness();
+testFibonacciCorrectness();
+testMaxValueRespected();
+testInvalidInputs();
+console.log('All number-sequences tests passed.');

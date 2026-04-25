@@ -17,6 +17,7 @@ import { generateHouseProblemsData } from './generators/house-problems.js';
 import { generatePyramidProblemsData } from './generators/pyramid-problems.js';
 import { generateSimplifyEquationsData } from './generators/simplify-equations.js';
 import { generateSimplifyRationalsData } from './generators/simplify-rationals.js';
+import { generateNumberSequencesData } from './generators/number-sequences.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -73,6 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "pyramid-problems": controls.renderPyramidProblemsControls,
         "simplify-equations": controls.renderSimplifyEquationsControls,
         "simplify-rationals": controls.renderSimplifyRationalsControls,
+        "number-sequences": controls.renderNumberSequencesControls,
     };
 
     const problemRenderers = {
@@ -93,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "pyramid-problems": renderPyramidProblems,
         "simplify-equations": renderSimplifyEquationsProblems,
         "simplify-rationals": renderSimplifyRationalsProblems,
+        "number-sequences": renderNumberSequencesProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -647,6 +650,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    function renderNumberSequencesProblems(translations) {
+        const t = translations.script.number_sequences;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const types = [];
+            if (document.getElementById('ns-type-arithmetic').checked) types.push('arithmetic');
+            if (document.getElementById('ns-type-geometric').checked) types.push('geometric');
+            if (document.getElementById('ns-type-squares').checked) types.push('squares');
+            if (document.getElementById('ns-type-fibonacci').checked) types.push('fibonacci');
+
+            const { problems, controlSums } = generateNumberSequencesData({
+                types,
+                numTerms: parseInt(document.getElementById('ns-num-terms').value, 10),
+                maxValue: parseInt(document.getElementById('ns-max-value').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid number-sequences-problem-grid">`;
+            html += problems.map(p => {
+                const shown = p.terms.join(', ');
+                return `<div class="number-sequence-item"><div class="problem-content"><span class="sequence">${shown}, </span><div class="answer-space"></div></div></div>`;
+            }).join('');
+            html += `</div>`;
+
+            if (controlSums.length > 0) {
+                html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
+            }
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
     function renderSimplifyRationalsProblems(translations) {
         const t = translations.script.simplify_rationals;
         DOM.problemsContainer.innerHTML = '';
@@ -681,7 +717,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.printButton.addEventListener("click", () => {
             // Calculate optimal column count for print layout
             // Target ratio: 3:4 (columns:rows), meaning rows/cols should be ~1.33
-            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
+            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
 
             if (problemGrid) {
                 const problemItems = Array.from(problemGrid.children);

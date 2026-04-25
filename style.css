@@ -777,6 +777,7 @@ footer {
     #problems-container .linear-equations-problem-grid,
     #problems-container .simplify-equations-problem-grid,
     #problems-container .simplify-rationals-problem-grid,
+    #problems-container .number-sequences-problem-grid,
     #problems-container .mixed-operations-grid {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
@@ -993,6 +994,18 @@ footer {
     .simplify-rational-item {
         font-family: 'Courier New', Courier, monospace;
         font-size: 11pt;
+        font-weight: bold;
+        line-height: 5mm;
+        border: none;
+        padding: 0;
+        page-break-inside: avoid;
+        background-color: transparent !important;
+    }
+
+    /* === Number sequences === */
+    .number-sequence-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
         font-weight: bold;
         line-height: 5mm;
         border: none;
