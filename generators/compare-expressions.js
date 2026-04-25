@@ -1,5 +1,5 @@
 import { create, all } from 'mathjs';
-import { getRandomInt, getRandomFromArray } from '../utils.js';
+import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
 
 const math = create(all);
 
@@ -62,6 +62,7 @@ export function generateCompareExpressionsData({
 
     const buildOpts = { numOperands, maxOperand, allowedOps, allowBrackets };
     const problems = [];
+    const controlSums = [];
 
     for (let i = 0; i < numberOfProblems; i++) {
         const wantEqual = getRandomInt(0, 3) === 0; // ~25% try to engineer equality
@@ -106,7 +107,11 @@ export function generateCompareExpressionsData({
             };
         }
         problems.push(problem);
+        // Self-check: digital root of the larger side (use either value if they're equal).
+        // Forces the student to commit to a comparison (to know which side to take) but
+        // reveals nothing about whether the answer is <, =, or >.
+        controlSums.push({ controlSum: digitalRoot(Math.max(problem.leftValue, problem.rightValue)) });
     }
 
-    return { problems, controlSums: [] };
+    return { problems, controlSums };
 }

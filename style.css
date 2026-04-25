@@ -711,9 +711,29 @@ footer {
     .controls,
     #actions-panel,
     footer,
-    nav,
-    #problems-container>h3 {
+    nav {
         display: none !important;
+    }
+
+    /* === Worksheet header (visible in print, gives kids context) === */
+    #problems-container > h3 {
+        display: block !important;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 13pt;
+        font-weight: bold;
+        text-align: center;
+        margin: 0 0 1mm 0;
+        padding: 0;
+    }
+
+    #problems-container > .print-instructions {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 9pt;
+        font-style: italic;
+        text-align: center;
+        margin: 0 0 3mm 0;
+        padding: 0;
+        color: #444;
     }
 
     .app-container {

@@ -660,7 +660,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const t = translations.script.compare_expressions;
         DOM.problemsContainer.innerHTML = '';
         try {
-            const { problems } = generateCompareExpressionsData({
+            const { problems, controlSums } = generateCompareExpressionsData({
                 numOperands: parseInt(document.getElementById('cmp-num-operands').value, 10),
                 maxOperand: parseInt(document.getElementById('cmp-max-operand').value, 10),
                 allowMultiplication: document.getElementById('cmp-allow-multiplication').checked,
@@ -681,11 +681,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return s;
             };
 
-            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid compare-expressions-problem-grid">`;
+            let html = `<h3>${t.problems_title}</h3>`;
+            html += `<p class="print-instructions">${t.print_instructions}</p>`;
+            html += `<div class="arithmetic-grid compare-expressions-problem-grid">`;
             html += problems.map(p =>
                 `<div class="compare-expression-item"><div class="problem-content"><span class="puzzle">${formatSide(p.left)} <span class="cmp-blank"></span> ${formatSide(p.right)}</span></div></div>`
             ).join('');
             html += `</div>`;
+            if (controlSums.length > 0) {
+                html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
+            }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_message || error.message);

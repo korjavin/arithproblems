@@ -428,6 +428,9 @@
             "allow_negative_label": "Allow negative results",
             "description": "Fill in <, >, or = between the two expressions. About a quarter of problems are intentionally engineered as equalities to keep the answer mix varied.",
             "problems_title": "Compare Expressions",
+            "print_instructions": "Compute each side, then write <, >, or = between them.",
+            "control_sum_grid_title": "Digital Root Self-Check Grid",
+            "control_sum_grid_subtitle": "Take the larger of the two sides (either if equal). Find its digital root and compare to the cell.",
             "error_message": "Error generating comparison problems."
         },
         "operator_puzzles": {

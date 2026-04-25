@@ -15,6 +15,13 @@ function exprString({ operands, operators, bracketStart, bracketEnd }) {
     return s;
 }
 
+function digitalRoot(n) {
+    let num = Math.abs(n);
+    if (num === 0) return 0;
+    const root = num % 9;
+    return root === 0 ? 9 : root;
+}
+
 function testBasicShape() {
     const { problems, controlSums } = generateCompareExpressionsData({
         numOperands: 2,
@@ -25,7 +32,12 @@ function testBasicShape() {
         numberOfProblems: 12,
     });
     assert.strictEqual(problems.length, 12);
-    assert(Array.isArray(controlSums) && controlSums.length === 0);
+    assert.strictEqual(controlSums.length, 12, 'controlSums one per problem');
+    controlSums.forEach((cs, i) => {
+        const expected = digitalRoot(Math.max(problems[i].leftValue, problems[i].rightValue));
+        assert.strictEqual(cs.controlSum, expected, `control sum ${i} = DR(max(L,R))`);
+        assert(cs.controlSum >= 0 && cs.controlSum <= 9, `control sum ${i} 0-9`);
+    });
     problems.forEach((p, i) => {
         assert(['<', '>', '='].includes(p.comparison), `problem ${i} comparison`);
         assert(Number.isInteger(p.leftValue), `problem ${i} leftValue integer`);

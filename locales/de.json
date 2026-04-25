@@ -354,6 +354,9 @@
             "allow_negative_label": "Negative Ergebnisse erlauben",
             "description": "Setze <, > oder = zwischen die beiden Ausdrücke. Etwa ein Viertel der Aufgaben wird gezielt als Gleichheit erzeugt, damit die Antworten vielfältig bleiben.",
             "problems_title": "Ausdrücke vergleichen",
+            "print_instructions": "Berechne beide Seiten und setze <, > oder = dazwischen.",
+            "control_sum_grid_title": "Quersummen-Raster zur Selbstkontrolle",
+            "control_sum_grid_subtitle": "Nimm die größere der beiden Seiten (bei Gleichheit eine beliebige). Finde die Quersumme und vergleiche sie mit dem Feld.",
             "error_message": "Fehler beim Erstellen der Vergleichsaufgaben."
         },
         "operator_puzzles": {
