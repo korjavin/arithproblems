@@ -784,8 +784,8 @@ footer {
         /* Row gap larger than column gap for 3:4 proportion (row:col = 4:3) */
         gap: 20mm 6mm;
         flex-grow: 1;
-        align-content: space-evenly;
-        padding: 5mm 0;
+        align-content: start;
+        padding: 0 0 5mm 0;
         page-break-inside: avoid;
     }
 
