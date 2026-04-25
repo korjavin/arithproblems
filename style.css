@@ -781,10 +781,10 @@ footer {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
         grid-template-columns: repeat(var(--print-cols, 3), 1fr);
-        /* Row gap larger than column gap for 3:4 proportion (row:col = 4:3) */
-        gap: 20mm 6mm;
+        /* Equal-height rows fill the page; writing space sits inside each row. */
+        grid-auto-rows: 1fr;
+        column-gap: 6mm;
         flex-grow: 1;
-        align-content: space-between;
         padding: 0;
         page-break-inside: avoid;
     }
