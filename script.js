@@ -684,15 +684,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
 
             if (problemGrid) {
-                const problemItems = problemGrid.children;
+                const problemItems = Array.from(problemGrid.children);
                 const problemCount = problemItems.length;
 
-                // Find optimal column count that gives ratio closest to 3:4 (0.75)
-                let bestCols = 2;
+                // Measure the widest item at its single-line natural width so that
+                // problems that don't fit a 3-column layout (e.g. long mixed-operations
+                // expressions) get fewer columns instead of wrapping mid-expression.
+                const probedEls = problemItems.concat(
+                    problemItems.flatMap(it => Array.from(it.querySelectorAll('*')))
+                );
+                const wsRestore = probedEls.map(el => el.style.whiteSpace);
+                probedEls.forEach(el => { el.style.whiteSpace = 'nowrap'; });
+                const maxItemPx = problemItems.reduce((m, it) => Math.max(m, it.scrollWidth), 0);
+                probedEls.forEach((el, i) => { el.style.whiteSpace = wsRestore[i]; });
+
+                // A4 portrait minus the 5mm @page margins ≈ 200mm ≈ 756px at 96dpi.
+                const PRINT_PAGE_PX = 756;
+                const GAP_PX = 25; // ~6mm column gap
+                const maxColsByWidth = Math.max(
+                    1,
+                    Math.floor((PRINT_PAGE_PX + GAP_PX) / (maxItemPx + GAP_PX))
+                );
+
+                // Find column count closest to 3:4 ratio within the width cap
+                let bestCols = 1;
                 let bestRatio = Infinity;
                 const targetRatio = 0.75; // 3:4 = 0.75
+                const upperBound = Math.min(5, problemCount, maxColsByWidth);
 
-                for (let cols = 1; cols <= Math.min(5, problemCount); cols++) {
+                for (let cols = 1; cols <= upperBound; cols++) {
                     const rows = Math.ceil(problemCount / cols);
                     const ratio = cols / rows;
                     const diff = Math.abs(ratio - targetRatio);
