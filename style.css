@@ -717,7 +717,7 @@ footer {
     }
 
     .app-container {
-        display: block;
+        display: block !important;
         max-width: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -784,8 +784,8 @@ footer {
         /* Row gap larger than column gap for 3:4 proportion (row:col = 4:3) */
         gap: 20mm 6mm;
         flex-grow: 1;
-        align-content: start;
-        padding: 0 0 5mm 0;
+        align-content: space-between;
+        padding: 0;
         page-break-inside: avoid;
     }
 
