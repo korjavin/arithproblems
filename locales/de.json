@@ -39,6 +39,8 @@
     "simplify_rationals_p": "Rationale Ausdrücke durch Kürzen gemeinsamer Faktoren vereinfachen.",
     "number_sequences_h3": "Zahlenfolgen",
     "number_sequences_p": "Finde das nächste Glied einer Folge (arithmetisch, geometrisch, Quadratzahlen, Fibonacci-artig).",
+    "operator_puzzles_h3": "Rechenzeichen-Rätsel",
+    "operator_puzzles_p": "Setze die fehlenden Rechenzeichen (und ggf. Klammern) so ein, dass die Gleichung stimmt.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -341,6 +343,15 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
             "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
+        },
+        "operator_puzzles": {
+            "num_operands_label": "Anzahl der Operanden:",
+            "max_operand_label": "Maximaler Operandenwert:",
+            "allow_brackets_label": "Klammern in Lösung erlauben",
+            "mix_operand_blanks_label": "Auch Operanden weglassen",
+            "description": "Setze die fehlenden Rechenzeichen ( +, −, × ) so ein, dass das Ergebnis stimmt. Mit Klammern müssen einige Aufgaben Klammern enthalten; bei „Operanden weglassen“ ist statt der Zeichen eine Zahl frei.",
+            "problems_title": "Rechenzeichen-Rätsel",
+            "error_message": "Fehler beim Erstellen der Rätselaufgaben."
         },
         "number_sequences": {
             "type_arithmetic_label": "Arithmetisch (gleicher Abstand)",

@@ -41,6 +41,8 @@
     "simplify_rationals_p": "Simplify rational expressions by canceling common factors.",
     "number_sequences_h3": "Number Sequences",
     "number_sequences_p": "Find the next term in a sequence (arithmetic, geometric, squares, Fibonacci-like).",
+    "operator_puzzles_h3": "Operator Puzzles",
+    "operator_puzzles_p": "Fill in the missing operators (and brackets, if enabled) to make the equation true.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -415,6 +417,15 @@
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",
             "error_message": "Error generating rational simplification problems."
+        },
+        "operator_puzzles": {
+            "num_operands_label": "Number of operands:",
+            "max_operand_label": "Max operand value:",
+            "allow_brackets_label": "Allow brackets in solution",
+            "mix_operand_blanks_label": "Mix in operand-blank puzzles",
+            "description": "Fill in the missing operators ( +, −, × ) so the equation matches the given target. Enable brackets to require some problems to use parentheses; enable operand-blank to mix in puzzles where one number is missing instead.",
+            "problems_title": "Operator Puzzles",
+            "error_message": "Error generating operator puzzles."
         },
         "number_sequences": {
             "type_arithmetic_label": "Arithmetic (constant difference)",

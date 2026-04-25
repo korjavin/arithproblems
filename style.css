@@ -778,6 +778,7 @@ footer {
     #problems-container .simplify-equations-problem-grid,
     #problems-container .simplify-rationals-problem-grid,
     #problems-container .number-sequences-problem-grid,
+    #problems-container .operator-puzzles-problem-grid,
     #problems-container .mixed-operations-grid {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
@@ -1012,6 +1013,26 @@ footer {
         padding: 0;
         page-break-inside: avoid;
         background-color: transparent !important;
+    }
+
+    /* === Operator puzzles === */
+    .operator-puzzle-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14pt;
+        font-weight: bold;
+        line-height: 5mm;
+        border: none;
+        padding: 0;
+        page-break-inside: avoid;
+        background-color: transparent !important;
+    }
+
+    .operator-puzzle-item .op-blank {
+        display: inline-block;
+        width: 8mm;
+        border-bottom: 0.4mm solid #333;
+        margin: 0 1mm;
+        vertical-align: baseline;
     }
 
     .problem {
@@ -1356,6 +1377,20 @@ footer {
     width: 80px !important;
     margin-right: 10px;
     text-align: center;
+}
+
+/* --- Operator puzzles (screen) --- */
+.operator-puzzle-item .puzzle {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+}
+
+.operator-puzzle-item .op-blank {
+    display: inline-block;
+    width: 1.4em;
+    border-bottom: 2px solid #333;
+    margin: 0 0.15em;
+    vertical-align: baseline;
 }
 
 /* --- Styles for Proportion Problems --- */

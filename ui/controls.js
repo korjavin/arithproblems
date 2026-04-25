@@ -437,6 +437,28 @@ export function renderSimplifyRationalsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+export function renderOperatorPuzzlesControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="op-num-operands">${t.num_operands_label}</label>
+            <input type="number" id="op-num-operands" value="4" min="3" max="6">
+        </div>
+        <div>
+            <label for="op-max-operand">${t.max_operand_label}</label>
+            <input type="number" id="op-max-operand" value="10" min="2" max="20">
+        </div>
+        <div>
+            <input type="checkbox" id="op-allow-brackets">
+            <label for="op-allow-brackets">${t.allow_brackets_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="op-mix-operand-blanks">
+            <label for="op-mix-operand-blanks">${t.mix_operand_blanks_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderNumberSequencesControls(container, t) {
     container.innerHTML = `
         <div>
