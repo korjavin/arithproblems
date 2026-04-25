@@ -48,6 +48,39 @@ function generateSquares({ numTerms, maxValue }) {
     return { terms: terms.slice(0, numTerms), answer: terms[numTerms], type: 'squares' };
 }
 
+function generateAlternating({ numTerms, maxValue, allowNegative }) {
+    const muls = [2, 3];
+    const addsPositive = [1, 2, 3, 4, 5];
+    const addsAll = [-5, -4, -3, -2, -1, 1, 2, 3, 4, 5];
+    for (let attempt = 0; attempt < 80; attempt++) {
+        const start = getRandomInt(1, Math.min(10, maxValue));
+        const mul = getRandomFromArray(muls);
+        const add = getRandomFromArray(allowNegative ? addsAll : addsPositive);
+        const opSpecs = [{ kind: 'mul', val: mul }, { kind: 'add', val: add }];
+        const order = getRandomInt(0, 1) === 0 ? [0, 1] : [1, 0];
+        const apply = (v, op) => op.kind === 'mul' ? v * op.val : v + op.val;
+        const terms = [start];
+        for (let i = 0; i < numTerms; i++) terms.push(apply(terms[i], opSpecs[order[i % 2]]));
+        const ok = terms.every(t => Math.abs(t) <= maxValue && (allowNegative || t >= 0));
+        if (ok) {
+            return {
+                terms: terms.slice(0, numTerms),
+                answer: terms[numTerms],
+                type: 'alternating',
+                meta: { ops: order.map(i => opSpecs[i]) },
+            };
+        }
+    }
+    const terms = [1];
+    for (let i = 0; i < numTerms; i++) terms.push(i % 2 === 0 ? terms[i] * 2 : terms[i] + 1);
+    return {
+        terms: terms.slice(0, numTerms),
+        answer: terms[numTerms],
+        type: 'alternating',
+        meta: { ops: [{ kind: 'mul', val: 2 }, { kind: 'add', val: 1 }] },
+    };
+}
+
 function generateFibonacci({ numTerms, maxValue }) {
     for (let attempt = 0; attempt < 30; attempt++) {
         const a = getRandomInt(1, 5);
@@ -68,6 +101,7 @@ const generators = {
     geometric: generateGeometric,
     squares: generateSquares,
     fibonacci: generateFibonacci,
+    alternating: generateAlternating,
 };
 
 export function generateNumberSequencesData({ types, numTerms, maxValue, allowNegative = false, numberOfProblems }) {

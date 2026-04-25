@@ -347,6 +347,7 @@
             "type_geometric_label": "Geometrisch (gleicher Faktor)",
             "type_squares_label": "Quadratzahlen",
             "type_fibonacci_label": "Fibonacci-artig (Summe der zwei vorigen)",
+            "type_alternating_label": "Wechselnde Regeln (z. B. ×2, −1 im Zyklus)",
             "num_terms_label": "Sichtbare Glieder:",
             "max_value_label": "Maximalwert:",
             "allow_negative_label": "Negative Zahlen erlauben",

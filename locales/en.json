@@ -421,6 +421,7 @@
             "type_geometric_label": "Geometric (constant ratio)",
             "type_squares_label": "Squares",
             "type_fibonacci_label": "Fibonacci-like (sum of previous two)",
+            "type_alternating_label": "Alternating rules (e.g. ×2, −1 in cycle)",
             "num_terms_label": "Visible Terms:",
             "max_value_label": "Max Value:",
             "allow_negative_label": "Allow negative numbers",

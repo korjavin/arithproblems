@@ -456,6 +456,10 @@ export function renderNumberSequencesControls(container, t) {
             <label for="ns-type-fibonacci">${t.type_fibonacci_label}</label>
         </div>
         <div>
+            <input type="checkbox" id="ns-type-alternating">
+            <label for="ns-type-alternating">${t.type_alternating_label}</label>
+        </div>
+        <div>
             <label for="ns-num-terms">${t.num_terms_label}</label>
             <input type="number" id="ns-num-terms" value="4" min="3" max="6">
         </div>

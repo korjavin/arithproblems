@@ -87,9 +87,29 @@ function testFibonacciCorrectness() {
     });
 }
 
+function testAlternatingCorrectness() {
+    const { problems } = generateNumberSequencesData({
+        types: ['alternating'],
+        numTerms: 5,
+        maxValue: 500,
+        numberOfProblems: 40,
+    });
+    problems.forEach((p, i) => {
+        assert(p.meta && Array.isArray(p.meta.ops) && p.meta.ops.length === 2, `problem ${i} alt: meta.ops`);
+        const kinds = p.meta.ops.map(o => o.kind).sort().join(',');
+        assert.strictEqual(kinds, 'add,mul', `problem ${i} alt: one mul + one add`);
+        const apply = (v, op) => op.kind === 'mul' ? v * op.val : v + op.val;
+        const all = p.terms.concat([p.answer]);
+        for (let j = 0; j < all.length - 1; j++) {
+            const expected = apply(all[j], p.meta.ops[j % 2]);
+            assert.strictEqual(all[j + 1], expected, `problem ${i} alt: step ${j} (${all[j]} -> ${all[j+1]}, expected ${expected})`);
+        }
+    });
+}
+
 function testMaxValueRespected() {
     const { problems } = generateNumberSequencesData({
-        types: ['arithmetic', 'geometric', 'squares', 'fibonacci'],
+        types: ['arithmetic', 'geometric', 'squares', 'fibonacci', 'alternating'],
         numTerms: 4,
         maxValue: 100,
         numberOfProblems: 50,
@@ -103,7 +123,7 @@ function testMaxValueRespected() {
 
 function testAllowNegativeFalseKeepsTermsNonNegative() {
     const { problems } = generateNumberSequencesData({
-        types: ['arithmetic', 'geometric', 'squares', 'fibonacci'],
+        types: ['arithmetic', 'geometric', 'squares', 'fibonacci', 'alternating'],
         numTerms: 4,
         maxValue: 200,
         allowNegative: false,
@@ -141,6 +161,7 @@ testArithmeticCorrectness();
 testGeometricCorrectness();
 testSquaresCorrectness();
 testFibonacciCorrectness();
+testAlternatingCorrectness();
 testMaxValueRespected();
 testAllowNegativeFalseKeepsTermsNonNegative();
 testAllowNegativeTrueProducesSomeNegatives();

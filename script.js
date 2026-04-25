@@ -659,6 +659,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (document.getElementById('ns-type-geometric').checked) types.push('geometric');
             if (document.getElementById('ns-type-squares').checked) types.push('squares');
             if (document.getElementById('ns-type-fibonacci').checked) types.push('fibonacci');
+            if (document.getElementById('ns-type-alternating').checked) types.push('alternating');
 
             const { problems, controlSums } = generateNumberSequencesData({
                 types,

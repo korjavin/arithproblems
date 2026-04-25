@@ -347,6 +347,7 @@
             "type_geometric_label": "Геометрическая (постоянное отношение)",
             "type_squares_label": "Квадраты",
             "type_fibonacci_label": "Фибоначчи-подобная (сумма двух предыдущих)",
+            "type_alternating_label": "Чередующиеся правила (напр. ×2, −1 по кругу)",
             "num_terms_label": "Видимых членов:",
             "max_value_label": "Максимальное значение:",
             "allow_negative_label": "Разрешить отрицательные числа",
