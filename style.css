@@ -758,7 +758,7 @@ footer {
         background-image:
             linear-gradient(to right, #d0d0d0 1px, transparent 1px),
             linear-gradient(to bottom, #d0d0d0 1px, transparent 1px);
-        background-size: 5mm 5mm;
+        background-size: 6.25mm 6.25mm;
         background-color: #fff;
         /* Force background to print */
         -webkit-print-color-adjust: exact;
