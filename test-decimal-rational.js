@@ -11,13 +11,16 @@ function testProblemGeneration() {
 }
 
 function testProblemMix() {
-    let options = { problemMix: 'fraction-to-decimal', maxDecimalPlaces: 2, terminatingOnly: true, numberOfProblems: 10 };
-    let data = generateDecimalRationalData(options);
-    assert(data.problems.every(p => p.type === 'fraction-to-decimal'), 'Test Case 3 Failed: Not all problems are fraction-to-decimal.');
+    const testCases = [
+        { problemMix: 'fraction-to-decimal', expectedType: 'fraction-to-decimal', message: 'Test Case 3 Failed: Not all problems are fraction-to-decimal.' },
+        { problemMix: 'decimal-to-fraction', expectedType: 'decimal-to-fraction', message: 'Test Case 4 Failed: Not all problems are decimal-to-fraction.' }
+    ];
 
-    options = { problemMix: 'decimal-to-fraction', maxDecimalPlaces: 2, terminatingOnly: true, numberOfProblems: 10 };
-    data = generateDecimalRationalData(options);
-    assert(data.problems.every(p => p.type === 'decimal-to-fraction'), 'Test Case 4 Failed: Not all problems are decimal-to-fraction.');
+    for (const testCase of testCases) {
+        const options = { problemMix: testCase.problemMix, maxDecimalPlaces: 2, terminatingOnly: true, numberOfProblems: 10 };
+        const data = generateDecimalRationalData(options);
+        assert(data.problems.every(p => p.type === testCase.expectedType), testCase.message);
+    }
 
     console.log('All problem mix tests passed!');
 }
@@ -40,17 +43,17 @@ function testTerminatingOnly() {
 }
 
 function testInputValidation() {
-    assert.throws(() => {
-        generateDecimalRationalData({ problemMix: 'mixed', maxDecimalPlaces: 0, terminatingOnly: true, numberOfProblems: 10 });
-    }, Error, 'Test Case 6 Failed: Did not throw for maxDecimalPlaces < 1.');
+    const testCases = [
+        { options: { problemMix: 'mixed', maxDecimalPlaces: 0, terminatingOnly: true, numberOfProblems: 10 }, message: 'Test Case 6 Failed: Did not throw for maxDecimalPlaces < 1.' },
+        { options: { problemMix: 'mixed', maxDecimalPlaces: 5, terminatingOnly: true, numberOfProblems: 10 }, message: 'Test Case 7 Failed: Did not throw for maxDecimalPlaces > 4.' },
+        { options: { problemMix: 'mixed', maxDecimalPlaces: 2, terminatingOnly: true, numberOfProblems: 51 }, message: 'Test Case 8 Failed: Did not throw for numberOfProblems > 50.' }
+    ];
 
-    assert.throws(() => {
-        generateDecimalRationalData({ problemMix: 'mixed', maxDecimalPlaces: 5, terminatingOnly: true, numberOfProblems: 10 });
-    }, Error, 'Test Case 7 Failed: Did not throw for maxDecimalPlaces > 4.');
-
-    assert.throws(() => {
-        generateDecimalRationalData({ problemMix: 'mixed', maxDecimalPlaces: 2, terminatingOnly: true, numberOfProblems: 51 });
-    }, Error, 'Test Case 8 Failed: Did not throw for numberOfProblems > 50.');
+    for (const testCase of testCases) {
+        assert.throws(() => {
+            generateDecimalRationalData(testCase.options);
+        }, Error, testCase.message);
+    }
 
     console.log('All input validation tests passed!');
 }
