@@ -268,15 +268,51 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10)
             });
 
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid mixed-operations-grid">${problems.map(p =>
-                `<div class="arith-problem mixed-op-problem">
-                    <div class="operation-text">${p.expression} = </div>
-                    <div class="answer-space"></div>
-                </div>`
-            ).join('')}</div>`;
+            const h3 = document.createElement('h3');
+            h3.textContent = t.problems_title;
+            DOM.problemsContainer.appendChild(h3);
+
+            const gridDiv = document.createElement('div');
+            gridDiv.className = 'arithmetic-grid mixed-operations-grid';
+
+            problems.forEach(p => {
+                const problemDiv = document.createElement('div');
+                problemDiv.className = 'arith-problem mixed-op-problem';
+
+                const operationTextDiv = document.createElement('div');
+                operationTextDiv.className = 'operation-text';
+                operationTextDiv.textContent = `${p.expression} = `;
+
+                const answerSpaceDiv = document.createElement('div');
+                answerSpaceDiv.className = 'answer-space';
+
+                problemDiv.appendChild(operationTextDiv);
+                problemDiv.appendChild(answerSpaceDiv);
+                gridDiv.appendChild(problemDiv);
+            });
+
+            DOM.problemsContainer.appendChild(gridDiv);
 
             if (answerRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
+                const drContainer = document.createElement('div');
+                drContainer.className = 'digital-root-check-grid-container';
+
+                const h4 = document.createElement('h4');
+                h4.textContent = t.digital_root_grid_title;
+                drContainer.appendChild(h4);
+
+                const drGrid = document.createElement('div');
+                drGrid.className = 'digital-root-check-grid';
+
+                answerRoots.forEach(item => {
+                    const drCell = document.createElement('div');
+                    drCell.className = 'dr-cell';
+                    drCell.textContent = item.root;
+                    drGrid.appendChild(drCell);
+                });
+
+                drContainer.appendChild(drGrid);
+                DOM.problemsContainer.appendChild(drContainer);
             }
         } catch (error) {
             console.error(error);
