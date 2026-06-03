@@ -70,4 +70,4 @@ jobs:
         uses: distributhor/workflow-webhook@v3
         with:
           webhook_url: ${{ secrets.PORTAINER_REDEPLOY_HOOK }}
-          webhook_secret: "trigger"
+          webhook_secret: ${{ secrets.PORTAINER_WEBHOOK_SECRET }}
