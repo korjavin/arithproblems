@@ -92,3 +92,35 @@ export function shuffleArray(arr) {
     }
     return newArr;
 }
+
+/**
+ * Generates a random coefficient.
+ * @param {number} range - The maximum absolute value for the coefficient.
+ * @param {boolean} [allowZero=false] - Whether the coefficient can be zero.
+ * @param {boolean} [allowNegative=true] - Whether the coefficient can be negative.
+ * @returns {number} The generated coefficient.
+ */
+export function getRandomCoefficient(range, allowZero = false, allowNegative = true) {
+    if (allowZero && allowNegative) {
+        return getRandomInt(-range, range);
+    } else if (allowZero && !allowNegative) {
+        return getRandomInt(0, range);
+    }
+
+    const val = getRandomInt(1, range);
+    if (!allowNegative) {
+        return val;
+    }
+    return getRandomInt(0, 1) === 0 ? val : -val;
+}
+
+/**
+ * Generates a random solution for equations.
+ * @param {number} range - The maximum absolute value for the solution.
+ * @param {boolean} allowNegative - Whether the solution can be negative.
+ * @returns {number} The generated solution.
+ */
+export function getRandomSolution(range, allowNegative) {
+    const sol = getRandomInt(1, range);
+    return allowNegative && getRandomInt(1, 100) <= 30 ? -sol : sol;
+}

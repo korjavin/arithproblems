@@ -1,17 +1,4 @@
-import { digitalRoot, getRandomInt, getRandomFromArray } from '../utils.js';
-
-function getRandomCoefficient(coefficientRange, allowZero = false) {
-    if (allowZero) {
-        return getRandomInt(-coefficientRange, coefficientRange);
-    }
-    const val = getRandomInt(1, coefficientRange);
-    return getRandomInt(0, 1) === 0 ? val : -val;
-}
-
-function getRandomSolution(solutionRange, allowNegativeSolutions) {
-    const sol = getRandomInt(1, solutionRange);
-    return allowNegativeSolutions && getRandomInt(1, 100) <= 30 ? -sol : sol;
-}
+import { digitalRoot, getRandomInt, getRandomFromArray, getRandomCoefficient, getRandomSolution } from '../utils.js';
 
 function formatCoefficient(coeff, variable, isFirst = false) {
     if (coeff === 0) return '';
