@@ -67,7 +67,4 @@ jobs:
       - name: 🚀 Trigger Portainer Redeploy Webhook
         # This step runs AFTER the image is pushed and the git commit is done.
         # It guarantees the image exists before Portainer tries to pull.
-        uses: distributhor/workflow-webhook@v3
-        with:
-          webhook_url: ${{ secrets.PORTAINER_REDEPLOY_HOOK }}
-          webhook_secret: "trigger"
+        run: curl -X POST -f "${{ secrets.PORTAINER_REDEPLOY_HOOK }}"
