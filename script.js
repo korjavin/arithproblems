@@ -332,10 +332,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 noRemainder: document.getElementById('md-no-remainder').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid problem-list-grid">${problems.map(p => p.type === 'multiplication' ? `<div class="arith-problem multiplication-problem"><div class="operand-1">${p.factor1}</div><div class="operator-operand2"><span class="operator">${p.operator}</span><span class="operand-2">${p.factor2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>` : `<div class="arith-problem division-problem-user"><div class="dividend">${p.dividend}</div><div class="divisor-container"><div class="divisor">${p.divisor}</div><div class="answer-line"></div><div class="answer-space"></div></div></div>`).join('')}</div>`;
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid problem-list-grid">${problems.map(p => p.type === 'multiplication' ? `<div class="arith-problem multiplication-problem"><div class="operand-1">${p.factor1}</div><div class="operator-operand2"><span class="operator">${p.operator}</span><span class="operand-2">${p.factor2}</span></div><div class="problem-line"></div><div class="answer-space"></div></div>` : `<div class="arith-problem division-problem-user"><div class="dividend">${p.dividend}</div><div class="divisor-container"><div class="divisor">${p.divisor}</div><div class="answer-line"></div><div class="answer-space"></div></div></div>`).join('')}</div>`;
             if (answerRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${answerRoots.map(item => `<div class="dr-cell">${item.root}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_mult_digits || error.message);
         }
@@ -487,14 +488,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 wholePercentsOnly: document.getElementById('pct-whole-percents-only').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid percentage-problem-grid">${problems.map(p => {
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid percentage-problem-grid">${problems.map(p => {
                 if (p.type === 'find-percent') return `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${p.percentage}% ${t.of_text} ${p.number} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'find-what-percent') return `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${p.part} ${t.is_text} ${t.what_percent_text} ${t.of_text} ${p.whole}?</span><div class="answer-space"></div></div></div>`;
                 return `<div class="percentage-problem-item"><div class="problem-content"><span class="percentage-text">${p.percentage}% ${t.of_text} ${t.what_number_text} ${t.is_text} ${p.part}?</span><div class="answer-space"></div></div></div>`;
             }).join('')}</div>`;
             if (digitalRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_max_number || error.message);
         }
@@ -511,7 +513,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 wholeNumbersOnly: document.getElementById('geo-whole-numbers-only').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="arithmetic-grid geometry-problem-grid">${problems.map(p => {
+            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid geometry-problem-grid">${problems.map(p => {
                 if (p.type === 'rectangles') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${p.length}, ${t.width_text} = ${p.width}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${p.length}, ${t.width_text} = ${p.width}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'squares') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${p.side}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${p.side}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'triangles') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.base_text} = ${p.base}, ${t.height_text} = ${p.height}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.sides_text} = ${p.side1}, ${p.side2}, ${p.side3}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
@@ -519,8 +521,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return '';
             }).join('')}</div>`;
             if (digitalRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_max_dimension || error.message);
         }
@@ -554,15 +557,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const { problems, digitalRoots } = generateLinearEquationsNVarsData(params);
 
             // Render problems based on variable count
+            let html = '';
+
             if (variableCount === 1) {
                 // Single variable equations
-                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text || 'Solve for x:'}</span><br><span class="equation">${p.text}</span><div class="answer-space"></div></div></div>`).join('')}</div>`;
+                html = `<h3>${t.problems_title || 'Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-item"><div class="problem-content"><span class="equation-text">${t.solve_for_x_text || 'Solve for x:'}</span><br><span class="equation">${p.text}</span><div class="answer-space"></div></div></div>`).join('')}</div>`;
             } else {
                 // Multi-variable systems
                 const variableNames = ['x', 'y', 'z', 'w'].slice(0, variableCount);
                 const solveText = `Solve for ${variableNames.join(', ')}:`;
 
-                DOM.problemsContainer.innerHTML = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount - 1)}</div></div></div>`).join('')}</div>`;
+                html = `<h3>${t.problems_title || 'Systems of Linear Equations'}</h3><div class="arithmetic-grid linear-equations-problem-grid">${problems.map(p => `<div class="linear-equation-system"><div class="problem-content"><span class="equation-text">${solveText}</span><br><div class="system-equations">${p.equations.map(eq => `<div class="equation">${eq}</div>`).join('')}</div><div class="answer-space">${'<br>'.repeat(variableCount - 1)}</div></div></div>`).join('')}</div>`;
             }
 
             if (digitalRoots.length > 0) {
@@ -570,8 +575,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     (t.digital_root_grid_subtitle || 'Digital roots for verification') :
                     `Sum of |${['x', 'y', 'z', 'w'].slice(0, variableCount).join('| + |')}| digital roots for verification`;
 
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title || 'Digital Root Check'}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(`Error: ${error.message}`);
         }
@@ -587,10 +593,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
                 translations: t,
             });
-            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3><div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">Answer: </div></div></div>`).join('')}</div>`;
+            let html = `<h3>${t.problems_title}</h3><div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">Answer: </div></div></div>`).join('')}</div>`;
             if (digitalRoots.length > 0) {
-                DOM.problemsContainer.innerHTML += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_num_problems || error.message);
         }
