@@ -20,6 +20,7 @@ import { generateSimplifyRationalsData } from './generators/simplify-rationals.j
 import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
+import { generateBooleanLogicData } from './generators/boolean-logic.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -79,6 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "number-sequences": controls.renderNumberSequencesControls,
         "operator-puzzles": controls.renderOperatorPuzzlesControls,
         "compare-expressions": controls.renderCompareExpressionsControls,
+        "boolean-logic": controls.renderBooleanLogicControls,
     };
 
     const problemRenderers = {
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "number-sequences": renderNumberSequencesProblems,
         "operator-puzzles": renderOperatorPuzzlesProblems,
         "compare-expressions": renderCompareExpressionsProblems,
+        "boolean-logic": renderBooleanLogicProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -739,6 +742,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    function renderBooleanLogicProblems(translations) {
+        const t = translations.script.boolean_logic;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateBooleanLogicData({
+                numVariables: parseInt(document.getElementById('bl-num-variables').value, 10),
+                complexity: parseInt(document.getElementById('bl-complexity').value, 10),
+                allowImplication: document.getElementById('bl-allow-implication').checked,
+                allowBiconditional: document.getElementById('bl-allow-biconditional').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            let html = `<h3>${t.problems_title}</h3>`;
+            html += `<p class="print-instructions">${t.print_instructions}</p>`;
+            html += `<div class="arithmetic-grid boolean-logic-problem-grid">`;
+            html += problems.map(p => {
+                const assignment = p.variables.map(v => `${v.name} = ${v.value ? t.true_symbol : t.false_symbol}`).join(', ');
+                return `<div class="boolean-logic-item"><div class="problem-content"><span class="puzzle">${p.expression}</span><span class="bl-assignment">${assignment}</span><span class="bl-answer">${t.answer_prompt} <span class="bl-blank"></span></span></div></div>`;
+            }).join('');
+            html += `</div>`;
+            if (controlSums.length > 0) {
+                html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
+            }
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
     function renderOperatorPuzzlesProblems(translations) {
         const t = translations.script.operator_puzzles;
         DOM.problemsContainer.innerHTML = '';
@@ -851,7 +883,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.printButton.addEventListener("click", () => {
             // Calculate optimal column count for print layout
             // Target ratio: 3:4 (columns:rows), meaning rows/cols should be ~1.33
-            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .operator-puzzles-problem-grid, .compare-expressions-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
+            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .operator-puzzles-problem-grid, .compare-expressions-problem-grid, .boolean-logic-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
 
             if (problemGrid) {
                 const problemItems = Array.from(problemGrid.children);

@@ -800,6 +800,7 @@ footer {
     #problems-container .number-sequences-problem-grid,
     #problems-container .operator-puzzles-problem-grid,
     #problems-container .compare-expressions-problem-grid,
+    #problems-container .boolean-logic-problem-grid,
     #problems-container .mixed-operations-grid {
         display: grid !important;
         /* Default: 3 columns, will be overridden by inline style based on problem count */
@@ -1060,8 +1061,34 @@ footer {
        font matches the item (14pt) and the on-screen width measurement stays
        accurate. */
     .operator-puzzle-item .puzzle,
-    .compare-expression-item .puzzle {
+    .compare-expression-item .puzzle,
+    .boolean-logic-item .puzzle {
         font-size: 1em;
+    }
+
+    /* === Boolean logic === */
+    .boolean-logic-item {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12pt;
+        font-weight: bold;
+        border: none;
+        padding: 0;
+        page-break-inside: avoid;
+        background-color: transparent !important;
+    }
+
+    .boolean-logic-item .bl-assignment,
+    .boolean-logic-item .bl-answer {
+        display: block;
+        font-size: 10pt;
+        margin-top: 1mm;
+    }
+
+    .boolean-logic-item .bl-blank {
+        display: inline-block;
+        width: 14mm;
+        border-bottom: 0.4mm solid #333;
+        vertical-align: baseline;
     }
 
     /* === Compare expressions === */
@@ -1709,4 +1736,23 @@ footer {
     margin-left: 10px;
     height: 1.5em;
     min-height: auto;
+}
+
+/* --- Boolean logic (screen) --- */
+.boolean-logic-item .puzzle {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+}
+
+.boolean-logic-item .bl-assignment,
+.boolean-logic-item .bl-answer {
+    display: block;
+    margin-top: 0.3em;
+}
+
+.boolean-logic-item .bl-blank {
+    display: inline-block;
+    width: 3em;
+    border-bottom: 2px solid #333;
+    vertical-align: baseline;
 }

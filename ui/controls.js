@@ -463,6 +463,28 @@ export function renderCompareExpressionsControls(container, t) {
     `;
 }
 
+export function renderBooleanLogicControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="bl-num-variables">${t.num_variables_label}</label>
+            <input type="number" id="bl-num-variables" value="4" min="2" max="6">
+        </div>
+        <div>
+            <label for="bl-complexity">${t.complexity_label}</label>
+            <input type="number" id="bl-complexity" value="3" min="1" max="4">
+        </div>
+        <div>
+            <input type="checkbox" id="bl-allow-implication" checked>
+            <label for="bl-allow-implication">${t.allow_implication_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="bl-allow-biconditional" checked>
+            <label for="bl-allow-biconditional">${t.allow_biconditional_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderOperatorPuzzlesControls(container, t) {
     container.innerHTML = `
         <div>
