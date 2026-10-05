@@ -45,6 +45,8 @@
     "operator_puzzles_p": "Fill in the missing operators (and brackets, if enabled) to make the equation true.",
     "compare_expressions_h3": "Compare Expressions",
     "compare_expressions_p": "Fill in <, >, or = between two expressions. Quick mental-math drill.",
+    "boolean_logic_h3": "Boolean Logic",
+    "boolean_logic_p": "Evaluate logical expressions (∧ ∨ ¬ → ↔) given true/false values for each variable.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -419,6 +421,21 @@
             "control_sum_grid_title": "Control Sum Self-Check Grid",
             "control_sum_grid_subtitle": "Find the digital root of the sum of simplified numerator and denominator coefficients.",
             "error_message": "Error generating rational simplification problems."
+        },
+        "boolean_logic": {
+            "num_variables_label": "Number of variables (2-6):",
+            "complexity_label": "Complexity (nesting depth 1-4):",
+            "allow_implication_label": "Include implication (→)",
+            "allow_biconditional_label": "Include biconditional (↔)",
+            "description": "Each problem is a nested logical expression with assigned truth values. Decide whether the whole expression is true or false.",
+            "problems_title": "Boolean Logic",
+            "print_instructions": "Substitute the values, evaluate the expression, and write T (true) or F (false).",
+            "answer_prompt": "Answer:",
+            "true_symbol": "T",
+            "false_symbol": "F",
+            "control_sum_grid_title": "Count Self-Check Grid",
+            "control_sum_grid_subtitle": "Count the sub-expressions (every bracketed group and every ¬) that come out true. Take the last digit of that count and compare to the cell.",
+            "error_message": "Error generating boolean logic problems."
         },
         "compare_expressions": {
             "num_operands_label": "Operands per side:",

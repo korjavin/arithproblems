@@ -43,6 +43,8 @@
     "operator_puzzles_p": "Setze die fehlenden Rechenzeichen (und ggf. Klammern) so ein, dass die Gleichung stimmt.",
     "compare_expressions_h3": "Ausdrücke vergleichen",
     "compare_expressions_p": "Setze <, > oder = zwischen die beiden Ausdrücke. Schnelle Kopfrechen-Übung.",
+    "boolean_logic_h3": "Boolesche Logik",
+    "boolean_logic_p": "Werte logische Ausdrücke (∧ ∨ ¬ → ↔) mit gegebenen Wahr/Falsch-Werten aus.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -345,6 +347,21 @@
             "control_sum_grid_title": "Kontrollsummen-Raster",
             "control_sum_grid_subtitle": "Finde die Quersumme der Summe der vereinfachten Zähler- und Nennerkoeffizienten.",
             "error_message": "Fehler beim Erstellen der Bruchterm-Vereinfachungsaufgaben."
+        },
+        "boolean_logic": {
+            "num_variables_label": "Anzahl der Variablen (2-6):",
+            "complexity_label": "Komplexität (Verschachtelungstiefe 1-4):",
+            "allow_implication_label": "Implikation (→) einbeziehen",
+            "allow_biconditional_label": "Bikonditional (↔) einbeziehen",
+            "description": "Jede Aufgabe ist ein verschachtelter logischer Ausdruck mit vorgegebenen Wahrheitswerten. Entscheide, ob der gesamte Ausdruck wahr oder falsch ist.",
+            "problems_title": "Boolesche Logik",
+            "print_instructions": "Setze die Werte ein, werte den Ausdruck aus und schreibe W (wahr) oder F (falsch).",
+            "answer_prompt": "Antwort:",
+            "true_symbol": "W",
+            "false_symbol": "F",
+            "control_sum_grid_title": "Zähl-Kontrollraster",
+            "control_sum_grid_subtitle": "Zähle die Teilausdrücke (jede Klammer und jedes ¬), die wahr sind. Nimm die letzte Ziffer der Anzahl und vergleiche mit dem Feld.",
+            "error_message": "Fehler beim Erzeugen der Aufgaben zur Booleschen Logik."
         },
         "compare_expressions": {
             "num_operands_label": "Operanden pro Seite:",
