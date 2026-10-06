@@ -1,0 +1,473 @@
+/* ==========================================================================
+   Squared-paper print layout ("в клетку").
+
+   Linked with media="print"; ui/print-grid.js also switches it on for a
+   moment to measure the sheet. The rule of this file: every box inside
+   #problems-container is a whole number of cells, so every glyph lands in a
+   cell no matter which font the browser picks.
+
+   - ui/print-grid.js wraps glyphs in .gc (1 cell), words in .gw (--n cells)
+     and spaces in .gs (dropped) / .gs-keep (1 cell).
+   - Margins and paddings are reset; spacing is added back in cells.
+   - Lines (fraction bars, underlines, boxes) are drawn with box-shadow so
+     they never take up layout space.
+
+   Keep --cell and @page in sync with CELL_MM / PAGE_COLS / PAGE_ROWS in
+   ui/print-grid.js.
+   ========================================================================== */
+
+/* A4 minus margins = 200mm x 285mm = 40 x 57 cells of 5mm. */
+@page {
+    size: A4;
+    margin: 6mm 5mm;
+}
+
+#problems-container {
+    --cell: 5mm;
+    --ink: #222;
+    --rule: 0.4mm;
+    --mono: 'Courier New', Courier, 'Liberation Mono', 'Nimbus Mono PS', monospace;
+
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    min-height: calc(var(--cell) * var(--print-sheet-rows, 57) - 0.5mm);
+    font-family: var(--mono);
+    color: var(--ink);
+    background-color: #fff;
+    background-image:
+        linear-gradient(to right, #c8c8c8 0.2mm, transparent 0.2mm),
+        linear-gradient(to bottom, #c8c8c8 0.2mm, transparent 0.2mm);
+    background-size: var(--cell) var(--cell);
+    background-position: 0 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* Only used while measuring on screen: the printable width of the page. */
+#problems-container.pg-measuring {
+    width: calc(var(--cell) * 40) !important;
+    flex: none !important;
+}
+
+#problems-container .pg-probe {
+    position: absolute;
+    width: var(--cell);
+    height: 0;
+}
+
+#problems-container > * {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    line-height: var(--cell) !important;
+}
+
+/* === Worksheet header === */
+#problems-container > h3 {
+    display: block !important;
+    height: var(--cell);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font: bold 12pt var(--mono);
+    line-height: var(--cell) !important;
+    text-align: center;
+    color: var(--ink);
+}
+
+#problems-container > .print-instructions {
+    font: italic 9pt var(--mono);
+    line-height: var(--cell) !important;
+    text-align: center;
+    color: #444;
+}
+
+#problems-container > .warning-message {
+    display: none !important;
+}
+
+/* === Problem grid: columns and rows are whole cells === */
+#problems-container .pg-grid {
+    display: grid !important;
+    grid-template-columns: repeat(var(--print-cols, 1), calc(var(--cell) * var(--print-col-cells, 40))) !important;
+    grid-auto-rows: var(--print-row-size, auto) !important;
+    gap: 0 !important;
+    align-items: start !important;
+    justify-items: start !important;
+    margin: var(--cell) 0 calc(var(--cell) * var(--print-gap-after, 1)) 0 !important;
+}
+
+/* Measuring natural item widths. */
+#problems-container .pg-grid.pg-natural {
+    grid-template-columns: max-content !important;
+}
+
+#problems-container .pg-item {
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: 100%;
+    justify-self: start !important;
+    align-self: start !important;
+    font-family: var(--mono) !important;
+    font-size: 14pt !important;
+    font-weight: bold;
+    line-height: var(--cell) !important;
+    text-align: left;
+    white-space: nowrap;
+    color: var(--ink);
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+#problems-container .pg-item * {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent;
+    box-shadow: none;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    line-height: var(--cell) !important;
+    color: inherit;
+}
+
+#problems-container .pg-item *::before,
+#problems-container .pg-item *::after {
+    display: none !important;
+}
+
+/* === Glyph boxes === */
+#problems-container .gc,
+#problems-container .gs-keep,
+#problems-container .gw {
+    display: inline-block;
+    height: var(--cell);
+    vertical-align: top;
+    overflow: visible;
+}
+
+#problems-container .gc,
+#problems-container .gs-keep {
+    width: var(--cell);
+    text-align: center;
+}
+
+/* Zero-width box: the glyph (0.6em wide in a monospace font) is pulled back
+   by half its width so it is centred on the grid line. */
+#problems-container .gc.gc-sep {
+    width: 0;
+    text-align: left;
+    text-indent: -0.3em;
+}
+
+#problems-container .gs {
+    display: none;
+}
+
+#problems-container .gs.gs-keep {
+    display: inline-block;
+}
+
+#problems-container .pg-item .gw {
+    width: calc(var(--cell) * var(--n, 1));
+    font-size: 11pt !important;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* === Blanks and answer lines (drawn on the bottom grid line) === */
+#problems-container .pg-item .answer-space,
+#problems-container .pg-item .bl-blank {
+    display: inline-block;
+    width: calc(var(--cell) * 4);
+    height: var(--cell);
+    vertical-align: top;
+    box-shadow: inset 0 calc(-1 * var(--rule)) 0 var(--ink);
+}
+
+#problems-container .pg-item .op-blank,
+#problems-container .pg-item .cmp-blank {
+    display: inline-block;
+    width: var(--cell);
+    height: var(--cell);
+    vertical-align: top;
+    box-shadow: inset 0 0 0 0.3mm var(--ink);
+}
+
+#problems-container .pg-item .op-blank.op-blank-number {
+    width: calc(var(--cell) * 2);
+}
+
+#problems-container .pg-item .calculation-space {
+    display: none;
+}
+
+/* === Column arithmetic (addition, subtraction, multiplication) === */
+#problems-container .arith-problem:not(.mixed-op-problem):not(.division-problem-user) {
+    text-align: right;
+}
+
+#problems-container .arith-problem .operator-operand2 {
+    display: flex;
+}
+
+#problems-container .arith-problem .operator {
+    text-align: left;
+}
+
+#problems-container .arith-problem .operand-2 {
+    flex-grow: 1;
+    text-align: right;
+}
+
+#problems-container .arith-problem .problem-line {
+    height: 0;
+    box-shadow: 0 0 0 calc(var(--rule) / 2) var(--ink);
+}
+
+#problems-container .arith-problem:not(.mixed-op-problem):not(.division-problem-user) .answer-space {
+    display: none;
+}
+
+/* === Mixed operations: "8×2−4+3=____" on one line === */
+#problems-container .mixed-op-problem {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+/* === Division "уголком": dividend | divisor, quotient under the bar === */
+#problems-container .division-problem-user {
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+#problems-container .division-problem-user .divisor-container {
+    position: static;
+    box-shadow: inset var(--rule) 0 0 var(--ink);
+}
+
+#problems-container .division-problem-user .divisor {
+    padding-right: var(--cell) !important;
+    box-shadow: inset 0 calc(-1 * var(--rule)) 0 var(--ink);
+}
+
+#problems-container .division-problem-user .answer-line {
+    display: none;
+}
+
+#problems-container .division-problem-user .answer-space {
+    display: block;
+    width: auto;
+    box-shadow: none;
+}
+
+/* === Fractions: numerator in one row, bar on the grid line, denominator below === */
+#problems-container .pg-item .fraction {
+    display: inline-flex !important;
+    flex-direction: column;
+    vertical-align: top;
+}
+
+#problems-container .pg-item .fraction > .numerator,
+#problems-container .pg-item .fraction > .denominator {
+    display: block;
+    height: var(--cell);
+    text-align: left;
+    white-space: nowrap;
+    padding-left: calc(var(--cell) * var(--pad, 0)) !important;
+}
+
+#problems-container .pg-item .fraction > .numerator {
+    box-shadow: inset 0 calc(-1 * var(--rule)) 0 var(--ink);
+}
+
+/* Rows that contain fractions: symbols sit on the fraction bar. */
+#problems-container .fraction-problem-item .problem-content,
+#problems-container .fraction-operation-item .problem-content,
+#problems-container .simplify-rational-item .problem-content,
+#problems-container .proportion,
+#problems-container .fraction-display,
+#problems-container .decimal-display {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+}
+
+#problems-container .fraction-problem-item,
+#problems-container .fraction-operation-item,
+#problems-container .simplify-rational-item,
+#problems-container .proportion-problem-item,
+#problems-container .decimal-rational-problem-item {
+    display: block !important;
+}
+
+#problems-container .fraction-problem-item .answer-space,
+#problems-container .fraction-operation-item .answer-space,
+#problems-container .simplify-rational-item .answer-space,
+#problems-container .fraction-display .answer-space {
+    width: calc(var(--cell) * 3);
+    height: calc(var(--cell) * 2);
+    box-shadow: none;
+}
+
+/* === Text-and-numbers topics === */
+#problems-container .linear-equation-item .answer-space,
+#problems-container .linear-equation-system .answer-space {
+    display: none;
+}
+
+#problems-container .boolean-logic-item .bl-assignment,
+#problems-container .boolean-logic-item .bl-answer {
+    display: block;
+}
+
+#problems-container .boolean-logic-item .bl-blank {
+    width: calc(var(--cell) * 2);
+}
+
+/* === Word problems: prose wraps inside the column, one line per cell row === */
+#problems-container .word-problem-item {
+    justify-self: stretch !important;
+    white-space: normal;
+}
+
+#problems-container .word-problem-item .problem-text {
+    font-size: 11pt !important;
+    font-weight: normal;
+    white-space: normal;
+}
+
+#problems-container .word-problem-item .answer-space {
+    display: block;
+    width: auto;
+    box-shadow: none;
+    margin-top: var(--cell) !important;
+}
+
+/* === Pictures (houses, pyramids): boxes are whole cells === */
+#problems-container .house-problem,
+#problems-container .pyramid-problem {
+    display: block !important;
+}
+
+#problems-container .house-problem svg {
+    display: block;
+    width: calc(var(--cell) * 8) !important;
+    height: calc(var(--cell) * 7) !important;
+}
+
+#problems-container .pyramid-problem svg {
+    display: block;
+    width: calc(var(--cell) * 12) !important;
+    height: calc(var(--cell) * 8) !important;
+}
+
+/* === Multiplication chart: every cell is --mt-cell-w x 2 grid cells === */
+#problems-container > .multiplication-chart {
+    display: grid !important;
+    grid-template-columns: repeat(var(--mt-cols, 11), calc(var(--cell) * var(--mt-cell-w, 3)));
+    width: max-content !important;
+    margin-top: var(--cell) !important;
+    border-collapse: separate;
+    font: bold 14pt var(--mono);
+    box-shadow: inset var(--rule) var(--rule) 0 var(--ink) !important;
+}
+
+#problems-container > .multiplication-chart thead,
+#problems-container > .multiplication-chart tbody,
+#problems-container > .multiplication-chart tr {
+    display: contents;
+}
+
+#problems-container > .multiplication-chart th,
+#problems-container > .multiplication-chart td {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: calc(var(--cell) * 2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    line-height: var(--cell);
+    color: var(--ink);
+    box-shadow: inset calc(-1 * var(--rule)) calc(-1 * var(--rule)) 0 #555;
+}
+
+#problems-container > .multiplication-chart td.prefilled {
+    color: #555;
+    font-weight: normal;
+}
+
+/* === Self-check footer === */
+#problems-container > .digital-root-check-grid-container {
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+
+#problems-container > .digital-root-check-grid-container h4 {
+    margin: 0 !important;
+    padding: 0 !important;
+    font: bold 11pt var(--mono);
+    line-height: var(--cell) !important;
+    text-align: center;
+    color: var(--ink);
+}
+
+#problems-container > .digital-root-check-grid-container p {
+    margin: 0 !important;
+    padding: 0 !important;
+    font: 9pt var(--mono) !important;
+    line-height: var(--cell) !important;
+    text-align: center;
+    color: #444;
+}
+
+#problems-container .digital-root-check-grid {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-start !important;
+    gap: 0 var(--cell) !important;
+    margin: var(--cell) 0 0 0 !important;
+    padding: 0 !important;
+}
+
+#problems-container .dr-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    height: var(--cell) !important;
+    min-width: var(--cell) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: inset 0 0 0 0.3mm #777;
+    font: bold 11pt var(--mono);
+    line-height: var(--cell);
+    color: var(--ink);
+}

@@ -21,6 +21,7 @@ import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
+import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -205,6 +206,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const renderer = problemRenderers[currentTopic];
         if (renderer) {
             renderer(i18n.getTranslations());
+            snapToCells(DOM.problemsContainer);
         } else {
             console.error("Unknown topic for generation:", currentTopic);
         }
@@ -785,13 +787,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const opSymbol = (op) => op === '*' ? '×' : op;
             const blank = '<span class="op-blank"></span>';
+            const numberBlank = '<span class="op-blank op-blank-number"></span>';
             const formatPuzzle = (p) => {
                 const showBrackets = p.blankKind === 'operand';
                 let s = '';
                 for (let i = 0; i < p.operands.length; i++) {
                     if (showBrackets && i === p.bracketStart) s += '(';
                     if (p.blankKind === 'operand' && i === p.blankOperandIndex) {
-                        s += blank;
+                        s += numberBlank;
                     } else {
                         s += p.operands[i];
                     }
@@ -880,60 +883,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.topicItems.forEach(item => item.addEventListener("click", handleTopicChange));
         DOM.categoryHeaders.forEach(header => header.addEventListener("click", handleCategoryToggle));
         DOM.generateButton.addEventListener("click", handleGenerateClick);
-        DOM.printButton.addEventListener("click", () => {
-            // Calculate optimal column count for print layout
-            // Target ratio: 3:4 (columns:rows), meaning rows/cols should be ~1.33
-            const problemGrid = DOM.problemsContainer.querySelector('.arithmetic-grid, .fraction-problem-grid, .proportion-problem-grid, .decimal-rational-problem-grid, .percentage-problem-grid, .geometry-problem-grid, .linear-equations-problem-grid, .simplify-equations-problem-grid, .simplify-rationals-problem-grid, .number-sequences-problem-grid, .operator-puzzles-problem-grid, .compare-expressions-problem-grid, .boolean-logic-problem-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid');
-
-            if (problemGrid) {
-                const problemItems = Array.from(problemGrid.children);
-                const problemCount = problemItems.length;
-
-                // Measure the widest item at its single-line natural width so that
-                // problems that don't fit a 3-column layout (e.g. long mixed-operations
-                // expressions) get fewer columns instead of wrapping mid-expression.
-                const probedEls = problemItems.concat(
-                    problemItems.flatMap(it => Array.from(it.querySelectorAll('*')))
-                );
-                const wsRestore = probedEls.map(el => el.style.whiteSpace);
-                probedEls.forEach(el => { el.style.whiteSpace = 'nowrap'; });
-                const maxItemPx = problemItems.reduce((m, it) => Math.max(m, it.scrollWidth), 0);
-                probedEls.forEach((el, i) => { el.style.whiteSpace = wsRestore[i]; });
-
-                // A4 portrait minus the 5mm @page margins ≈ 200mm ≈ 756px at 96dpi.
-                const PRINT_PAGE_PX = 756;
-                const GAP_PX = 25; // ~6mm column gap
-                // 10% safety buffer: screen and print font sizes aren't always identical,
-                // so pad the estimate to avoid marginal-fit items wrapping in print.
-                const paddedItemPx = Math.ceil(maxItemPx * 1.1);
-                const maxColsByWidth = Math.max(
-                    1,
-                    Math.floor((PRINT_PAGE_PX + GAP_PX) / (paddedItemPx + GAP_PX))
-                );
-
-                // Find column count closest to 3:4 ratio within the width cap
-                let bestCols = 1;
-                let bestRatio = Infinity;
-                const targetRatio = 0.75; // 3:4 = 0.75
-                const upperBound = Math.min(5, problemCount, maxColsByWidth);
-
-                for (let cols = 1; cols <= upperBound; cols++) {
-                    const rows = Math.ceil(problemCount / cols);
-                    const ratio = cols / rows;
-                    const diff = Math.abs(ratio - targetRatio);
-
-                    if (diff < bestRatio) {
-                        bestRatio = diff;
-                        bestCols = cols;
-                    }
-                }
-
-                // Set CSS variable for print columns
-                problemGrid.style.setProperty('--print-cols', bestCols);
-            }
-
-            window.print();
-        });
+        DOM.printButton.addEventListener("click", () => window.print());
+        // Fit the worksheet onto the squared print grid. Runs for Ctrl+P too.
+        window.addEventListener('beforeprint', () => layoutForPrint(DOM.problemsContainer));
 
         DOM.languageSwitcher.addEventListener('click', (e) => {
             const lang = e.target.dataset.lang;
