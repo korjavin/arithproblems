@@ -473,7 +473,7 @@ For each language file (en.json, de.json, ru.json):
 - [ ] Verify control sums are correct
 - [ ] Test in all three languages (en, de, ru)
 - [ ] Test responsive layout on different screen sizes
-- [ ] Verify print layout looks correct
+- [ ] Verify print layout looks correct: every digit sits in its own 5mm cell (see `styles/print-grid.css`)
 
 ---
 
