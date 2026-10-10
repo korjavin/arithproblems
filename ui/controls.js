@@ -633,3 +633,19 @@ export function renderFindTheNumberControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderCombinatoricsControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="cb-type-${id}" checked>
+            <label for="cb-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${type('product')}${type('choose')}${type('arrange')}${type('handshakes')}${type('halftime')}${type('dominoes')}
+        <div>
+            <label for="cb-max-count">${t.max_count_label}</label>
+            <select id="cb-max-count">${[12, 24, 60, 120].map(v => `<option value="${v}"${v === 24 ? ' selected' : ''}>${v}</option>`).join('')}</select>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

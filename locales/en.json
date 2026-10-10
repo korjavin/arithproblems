@@ -53,6 +53,8 @@
     "time_calendar_p": "Clock times, durations, timetables, weekdays and dates as short story problems.",
     "find_the_number_h3": "Find the Number",
     "find_the_number_p": "Number riddles: numbers described in words, \"I think of a number\" chains, halving chains and linked letter equations.",
+    "combinatorics_h3": "Count the Possibilities",
+    "combinatorics_p": "List and count all possibilities: menus, choosing, arranging, handshakes, half-time scores, dominoes.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -810,6 +812,63 @@
                 "first_plus": "half of them and one more to {to}",
                 "rest": "then half of the rest to {to}",
                 "rest_plus": "then half of the rest and one more to {to}"
+            }
+        },
+        "combinatorics": {
+            "type_product_label": "One from each group (menus, outfits)",
+            "type_choose_label": "Choose some of them (order does not matter)",
+            "type_arrange_label": "Arrange in a row (PINs, apps, coloured cards)",
+            "type_handshakes_label": "Each with each (handshakes, games, lines)",
+            "type_halftime_label": "Half-time scores",
+            "type_dominoes_label": "Dominoes",
+            "max_count_label": "Largest answer:",
+            "description": "Counting problems: write down every possibility in a system, then count them. A lower largest answer keeps the lists short.",
+            "problems_title": "Count All Possibilities",
+            "answer_label": "Answer: ",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Take the digital root of each count.",
+            "error_message": "Error generating counting problems. Select at least one problem type.",
+            "list_prompt": "Write down all possibilities. How many are there?",
+            "group_format": "{label}: {items}",
+            "group_separator": "; ",
+            "card_format": "{colour} — {count}",
+            "product_groups": {
+                "menu": [
+                    { "label": "drinks", "items": ["tea", "juice", "milk", "cocoa"] },
+                    { "label": "main dishes", "items": ["soup", "pasta", "pizza", "fish"] },
+                    { "label": "desserts", "items": ["cake", "ice cream", "apple", "jelly"] }
+                ],
+                "outfit": [
+                    { "label": "trousers", "items": ["jeans", "shorts", "grey trousers", "black trousers"] },
+                    { "label": "shirts", "items": ["white shirt", "blue shirt", "striped shirt", "T-shirt"] },
+                    { "label": "pullovers", "items": ["red pullover", "green pullover", "hoodie", "cardigan"] }
+                ]
+            },
+            "choose_items": {
+                "toppings": ["cheese", "ham", "mushrooms", "olives", "tomatoes", "pepper"],
+                "flavours": ["vanilla", "chocolate", "strawberry", "lemon", "mint", "banana"]
+            },
+            "apps": ["Maps", "Mail", "Music", "Camera", "Notes", "Weather"],
+            "colours": ["yellow", "blue", "red", "green", "white"],
+            "colours_start": ["yellow", "blue", "red", "green", "white"],
+            "templates": {
+                "product_menu": "A café has a lunch menu — {groups}. A lunch is one dish from each group.",
+                "product_outfit": "{name} has these clothes — {groups}. An outfit is one item of each kind.",
+                "choose_friends": "{name} may invite {k} of the friends {items} to the cinema.",
+                "choose_toppings": "A pizza gets {k} different toppings out of {items}.",
+                "choose_flavours": "An ice-cream cup holds {k} scoops of different flavours, chosen from {items}.",
+                "arrange_apps": "{name} puts the apps {items} in one row on the phone screen.",
+                "arrange_digits": "A PIN code uses each of the digits {items} exactly once.",
+                "arrange_first": "{name} puts the apps {items} in one row on the phone screen, and {first} must be first.",
+                "arrange_cards": "{name} lays out all these cards in a row: {cards}. Cards of the same colour look alike.",
+                "arrange_cards_start": "{name} lays out all these cards in a row: {cards}. Cards of the same colour look alike. The first card must be {start0} or {start1}.",
+                "handshakes": "{n} friends meet, and each one shakes hands with each other one once.",
+                "tournament": "{n} teams play a tournament: each team plays each other team once.",
+                "lines": "{n} straight lines are drawn on a sheet. At most how many points of intersection can there be? Name the lines with letters.",
+                "halftime": "A football match ended {a}:{b}. What could the score have been at half-time?",
+                "halftime_second": "A football match ended {a}:{b}, and the number of goals scored in the second half was {k}. What could the score have been at half-time?",
+                "domino_set": "In a domino set each half of a tile shows 0 to {m} pips, and every pair of numbers (doubles like 2|2 too) appears on exactly one tile. Which tiles are in the set?",
+                "domino_with": "In a domino set each half of a tile shows 0 to {m} pips, and every pair of numbers (doubles like 2|2 too) appears on exactly one tile. Which tiles show at least one {v}?"
             }
         }
     }
