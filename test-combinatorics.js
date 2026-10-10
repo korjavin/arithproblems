@@ -112,7 +112,10 @@ assert.strictEqual(mixed.problems.length, 12);
 assert(mixed.problems.every(p => p.answer <= MAX_COUNT));
 assert.strictEqual(gen(TYPES, 24, 'en', 100).problems.length, 30);
 // The smallest cap still works for every type.
-TYPES.forEach(type => check(gen([type], 6).problems, gen([type], 6).controlSums, 6, 'en'));
+TYPES.forEach(type => {
+    const { problems, controlSums } = gen([type], 6);
+    check(problems, controlSums, 6, 'en');
+});
 
 // Invalid input.
 assert.throws(() => gen([], 24));
