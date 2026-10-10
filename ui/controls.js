@@ -698,6 +698,25 @@ export function renderGridFiguresControls(container, t) {
     `;
 }
 
+export function renderCubeBuildingsControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="cu-type-${id}" checked>
+            <label for="cu-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    const select = (id, label, values, fmt) => `
+        <div>
+            <label for="${id}">${label}</label>
+            <select id="${id}">${values.map(v => `<option value="${v}"${v === 3 ? ' selected' : ''}>${fmt(v)}</option>`).join('')}</select>
+        </div>`;
+    container.innerHTML = `
+        ${['count', 'complete', 'faces', 'glued', 'views', 'stairs', 'pyramid', 'painted', 'edges'].map(type).join('')}
+        ${select('cu-grid-size', t.grid_size_label, [2, 3, 4], v => `${v}×${v}`)}
+        ${select('cu-max-height', t.max_height_label, [3, 4, 5], v => v)}
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderMagicSquaresControls(container, t) {
     const select = (id, options, selected) => `<select id="ms-${id}">${options.map(v => `<option value="${v}"${v === selected ? ' selected' : ''}>${t[`${id}_${v}`]}</option>`).join('')}</select>`;
     container.innerHTML = `

@@ -404,6 +404,35 @@
     height: calc(var(--cell) * 8) !important;
 }
 
+/* === Cube buildings: plan = one digit per cell, staircase = one cube per cell === */
+#problems-container .cube-plan {
+    display: block;
+    margin-top: var(--cell) !important;
+}
+
+#problems-container .cube-plan-row {
+    display: block;
+    height: var(--cell);
+}
+
+#problems-container .cube-plan-row .cube-cell {
+    display: inline-block;
+    width: var(--cell);
+    height: var(--cell);
+    vertical-align: top;
+}
+
+#problems-container .cube-plan-row .gc {
+    box-shadow: inset 0 0 0 0.2mm var(--ink);
+}
+
+#problems-container .cube-stairs svg {
+    display: block;
+    margin-top: var(--cell) !important;
+    width: calc(var(--cell) * var(--n)) !important;
+    height: calc(var(--cell) * var(--n)) !important;
+}
+
 /* === Multiplication chart: every cell is --mt-cell-w x 2 grid cells === */
 #problems-container > .multiplication-chart {
     display: grid !important;
