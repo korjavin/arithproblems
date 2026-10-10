@@ -1,6 +1,6 @@
 import assert from 'assert';
 import fs from 'fs';
-import { generateDiceData, TYPES, NETS, UNIQUE_PAIR_SUMS } from './generators/dice.js';
+import { generateDiceData, TYPES, NETS, UNIQUE_PAIR_SUMS, TIPS, DIRS, tip, START } from './generators/dice.js';
 import { digitalRoot } from './utils.js';
 
 const LOCALES = Object.fromEntries(['en', 'de', 'ru'].map(l => [l, JSON.parse(fs.readFileSync(`./locales/${l}.json`, 'utf8')).script.dice]));
@@ -54,6 +54,44 @@ const chainVisible = (k, contacts) => {
     glued.forEach(g => assert.ok(g.length < 2 || g[0] !== g[1], 'a die glues two different faces'));
     return sum(glued.map(g => 21 - sum(g)));
 };
+
+// Tipping model, re-checked with axis vectors: positions top, bottom, front, back, right, left.
+const AXES = [[0, 0, 1], [0, 0, -1], [0, -1, 0], [0, 1, 0], [1, 0, 0], [-1, 0, 0]];
+const cross = ([a, b, c], [x, y, z]) => [b * z - c * y, c * x - a * z, a * y - b * x];
+const key = v => v.join(',');
+const axisOf = (s, value) => AXES[s.indexOf(value)];
+// Right-handed chirality w.r.t. START: value vectors from START; top × front must give right.
+const rightHanded = s => key(cross(axisOf(START, s[0]), axisOf(START, s[2]))) === key(axisOf(START, s[4]));
+const opp7 = s => [0, 2, 4].every(i => s[i] + s[i + 1] === 7);
+assert.ok(rightHanded(START) && opp7(START));
+assert.deepStrictEqual([...DIRS].sort(), ['away', 'left', 'right', 'toward']);
+for (const d of DIRS) assert.deepStrictEqual([d, d, d, d].reduce(tip, START), START, `4 × ${d}`);
+// Rotation of every vector by a tip (top goes to the named side).
+const ROT = { right: ([x, y, z]) => [z, y, -x], left: ([x, y, z]) => [-z, y, x], toward: ([x, y, z]) => [x, -z, y], away: ([x, y, z]) => [x, z, -y] };
+const topAfter = ([top, front, right], moves) => {
+    // Rebuild the die from its visible faces, roll every face vector, read the face pointing up.
+    const faces = [[top, AXES[0]], [7 - top, AXES[1]], [front, AXES[2]], [7 - front, AXES[3]], [right, AXES[4]], [7 - right, AXES[5]]];
+    const rolled = faces.map(([v, a]) => [v, moves.reduce((w, m) => ROT[m](w), a)]);
+    return rolled.find(([, a]) => key(a) === '0,0,1')[0];
+};
+for (let i = 0; i < 500; i++) {
+    let s = START;
+    const moves = Array.from({ length: 1 + (i % 7) }, () => DIRS[Math.floor(Math.random() * 4)]);
+    for (const m of moves) {
+        const n = tip(s, m);
+        assert.ok(opp7(n) && rightHanded(n), `tip ${m} breaks the die`);
+        assert.strictEqual(n[0], topAfter([s[0], s[2], s[4]], [m]));
+        s = n;
+    }
+    assert.strictEqual(s[0], topAfter([START[0], START[2], START[4]], moves));
+}
+assert.ok(Object.values(TIPS).every(p => [...p].sort().join() === '0,1,2,3,4,5'));
+
+// Views: a labelling puts letter i on axis lab[i]; it fits a view (top, front, right) iff those three axes
+// can be turned to up/front/right, i.e. they are orthogonal and right-handed (top × front = right).
+const LABELLINGS = (function perms(a) { return a.length < 2 ? [a] : a.flatMap((x, i) => perms([...a.slice(0, i), ...a.slice(i + 1)]).map(p => [x, ...p])); })([0, 1, 2, 3, 4, 5]);
+const fits = (lab, [t, f, r]) => key(cross(AXES[lab[t]], AXES[lab[f]])) === key(AXES[lab[r]]);
+const oppositeLetters = (views, x) => new Set(LABELLINGS.filter(lab => views.every(v => fits(lab, v))).map(lab => lab.indexOf(lab[x] ^ 1)));
 
 function check(p) {
     const d = p.data;
@@ -114,6 +152,27 @@ function check(p) {
             assert.strictEqual(p.answer, visible);
             break;
         }
+        case 'tip_moves':
+            assert.ok(p.data.moves.length >= 1 && p.data.moves.length <= 3);
+            assert.ok(rightHanded([p.cube[0], 7 - p.cube[0], p.cube[1], 7 - p.cube[1], p.cube[2], 7 - p.cube[2]]), 'start die is a real die');
+            assert.strictEqual(p.answer, topAfter(p.cube, p.data.moves));
+            break;
+        case 'tip_path':
+            assert.ok(p.strip >= 2 && p.strip <= 4);
+            assert.ok(rightHanded([p.cube[0], 7 - p.cube[0], p.cube[1], 7 - p.cube[1], p.cube[2], 7 - p.cube[2]]), 'start die is a real die');
+            assert.strictEqual(p.answer, topAfter(p.cube, Array(p.strip - 1).fill('right')));
+            break;
+        case 'views_opposite':
+        case 'views_bottom': {
+            assert.strictEqual(p.views.length, 3);
+            assert.strictEqual(new Set(p.views.map(key)).size, 3, 'three different views');
+            const x = p.variant === 'views_opposite' ? p.data.x : p.views[p.data.v - 1][0];
+            const opp = oppositeLetters(p.views, x);
+            assert.strictEqual(opp.size, 1, 'answer is uniquely determined');
+            assert.strictEqual(p.answer, [...opp][0] + 1);
+            assert.ok(p.answer >= 1 && p.answer <= 6);
+            break;
+        }
         default: assert.fail(`unknown variant ${p.variant}`);
     }
     assert.strictEqual(p.controlSum, digitalRoot(p.answer));
@@ -137,7 +196,7 @@ const seen = new Set();
 for (const type of TYPES) {
     for (let i = 0; i < 10; i++) gen([type]).problems.forEach(p => { assert.strictEqual(p.type, type); seen.add(p.variant); });
 }
-for (const v of ['net', 'tower_hidden', 'tower_visible', 'glued_equal', 'glued_free', 'glued_inverse', 'table_row']) assert.ok(seen.has(v), `variant ${v} never generated`);
+for (const v of ['net', 'tower_hidden', 'tower_visible', 'glued_equal', 'glued_free', 'glued_inverse', 'table_row', 'tip_moves', 'tip_path', 'views_opposite', 'views_bottom']) assert.ok(seen.has(v), `variant ${v} never generated`);
 
 // Russian plural forms.
 const ru = gen(['tower'], 'ru', 30).problems.map(p => p.text).join(' ');

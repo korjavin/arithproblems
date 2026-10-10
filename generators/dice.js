@@ -1,10 +1,46 @@
 import { digitalRoot, getRandomInt, getRandomFromArray, shuffleArray, fillTemplate, plural } from '../utils.js';
 
 // Dice with the "opposite faces add up to 7" rule: complete a net, towers,
-// dice glued one after another, dice glued in a row on the table.
+// dice glued one after another, dice glued in a row on the table, tipping a die over its edges,
+// and three views of one lettered cube.
 // To add a sub-type: add its id to TYPES and a maker to MAKERS returning
 // { variant, data, answer } (+ optional picture data for the renderer).
-export const TYPES = ['net', 'tower', 'glued', 'table_row'];
+export const TYPES = ['net', 'tower', 'glued', 'table_row', 'tip', 'views'];
+
+// Die orientation: s[pos] = face on that side, positions top, bottom, front, back, right, left
+// (0|1, 2|3, 4|5 opposite). A tip over an edge: new[i] = old[TIPS[dir][i]].
+const [T, B, F, K, R, L] = [0, 1, 2, 3, 4, 5];
+export const TIPS = {
+    right: [L, R, F, K, T, B], // top → right, right → bottom, bottom → left, left → top
+    left: [R, L, F, K, B, T],
+    toward: [K, F, T, B, R, L], // top → front (towards the viewer)
+    away: [F, K, B, T, R, L],
+};
+export const DIRS = Object.keys(TIPS);
+export const tip = (s, dir) => TIPS[dir].map(i => s[i]);
+// Standard right-handed die: 1 top, 2 front, 3 right.
+export const START = [1, 6, 2, 5, 3, 4];
+
+// The 24 rotations as position permutations (closure of the tips): rotated[i] = s[r[i]].
+const ROTATIONS = (() => {
+    const seen = new Map([['0,1,2,3,4,5', [0, 1, 2, 3, 4, 5]]]);
+    for (const r of seen.values()) for (const d of DIRS) { const n = tip(r, d); seen.has(`${n}`) || seen.set(`${n}`, n); }
+    return [...seen.values()];
+})();
+const PERMS = (function perms(a) { return a.length < 2 ? [a] : a.flatMap((x, i) => perms([...a.slice(0, i), ...a.slice(i + 1)]).map(p => [x, ...p])); })([0, 1, 2, 3, 4, 5]);
+const viewOf = s => [s[T], s[F], s[R]];
+
+// Opposite of letter x for every letter assignment consistent with all views (some rotation shows each view).
+export function oppositesFromViews(views, x) {
+    const res = new Set();
+    for (const lab of PERMS) {
+        const ok = views.every(v => ROTATIONS.some(r => `${viewOf(r.map(i => lab[i]))}` === `${v}`));
+        if (ok) res.add(lab[lab.indexOf(x) ^ 1]);
+    }
+    return res;
+}
+
+const randomDie = () => { let s = START; for (let i = getRandomInt(4, 10); i > 0; i--) s = tip(s, getRandomFromArray(DIRS)); return s; };
 
 // The 11 cube nets as [col, row] cells; opp[i] = index of the cell folded opposite cell i.
 // Derived by rolling a cube over the net; test-dice.js re-checks every pairing by the same fold.
@@ -92,6 +128,35 @@ const MAKERS = {
         const answer = 21 * k - tops.reduce((s, t) => s + 7 - t, 0) - 2 * contacts.reduce((s, c) => s + c.g, 0);
         return { variant: 'table_row', data: { k, contacts, tops }, answer };
     },
+    tip() {
+        const s = randomDie();
+        if (getRandomInt(0, 1)) {
+            const moves = Array.from({ length: getRandomInt(1, 3) }, () => getRandomFromArray(DIRS));
+            return { variant: 'tip_moves', data: { moves }, answer: moves.reduce(tip, s)[T], cube: viewOf(s) };
+        }
+        // Strip of n squares: the die stands on the first one and tips right onto each next square up to the ★.
+        const n = getRandomInt(2, 4);
+        return { variant: 'tip_path', data: {}, answer: Array(n - 1).fill('right').reduce(tip, s)[T], cube: viewOf(s), strip: n };
+    },
+    views() {
+        // Letters 0..5 (A..F) on a cube, shown in 3 different positions; ask only uniquely determined faces.
+        for (;;) {
+            const lab = shuffleArray([0, 1, 2, 3, 4, 5]);
+            const views = shuffleArray([...ROTATIONS]).slice(0, 3).map(r => viewOf(r.map(i => lab[i])));
+            const unique = x => oppositesFromViews(views, x).size === 1;
+            const opp = x => lab[lab.indexOf(x) ^ 1];
+            if (getRandomInt(0, 1)) {
+                const xs = [0, 1, 2, 3, 4, 5].filter(unique);
+                if (!xs.length) continue;
+                const x = getRandomFromArray(xs);
+                return { variant: 'views_opposite', data: { x }, answer: opp(x) + 1, views };
+            }
+            const vs = [0, 1, 2].filter(v => unique(views[v][0]));
+            if (!vs.length) continue;
+            const v = getRandomFromArray(vs);
+            return { variant: 'views_bottom', data: { v: v + 1 }, answer: opp(views[v][0]) + 1, views };
+        }
+    },
 };
 
 function text(p, t) {
@@ -99,7 +164,8 @@ function text(p, t) {
     const dice = d.k && plural(t.dice_forms, d.k);
     const pips = n => plural(t.pip_forms, n);
     const contacts = d.contacts && d.contacts.map(c => fillTemplate(t.templates[c.g ? 'contact_equal' : 'contact_free'], { a: c.a, b: c.b, g: c.g && pips(c.g), x: c.x && pips(c.x), y: c.y && pips(c.y) })).join('; ');
-    return fillTemplate(t.templates[p.variant], { dice, top: d.top && pips(d.top), contacts, tops: d.tops && d.tops.join(', '), visible: d.visible && pips(d.visible) });
+    const moves = d.moves && d.moves.map(m => t.dirs[m]).join(t.then);
+    return fillTemplate(t.templates[p.variant], { moves, letters: t.letters.join(', '), x: d.x !== undefined && t.letters[d.x], v: d.v, dice, top: d.top && pips(d.top), contacts, tops: d.tops && d.tops.join(', '), visible: d.visible && pips(d.visible) });
 }
 
 export function generateDiceData({ types, numberOfProblems, translations: t }) {

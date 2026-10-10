@@ -37,6 +37,26 @@ import { generateCornerSumsData } from './generators/corner-sums.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
+// Die pips on a unit square, in quarters (value 0 = none).
+const PIPS = { 1: [[2, 2]], 2: [[1, 1], [3, 3]], 3: [[1, 1], [2, 2], [3, 3]], 4: [[1, 1], [3, 1], [1, 3], [3, 3]], 5: [[1, 1], [3, 1], [2, 2], [1, 3], [3, 3]], 6: [[1, 1], [3, 1], [1, 2], [3, 2], [1, 3], [3, 3]] };
+
+// A cube drawn in a 3×3 box (one box unit = one paper cell): the 2×2 front face bottom left, the top
+// and right faces slanted back. Each face: outline, unit-square → face matrix, label centre.
+const CUBE_FACES = [
+    ['0,1 1,0 3,0 2,1', '2,0,-1,1,1,0', [1.5, 0.5]],
+    ['0,1 2,1 2,3 0,3', '2,0,0,2,0,1', [1, 2]],
+    ['2,1 3,0 3,2 2,3', '1,-1,0,2,2,1', [2.5, 1.5]],
+];
+// SVG body of a cube showing top, front, right: pips, or letters[value] when letters is given.
+function cubeViewSvg(top, front, right, { x = 0, y = 0, letters } = {}) {
+    return `<g transform="translate(${x} ${y})">` + [top, front, right].map((v, i) => {
+        const [pts, m, [cx, cy]] = CUBE_FACES[i];
+        return `<polygon points="${pts}"/>` + (letters
+            ? `<text x="${cx}" y="${cy + 0.3}" font-size="0.8" text-anchor="middle" fill="#222" stroke="none">${letters[v]}</text>`
+            : `<g transform="matrix(${m})">${(PIPS[v] || []).map(([px, py]) => `<circle cx="${px / 4}" cy="${py / 4}" r="0.09" fill="#222" stroke="none"/>`).join('')}</g>`);
+    }).join('') + '</g>';
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const DOM = {
@@ -1098,7 +1118,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             // One die face = a unit square at (x, y) with pips as dots (value 0 = empty).
-            const PIPS = { 1: [[2, 2]], 2: [[1, 1], [3, 3]], 3: [[1, 1], [2, 2], [3, 3]], 4: [[1, 1], [3, 1], [1, 3], [3, 3]], 5: [[1, 1], [3, 1], [2, 2], [1, 3], [3, 3]], 6: [[1, 1], [3, 1], [1, 2], [3, 2], [1, 3], [3, 3]] };
             const face = (x, y, v, star) => `<rect x="${x}" y="${y}" width="1" height="1"/>`
                 + (PIPS[v] || []).map(([px, py]) => `<circle cx="${x + px / 4}" cy="${y + py / 4}" r="0.09" fill="#222"/>`).join('')
                 + (star ? `<text x="${x + 0.5}" y="${y + 0.72}" font-size="0.6" text-anchor="middle" fill="#222" stroke="none">★</text>` : '');
@@ -1109,8 +1128,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return svg('dice-net', w, h, 40, n.cells.map(([x, y], i) => face(x, y, n.shown.includes(i) ? n.values[i] : 0, i === n.star)).join(''));
             };
             const towerHtml = ({ k, top }) => svg('dice-tower', 1, k, 30, Array.from({ length: k }, (_, i) => face(0, i, i === 0 ? top : 0)).join(''));
+            // Tipping: the die (3×3 cells) stands on the first square of a strip of slanted floor squares, ★ on the last.
+            const cubeHtml = ([a, b, c], n = 0) => svg('dice-cube', n ? 2 * n + 1 : 3, 3, 30,
+                Array.from({ length: n }, (_, i) => `<polygon points="${2 * i + 1},2 ${2 * i + 3},2 ${2 * i + 2},3 ${2 * i},3"/>`).join('')
+                + (n ? `<text x="${2 * n - 0.5}" y="2.7" font-size="0.6" text-anchor="middle" fill="#222" stroke="none">★</text>` : '')
+                + cubeViewSvg(a, b, c));
+            // Views: three numbered cubes side by side.
+            const viewsHtml = views => svg('dice-cube dice-views', 11, 4, 30, views.map(([a, b, c], j) =>
+                `<text x="${4 * j + 1.5}" y="0.7" font-size="0.8" text-anchor="middle" fill="#222" stroke="none">${j + 1}</text>`
+                + cubeViewSvg(a, b, c, { x: 4 * j, y: 1, letters: t.letters })).join(''));
             const items = problems.map(p => ({
-                html: `<div class="word-problem-item dice-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${p.net ? netHtml(p.net) : ''}${p.tower ? towerHtml(p.tower) : ''}<div class="answer-space">${t.answer_label}</div></div></div>`,
+                html: `<div class="word-problem-item dice-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${p.net ? netHtml(p.net) : ''}${p.tower ? towerHtml(p.tower) : ''}${p.cube ? cubeHtml(p.cube, p.strip) : ''}${p.views ? viewsHtml(p.views) : ''}<div class="answer-space">${t.answer_label}</div></div></div>`,
             }));
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(items, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
