@@ -26,7 +26,7 @@ const CHARS_PER_WORD_CELL = 2; // words are set at a size that fits 2 letters pe
 // a product of variables ("xy") and every letter gets its own cell.
 const VOWEL_RE = /[aeiouäöüаеёиоуыэюя]/i;
 
-const GRID_SELECTOR = '.arithmetic-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid';
+const GRID_SELECTOR = '.arithmetic-grid, .word-problems-grid, .house-problems-grid, .pyramid-problems-grid, .cell-grid';
 const NO_CELLS_SELECTOR = '.problem-text, svg';
 const TOKEN_RE = /(\s+)|(\p{L}{2,})|([\s\S])/gu;
 

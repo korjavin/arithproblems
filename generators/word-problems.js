@@ -1,10 +1,4 @@
-import { digitalRoot, getRandomInt, getRandomFromArray, shuffleArray } from '../utils.js';
-
-function fillTemplate(template, data) {
-    return template.replace(/{(\w+)}/g, (match, key) => {
-        return data.hasOwnProperty(key) ? data[key] : match;
-    });
-}
+import { digitalRoot, getRandomInt, getRandomFromArray, shuffleArray, fillTemplate } from '../utils.js';
 
 function generateProblemData(templateKey, t, difficultyLevel) {
     const difficultyMultiplier = difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 1.5 : difficultyLevel === 'hard' ? 2 : 1 + (getRandomInt(0, 100) / 100);

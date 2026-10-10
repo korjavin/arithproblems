@@ -60,6 +60,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.problemsContainer.appendChild(p);
     }
 
+    // Self-check grid below the problems: one single-character cell per digit.
+    function selfCheckGridHtml(title, subtitle, digits) {
+        return `<div class="digital-root-check-grid-container"><h4>${title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digits.map(d => `<div class="dr-cell">${d}</div>`).join('')}</div></div>`;
+    }
+
+    // Prose problems (each `{ text }`) with an answer line, styled for print by styles/print-grid.css.
+    function proseProblemsHtml(problems, answerLabel) {
+        return `<div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
+    }
+
     const topicControlsRenderers = {
         "multiplication-table": controls.renderMultiplicationTableControls,
         "addition-subtraction": controls.renderAdditionSubtractionControls,
@@ -597,9 +607,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
                 translations: t,
             });
-            let html = `<h3>${t.problems_title}</h3><div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">Answer: </div></div></div>`).join('')}</div>`;
+            let html = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, 'Answer: ')}`;
             if (digitalRoots.length > 0) {
-                html += `<div class="digital-root-check-grid-container"><h4>${t.digital_root_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.digital_root_grid_subtitle}</p><div class="digital-root-check-grid">${digitalRoots.map(a => `<div class="dr-cell">${a.digitalRoot}</div>`).join('')}</div></div>`;
+                html += selfCheckGridHtml(t.digital_root_grid_title, t.digital_root_grid_subtitle, digitalRoots.map(a => a.digitalRoot));
             }
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {

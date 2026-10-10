@@ -1,3 +1,13 @@
+/**
+ * Replaces `{key}` placeholders in a template with values from `data`.
+ * Unknown keys are left as-is.
+ */
+export function fillTemplate(template, data) {
+    return template.replace(/{(\w+)}/g, (match, key) => {
+        return Object.prototype.hasOwnProperty.call(data, key) ? data[key] : match;
+    });
+}
+
 export function gcd(a, b) {
     a = Math.abs(a);
     b = Math.abs(b);
