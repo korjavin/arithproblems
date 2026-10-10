@@ -251,7 +251,7 @@
             "max_area_text": "A rectangle has a perimeter of {perimeter} m and its sides are whole numbers of metres. What is the largest possible area?",
             "ribbon_text": "A box {length} × {width} × {height} cm is tied with a ribbon once along its length and once along its width. The bow takes {bow} cm. How long is the ribbon?",
             "ribbon_answer_text": "Ribbon length",
-            "path_around_text": "A path runs around a {length} × {width} m playground, {distance} m from its edge. How long is one lap along the path?",
+            "path_around_text": "A rectangular path runs around a {length} × {width} m playground; each side of the path is {distance} m from the edge of the playground. How long is one lap along the path?",
             "path_answer_text": "Lap length",
             "room_text": "Room {n}: {length} × {width} m",
             "largest_room_text": "Which room is the largest?",

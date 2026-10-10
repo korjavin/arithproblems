@@ -240,7 +240,7 @@
             "max_area_text": "Ein Rechteck hat einen Umfang von {perimeter} m, seine Seiten sind ganze Meter lang. Wie groß kann seine Fläche höchstens sein?",
             "ribbon_text": "Ein Paket {length} × {width} × {height} cm wird mit einem Band einmal der Länge nach und einmal der Breite nach umwickelt. Für die Schleife braucht man {bow} cm. Wie lang ist das Band?",
             "ribbon_answer_text": "Länge des Bandes",
-            "path_around_text": "Um einen Spielplatz {length} × {width} m führt ein Weg im Abstand von {distance} m vom Rand. Wie lang ist eine Runde auf dem Weg?",
+            "path_around_text": "Um einen Spielplatz {length} × {width} m führt ein rechteckiger Weg; jede Seite des Weges ist {distance} m vom Rand des Spielplatzes entfernt. Wie lang ist eine Runde auf dem Weg?",
             "path_answer_text": "Länge der Runde",
             "room_text": "Zimmer {n}: {length} × {width} m",
             "largest_room_text": "Welches Zimmer ist am größten?",
