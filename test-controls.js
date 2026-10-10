@@ -145,7 +145,8 @@ function testControls() {
         { name: 'renderPyramidProblemsControls', func: controls.renderPyramidProblemsControls, expected: ['pp-size', 'pp-range', 'pp-missing'] },
         { name: 'renderSimplifyRationalsControls', func: controls.renderSimplifyRationalsControls, expected: ['sr-include-monomials', 'sr-include-binomials', 'sr-include-quadratics', 'sr-coefficient-range'] },
         { name: 'renderMixedOperationsControls', func: controls.renderMixedOperationsControls, expected: ['mo-num-operations', 'mo-coefficient-range', 'mo-allow-negative'] },
-        { name: 'renderUnitConversionControls', func: controls.renderUnitConversionControls, expected: ['uc-family-length', 'uc-family-mass', 'uc-family-volume', 'uc-family-time', 'uc-family-money', 'uc-difficulty', 'uc-allow-decimals', 'uc-include-unsolvable'] }
+        { name: 'renderUnitConversionControls', func: controls.renderUnitConversionControls, expected: ['uc-family-length', 'uc-family-mass', 'uc-family-volume', 'uc-family-time', 'uc-family-money', 'uc-difficulty', 'uc-allow-decimals', 'uc-include-unsolvable'] },
+        { name: 'renderTimeCalendarControls', func: controls.renderTimeCalendarControls, expected: ['tc-type-clock', 'tc-type-timeline', 'tc-type-periodic', 'tc-type-calendar', 'tc-type-age', 'tc-type-faulty', 'tc-difficulty'] }
     ];
 
     testCases.forEach(tc => {
