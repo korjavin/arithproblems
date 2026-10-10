@@ -23,6 +23,7 @@ import { generateCompareExpressionsData } from './generators/compare-expressions
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
 import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
+import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './generators/find-the-number.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -97,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "boolean-logic": controls.renderBooleanLogicControls,
         "unit-conversion": controls.renderUnitConversionControls,
         "time-calendar": controls.renderTimeCalendarControls,
+        "find-the-number": controls.renderFindTheNumberControls,
     };
 
     const problemRenderers = {
@@ -123,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "boolean-logic": renderBooleanLogicProblems,
         "unit-conversion": renderUnitConversionProblems,
         "time-calendar": renderTimeCalendarProblems,
+        "find-the-number": renderFindTheNumberProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -854,6 +857,35 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label)}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderFindTheNumberProblems(translations) {
+        const t = translations.script.find_the_number;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateFindTheNumberData({
+                types: FIND_THE_NUMBER_TYPES.filter(x => document.getElementById(`ftn-type-${x}`).checked),
+                chainLength: parseInt(document.getElementById('ftn-chain-length').value, 10),
+                maxValue: parseInt(document.getElementById('ftn-max-value').value, 10),
+                allowHalving: document.getElementById('ftn-allow-halving').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            // The generator puts letter chains last; they print one glyph per cell.
+            const prose = problems.filter(p => p.type !== 'letters');
+            const letters = problems.filter(p => p.type === 'letters');
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (prose.length) html += proseProblemsHtml(prose, t.answer_label);
+            if (letters.length) {
+                html += `<p class="print-instructions">${t.letters_instruction}</p><div class="arithmetic-grid cell-grid find-the-number-letters-grid">`;
+                html += letters.map(p => `<div class="find-the-number-letters-item"><div class="problem-content"><span class="puzzle">${p.data.lines.join('<br>')}<br>c = <span class="answer-space"></span></span></div></div>`).join('');
+                html += `</div>`;
+            }
+            DOM.problemsContainer.innerHTML = html
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);

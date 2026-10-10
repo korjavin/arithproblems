@@ -780,11 +780,13 @@ footer {
     vertical-align: baseline;
 }
 
+.find-the-number-letters-item .puzzle,
 .unit-conversion-item .puzzle {
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.1em;
 }
 
+.find-the-number-letters-item .answer-space,
 .unit-conversion-item .answer-space {
     display: inline-block;
     width: 4em;

@@ -609,3 +609,26 @@ export function renderTimeCalendarControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderFindTheNumberControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="ftn-type-${id}" checked>
+            <label for="ftn-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    const select = (id, label, values, selected) => `
+        <div>
+            <label for="ftn-${id}">${label}</label>
+            <select id="ftn-${id}">${values.map(v => `<option value="${v}"${v === selected ? ' selected' : ''}>${v}</option>`).join('')}</select>
+        </div>`;
+    container.innerHTML = `
+        ${type('describe')}${type('inverse')}${type('halving')}${type('letters')}
+        ${select('chain-length', t.chain_length_label, [1, 2, 3, 4], 3)}
+        ${select('max-value', t.max_value_label, [100, 1000, 10000], 1000)}
+        <div>
+            <input type="checkbox" id="ftn-allow-halving" checked>
+            <label for="ftn-allow-halving">${t.allow_halving_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
