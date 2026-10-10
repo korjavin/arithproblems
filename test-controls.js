@@ -148,7 +148,8 @@ function testControls() {
         { name: 'renderUnitConversionControls', func: controls.renderUnitConversionControls, expected: ['uc-family-length', 'uc-family-mass', 'uc-family-volume', 'uc-family-time', 'uc-family-money', 'uc-difficulty', 'uc-allow-decimals', 'uc-include-unsolvable'] },
         { name: 'renderTimeCalendarControls', func: controls.renderTimeCalendarControls, expected: ['tc-type-clock', 'tc-type-timeline', 'tc-type-periodic', 'tc-type-calendar', 'tc-type-age', 'tc-type-faulty', 'tc-difficulty'] },
         { name: 'renderFindTheNumberControls', func: controls.renderFindTheNumberControls, expected: ['ftn-type-describe', 'ftn-type-inverse', 'ftn-type-halving', 'ftn-type-letters', 'ftn-chain-length', 'ftn-max-value', 'ftn-allow-halving'] },
-        { name: 'renderCombinatoricsControls', func: controls.renderCombinatoricsControls, expected: ['cb-type-product', 'cb-type-choose', 'cb-type-arrange', 'cb-type-handshakes', 'cb-type-halftime', 'cb-type-dominoes', 'cb-max-count'] }
+        { name: 'renderCombinatoricsControls', func: controls.renderCombinatoricsControls, expected: ['cb-type-product', 'cb-type-choose', 'cb-type-arrange', 'cb-type-handshakes', 'cb-type-halftime', 'cb-type-dominoes', 'cb-max-count'] },
+        { name: 'renderIntegerSolutionsControls', func: controls.renderIntegerSolutionsControls, expected: ['is-type-legs', 'is-type-vertices', 'is-type-market', 'is-type-money', 'is-type-subset', 'is-type-matches', 'is-type-parity'] }
     ];
 
     testCases.forEach(tc => {

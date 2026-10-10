@@ -55,6 +55,8 @@
     "find_the_number_p": "Number riddles: numbers described in words, \"I think of a number\" chains, halving chains and linked letter equations.",
     "combinatorics_h3": "Count the Possibilities",
     "combinatorics_p": "List and count all possibilities: menus, choosing, arranging, handshakes, half-time scores, dominoes.",
+    "integer_solutions_h3": "Find All Solutions",
+    "integer_solutions_p": "Search problems: legs, vertices, market prices, notes, numbers with a given sum, matchstick squares, even and odd pairs.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -869,6 +871,38 @@
                 "halftime_second": "A football match ended {a}:{b}, and the number of goals scored in the second half was {k}. What could the score have been at half-time?",
                 "domino_set": "In a domino set each half of a tile shows 0 to {m} pips, and every pair of numbers (doubles like 2|2 too) appears on exactly one tile. Which tiles are in the set?",
                 "domino_with": "In a domino set each half of a tile shows 0 to {m} pips, and every pair of numbers (doubles like 2|2 too) appears on exactly one tile. Which tiles show at least one {v}?"
+            }
+        },
+        "integer_solutions": {
+            "type_legs_label": "Legs (chickens, sheep, beetles)",
+            "type_vertices_label": "Vertices (squares and pentagons)",
+            "type_market_label": "Market (100 € for animals)",
+            "type_money_label": "Notes and amounts",
+            "type_subset_label": "Choose numbers with a given sum",
+            "type_matches_label": "Matchstick squares",
+            "type_parity_label": "Even and odd pairs",
+            "description": "Search problems: try the possibilities in order and write down every solution.",
+            "problems_title": "Find the Solutions",
+            "answer_label": "Answer: ",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Problems that ask for all solutions: write the number of solutions. Other problems: the digital root of the number the problem asks for.",
+            "error_message": "Error generating search problems. Select at least one problem type.",
+            "find_all": "Find all solutions. Self-check: how many solutions are there?",
+            "templates": {
+                "legs_count": "There are chickens and sheep in a yard, {n} animals in all. Together they have {legs} legs. How many sheep are there?",
+                "legs_all": "Chickens and sheep in a yard have {legs} legs in all, and there is at least one of each. How many chickens and how many sheep can there be?",
+                "legs_three": "A pet corner has chickens (2 legs), rabbits (4 legs) and beetles (6 legs), at least one of each: {n} animals with {legs} legs in all. How many of each kind can there be?",
+                "vertices": "Some squares and some pentagons are drawn on a sheet, at least one of each. Together they have {v} vertices. How many squares and how many pentagons can there be?",
+                "market_count": "At a market a cow costs {p1} €, a goat {p2} € and a hen {p3} €. A farmer spent exactly 100 € and bought exactly {n} animals, at least one of each kind. How many cows, goats and hens did he buy? Self-check: the number of hens.",
+                "market_most": "At a market a cow costs {p1} €, a goat {p2} € and a hen {p3} €. A farmer spends exactly 100 € and buys at least one animal of each kind. What is the largest number of animals he can buy?",
+                "money_ways": "Pay exactly {a} € using only notes of 200 €, 100 € and 20 €. Which sets of notes can you use?",
+                "money_fewest": "Pay exactly {a} € using only notes of 200 €, 100 € and 20 €. What is the smallest number of notes you need?",
+                "notes_three": "A wallet holds exactly three notes, and at least one of them is 5 €. Each note is 5 €, 10 €, 20 € or 50 €, and together they are worth less than {l} €. Which amounts can be in the wallet?",
+                "subset_sum": "Choose some of the numbers {items} so that they add up to 100. Each number may be used at most once.",
+                "subset_digits": "Strike out three of the digits {items} so that the remaining digits add up to {s}.",
+                "matches": "You lay out squares from {m} matches, each side made of {k} matches, and the squares must not touch. How many squares can you lay out at most, and how many matches are left over? Self-check: the number of squares.",
+                "parity_pairs": "Find all pairs of natural numbers a and b with a + b = {t}, where a is even and b is odd.",
+                "parity_pick": "The natural numbers a and b add up to {t}, a is even and b is odd. Write down all such pairs, then find the pair with {c1}·a + {c2}·b = {w}. Self-check: the number a."
             }
         }
     }

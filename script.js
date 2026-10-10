@@ -25,6 +25,7 @@ import { generateUnitConversionData, displayNumber, factorOf } from './generator
 import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
 import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './generators/find-the-number.js';
 import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './generators/combinatorics.js';
+import { generateIntegerSolutionsData, TYPES as INTEGER_SOLUTIONS_TYPES } from './generators/integer-solutions.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -102,6 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "time-calendar": controls.renderTimeCalendarControls,
         "find-the-number": controls.renderFindTheNumberControls,
         "combinatorics": controls.renderCombinatoricsControls,
+        "integer-solutions": controls.renderIntegerSolutionsControls,
     };
 
     const problemRenderers = {
@@ -130,6 +132,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "time-calendar": renderTimeCalendarProblems,
         "find-the-number": renderFindTheNumberProblems,
         "combinatorics": renderCombinatoricsProblems,
+        "integer-solutions": renderIntegerSolutionsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -904,6 +907,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
                 translations: t,
                 names: [...male, ...female],
+            });
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label, ' listing-space')}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderIntegerSolutionsProblems(translations) {
+        const t = translations.script.integer_solutions;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateIntegerSolutionsData({
+                types: INTEGER_SOLUTIONS_TYPES.filter(x => document.getElementById(`is-type-${x}`).checked),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label, ' listing-space')}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
