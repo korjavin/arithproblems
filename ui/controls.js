@@ -355,6 +355,7 @@ export function renderWordProblemsControls(container, t) {
                 <option value="geometry">${t.geometry_word_problems_option}</option>
                 <option value="number">${t.number_problems_option}</option>
                 <option value="percentage">${t.percentage_word_problems_option}</option>
+                <option value="olympiad">${t.olympiad_problems_option}</option>
             </select>
         </div>
         <div>

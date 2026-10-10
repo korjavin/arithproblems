@@ -245,6 +245,7 @@
             "geometry_word_problems_option": "Nur Geometrie-Textaufgaben",
             "number_problems_option": "Nur Zahlenaufgaben",
             "percentage_word_problems_option": "Nur Prozent-Textaufgaben",
+            "olympiad_problems_option": "Nur Olympiade-Aufgaben",
             "difficulty_level_label": "Schwierigkeitsgrad:",
             "easy_level_option": "Einfach (1-Schritt Lösungen)",
             "medium_level_option": "Mittel (2-Schritt Lösungen)",
@@ -302,7 +303,19 @@
                 "percent1": "Was sind {percent}% von {number}?",
                 "percent2": "{part} sind wieviel Prozent von {whole}?",
                 "percent3": "{percent}% von welcher Zahl sind {part}?",
-                "percent4": "Ein Hemd kostet ursprünglich {original_price}€. Es ist {percent}% reduziert. Wie ist der Verkaufspreis?"
+                "percent4": "Ein Hemd kostet ursprünglich {original_price}€. Es ist {percent}% reduziert. Wie ist der Verkaufspreis?",
+                "oly1": "Lukas ist {diff} Jahre älter als Mia. Mia ist {mult}-mal so alt wie Jonas. Jonas ist {young} Jahre alt. Wie alt ist Lukas?",
+                "oly2": "Ben und Jonas sind zusammen {sum} Jahre alt. Jonas ist {diff} Jahre jünger als Ben. Wie alt ist Ben?",
+                "oly3": "Jonas ist {older}, seine Schwester ist {younger}. In wie vielen Jahren ist Jonas {mult}-mal so alt wie seine Schwester?",
+                "oly4": "Auf einem Teller lagen {total} Kekse. Lena nahm 1/{a} davon, Kati 1/{b} vom Rest und Sophie 1/{c} von dem, was übrig blieb. Wie viele Kekse liegen noch auf dem Teller?",
+                "oly5": "In einem Saal ist 1/{k} der Plätze von Kindern besetzt, {adults} Plätze von Erwachsenen, und {free} Plätze sind frei. Wie viele Plätze hat der Saal?",
+                "oly6": "Ein {length} m langes Seil wurde in drei Teile geschnitten. Die Mutter bekam halb so viel wie der Sohn, die Tochter {mult}-mal so viel wie die Mutter. Wie viele Meter bekam die Tochter?",
+                "oly7": "Anna, Ben, Carl, Dana und Eva sammeln Briefmarken. Ben hat halb so viele Briefmarken wie Dana. Eva hat {more} Briefmarken mehr als Ben. Carl hat so viele wie Eva. Anna hat so viele wie Ben und Carl zusammen. Zusammen haben sie {total} Briefmarken. Wie viele Briefmarken hat Dana?",
+                "oly8": "Tom sagt zu Max: „Wenn du mir {k} Murmeln gibst, habe ich {q}-mal so viele wie du. Wenn ich dir {k} Murmeln gebe, haben wir gleich viele.“ Wie viele Murmeln hat Tom?",
+                "oly9": "In einer Klasse spielen {football} Kinder Fußball und {swim} Kinder schwimmen; {both} davon machen beides, und {neither} machen keins von beiden. Wie viele Kinder sind in der Klasse?",
+                "oly10": "Die Punkte A, B, C und E liegen in dieser Reihenfolge auf einer Geraden. AE = {ae} cm, die Strecke BE ist {q}-mal so lang wie AB, und AC ist {bc} cm länger als AB. Wie lang ist CE in cm?",
+                "oly11": "Oma verteilt Bonbons an ihre Enkel. Gibt sie jedem {a}, bleiben {left} übrig. Gibt sie jedem {b}, fehlen {short}. Wie viele Enkel hat Oma?",
+                "oly12": "Finde die fehlende Zahl, sodass der Durchschnitt von {nums} und der fehlenden Zahl {avg} ist."
             }
         },
         "house_problems": {

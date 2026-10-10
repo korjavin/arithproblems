@@ -1,5 +1,6 @@
 import assert from 'assert';
-import { generateWordProblemsData } from './generators/word-problems.js';
+import { readFileSync } from 'fs';
+import { generateWordProblemsData, generateProblemData } from './generators/word-problems.js';
 
 // Mock translations object for testing purposes
 const mockTranslations = {
@@ -98,10 +99,78 @@ function testInputValidation() {
     console.log('All input validation tests passed!');
 }
 
+// Re-derive each olympiad answer from the generated data, solving the story forward.
+const olympiadChecks = {
+    oly1: d => d.young * d.mult + d.diff,
+    oly2: d => (d.sum + d.diff) / 2,
+    oly3: d => { // smallest t > 0 with older + t = mult * (younger + t)
+        for (let t = 1; t < 100; t++) if (d.older + t === d.mult * (d.younger + t)) return t;
+        return NaN;
+    },
+    oly4: d => {
+        let left = d.total;
+        for (const den of [d.a, d.b, d.c]) { assert(left % den === 0, `oly4 inexact share ${left}/${den}`); left -= left / den; }
+        return left;
+    },
+    oly5: d => (d.adults + d.free) * d.k / (d.k - 1),
+    oly6: d => { const mother = d.length / (3 + d.mult); return mother * d.mult; },
+    oly7: d => { // total = B + 2B + (B + more) + (B + more) + (2B + more)
+        const b = (d.total - 3 * d.more) / 7;
+        const parts = [2 * b + d.more, b, b + d.more, 2 * b, b + d.more];
+        assert.strictEqual(parts.reduce((s, x) => s + x, 0), d.total);
+        return 2 * b;
+    },
+    oly8: d => { // brute force: Tom m, Max y
+        for (let y = d.k + 1; y < 200; y++) {
+            const m = y + 2 * d.k;
+            if (m + d.k === d.q * (y - d.k)) return m;
+        }
+        return NaN;
+    },
+    oly9: d => { assert(d.both < Math.min(d.football, d.swim)); return d.football + d.swim - d.both + d.neither; },
+    oly10: d => { const ab = d.ae / (1 + d.q); assert(d.bc < d.q * ab, 'C must lie between B and E'); return d.ae - ab - d.bc; },
+    oly11: d => { const g = (d.left + d.short) / (d.b - d.a); assert.strictEqual(d.a * g + d.left, d.b * g - d.short); return g; },
+    oly12: d => 4 * d.avg - d.nums.split(', ').map(Number).reduce((s, x) => s + x, 0)
+};
+
+function testOlympiadTemplates() {
+    for (const [key, solve] of Object.entries(olympiadChecks)) {
+        for (let i = 0; i < 300; i++) {
+            const d = generateProblemData(key, mockTranslations, 'mixed');
+            const expected = solve(d);
+            assert(Number.isInteger(d.answer) && d.answer > 0, `${key}: answer ${d.answer} not a positive integer`);
+            assert.strictEqual(d.answer, expected, `${key}: answer ${d.answer} != re-derived ${expected} for ${JSON.stringify(d)}`);
+            for (const [field, v] of Object.entries(d)) {
+                if (typeof v === 'number') assert(Number.isInteger(v) && v >= 0, `${key}.${field} = ${v} not a whole number`);
+            }
+        }
+    }
+    console.log('All olympiad template tests passed!');
+}
+
+function testOlympiadCategory() {
+    for (const locale of ['en', 'de', 'ru']) {
+        const t = JSON.parse(readFileSync(`./locales/${locale}.json`, 'utf8')).script.word_problems;
+        assert(t.olympiad_problems_option, `${locale}: missing olympiad_problems_option`);
+        const data = generateWordProblemsData({ problemCategory: 'olympiad', difficultyLevel: 'mixed', numberOfProblems: 50, translations: t });
+        assert.strictEqual(data.problems.length, 50);
+        for (const p of data.problems) assert(!/[{}]/.test(p.text), `${locale}: unfilled placeholder in "${p.text}"`);
+        for (const r of data.digitalRoots) assert(r.digitalRoot >= 0 && r.digitalRoot <= 9, `${locale}: control sum ${r.digitalRoot} out of 0-9`);
+    }
+    // 'mixed' (36 classic templates) must not pull in olympiad ones; 50 problems cover the whole pool.
+    const en = JSON.parse(readFileSync('./locales/en.json', 'utf8')).script.word_problems;
+    const olyPrefixes = Object.keys(en.templates).filter(k => k.startsWith('oly')).map(k => en.templates[k].split('{')[0]);
+    const mixed = generateWordProblemsData({ problemCategory: 'mixed', difficultyLevel: 'mixed', numberOfProblems: 50, translations: en });
+    for (const p of mixed.problems) assert(!olyPrefixes.some(pre => p.text.startsWith(pre)), `mixed pool leaked an olympiad problem: "${p.text}"`);
+    console.log('All olympiad category tests passed!');
+}
+
 try {
     testProblemGeneration();
     testProblemCategory();
     testInputValidation();
+    testOlympiadTemplates();
+    testOlympiadCategory();
     console.log('All word problems tests passed!');
 } catch (error) {
     console.error(error.message);
