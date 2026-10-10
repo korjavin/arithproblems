@@ -521,3 +521,28 @@
     line-height: var(--cell);
     color: var(--ink);
 }
+
+/* === Grid figures: one figure cell = one paper cell; the paper draws the grid === */
+#problems-container .gf-figures {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: calc(var(--cell) * 2);
+    align-items: flex-start;
+    margin-top: var(--cell) !important;
+}
+
+#problems-container .gf-svg {
+    display: block;
+    width: calc(var(--cell) * var(--w)) !important;
+    height: calc(var(--cell) * var(--h)) !important;
+    overflow: visible;
+}
+
+#problems-container .gf-svg .gf-grid {
+    display: none;
+}
+
+/* SVG text is in cell units; the .pg-item reset would make it 14pt = 14 cells. */
+#problems-container .gf-svg text {
+    font-size: 0.75px !important;
+}

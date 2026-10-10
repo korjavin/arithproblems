@@ -57,6 +57,8 @@
     "integer_solutions_p": "Suchaufgaben: Beine, Ecken, Marktpreise, Geldscheine, Zahlen mit vorgegebener Summe, Streichholzquadrate, gerade und ungerade Paare.",
     "number_properties_h3": "Eigenschaften von Zahlen",
     "number_properties_p": "Zahlenrätsel: Divisionsreste, Quersumme und Querprodukt, Abzählen, aufeinanderfolgende Zahlen, Palindrome, Primzahlen.",
+    "grid_figures_h3": "Figuren auf Karopapier",
+    "grid_figures_p": "Umfang, Flächeninhalt und Ecken von Figuren aus Kästchen, Treppen, aneinandergeklebte Quadrate, Figuren vergleichen.",
     "cube_buildings_h3": "Würfelgebäude",
     "cube_buildings_p": "Würfel zählen: Gebäude nach Bauplan, Treppen und Pyramiden; bemalte Würfel, Ansichten, geklebte Flächen und Kantenmodelle.",
     "category_basic_arithmetic": "Grundrechenarten",
@@ -856,6 +858,39 @@
                 "next_palindrome": "{p} ist ein Palindrom. Welches ist das nächste Palindrom nach {p}, und um wie viel ist es größer? Selbstkontrolle: das nächste Palindrom.",
                 "prime_sum": "Schreibe {n} auf alle möglichen Arten als Summe von zwei Primzahlen. Selbstkontrolle: die Anzahl der Möglichkeiten.",
                 "prime_count": "Wie viele Primzahlen liegen zwischen {a} und {b}?"
+            }
+        },
+        "grid_figures": {
+            "type_perimeter_label": "Umfang einer Figur auf Karopapier",
+            "type_area_label": "Flächeninhalt einer Figur (in Kästchen)",
+            "type_corners_label": "Anzahl der Ecken einer Figur",
+            "type_staircase_label": "Treppe: Umfang und Stufenhöhe",
+            "type_glued_label": "Aneinandergeklebte Quadrate: Seite und Umfang",
+            "type_compare_label": "Figuren vergleichen: größter Flächeninhalt oder Umfang",
+            "size_label": "Feldgröße (Kästchen pro Seite):",
+            "halves_label": "Flächeninhalt: halbe Kästchen erlauben (entlang der Diagonale geteilt)",
+            "description": "Figuren aus Kästchen auf Karopapier. Im Druck ist jedes Kästchen einer Figur genau ein Kästchen des Papiers.",
+            "problems_title": "Figuren auf Karopapier",
+            "answer_label": "Antwort: ",
+            "unit_cm": "cm",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Antwort (bei einem Buchstaben: A = 1, B = 2, C = 3). Hat ein Flächeninhalt halbe Kästchen, nimm den doppelten Flächeninhalt.",
+            "error_message": "Fehler beim Erstellen der Figurenaufgaben. Wähle mindestens eine Aufgabenart.",
+            "templates": {
+                "perimeter": "Jedes Kästchen hat die Seitenlänge 1 cm. Wie groß ist der Umfang der grauen Figur?",
+                "area": "Wie groß ist der Flächeninhalt der grauen Figur? Zähle in Kästchen.",
+                "area_halves": "Wie groß ist der Flächeninhalt der grauen Figur in Kästchen? Ein entlang der Diagonale geteiltes Kästchen zählt als halbes Kästchen. Selbstkontrolle: Nimm den doppelten Flächeninhalt.",
+                "corners": "Wie viele Ecken hat die graue Figur?",
+                "staircase_perimeter": "Die Figur ist eine Treppe mit {k} gleichen Stufen. Sie ist {W} cm breit und {H} cm hoch. Die Zeichnung ist nicht maßstabsgetreu. Wie groß ist der Umfang der Figur?",
+                "staircase_step": "Die Figur ist eine Treppe mit {k} gleichen Stufen. Sie ist {W} cm breit und {H} cm hoch. Die Zeichnung ist nicht maßstabsgetreu. Wie hoch ist eine Stufe?",
+                "glued_intro": "Die Quadrate {names} sind wie im Bild aneinandergeklebt. Die Zeichnung ist nicht maßstabsgetreu.",
+                "glued_given": "Quadrat {s} hat den Umfang {p} cm.",
+                "glued_width": "Die ganze Figur ist {l} cm breit.",
+                "glued_height": "Die ganze Figur ist {l} cm hoch.",
+                "glued_side": "Wie lang ist eine Seite von Quadrat {s}?",
+                "glued_perimeter": "Wie groß ist der Umfang der ganzen Figur?",
+                "compare_area": "Welche Figur hat den größten Flächeninhalt? Schreibe ihren Buchstaben auf.",
+                "compare_perimeter": "Jedes Kästchen hat die Seitenlänge 1 cm. Welche Figur hat den größten Umfang? Schreibe ihren Buchstaben auf."
             }
         },
         "cube_buildings": {

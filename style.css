@@ -1040,6 +1040,21 @@ footer {
     vertical-align: baseline;
 }
 
+.gf-figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    margin: 0.5em 0;
+}
+
+.gf-svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
 /* Cube buildings: plan of digits, one bordered square per column of cubes. */
 .cube-plan {
     display: inline-block;

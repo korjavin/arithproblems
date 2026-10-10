@@ -678,6 +678,26 @@ export function renderNumberPropertiesControls(container, t) {
     `;
 }
 
+export function renderGridFiguresControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="gf-type-${id}" checked>
+            <label for="gf-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['perimeter', 'area', 'corners', 'staircase', 'glued', 'compare'].map(type).join('')}
+        <div>
+            <label for="gf-size">${t.size_label}</label>
+            <select id="gf-size">${[4, 5, 6, 7, 8].map(v => `<option value="${v}"${v === 6 ? ' selected' : ''}>${v}</option>`).join('')}</select>
+        </div>
+        <div>
+            <input type="checkbox" id="gf-halves">
+            <label for="gf-halves">${t.halves_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderCubeBuildingsControls(container, t) {
     const type = id => `
         <div>

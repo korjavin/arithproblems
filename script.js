@@ -27,6 +27,7 @@ import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './gen
 import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './generators/combinatorics.js';
 import { generateIntegerSolutionsData, TYPES as INTEGER_SOLUTIONS_TYPES } from './generators/integer-solutions.js';
 import { generateNumberPropertiesData, TYPES as NUMBER_PROPERTIES_TYPES } from './generators/number-properties.js';
+import { generateGridFiguresData, TYPES as GRID_FIGURES_TYPES } from './generators/grid-figures.js';
 import { generateCubeBuildingsData, TYPES as CUBE_BUILDINGS_TYPES } from './generators/cube-buildings.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
@@ -107,6 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "combinatorics": controls.renderCombinatoricsControls,
         "integer-solutions": controls.renderIntegerSolutionsControls,
         "number-properties": controls.renderNumberPropertiesControls,
+        "grid-figures": controls.renderGridFiguresControls,
         "cube-buildings": controls.renderCubeBuildingsControls,
     };
 
@@ -138,6 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "combinatorics": renderCombinatoricsProblems,
         "integer-solutions": renderIntegerSolutionsProblems,
         "number-properties": renderNumberPropertiesProblems,
+        "grid-figures": renderGridFiguresProblems,
         "cube-buildings": renderCubeBuildingsProblems,
     };
 
@@ -951,6 +954,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (problems.some(p => p.digitTerms)) html += `<p class="print-instructions">${t.digit_terms_hint}</p>`;
             if (problems.some(p => p.palindromeTerms)) html += `<p class="print-instructions">${t.palindrome_hint}</p>`;
             DOM.problemsContainer.innerHTML = html + proseProblemsHtml(problems, t.answer_label)
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderGridFiguresProblems(translations) {
+        const t = translations.script.grid_figures;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateGridFiguresData({
+                types: GRID_FIGURES_TYPES.filter(x => document.getElementById(`gf-type-${x}`).checked),
+                size: parseInt(document.getElementById('gf-size').value, 10),
+                allowHalves: document.getElementById('gf-halves').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            const items = problems.map(p => ({ html: `<div class="word-problem-item grid-figure-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="gf-figures">${p.svg}</div><div class="answer-space">${t.answer_label}</div></div></div>` }));
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(items, t.answer_label)}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
