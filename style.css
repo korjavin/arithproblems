@@ -1039,3 +1039,34 @@ footer {
     border-bottom: 2px solid #333;
     vertical-align: baseline;
 }
+
+/* Cube buildings: plan of digits, one bordered square per column of cubes. */
+.cube-plan {
+    display: inline-block;
+    margin: 8px 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.cube-plan-row {
+    display: flex;
+}
+
+.cube-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6em;
+    height: 1.6em;
+    border: 1px solid #333;
+    margin: -1px 0 0 -1px;
+}
+
+.cube-plan-front {
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.cube-stairs svg {
+    display: block;
+    margin: 8px 0;
+}
