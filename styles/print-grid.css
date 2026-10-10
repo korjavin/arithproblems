@@ -441,6 +441,11 @@
     height: calc(var(--cell) * var(--s) * var(--h)) !important;
 }
 
+/* SVG text (the ★) is in face units; the .pg-item reset would make it 14pt = 14 faces. */
+#problems-container .dice-svg text {
+    font-size: 0.6px !important;
+}
+
 #problems-container .dice-net { --s: 2; }
 #problems-container .dice-tower { --s: 1; }
 
