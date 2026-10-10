@@ -1255,14 +1255,19 @@
             "type_tower_label": "Tower of dice: hidden and visible pips",
             "type_glued_label": "Dice glued one after another",
             "type_table_row_label": "Glued dice in a row on the table",
+            "type_tip_label": "Tipping a die over its edges",
+            "type_views_label": "Three views of one cube: opposite faces",
             "description": "On a die, opposite faces always add up to 7 pips.",
             "problems_title": "Dice",
             "answer_label": "Answer: ",
             "control_sum_grid_title": "Self-Check Grid",
-            "control_sum_grid_subtitle": "Write the digital root of the answer. If the answer is two numbers (glued faces), add them first.",
+            "control_sum_grid_subtitle": "Write the digital root of the answer. If the answer is two numbers (glued faces), add them first. If the answer is a letter, write its number: A = 1, B = 2, …, F = 6.",
             "error_message": "Error generating dice problems. Select at least one problem type.",
             "dice_forms": ["die", "dice"],
             "pip_forms": ["pip", "pips"],
+            "dirs": {"right": "to the right", "left": "to the left", "toward": "towards you", "away": "away from you"},
+            "then": ", then ",
+            "letters": ["A", "B", "C", "D", "E", "F"],
             "templates": {
                 "net": "On a die, opposite faces always add up to 7 pips. Here is the net of a die; three faces already have their pips. Draw the pips on the empty faces. How many pips are on the face marked ★?",
                 "tower_hidden": "{dice} are stacked into a tower on a table. On a die, opposite faces always add up to 7 pips. The top face of the tower shows {top}. How many pips are hidden in total: on the bottom faces of the dice and on the faces that touch each other?",
@@ -1272,7 +1277,11 @@
                 "contact_equal": "dice {a} and {b} along faces with {g} each",
                 "contact_free": "dice {a} and {b} so that the glued face of die {a} has {x} and the glued face of die {b} has {y}",
                 "glued_inverse": "Three dice were glued together: the second to the first along faces with the same number of pips, then the third to the second, again along faces with the same number of pips. On a die, opposite faces always add up to 7 pips. There are {visible} on the outside of the figure. How many pips were on the glued faces? Name both numbers.",
-                "table_row": "{dice} stand in a row on a table and are glued together by their side faces: {contacts}. From left to right, the numbers of pips on the top faces are {tops}. On a die, opposite faces always add up to 7 pips. How many pips can be seen if you walk around the table? (The bottom faces and the glued faces cannot be seen.)"
+                "table_row": "{dice} stand in a row on a table and are glued together by their side faces: {contacts}. From left to right, the numbers of pips on the top faces are {tops}. On a die, opposite faces always add up to 7 pips. How many pips can be seen if you walk around the table? (The bottom faces and the glued faces cannot be seen.)",
+                "tip_moves": "The picture shows a die. On a die, opposite faces always add up to 7 pips. The die is tipped over an edge: {moves}. How many pips are on the top face now?",
+                "tip_path": "A die stands on the first square of the strip. On a die, opposite faces always add up to 7 pips. The die is tipped over an edge to the right, one square at a time, until it stands on the square marked ★. How many pips are on the top face then?",
+                "views_opposite": "The faces of a cube are labelled with the letters {letters}, a different letter on each face. The pictures show the same cube in three different positions. Which letter is on the face opposite the letter {x}?",
+                "views_bottom": "The faces of a cube are labelled with the letters {letters}, a different letter on each face. The pictures show the same cube in three different positions. Which letter is on the bottom face in picture {v}?"
             }
         }
     }
