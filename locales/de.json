@@ -63,6 +63,8 @@
     "cube_buildings_p": "Würfel zählen: Gebäude nach Bauplan, Treppen und Pyramiden; bemalte Würfel, Ansichten, geklebte Flächen und Kantenmodelle.",
     "magic_squares_h3": "Magische Quadrate",
     "magic_squares_p": "Magische Quadrate 3×3 und 4×4 mit fehlenden Feldern, Rechenvierecke.",
+    "page_numbers_h3": "Seitenzahlen",
+    "page_numbers_p": "Ziffern in den Seitenzahlen eines Buches und in der Reihe 123456789101112…",
     "money_problems_h3": "Rechnen mit Geld",
     "money_problems_p": "Preislisten, Wechselgeld, Einzel- und Packungspreise, Tarife, Gruppeneintritt und Taschengeld sparen.",
     "category_basic_arithmetic": "Grundrechenarten",
@@ -1103,6 +1105,28 @@
                 "sum_hidden": "Finde zuerst die magische Summe.",
                 "use_numbers": "Verwende jede der Zahlen {list} genau einmal.",
                 "rechenviereck": "Ergänze die fehlenden Zahlen."
+            }
+        },
+        "page_numbers": {
+            "type_digit_count_label": "Wie viele Ziffern braucht man für die Seitenzahlen?",
+            "type_kth_digit_label": "Welche Ziffer steht an einer bestimmten Stelle von 123456789101112…?",
+            "type_occurrences_label": "Wie oft kommt eine Ziffer in den Seitenzahlen vor?",
+            "type_sum_label": "Summe der Seitenzahlen",
+            "type_triples_label": "Drei gleiche Ziffern nebeneinander",
+            "max_pages_label": "Das Buch hat höchstens so viele Seiten:",
+            "description": "Aufgaben zu den Ziffern, mit denen die Seiten eines Buches nummeriert werden.",
+            "problems_title": "Seitenzahlen",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Antwort. Ist die Antwort eine einzelne Ziffer, schreibe diese Ziffer.",
+            "error_message": "Fehler beim Erstellen der Aufgaben zu Seitenzahlen. Wähle mindestens einen Aufgabentyp.",
+            "templates": {
+                "digit_count": "Ein Buch hat {n} Seiten, nummeriert von 1 bis {n}. Wie viele Ziffern werden für alle Seitenzahlen zusammen gedruckt?",
+                "digit_count_inverse": "Die Seiten eines Buches sind ab 1 nummeriert. Für alle Seitenzahlen wurden genau {digits} Ziffern gedruckt. Wie viele Seiten hat das Buch?",
+                "kth_digit": "Alle Seitenzahlen eines Buches werden ohne Lücken hintereinander geschrieben: 123456789101112… Welche Ziffer steht an der {k}. Stelle?",
+                "occurrences": "Ein Buch hat {n} Seiten, nummeriert von 1 bis {n}. Wie oft kommt die Ziffer {d} in allen Seitenzahlen zusammen vor?",
+                "sum": "Addiere die Seitenzahlen der ersten {k} Seiten eines Buches: 1 + 2 + 3 + … + {k}. Wie groß ist die Summe?",
+                "triples": "Die Seitenzahlen eines Buches mit {n} Seiten werden ohne Lücken hintereinander geschrieben: 123456789101112… An wie vielen Stellen stehen drei gleiche Ziffern nebeneinander?"
             }
         }
     }
