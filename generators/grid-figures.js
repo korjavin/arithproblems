@@ -118,7 +118,8 @@ function addHalves(cells, size, k) {
 }
 
 // Inline SVG in cell units. Grid lines (class gf-grid) are for the screen only;
-// print hides them because the paper already has them.
+// print hides them because the paper already has them. The fill is translucent
+// so the cell lines (screen or paper) stay visible for counting.
 function svg({ x0 = 0, y0 = 0, w, h, grid, cells = [], polygons = [], segments = [], texts = [] }) {
     const lines = grid ? [
         ...range(grid.x0, grid.x1).map(x => `M${x} ${grid.y0}V${grid.y1}`),
@@ -126,7 +127,7 @@ function svg({ x0 = 0, y0 = 0, w, h, grid, cells = [], polygons = [], segments =
     ].join('') : '';
     return `<svg class="gf-svg" xmlns="http://www.w3.org/2000/svg" viewBox="${x0} ${y0} ${w} ${h}" width="${w * PX}" height="${h * PX}" style="--w:${w};--h:${h}" shape-rendering="crispEdges">`
         + (lines ? `<path class="gf-grid" d="${lines}" fill="none" stroke="#ccc" stroke-width="0.04"/>` : '')
-        + `<g fill="#bbb">${cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1"/>`).join('')}`
+        + `<g fill="#666" fill-opacity="0.35">${cells.map(([x, y]) => `<rect x="${x}" y="${y}" width="1" height="1"/>`).join('')}`
         + `${polygons.map(p => `<polygon points="${p.map(q => q.join(',')).join(' ')}"/>`).join('')}</g>`
         + `<path d="${segments.map(([a, b, c, d]) => `M${a} ${b}L${c} ${d}`).join('')}" fill="none" stroke="#222" stroke-width="0.12" stroke-linecap="round"/>`
         + texts.map(t => `<text x="${t.x}" y="${t.y}" font-size="0.75" text-anchor="${t.anchor || 'middle'}" dominant-baseline="central" fill="#222">${t.s}</text>`).join('')
