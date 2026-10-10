@@ -28,6 +28,7 @@ import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './gener
 import { generateIntegerSolutionsData, TYPES as INTEGER_SOLUTIONS_TYPES } from './generators/integer-solutions.js';
 import { generateNumberPropertiesData, TYPES as NUMBER_PROPERTIES_TYPES } from './generators/number-properties.js';
 import { generateGridFiguresData, TYPES as GRID_FIGURES_TYPES } from './generators/grid-figures.js';
+import { generateCubeBuildingsData, TYPES as CUBE_BUILDINGS_TYPES } from './generators/cube-buildings.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -108,6 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "integer-solutions": controls.renderIntegerSolutionsControls,
         "number-properties": controls.renderNumberPropertiesControls,
         "grid-figures": controls.renderGridFiguresControls,
+        "cube-buildings": controls.renderCubeBuildingsControls,
     };
 
     const problemRenderers = {
@@ -139,6 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "integer-solutions": renderIntegerSolutionsProblems,
         "number-properties": renderNumberPropertiesProblems,
         "grid-figures": renderGridFiguresProblems,
+        "cube-buildings": renderCubeBuildingsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -970,6 +973,37 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const items = problems.map(p => ({ html: `<div class="word-problem-item grid-figure-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="gf-figures">${p.svg}</div><div class="answer-space">${t.answer_label}</div></div></div>` }));
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(items, t.answer_label)}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderCubeBuildingsProblems(translations) {
+        const t = translations.script.cube_buildings;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateCubeBuildingsData({
+                types: CUBE_BUILDINGS_TYPES.filter(x => document.getElementById(`cu-type-${x}`).checked),
+                gridSize: parseInt(document.getElementById('cu-grid-size').value, 10),
+                maxHeight: parseInt(document.getElementById('cu-max-height').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            // Plan: one digit per paper cell, back row first, front marked below.
+            const planHtml = plan => `<div class="cube-plan">${plan.map(row => `<div class="cube-plan-row">${row.map(h => `<span class="cube-cell">${h}</span>`).join('')}</div>`).join('')}<div class="cube-plan-front">↑ ${t.front_label}</div></div>`;
+            // Staircase side profile: column i is i + 1 cubes high, one cube per paper cell.
+            const stairsHtml = n => {
+                const rects = [];
+                for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) rects.push(`<rect x="${i}" y="${n - 1 - j}" width="1" height="1"/>`);
+                return `<div class="cube-stairs" style="--n:${n}"><svg viewBox="0 0 ${n} ${n}" width="${n * 20}" height="${n * 20}" fill="#fff" stroke="#222" stroke-width="0.06">${rects.join('')}</svg></div>`;
+            };
+            const items = problems.map(p => ({
+                html: `<div class="word-problem-item cube-buildings-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${p.plan ? planHtml(p.plan) : ''}${p.stairs ? stairsHtml(p.stairs) : ''}<div class="answer-space">${t.answer_label}</div></div></div>`,
+            }));
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (problems.some(p => p.plan)) html += `<p class="print-instructions">${t.plan_hint}</p>`;
+            DOM.problemsContainer.innerHTML = html + proseProblemsHtml(items, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
