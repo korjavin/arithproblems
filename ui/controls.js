@@ -717,6 +717,18 @@ export function renderCubeBuildingsControls(container, t) {
     `;
 }
 
+export function renderMoneyProblemsControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="mp-type-${id}" checked>
+            <label for="mp-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['pay', 'affordable', 'tariff', 'group', 'saving', 'riddle'].map(type).join('')}
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderMagicSquaresControls(container, t) {
     const select = (id, options, selected) => `<select id="ms-${id}">${options.map(v => `<option value="${v}"${v === selected ? ' selected' : ''}>${t[`${id}_${v}`]}</option>`).join('')}</select>`;
     container.innerHTML = `
