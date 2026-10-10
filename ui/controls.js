@@ -776,7 +776,7 @@ export function renderDiceControls(container, t) {
             <label for="dc-type-${id}">${t[`type_${id}_label`]}</label>
         </div>`;
     container.innerHTML = `
-        ${['net', 'tower', 'glued', 'table_row'].map(type).join('')}
+        ${['net', 'tower', 'glued', 'table_row', 'tip', 'views'].map(type).join('')}
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }

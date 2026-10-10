@@ -448,6 +448,8 @@
 
 #problems-container .dice-net { --s: 2; }
 #problems-container .dice-tower { --s: 1; }
+#problems-container .dice-cube { --s: 1; }
+#problems-container .dice-views text { font-size: 0.8px !important; }
 
 /* === Multiplication chart: every cell is --mt-cell-w x 2 grid cells === */
 #problems-container > .multiplication-chart {
