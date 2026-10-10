@@ -562,3 +562,31 @@ export function renderMixedOperationsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderUnitConversionControls(container, t) {
+    const family = (id, checked) => `
+        <div>
+            <input type="checkbox" id="uc-family-${id}"${checked ? ' checked' : ''}>
+            <label for="uc-family-${id}">${t[`family_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${family('length', true)}${family('mass', true)}${family('volume', false)}${family('time', true)}${family('money', true)}
+        <div>
+            <label for="uc-difficulty">${t.difficulty_label}</label>
+            <select id="uc-difficulty">
+                <option value="1">${t.difficulty_1}</option>
+                <option value="2" selected>${t.difficulty_2}</option>
+                <option value="3">${t.difficulty_3}</option>
+            </select>
+        </div>
+        <div>
+            <input type="checkbox" id="uc-allow-decimals" checked>
+            <label for="uc-allow-decimals">${t.allow_decimals_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="uc-include-unsolvable" checked>
+            <label for="uc-include-unsolvable">${t.include_unsolvable_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

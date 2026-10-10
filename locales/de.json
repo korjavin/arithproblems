@@ -45,6 +45,8 @@
     "compare_expressions_p": "Setze <, > oder = zwischen die beiden Ausdrücke. Schnelle Kopfrechen-Übung.",
     "boolean_logic_h3": "Boolesche Logik",
     "boolean_logic_p": "Werte logische Ausdrücke (∧ ∨ ¬ → ↔) mit gegebenen Wahr/Falsch-Werten aus.",
+    "unit_conversion_h3": "Rechnen mit Größen",
+    "unit_conversion_p": "Längen, Gewichte, Hohlmaße, Zeit und Geld umrechnen, addieren und subtrahieren.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -404,6 +406,63 @@
         "unknown_topic_error": "Unbekanntes Thema ausgewählt:",
         "generate_button_clicked_for_topic": "Button 'Erstellen' für Thema geklickt:",
         "invalid_num_problems_alert": "Bitte geben Sie eine gültige Anzahl von Problemen ein.",
-        "unknown_topic_generation_error": "Fehler: Unbekanntes Thema ausgewählt."
+        "unknown_topic_generation_error": "Fehler: Unbekanntes Thema ausgewählt.",
+        "unit_conversion": {
+            "family_length_label": "Längen (km, m, dm, cm, mm)",
+            "family_mass_label": "Gewichte (t, kg, g)",
+            "family_volume_label": "Hohlmaße (l, ml)",
+            "family_time_label": "Zeit (Wochen, Tage, h, min, s, Jahre, Monate)",
+            "family_money_label": "Geld (€, ct)",
+            "difficulty_label": "Schwierigkeit:",
+            "difficulty_1": "Leicht: einfache Umrechnungen",
+            "difficulty_2": "Mittel: gemischte Einheiten, Lücken, Aufteilen",
+            "difficulty_3": "Schwer: größere Zahlen",
+            "allow_decimals_label": "Kommazahlen erlauben (2,6 kg)",
+            "include_unsolvable_label": "Eine unlösbare Aufgabe einbauen",
+            "description": "Fülle die Lücken aus. Jede Aufgabe rechnet Größen um, ergänzt eine Summe oder teilt eine Größe gleichmäßig auf.",
+            "problems_title": "Rechnen mit Größen",
+            "unsolvable_instruction": "Eine Aufgabe ist nicht lösbar, weil die Einheiten nicht zusammenpassen — streiche sie durch.",
+            "control_sum_grid_title": "Kontrollraster",
+            "control_sum_grid_subtitle": "Bilde die Quersumme jedes Ergebnisses (so lange, bis eine Ziffer übrig bleibt). Ist das Ergebnis eine Kommazahl, rechne es vorher in ganze g / ml / mm / ct um. Die durchgestrichene Aufgabe bekommt 0.",
+            "error_message": "Fehler beim Erstellen der Aufgaben. Wähle mindestens eine Größenart.",
+            "decimal_separator": ",",
+            "units": {
+                "mm": "mm",
+                "cm": "cm",
+                "dm": "dm",
+                "m": "m",
+                "km": "km",
+                "g": "g",
+                "kg": "kg",
+                "t": "t",
+                "ml": "ml",
+                "l": "l",
+                "ct": "ct",
+                "eur": "€",
+                "s": "s",
+                "min": "min",
+                "h": "h",
+                "d": ["Tag", "Tage"],
+                "wk": ["Woche", "Wochen"],
+                "mo": ["Monat", "Monate"],
+                "yr": ["Jahr", "Jahre"]
+            },
+            "parts": {
+                "2": "Die Hälfte",
+                "3": "Ein Drittel",
+                "4": "Ein Viertel",
+                "5": "Ein Fünftel",
+                "8": "Ein Achtel",
+                "10": "Ein Zehntel"
+            },
+            "fraction_template": "{part} von {qty} sind {blank}.",
+            "unit_price_templates": {
+                "money": ["{count} Bälle kosten zusammen {total}. Ein Ball kostet {blank}.", "{count} Hefte kosten zusammen {total}. Ein Heft kostet {blank}."],
+                "mass": ["{count} gleiche Tüten wiegen zusammen {total}. Eine Tüte wiegt {blank}.", "{count} gleiche Kisten wiegen zusammen {total}. Eine Kiste wiegt {blank}."],
+                "volume": ["{count} gleiche Flaschen enthalten zusammen {total}. In einer Flasche sind {blank}.", "{total} Saft werden gleichmäßig auf {count} Gläser verteilt. In jedem Glas sind {blank}."],
+                "length": ["Ein Band von {total} wird in {count} gleich lange Stücke geschnitten. Ein Stück ist {blank} lang.", "{count} gleich lange Bretter sind zusammen {total} lang. Ein Brett ist {blank} lang."],
+                "time": ["{count} gleich lange Lieder dauern zusammen {total}. Ein Lied dauert {blank}.", "{count} gleich lange Pausen dauern zusammen {total}. Eine Pause dauert {blank}."]
+            }
+        }
     }
 }

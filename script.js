@@ -21,7 +21,9 @@ import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
+import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
+import { fillTemplate } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -92,6 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "operator-puzzles": controls.renderOperatorPuzzlesControls,
         "compare-expressions": controls.renderCompareExpressionsControls,
         "boolean-logic": controls.renderBooleanLogicControls,
+        "unit-conversion": controls.renderUnitConversionControls,
     };
 
     const problemRenderers = {
@@ -116,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "operator-puzzles": renderOperatorPuzzlesProblems,
         "compare-expressions": renderCompareExpressionsProblems,
         "boolean-logic": renderBooleanLogicProblems,
+        "unit-conversion": renderUnitConversionProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -777,6 +781,56 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (controlSums.length > 0) {
                 html += `<div class="digital-root-check-grid-container"><h4>${t.control_sum_grid_title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${t.control_sum_grid_subtitle}</p><div class="digital-root-check-grid">${controlSums.map(a => `<div class="dr-cell">${a.controlSum}</div>`).join('')}</div></div>`;
             }
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderUnitConversionProblems(translations) {
+        const t = translations.script.unit_conversion;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const families = ['length', 'mass', 'volume', 'time', 'money'].filter(f => document.getElementById(`uc-family-${f}`).checked);
+            const { problems, controlSums } = generateUnitConversionData({
+                families,
+                difficulty: parseInt(document.getElementById('uc-difficulty').value, 10),
+                allowDecimals: document.getElementById('uc-allow-decimals').checked,
+                includeUnsolvable: document.getElementById('uc-include-unsolvable').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            // Word units carry [singular, plural] (en/de) or [1, 2–4, 5+] (ru) forms; a blank takes the last one.
+            const unitName = (u, value) => {
+                const forms = t.units[u];
+                if (!Array.isArray(forms)) return forms;
+                if (value === undefined) return forms[forms.length - 1];
+                if (forms.length === 2) return value === 1 ? forms[0] : forms[1];
+                if (!Number.isInteger(value)) return forms[1];
+                const m10 = value % 10, m100 = value % 100;
+                if (m10 === 1 && m100 !== 11) return forms[0];
+                return m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? forms[1] : forms[2];
+            };
+            const qtyText = parts => parts.map(q => `${displayNumber(q.base, q.u).replace('.', t.decimal_separator)} ${unitName(q.u, q.base / factorOf(q.u))}`).join(' ');
+            const blankHtml = u => `<span class="answer-space"></span>${u ? ' ' + unitName(u) : ''}`;
+            const token = tk => tk.qty ? qtyText(tk.qty) : tk.op || blankHtml(tk.blank);
+            const line = p => {
+                if (p.kind === 'fraction') {
+                    return fillTemplate(t.fraction_template, { part: t.parts[p.denominator], qty: qtyText(p.qty), blank: blankHtml(p.blankUnit) });
+                }
+                if (p.kind === 'unitPrice') {
+                    const templates = t.unit_price_templates[p.family];
+                    return fillTemplate(templates[p.variant % templates.length], { count: p.count, total: qtyText(p.qty), blank: blankHtml(p.blankUnit) });
+                }
+                return `${p.lhs.map(token).join(' ')} = ${p.rhs.map(token).join(' ')}`;
+            };
+
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (problems.some(p => p.unsolvable)) html += `<p class="print-instructions">${t.unsolvable_instruction}</p>`;
+            html += `<div class="arithmetic-grid cell-grid unit-conversion-problem-grid">`;
+            html += problems.map(p => `<div class="unit-conversion-item"><div class="problem-content"><span class="puzzle">${line(p)}</span></div></div>`).join('');
+            html += `</div>`;
+            html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_message || error.message);

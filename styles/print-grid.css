@@ -214,6 +214,10 @@
     box-shadow: inset 0 0 0 0.3mm var(--ink);
 }
 
+#problems-container .unit-conversion-item .answer-space {
+    width: calc(var(--cell) * 5);
+}
+
 #problems-container .pg-item .op-blank.op-blank-number {
     width: calc(var(--cell) * 2);
 }
