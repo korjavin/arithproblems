@@ -49,6 +49,8 @@
     "unit_conversion_p": "Längen, Gewichte, Hohlmaße, Zeit und Geld umrechnen, addieren und subtrahieren.",
     "time_calendar_h3": "Uhrzeit und Kalender",
     "time_calendar_p": "Uhrzeiten, Zeitspannen, Fahrpläne, Wochentage und Daten als kurze Textaufgaben.",
+    "find_the_number_h3": "Zahl gesucht",
+    "find_the_number_p": "Zahlenrätsel: in Worten beschriebene Zahlen, „Ich denke mir eine Zahl“-Ketten, Halbierungsketten und verkettete Buchstabengleichungen.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -572,6 +574,128 @@
                 "age_days_weeks": "Ein Kätzchen ist {n} Tage alt. Wie viele volle Wochen sind das?",
                 "clock_gains": "Eine Uhr geht jede Stunde {gain} Min. vor. Um {set} wurde sie richtig gestellt. Was zeigt sie {hours} später?",
                 "clock_jumps": "Eine kaputte Uhr rückt in jeder echten Stunde {per_hour} Minuten vor. Um {set} ging sie richtig. Was zeigt sie {hours} später?"
+            }
+        },
+        "find_the_number": {
+            "type_describe_label": "In Worten beschriebene Zahlen („das Siebenfache von 70“)",
+            "type_inverse_label": "„Ich denke mir eine Zahl …“-Ketten",
+            "type_halving_label": "Halbierungsketten („die Hälfte des Rests und noch 1“)",
+            "type_letters_label": "Verkettete Buchstabengleichungen (a → b → c)",
+            "chain_length_label": "Kettenlänge (Rechenschritte):",
+            "max_value_label": "Zahlen bis:",
+            "allow_halving_label": "Division erlauben (halbieren, „der fünfte Teil von …“)",
+            "description": "Aufgaben im Stil der Mathematik-Olympiade. Rechne vom Ergebnis rückwärts zur gesuchten Zahl.",
+            "problems_title": "Zahl gesucht",
+            "answer_label": "Die Zahl: ",
+            "letters_instruction": "Bestimme zuerst a, dann b, dann c. Schreibe c auf.",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Quersumme (einstellig) jeder gefundenen Zahl auf (bei Buchstabengleichungen von c).",
+            "error_message": "Fehler beim Erstellen der Aufgaben. Wähle mindestens eine Aufgabenart.",
+            "multiples": [
+                "{m}",
+                "das Doppelte von {m}",
+                "das Dreifache von {m}",
+                "das Vierfache von {m}",
+                "das Fünffache von {m}",
+                "das Sechsfache von {m}",
+                "das Siebenfache von {m}",
+                "das Achtfache von {m}",
+                "das Neunfache von {m}",
+                "das Zehnfache von {m}"
+            ],
+            "parts": [
+                "{m}",
+                "die Hälfte von {m}",
+                "den dritten Teil von {m}",
+                "den vierten Teil von {m}",
+                "den fünften Teil von {m}",
+                "den sechsten Teil von {m}",
+                "den siebenten Teil von {m}",
+                "den achten Teil von {m}",
+                "den neunten Teil von {m}",
+                "den zehnten Teil von {m}"
+            ],
+            "terms": {
+                "sum": "die Summe von {a} und {b}",
+                "difference": "die Differenz von {a} und {b}",
+                "product": "das Produkt von {a} und {b}",
+                "quotient": "den Quotienten von {a} und {b}"
+            },
+            "describe_simple": "Berechne {x}.",
+            "describe_compound": "Berechne {x} und {y}. {outer} Welche Zahl erhältst du?",
+            "outer": {
+                "add": "Addiere dann die beiden Ergebnisse.",
+                "sub": "Subtrahiere dann das zweite Ergebnis vom ersten.",
+                "mul": "Multipliziere dann die beiden Ergebnisse.",
+                "div": "Dividiere dann das erste Ergebnis durch das zweite."
+            },
+            "inverse_template": "Ich denke mir eine Zahl, {steps} und erhalte {result}. Wie heißt meine Zahl?",
+            "step_separator": ", ",
+            "steps": {
+                "add": "addiere {n}",
+                "sub": "subtrahiere {n}",
+                "mul": "multipliziere mit {n}",
+                "div": "dividiere durch {n}",
+                "double": "verdopple sie",
+                "triple": "verdreifache sie",
+                "halve": "halbiere sie"
+            },
+            "names": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Paul",
+                "Lena",
+                "Finn"
+            ],
+            "receivers": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Paul",
+                "Lena",
+                "Finn"
+            ],
+            "items": [
+                {
+                    "many": "Murmeln",
+                    "forms": [
+                        "Murmel",
+                        "Murmeln"
+                    ]
+                },
+                {
+                    "many": "Aufkleber",
+                    "forms": [
+                        "Aufkleber",
+                        "Aufkleber"
+                    ]
+                },
+                {
+                    "many": "Nüsse",
+                    "forms": [
+                        "Nuss",
+                        "Nüsse"
+                    ]
+                },
+                {
+                    "many": "Briefmarken",
+                    "forms": [
+                        "Briefmarke",
+                        "Briefmarken"
+                    ]
+                }
+            ],
+            "halving_template": "{name} hat einige {items} und gibt {gives}. Am Ende behält {name} {kept}. Wie viele {items_count} hatte {name} am Anfang?",
+            "halving_steps": {
+                "first": "{to} die Hälfte davon",
+                "first_plus": "{to} die Hälfte davon und noch 1",
+                "rest": "dann {to} die Hälfte des Rests",
+                "rest_plus": "dann {to} die Hälfte des Rests und noch 1"
             }
         }
     }

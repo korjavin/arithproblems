@@ -1,4 +1,4 @@
-import { digitalRoot, getRandomInt, getRandomFromArray, fillTemplate } from '../utils.js';
+import { digitalRoot, getRandomInt, getRandomFromArray, fillTemplate, plural } from '../utils.js';
 
 // Clock, duration and calendar prose problems. Every answer is reduced to one
 // integer for the self-check: minutes since midnight (time of day), total
@@ -27,14 +27,6 @@ export function fromDayOfYear(n, leap) {
 
 // ISO weekday (1..7) `days` days after weekday `wd` (negative = before).
 export const shiftWeekday = (wd, days) => ((((wd - 1 + days) % 7) + 7) % 7) + 1;
-
-// Plural word forms: [one, other] (en/de) or [one, few, many] (ru).
-function plural(forms, n) {
-    if (forms.length === 2) return `${n} ${n === 1 ? forms[0] : forms[1]}`;
-    const m10 = n % 10, m100 = n % 100;
-    const form = m10 === 1 && m100 !== 11 ? forms[0] : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? forms[1] : forms[2];
-    return `${n} ${form}`;
-}
 
 function makeFormat(t) {
     const time = (min) => fillTemplate(t.time_format, { h: Math.floor(min / 60), mm: String(min % 60).padStart(2, '0') });

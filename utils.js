@@ -8,6 +8,14 @@ export function fillTemplate(template, data) {
     });
 }
 
+// Plural word forms: [one, other] (en/de) or [one, few, many] (ru).
+export function plural(forms, n) {
+    if (forms.length === 2) return `${n} ${n === 1 ? forms[0] : forms[1]}`;
+    const m10 = n % 10, m100 = n % 100;
+    const form = m10 === 1 && m100 !== 11 ? forms[0] : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? forms[1] : forms[2];
+    return `${n} ${form}`;
+}
+
 export function gcd(a, b) {
     a = Math.abs(a);
     b = Math.abs(b);

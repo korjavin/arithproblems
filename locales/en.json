@@ -51,6 +51,8 @@
     "unit_conversion_p": "Convert, add and subtract lengths, masses, volumes, times and money.",
     "time_calendar_h3": "Time and Calendar",
     "time_calendar_p": "Clock times, durations, timetables, weekdays and dates as short story problems.",
+    "find_the_number_h3": "Find the Number",
+    "find_the_number_p": "Number riddles: numbers described in words, \"I think of a number\" chains, halving chains and linked letter equations.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -673,6 +675,128 @@
                 "age_days_weeks": "A kitten is {n_days} old. How many full weeks is that?",
                 "clock_gains": "A clock gains {gain} min every hour. It was set right at {set}. What does it show {hours} later?",
                 "clock_jumps": "A broken clock moves {per_hour} minutes ahead every real hour. It showed the right time at {set}. What does it show {hours} later?"
+            }
+        },
+        "find_the_number": {
+            "type_describe_label": "Numbers described in words (\"seven times 70\")",
+            "type_inverse_label": "\"I think of a number…\" chains",
+            "type_halving_label": "Halving chains (\"half of the rest and one more\")",
+            "type_letters_label": "Linked letter equations (a → b → c)",
+            "chain_length_label": "Chain length (operations):",
+            "max_value_label": "Numbers up to:",
+            "allow_halving_label": "Allow division (halve, \"a fifth of …\")",
+            "description": "Olympiad-style riddles. Work backwards from the result to the hidden number.",
+            "problems_title": "Find the Number",
+            "answer_label": "The number: ",
+            "letters_instruction": "Find a, then b, then c. Write down c.",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Write the digital root of each number you found (for letter equations: of c).",
+            "error_message": "Error generating problems. Select at least one problem type.",
+            "multiples": [
+                "{m}",
+                "twice {m}",
+                "three times {m}",
+                "four times {m}",
+                "five times {m}",
+                "six times {m}",
+                "seven times {m}",
+                "eight times {m}",
+                "nine times {m}",
+                "ten times {m}"
+            ],
+            "parts": [
+                "{m}",
+                "half of {m}",
+                "a third of {m}",
+                "a quarter of {m}",
+                "a fifth of {m}",
+                "a sixth of {m}",
+                "a seventh of {m}",
+                "an eighth of {m}",
+                "a ninth of {m}",
+                "a tenth of {m}"
+            ],
+            "terms": {
+                "sum": "the sum of {a} and {b}",
+                "difference": "the difference of {a} and {b}",
+                "product": "the product of {a} and {b}",
+                "quotient": "the quotient of {a} and {b}"
+            },
+            "describe_simple": "Which number is {x}?",
+            "describe_compound": "Calculate {x} and {y}. {outer} Which number do you get?",
+            "outer": {
+                "add": "Then add the two results.",
+                "sub": "Then subtract the second result from the first.",
+                "mul": "Then multiply the two results.",
+                "div": "Then divide the first result by the second."
+            },
+            "inverse_template": "I think of a number, {steps} and get {result}. What is my number?",
+            "step_separator": ", ",
+            "steps": {
+                "add": "add {n}",
+                "sub": "subtract {n}",
+                "mul": "multiply by {n}",
+                "div": "divide by {n}",
+                "double": "double it",
+                "triple": "triple it",
+                "halve": "halve it"
+            },
+            "names": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Paul",
+                "Lena",
+                "Finn"
+            ],
+            "receivers": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Paul",
+                "Lena",
+                "Finn"
+            ],
+            "items": [
+                {
+                    "many": "marbles",
+                    "forms": [
+                        "marble",
+                        "marbles"
+                    ]
+                },
+                {
+                    "many": "stickers",
+                    "forms": [
+                        "sticker",
+                        "stickers"
+                    ]
+                },
+                {
+                    "many": "nuts",
+                    "forms": [
+                        "nut",
+                        "nuts"
+                    ]
+                },
+                {
+                    "many": "stamps",
+                    "forms": [
+                        "stamp",
+                        "stamps"
+                    ]
+                }
+            ],
+            "halving_template": "{name} has some {items} and gives {gives}. In the end, {name} keeps {kept}. How many {items_count} did {name} have at the start?",
+            "halving_steps": {
+                "first": "half of them to {to}",
+                "first_plus": "half of them and one more to {to}",
+                "rest": "then half of the rest to {to}",
+                "rest_plus": "then half of the rest and one more to {to}"
             }
         }
     }

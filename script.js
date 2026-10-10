@@ -23,6 +23,7 @@ import { generateCompareExpressionsData } from './generators/compare-expressions
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
 import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
+import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './generators/find-the-number.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -68,9 +69,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `<div class="digital-root-check-grid-container"><h4>${title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digits.map(d => `<div class="dr-cell">${d}</div>`).join('')}</div></div>`;
     }
 
-    // Prose problems (each `{ text }`) with an answer line, styled for print by styles/print-grid.css.
+    // Prose problems (each `{ text }`, or a ready grid item `{ html }`) with an answer line, styled for print by styles/print-grid.css.
     function proseProblemsHtml(problems, answerLabel) {
-        return `<div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
+        return `<div class="word-problems-grid problems-grid">${problems.map(p => p.html || `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
     }
 
     const topicControlsRenderers = {
@@ -97,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "boolean-logic": controls.renderBooleanLogicControls,
         "unit-conversion": controls.renderUnitConversionControls,
         "time-calendar": controls.renderTimeCalendarControls,
+        "find-the-number": controls.renderFindTheNumberControls,
     };
 
     const problemRenderers = {
@@ -123,6 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "boolean-logic": renderBooleanLogicProblems,
         "unit-conversion": renderUnitConversionProblems,
         "time-calendar": renderTimeCalendarProblems,
+        "find-the-number": renderFindTheNumberProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -854,6 +857,32 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label)}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderFindTheNumberProblems(translations) {
+        const t = translations.script.find_the_number;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateFindTheNumberData({
+                types: FIND_THE_NUMBER_TYPES.filter(x => document.getElementById(`ftn-type-${x}`).checked),
+                chainLength: parseInt(document.getElementById('ftn-chain-length').value, 10),
+                maxValue: parseInt(document.getElementById('ftn-max-value').value, 10),
+                allowHalving: document.getElementById('ftn-allow-halving').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            // Letter chains (grouped last by the generator) share the prose grid — print-grid
+            // lays out only the first grid — but are not .word-problem-item, so they print one glyph per cell.
+            const items = problems.map(p => (p.type !== 'letters' ? p : {
+                html: `<div class="find-the-number-letters-item"><div class="problem-content"><span class="puzzle">${p.data.lines.join('<br>')}<br>c = <span class="answer-space"></span></span></div></div>`,
+            }));
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (problems.some(p => p.type === 'letters')) html += `<p class="print-instructions">${t.letters_instruction}</p>`;
+            DOM.problemsContainer.innerHTML = html + proseProblemsHtml(items, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
