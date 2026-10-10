@@ -99,6 +99,10 @@ function testInputValidation() {
     console.log('All input validation tests passed!');
 }
 
+// The 'mixed' pool includes olympiad keys: borrow their real templates so the mock covers every key.
+const enTemplates = JSON.parse(readFileSync('./locales/en.json', 'utf8')).script.word_problems.templates;
+for (const key of Object.keys(enTemplates)) if (key.startsWith('oly')) mockTranslations.templates[key] = enTemplates[key];
+
 // Re-derive each olympiad answer from the generated data, solving the story forward.
 const olympiadChecks = {
     oly1: d => d.young * d.mult + d.diff,
