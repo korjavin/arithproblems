@@ -828,7 +828,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             let html = `<h3>${t.problems_title}</h3>`;
             if (problems.some(p => p.unsolvable)) html += `<p class="print-instructions">${t.unsolvable_instruction}</p>`;
             html += `<div class="arithmetic-grid cell-grid unit-conversion-problem-grid">`;
-            html += problems.map(p => `<div class="unit-conversion-item"><div class="problem-content"><span class="puzzle">${line(p)}</span></div></div>`).join('');
+            // Sharing sentences are too long for one 40-cell print line: they print as wrapping prose.
+            html += problems.map(p => p.kind === 'unitPrice'
+                ? `<div class="unit-conversion-item unit-conversion-prose"><div class="problem-content"><span class="problem-text">${line(p)}</span></div></div>`
+                : `<div class="unit-conversion-item"><div class="problem-content"><span class="puzzle">${line(p)}</span></div></div>`).join('');
             html += `</div>`;
             html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
             DOM.problemsContainer.innerHTML = html;
