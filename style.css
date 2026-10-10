@@ -1081,7 +1081,8 @@ footer {
     text-align: center;
 }
 
-.cube-stairs svg {
+.cube-stairs svg,
+.dice-svg svg {
     display: block;
     margin: 8px 0;
 }

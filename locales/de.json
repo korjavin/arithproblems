@@ -65,6 +65,8 @@
     "magic_squares_p": "Magische Quadrate 3×3 und 4×4 mit fehlenden Feldern, Rechenvierecke.",
     "page_numbers_h3": "Seitenzahlen",
     "page_numbers_p": "Ziffern in den Seitenzahlen eines Buches und in der Reihe 123456789101112…",
+    "dice_h3": "Spielwürfel",
+    "dice_p": "Würfel, deren gegenüberliegende Seiten zusammen 7 Augen haben: Würfelnetze, Türme und geklebte Würfel.",
     "money_problems_h3": "Rechnen mit Geld",
     "money_problems_p": "Preislisten, Wechselgeld, Einzel- und Packungspreise, Tarife, Gruppeneintritt und Taschengeld sparen.",
     "category_basic_arithmetic": "Grundrechenarten",
@@ -1145,6 +1147,31 @@
                 "occurrences": "Ein Buch hat {n} Seiten, nummeriert von 1 bis {n}. Wie oft kommt die Ziffer {d} in allen Seitenzahlen zusammen vor?",
                 "sum": "Addiere die Seitenzahlen der ersten {k} Seiten eines Buches: 1 + 2 + 3 + … + {k}. Wie groß ist die Summe?",
                 "triples": "Die Seitenzahlen eines Buches mit {n} Seiten werden ohne Lücken hintereinander geschrieben: 123456789101112… An wie vielen Stellen stehen drei gleiche Ziffern nebeneinander?"
+            }
+        },
+        "dice": {
+            "type_net_label": "Würfelnetz vervollständigen",
+            "type_tower_label": "Würfelturm: verdeckte und sichtbare Augen",
+            "type_glued_label": "Nacheinander zusammengeklebte Würfel",
+            "type_table_row_label": "Geklebte Würfel in einer Reihe auf dem Tisch",
+            "description": "Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen.",
+            "problems_title": "Spielwürfel",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Antwort. Besteht die Antwort aus zwei Zahlen (geklebte Seiten), addiere sie zuerst.",
+            "error_message": "Fehler beim Erstellen der Würfelaufgaben. Wähle mindestens einen Aufgabentyp.",
+            "dice_forms": ["Würfel", "Würfel"],
+            "pip_forms": ["Auge", "Augen"],
+            "templates": {
+                "net": "Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Hier ist das Netz eines Würfels, auf drei Seiten sind die Augen schon eingezeichnet. Zeichne die Augen auf den leeren Seiten ein. Wie viele Augen hat die Seite mit dem ★?",
+                "tower_hidden": "{dice} werden auf einem Tisch zu einem Turm aufeinandergestapelt. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Die Oberseite des Turms zeigt {top}. Wie viele Augen sind insgesamt verdeckt: auf den Unterseiten der Würfel und auf den Seiten, mit denen sich die Würfel berühren?",
+                "tower_visible": "{dice} werden auf einem Tisch zu einem Turm aufeinandergestapelt. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Die Oberseite des Turms zeigt {top}. Man darf um den Turm herumgehen. Wie viele Augen sieht man insgesamt?",
+                "glued_equal": "{dice} werden nacheinander zusammengeklebt: {contacts}. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Wie viele Augen sind außen auf der Figur zu sehen (auf allen nicht geklebten Seiten)?",
+                "glued_free": "{dice} werden nacheinander zusammengeklebt: {contacts}. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Wie viele Augen sind außen auf der Figur zu sehen (auf allen nicht geklebten Seiten)?",
+                "contact_equal": "Würfel {a} und {b} an Seiten mit je {g}",
+                "contact_free": "Würfel {a} und {b}, die geklebte Seite von Würfel {a} mit {x}, die von Würfel {b} mit {y}",
+                "glued_inverse": "Drei Spielwürfel werden zusammengeklebt: der zweite an den ersten mit Seiten gleicher Augenzahl, dann der dritte an den zweiten, wieder mit Seiten gleicher Augenzahl. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Außen auf der Figur sind {visible} zu sehen. Wie viele Augen hatten die geklebten Seiten? Nenne beide Zahlen.",
+                "table_row": "{dice} stehen in einer Reihe auf einem Tisch und sind an den Seitenflächen zusammengeklebt: {contacts}. Die Augenzahlen auf den Oberseiten von links nach rechts: {tops}. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Wie viele Augen sieht man, wenn man um den Tisch herumgeht? (Die Unterseiten und die geklebten Seiten sieht man nicht.)"
             }
         }
     }

@@ -433,6 +433,22 @@
     height: calc(var(--cell) * var(--n)) !important;
 }
 
+/* === Dice: a net face is 2×2 cells, a tower die is one cell === */
+#problems-container .dice-svg svg {
+    display: block;
+    margin-top: var(--cell) !important;
+    width: calc(var(--cell) * var(--s) * var(--w)) !important;
+    height: calc(var(--cell) * var(--s) * var(--h)) !important;
+}
+
+/* SVG text (the ★) is in face units; the .pg-item reset would make it 14pt = 14 faces. */
+#problems-container .dice-svg text {
+    font-size: 0.6px !important;
+}
+
+#problems-container .dice-net { --s: 2; }
+#problems-container .dice-tower { --s: 1; }
+
 /* === Multiplication chart: every cell is --mt-cell-w x 2 grid cells === */
 #problems-container > .multiplication-chart {
     display: grid !important;

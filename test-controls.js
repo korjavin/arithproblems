@@ -155,7 +155,8 @@ function testControls() {
         { name: 'renderCubeBuildingsControls', func: controls.renderCubeBuildingsControls, expected: ['cu-type-count', 'cu-type-complete', 'cu-type-faces', 'cu-type-glued', 'cu-type-views', 'cu-type-stairs', 'cu-type-pyramid', 'cu-type-painted', 'cu-type-edges', 'cu-grid-size', 'cu-max-height'] },
         { name: 'renderMagicSquaresControls', func: controls.renderMagicSquaresControls, expected: ['ms-size', 'ms-hidden', 'ms-sum'] },
         { name: 'renderPageNumbersControls', func: controls.renderPageNumbersControls, expected: ['pn-type-digit_count', 'pn-type-kth_digit', 'pn-type-occurrences', 'pn-type-sum', 'pn-type-triples', 'pn-max-pages'] },
-        { name: 'renderMoneyProblemsControls', func: controls.renderMoneyProblemsControls, expected: ['mp-type-pay', 'mp-type-affordable', 'mp-type-tariff', 'mp-type-group', 'mp-type-saving', 'mp-type-riddle'] }
+        { name: 'renderMoneyProblemsControls', func: controls.renderMoneyProblemsControls, expected: ['mp-type-pay', 'mp-type-affordable', 'mp-type-tariff', 'mp-type-group', 'mp-type-saving', 'mp-type-riddle'] },
+        { name: 'renderDiceControls', func: controls.renderDiceControls, expected: ['dc-type-net', 'dc-type-tower', 'dc-type-glued', 'dc-type-table_row'] }
     ];
 
     testCases.forEach(tc => {

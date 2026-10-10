@@ -32,6 +32,7 @@ import { generateCubeBuildingsData, TYPES as CUBE_BUILDINGS_TYPES } from './gene
 import { generateMagicSquaresData } from './generators/magic-squares.js';
 import { generatePageNumbersData, TYPES as PAGE_NUMBERS_TYPES } from './generators/page-numbers.js';
 import { generateMoneyProblemsData, TYPES as MONEY_PROBLEMS_TYPES } from './generators/money-problems.js';
+import { generateDiceData, TYPES as DICE_TYPES } from './generators/dice.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -116,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "magic-squares": controls.renderMagicSquaresControls,
         "page-numbers": controls.renderPageNumbersControls,
         "money-problems": controls.renderMoneyProblemsControls,
+        "dice": controls.renderDiceControls,
     };
 
     const problemRenderers = {
@@ -151,6 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "magic-squares": renderMagicSquaresProblems,
         "page-numbers": renderPageNumbersProblems,
         "money-problems": renderMoneyProblemsProblems,
+        "dice": renderDiceProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -1076,6 +1079,37 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(problems, t.answer_label)
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderDiceProblems(translations) {
+        const t = translations.script.dice;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateDiceData({
+                types: DICE_TYPES.filter(x => document.getElementById(`dc-type-${x}`).checked),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            // One die face = a unit square at (x, y) with pips as dots (value 0 = empty).
+            const PIPS = { 1: [[2, 2]], 2: [[1, 1], [3, 3]], 3: [[1, 1], [2, 2], [3, 3]], 4: [[1, 1], [3, 1], [1, 3], [3, 3]], 5: [[1, 1], [3, 1], [2, 2], [1, 3], [3, 3]], 6: [[1, 1], [3, 1], [1, 2], [3, 2], [1, 3], [3, 3]] };
+            const face = (x, y, v, star) => `<rect x="${x}" y="${y}" width="1" height="1"/>`
+                + (PIPS[v] || []).map(([px, py]) => `<circle cx="${x + px / 4}" cy="${y + py / 4}" r="0.09" fill="#222"/>`).join('')
+                + (star ? `<text x="${x + 0.5}" y="${y + 0.72}" font-size="0.6" text-anchor="middle" fill="#222" stroke="none">★</text>` : '');
+            // Net: every face is 2×2 paper cells; tower: one paper cell per die, pips on the top die.
+            const svg = (cls, w, h, px, body) => `<div class="dice-svg ${cls}" style="--w:${w};--h:${h}"><svg viewBox="0 0 ${w} ${h}" overflow="visible" width="${w * px}" height="${h * px}" fill="#fff" stroke="#222" stroke-width="0.04">${body}</svg></div>`;
+            const netHtml = n => {
+                const w = Math.max(...n.cells.map(c => c[0])) + 1, h = Math.max(...n.cells.map(c => c[1])) + 1;
+                return svg('dice-net', w, h, 40, n.cells.map(([x, y], i) => face(x, y, n.shown.includes(i) ? n.values[i] : 0, i === n.star)).join(''));
+            };
+            const towerHtml = ({ k, top }) => svg('dice-tower', 1, k, 30, Array.from({ length: k }, (_, i) => face(0, i, i === 0 ? top : 0)).join(''));
+            const items = problems.map(p => ({
+                html: `<div class="word-problem-item dice-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${p.net ? netHtml(p.net) : ''}${p.tower ? towerHtml(p.tower) : ''}<div class="answer-space">${t.answer_label}</div></div></div>`,
+            }));
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(items, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
