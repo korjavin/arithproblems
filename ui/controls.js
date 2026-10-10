@@ -768,3 +768,15 @@ export function renderPageNumbersControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderDiceControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="dc-type-${id}" checked>
+            <label for="dc-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['net', 'tower', 'glued', 'table_row'].map(type).join('')}
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
