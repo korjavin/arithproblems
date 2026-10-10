@@ -47,6 +47,8 @@
     "boolean_logic_p": "Werte logische Ausdrücke (∧ ∨ ¬ → ↔) mit gegebenen Wahr/Falsch-Werten aus.",
     "unit_conversion_h3": "Rechnen mit Größen",
     "unit_conversion_p": "Längen, Gewichte, Hohlmaße, Zeit und Geld umrechnen, addieren und subtrahieren.",
+    "time_calendar_h3": "Uhrzeit und Kalender",
+    "time_calendar_p": "Uhrzeiten, Zeitspannen, Fahrpläne, Wochentage und Daten als kurze Textaufgaben.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -462,6 +464,114 @@
                 "volume": ["{count} gleiche Flaschen enthalten zusammen {total}. In einer Flasche sind {blank}.", "{total} Saft werden gleichmäßig auf {count} Gläser verteilt. In jedem Glas sind {blank}."],
                 "length": ["Ein Band von {total} wird in {count} gleich lange Stücke geschnitten. Ein Stück ist {blank} lang.", "{count} gleich lange Bretter sind zusammen {total} lang. Ein Brett ist {blank} lang."],
                 "time": ["{count} gleich lange Lieder dauern zusammen {total}. Ein Lied dauert {blank}.", "{count} gleich lange Pausen dauern zusammen {total}. Eine Pause dauert {blank}."]
+            }
+        },
+        "time_calendar": {
+            "type_clock_label": "Rechnen mit Uhrzeiten und Zeitspannen",
+            "type_timeline_label": "Fahrpläne (Weg mit mehreren Abschnitten)",
+            "type_periodic_label": "Wiederkehrende Ereignisse (alle N Minuten)",
+            "type_calendar_label": "Kalender (Wochentage, Daten, Tag des Jahres)",
+            "type_age_label": "Alter in Wochen, Tagen, Stunden",
+            "type_faulty_label": "Falsch gehende Uhren (schwer)",
+            "difficulty_label": "Schwierigkeit:",
+            "difficulty_1": "Leicht: Minuten in 5er-Schritten",
+            "difficulty_2": "Schwer: beliebige Minuten, längere Zeiträume",
+            "description": "Kurze Textaufgaben zu Uhrzeit und Kalender. Uhrzeiten im 24-Stunden-Format.",
+            "problems_title": "Uhrzeit und Kalender",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Bilde die Quersummen-Wurzel einer Zahl aus deiner Antwort: Uhrzeit → Minuten seit Mitternacht (9:15 Uhr → 555); Zeitspanne → Minuten insgesamt (2 Std. 30 Min. → 150); Wochentag → seine Nummer (Montag 1 … Sonntag 7); Datum → Tag des Jahres (1. Februar → 32); Anzahl → die Zahl selbst.",
+            "error_message": "Fehler beim Erstellen der Aufgaben. Wähle mindestens eine Aufgabenart.",
+            "time_format": "{h}:{mm} Uhr",
+            "duration_h": "{h} Std.",
+            "duration_m": "{m} Min.",
+            "duration_hm": "{h} Std. {m} Min.",
+            "date_format": "{d}. {month}",
+            "date_format_year": "{d}. {month} {y}",
+            "weekdays": [
+                "Montag",
+                "Dienstag",
+                "Mittwoch",
+                "Donnerstag",
+                "Freitag",
+                "Samstag",
+                "Sonntag"
+            ],
+            "months": [
+                "Januar",
+                "Februar",
+                "März",
+                "April",
+                "Mai",
+                "Juni",
+                "Juli",
+                "August",
+                "September",
+                "Oktober",
+                "November",
+                "Dezember"
+            ],
+            "plurals": {
+                "day": [
+                    "Tag",
+                    "Tagen"
+                ],
+                "night": [
+                    "Nacht",
+                    "Nächte"
+                ],
+                "week": [
+                    "Woche",
+                    "Wochen"
+                ],
+                "hour": [
+                    "Stunde",
+                    "Stunden"
+                ]
+            },
+            "names": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Paul",
+                "Lena",
+                "Finn"
+            ],
+            "timeline_legs": [
+                "geht {duration} zu Fuß",
+                "fährt {duration} mit dem Bus",
+                "fährt {duration} mit der Fähre",
+                "fährt {duration} mit dem Rad"
+            ],
+            "timeline_wait": "wartet bis {time}",
+            "timeline_separator": ", ",
+            "templates": {
+                "clock_ago": "Es ist jetzt {to}. Wie spät war es vor {duration}?",
+                "clock_after": "Es ist jetzt {from}. Wie spät ist es in {duration}?",
+                "clock_between": "Wie viele Stunden und Minuten vergehen von {from} bis {to}?",
+                "film_start": "Ein Film ist um {half} zur Hälfte vorbei, seine letzten {last} beginnen um {last_start}. Wann hat der Film angefangen?",
+                "film_length": "Ein Film ist um {half} zur Hälfte vorbei, seine letzten {last} beginnen um {last_start}. Wie lange dauert der Film?",
+                "timeline_arrival": "{name} verlässt um {start} das Haus, {legs}. Um wie viel Uhr kommt {name} an?",
+                "timeline_total": "{name} verlässt um {start} das Haus, {legs}. Wie lange dauert der ganze Weg?",
+                "periodic_forward": "Eine Kerze wird um {lit} angezündet. Alle {period} Minuten fällt eine Perle ab, die erste {period} Minuten nach dem Anzünden. Wann fällt die {n}. Perle?",
+                "periodic_backward": "Von einer brennenden Kerze fällt alle {period} Minuten eine Perle ab, die erste {period} Minuten nach dem Anzünden. Die {n}. Perle fällt um {drop}. Wann wurde die Kerze angezündet?",
+                "periodic_count": "Eine Kerze wird um {lit} angezündet. Alle {period} Minuten fällt eine Perle ab, die erste {period} Minuten nach dem Anzünden. Wie viele Perlen sind bis {later} gefallen?",
+                "weekday_ago": "Heute ist {weekday}. Welcher Wochentag war vor {days}?",
+                "weekday_ahead": "Heute ist {weekday}. Welcher Wochentag ist in {days}?",
+                "weekday_from_date": "Der {date1} ist ein {weekday}. Welcher Wochentag ist der {date2} desselben Jahres?",
+                "hotel": "{name} verbringt die erste Nacht im Hotel am {date1} und bleibt {nights}. An welchem Datum reist {name} ab?",
+                "day_of_year_leap": "Der wievielte Tag eines Schaltjahres ist der {date1}?",
+                "day_of_year_common": "Der wievielte Tag eines Jahres, das kein Schaltjahr ist, ist der {date1}?",
+                "days_between": "Wie viele Tage vergehen vom {date1} bis zum {date2}?",
+                "age_weeks_years": "{name} ist {n} Wochen alt. Wie viele volle Jahre sind das? (Rechne mit 52 Wochen im Jahr.)",
+                "age_days_years": "{name} ist {n} Tage alt. Wie viele volle Jahre sind das? (Rechne mit 365 Tagen im Jahr.)",
+                "age_days_birthday": "{name} ist {n} Tage alt. Der wievielte Geburtstag kommt als Nächstes? (Rechne mit 365 Tagen im Jahr.)",
+                "age_hours_days": "Ein Welpe ist {n} Stunden alt. Wie viele volle Tage sind das?",
+                "age_days_weeks": "Ein Kätzchen ist {n} Tage alt. Wie viele volle Wochen sind das?",
+                "clock_gains": "Eine Uhr geht jede Stunde {gain} Min. vor. Um {set} wurde sie richtig gestellt. Was zeigt sie {hours} später?",
+                "clock_jumps": "Eine kaputte Uhr rückt in jeder echten Stunde {per_hour} Minuten vor. Um {set} ging sie richtig. Was zeigt sie {hours} später?"
             }
         }
     }

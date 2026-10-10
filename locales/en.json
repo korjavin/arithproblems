@@ -49,6 +49,8 @@
     "boolean_logic_p": "Evaluate logical expressions (∧ ∨ ¬ → ↔) given true/false values for each variable.",
     "unit_conversion_h3": "Units of Measure",
     "unit_conversion_p": "Convert, add and subtract lengths, masses, volumes, times and money.",
+    "time_calendar_h3": "Time and Calendar",
+    "time_calendar_p": "Clock times, durations, timetables, weekdays and dates as short story problems.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -563,6 +565,114 @@
                     "{count} songs of equal length last {total} together. One song lasts {blank}.",
                     "{count} equal breaks last {total} together. One break lasts {blank}."
                 ]
+            }
+        },
+        "time_calendar": {
+            "type_clock_label": "Clock arithmetic (times and durations)",
+            "type_timeline_label": "Timetables (trip with several legs)",
+            "type_periodic_label": "Repeating events (every N minutes)",
+            "type_calendar_label": "Calendar (weekdays, dates, day of the year)",
+            "type_age_label": "Age in weeks, days, hours",
+            "type_faulty_label": "Faulty clocks (hard)",
+            "difficulty_label": "Difficulty:",
+            "difficulty_1": "Easy: minutes in steps of 5",
+            "difficulty_2": "Hard: any minute, longer spans",
+            "description": "Short story problems about clock time and the calendar. Times are written on a 24-hour clock.",
+            "problems_title": "Time and Calendar",
+            "answer_label": "Answer: ",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Take the digital root of a number made from your answer: a time of day → minutes since midnight (9:15 → 555); a duration → total minutes (2 h 30 min → 150); a weekday → its number (Monday 1 … Sunday 7); a date → its day of the year (1 February → 32); a count → the number itself.",
+            "error_message": "Error generating time problems. Select at least one problem type.",
+            "time_format": "{h}:{mm}",
+            "duration_h": "{h} h",
+            "duration_m": "{m} min",
+            "duration_hm": "{h} h {m} min",
+            "date_format": "{month} {d}",
+            "date_format_year": "{month} {d}, {y}",
+            "weekdays": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+            ],
+            "months": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "plurals": {
+                "day": [
+                    "day",
+                    "days"
+                ],
+                "night": [
+                    "night",
+                    "nights"
+                ],
+                "week": [
+                    "week",
+                    "weeks"
+                ],
+                "hour": [
+                    "hour",
+                    "hours"
+                ]
+            },
+            "names": [
+                "Anna",
+                "Ben",
+                "Mia",
+                "Leo",
+                "Emma",
+                "Max",
+                "Lucy",
+                "Tom"
+            ],
+            "timeline_legs": [
+                "walks for {duration}",
+                "takes the bus for {duration}",
+                "rides the ferry for {duration}",
+                "cycles for {duration}"
+            ],
+            "timeline_wait": "waits until {time}",
+            "timeline_separator": ", then ",
+            "templates": {
+                "clock_ago": "It is {to} now. What time was it {duration} ago?",
+                "clock_after": "It is {from} now. What time will it be in {duration}?",
+                "clock_between": "How many hours and minutes pass from {from} to {to}?",
+                "film_start": "A film is half over at {half}, and its last {last} start at {last_start}. When did the film start?",
+                "film_length": "A film is half over at {half}, and its last {last} start at {last_start}. How long is the film?",
+                "timeline_arrival": "{name} leaves home at {start}, {legs}. At what time does {name} arrive?",
+                "timeline_total": "{name} leaves home at {start}, {legs}. How long does the whole trip take?",
+                "periodic_forward": "A candle is lit at {lit}. Every {period} minutes a bead falls off it; the first one falls {period} minutes after lighting. When does bead number {n} fall?",
+                "periodic_backward": "Every {period} minutes a bead falls off a burning candle; the first one falls {period} minutes after lighting. Bead number {n} falls at {drop}. When was the candle lit?",
+                "periodic_count": "A candle is lit at {lit}. Every {period} minutes a bead falls off it, the first one {period} minutes after lighting. How many beads have fallen by {later}?",
+                "weekday_ago": "Today is {weekday}. What day of the week was it {days} ago?",
+                "weekday_ahead": "Today is {weekday}. What day of the week will it be in {days}?",
+                "weekday_from_date": "{date1} is a {weekday}. What day of the week is {date2} of the same year?",
+                "hotel": "{name} spends the first night at a hotel on {date1} and stays {nights}. On what date does {name} leave?",
+                "day_of_year_leap": "In a leap year, which day of the year is {date1}?",
+                "day_of_year_common": "In a year that is not a leap year, which day of the year is {date1}?",
+                "days_between": "How many days pass from {date1} to {date2}?",
+                "age_weeks_years": "{name} is {n_weeks} old. How many full years is that? (Count 52 weeks in a year.)",
+                "age_days_years": "{name} is {n_days} old. How many full years is that? (Count 365 days in a year.)",
+                "age_days_birthday": "{name} is {n_days} old. Which birthday comes next? (Count 365 days in a year.)",
+                "age_hours_days": "A puppy is {n_hours} old. How many full days is that?",
+                "age_days_weeks": "A kitten is {n_days} old. How many full weeks is that?",
+                "clock_gains": "A clock gains {gain} min every hour. It was set right at {set}. What does it show {hours} later?",
+                "clock_jumps": "A broken clock moves {per_hour} minutes ahead every real hour. It showed the right time at {set}. What does it show {hours} later?"
             }
         }
     }

@@ -22,6 +22,7 @@ import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
+import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -95,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "compare-expressions": controls.renderCompareExpressionsControls,
         "boolean-logic": controls.renderBooleanLogicControls,
         "unit-conversion": controls.renderUnitConversionControls,
+        "time-calendar": controls.renderTimeCalendarControls,
     };
 
     const problemRenderers = {
@@ -120,6 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "compare-expressions": renderCompareExpressionsProblems,
         "boolean-logic": renderBooleanLogicProblems,
         "unit-conversion": renderUnitConversionProblems,
+        "time-calendar": renderTimeCalendarProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -835,6 +838,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             html += `</div>`;
             html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
             DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderTimeCalendarProblems(translations) {
+        const t = translations.script.time_calendar;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateTimeCalendarData({
+                types: TIME_CALENDAR_TYPES.filter(x => document.getElementById(`tc-type-${x}`).checked),
+                difficulty: parseInt(document.getElementById('tc-difficulty').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label)}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
         }

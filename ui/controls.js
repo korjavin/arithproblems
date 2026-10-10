@@ -590,3 +590,22 @@ export function renderUnitConversionControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderTimeCalendarControls(container, t) {
+    const type = (id, checked) => `
+        <div>
+            <input type="checkbox" id="tc-type-${id}"${checked ? ' checked' : ''}>
+            <label for="tc-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${type('clock', true)}${type('timeline', true)}${type('periodic', true)}${type('calendar', true)}${type('age', true)}${type('faulty', false)}
+        <div>
+            <label for="tc-difficulty">${t.difficulty_label}</label>
+            <select id="tc-difficulty">
+                <option value="1" selected>${t.difficulty_1}</option>
+                <option value="2">${t.difficulty_2}</option>
+            </select>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
