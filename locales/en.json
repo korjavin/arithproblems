@@ -65,6 +65,8 @@
     "cube_buildings_p": "Count cubes in buildings from a plan, staircases and pyramids; painted cubes, views, glued faces and edge models.",
     "magic_squares_h3": "Magic Squares",
     "magic_squares_p": "Magic squares 3×3 and 4×4 with missing cells, number squares with sums of corners.",
+    "page_numbers_h3": "Page Numbers",
+    "page_numbers_p": "Digits in the page numbers of a book and in the row 123456789101112…",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -1083,6 +1085,28 @@
                 "sum_hidden": "Find the magic sum first.",
                 "use_numbers": "Use each of the numbers {list} exactly once.",
                 "rechenviereck": "Fill in the missing numbers."
+            }
+        },
+        "page_numbers": {
+            "type_digit_count_label": "How many digits are needed to number the pages?",
+            "type_kth_digit_label": "Which digit stands in a given place of 123456789101112…?",
+            "type_occurrences_label": "How often does a digit appear in the page numbers?",
+            "type_sum_label": "Sum of the page numbers",
+            "type_triples_label": "Three equal digits in a row",
+            "max_pages_label": "Book has at most this many pages:",
+            "description": "Problems about the digits used to number the pages of a book.",
+            "problems_title": "Page Numbers",
+            "answer_label": "Answer: ",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Write the digital root of the answer. If the answer is a single digit, write that digit.",
+            "error_message": "Error generating page number problems. Select at least one problem type.",
+            "templates": {
+                "digit_count": "A book has {n} pages, numbered from 1 to {n}. How many digits are printed in all the page numbers together?",
+                "digit_count_inverse": "The pages of a book are numbered from 1 on. Exactly {digits} digits were printed for all the page numbers. How many pages does the book have?",
+                "kth_digit": "All page numbers of a book are written in one row without gaps: 123456789101112… Which digit stands in place {k}?",
+                "occurrences": "A book has {n} pages, numbered from 1 to {n}. How often does the digit {d} appear in all the page numbers together?",
+                "sum": "Add up the page numbers of the first {k} pages of a book: 1 + 2 + 3 + … + {k}. What is the sum?",
+                "triples": "The page numbers of a book with {n} pages are written in one row without gaps: 123456789101112… In how many places do three equal digits stand side by side?"
             }
         }
     }

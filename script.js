@@ -30,6 +30,7 @@ import { generateNumberPropertiesData, TYPES as NUMBER_PROPERTIES_TYPES } from '
 import { generateGridFiguresData, TYPES as GRID_FIGURES_TYPES } from './generators/grid-figures.js';
 import { generateCubeBuildingsData, TYPES as CUBE_BUILDINGS_TYPES } from './generators/cube-buildings.js';
 import { generateMagicSquaresData } from './generators/magic-squares.js';
+import { generatePageNumbersData, TYPES as PAGE_NUMBERS_TYPES } from './generators/page-numbers.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -112,6 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "grid-figures": controls.renderGridFiguresControls,
         "cube-buildings": controls.renderCubeBuildingsControls,
         "magic-squares": controls.renderMagicSquaresControls,
+        "page-numbers": controls.renderPageNumbersControls,
     };
 
     const problemRenderers = {
@@ -145,6 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "grid-figures": renderGridFiguresProblems,
         "cube-buildings": renderCubeBuildingsProblems,
         "magic-squares": renderMagicSquaresProblems,
+        "page-numbers": renderPageNumbersProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -1034,6 +1037,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             const items = problems.map(p => ({ html: `<div class="word-problem-item magic-square-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${table(p)}</div></div>` }));
             const rules = [problems.some(p => p.kind !== '2') && t.rule_magic, problems.some(p => p.kind === '2') && t.rule_rechenviereck].filter(Boolean);
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${rules.map(r => `<p class="print-instructions">${r}</p>`).join('')}${proseProblemsHtml(items, '')}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderPageNumbersProblems(translations) {
+        const t = translations.script.page_numbers;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generatePageNumbersData({
+                types: PAGE_NUMBERS_TYPES.filter(x => document.getElementById(`pn-type-${x}`).checked),
+                maxPages: parseInt(document.getElementById('pn-max-pages').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(problems, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);

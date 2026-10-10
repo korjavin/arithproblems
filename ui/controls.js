@@ -735,3 +735,19 @@ export function renderMagicSquaresControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderPageNumbersControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="pn-type-${id}" checked>
+            <label for="pn-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['digit_count', 'kth_digit', 'occurrences', 'sum', 'triples'].map(type).join('')}
+        <div>
+            <label for="pn-max-pages">${t.max_pages_label}</label>
+            <select id="pn-max-pages">${[50, 120, 250].map(v => `<option value="${v}"${v === 120 ? ' selected' : ''}>${v}</option>`).join('')}</select>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
