@@ -1,6 +1,6 @@
 import assert from 'assert';
 import fs from 'fs';
-import { generateIntegerSolutionsData, solutions, TYPES, NOTES, PRICES } from './generators/integer-solutions.js';
+import { generateIntegerSolutionsData, solutions, TYPES, NOTES, PRICES, COINS } from './generators/integer-solutions.js';
 import { digitalRoot } from './utils.js';
 
 const LOCALES = Object.fromEntries(['en', 'de', 'ru'].map(l => [l, JSON.parse(fs.readFileSync(`./locales/${l}.json`, 'utf8')).script.integer_solutions]));
@@ -59,6 +59,13 @@ function expected(p) {
         }
         case 'money_ways': return brute(NOTES, d.a).length;
         case 'money_fewest': return Math.min(...brute(NOTES, d.a).map(sum));
+        case 'money_most': assert.strictEqual(Math.max(...brute(NOTES, d.a).map(sum)), d.a / 20); return d.a / 20;
+        case 'note_coins': {
+            assert([5, 10, 20].includes(d.note));
+            assert(d.coins.length >= 3 && d.coins.length <= 6 && new Set(d.coins).size === d.coins.length);
+            assert(d.coins.every(c => COINS.includes(c)));
+            return new Set(d.coins.map(c => 100 * d.note + 3 * c)).size; // distinct totals in cents
+        }
         case 'notes_three': {
             const notes = [5, 10, 20, 50];
             const totals = new Set();
@@ -119,7 +126,7 @@ for (const lang of ['en', 'de', 'ru']) {
         }
     }
 }
-['legs_count', 'legs_all', 'legs_three', 'vertices', 'market_count', 'market_most', 'money_ways', 'money_fewest', 'notes_three',
+['legs_count', 'legs_all', 'legs_three', 'vertices', 'market_count', 'market_most', 'money_ways', 'money_fewest', 'money_most', 'notes_three', 'note_coins',
     'subset_sum', 'subset_digits', 'matches', 'parity_pairs', 'parity_pick'].forEach(v => assert(seen.has(v), `variant ${v} generated`));
 
 // Mixed sheet respects the count and the cap of 30.

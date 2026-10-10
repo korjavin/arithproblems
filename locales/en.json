@@ -888,6 +888,7 @@
             "control_sum_grid_subtitle": "Problems that ask for all solutions: write the number of solutions. Other problems: the digital root of the number the problem asks for.",
             "error_message": "Error generating search problems. Select at least one problem type.",
             "find_all": "Find all solutions. Self-check: how many solutions are there?",
+            "cent_format": "{n} ct",
             "templates": {
                 "legs_count": "There are chickens and sheep in a yard, {n} animals in all. Together they have {legs} legs. How many sheep are there?",
                 "legs_all": "Chickens and sheep in a yard have {legs} legs in all, and there is at least one of each. How many chickens and how many sheep can there be?",
@@ -897,6 +898,8 @@
                 "market_most": "At a market a cow costs {p1} €, a goat {p2} € and a hen {p3} €. A farmer spends exactly 100 € and buys at least one animal of each kind. What is the largest number of animals he can buy?",
                 "money_ways": "Pay exactly {a} € using only notes of 200 €, 100 € and 20 €. Which sets of notes can you use?",
                 "money_fewest": "Pay exactly {a} € using only notes of 200 €, 100 € and 20 €. What is the smallest number of notes you need?",
+                "money_most": "Pay exactly {a} € using only notes of 200 €, 100 € and 20 €. What is the largest number of notes you can use?",
+                "note_coins": "In a pocket there is one {note} € note and three equal coins. A coin can be {coins}. What can the money in the pocket add up to?",
                 "notes_three": "A wallet holds exactly three notes, and at least one of them is 5 €. Each note is 5 €, 10 €, 20 € or 50 €, and together they are worth less than {l} €. Which amounts can be in the wallet?",
                 "subset_sum": "Choose some of the numbers {items} so that they add up to 100. Each number may be used at most once.",
                 "subset_digits": "Strike out three of the digits {items} so that the remaining digits add up to {s}.",

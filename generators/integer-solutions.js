@@ -34,6 +34,7 @@ const pickByCount = (params, count, lo, hi) => getRandomFromArray(params.filter(
 
 export const NOTES = [200, 100, 20];
 export const WALLET_NOTES = [5, 10, 20, 50];
+export const COINS = [1, 2, 5, 10, 20, 50, 100, 200]; // euro coins in cents
 export const PRICES = [[5, 3, 1], [10, 5, 3], [10, 5, 2]];
 
 // Amounts below limit made of exactly three wallet notes, at least one 5 €.
@@ -75,14 +76,22 @@ const MAKERS = {
     },
 
     money() {
-        const variant = getRandomFromArray(['money_ways', 'money_fewest', 'notes_three']);
+        const variant = getRandomFromArray(['money_ways', 'money_fewest', 'money_most', 'notes_three', 'note_coins']);
         if (variant === 'money_ways') {
             const a = pickByCount(range(100, 600, 20), x => solutions(NOTES, x).length, 2, 6);
             return { variant, mode: 'all', data: { a }, answer: solutions(NOTES, a).length };
         }
-        if (variant === 'money_fewest') {
-            const a = getRandomFromArray(range(120, 980, 20));
-            return { variant, mode: 'unique', data: { a }, answer: Math.min(...solutions(NOTES, a).map(sum)) };
+        if (variant === 'money_fewest' || variant === 'money_most') {
+            // ponytail: "most" is always a/20 (all 20 € notes); kept because the bead asks for it.
+            const a = getRandomFromArray(range(120, variant === 'money_most' ? 300 : 980, 20));
+            const counts = solutions(NOTES, a).map(sum);
+            return { variant, mode: 'unique', data: { a }, answer: variant === 'money_most' ? Math.max(...counts) : Math.min(...counts) };
+        }
+        if (variant === 'note_coins') {
+            // One note plus three equal coins: every allowed coin kind gives one total.
+            const note = getRandomFromArray([5, 10, 20]);
+            const coins = shuffleArray(COINS).slice(0, getRandomInt(3, 6)).sort((a, b) => a - b);
+            return { variant, mode: 'all', data: { note, coins }, answer: coins.length };
         }
         const l = getRandomFromArray(range(30, 100, 10));
         return { variant, mode: 'all', data: { l }, answer: walletTotals(l).length };
@@ -119,7 +128,8 @@ const MAKERS = {
 
 function render(p, t) {
     const d = p.data;
-    const text = fillTemplate(t.templates[p.variant], { ...d, items: d.items && d.items.join(', ') });
+    const coin = (c) => (c < 100 ? fillTemplate(t.cent_format, { n: c }) : `${c / 100} €`);
+    const text = fillTemplate(t.templates[p.variant], { ...d, items: d.items && d.items.join(', '), coins: d.coins && d.coins.map(coin).join(', ') });
     return p.mode === 'all' ? `${text} ${t.find_all}` : text;
 }
 

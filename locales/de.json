@@ -787,6 +787,7 @@
             "control_sum_grid_subtitle": "Aufgaben, die alle Lösungen verlangen: Schreibe die Anzahl der Lösungen. Andere Aufgaben: die Quersumme der gefragten Zahl bis zu einer Ziffer.",
             "error_message": "Fehler beim Erstellen der Suchaufgaben. Wähle mindestens eine Aufgabenart.",
             "find_all": "Finde alle Lösungen. Selbstkontrolle: Wie viele Lösungen gibt es?",
+            "cent_format": "{n} ct",
             "templates": {
                 "legs_count": "Auf einem Hof leben Hühner und Schafe, insgesamt {n} Tiere. Zusammen haben sie {legs} Beine. Wie viele Schafe sind es?",
                 "legs_all": "Hühner und Schafe auf einem Hof haben zusammen {legs} Beine, und von jeder Art gibt es mindestens ein Tier. Wie viele Hühner und wie viele Schafe können es sein?",
@@ -796,6 +797,8 @@
                 "market_most": "Auf dem Markt kostet eine Kuh {p1} €, eine Ziege {p2} € und ein Huhn {p3} €. Ein Bauer gibt genau 100 € aus und kauft von jeder Art mindestens ein Tier. Wie viele Tiere kann er höchstens kaufen?",
                 "money_ways": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Welche Zusammenstellungen von Scheinen sind möglich?",
                 "money_fewest": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Wie viele Scheine brauchst du mindestens?",
+                "money_most": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Wie viele Scheine kannst du höchstens verwenden?",
+                "note_coins": "In einer Tasche sind ein {note}-€-Schein und drei gleiche Münzen. Eine Münze kann {coins} sein. Wie viel Geld kann zusammen in der Tasche sein?",
                 "notes_three": "In einer Geldbörse sind genau drei Scheine, mindestens einer davon ist ein 5-€-Schein. Jeder Schein ist 5 €, 10 €, 20 € oder 50 € wert, zusammen weniger als {l} €. Welche Beträge können in der Geldbörse sein?",
                 "subset_sum": "Wähle einige der Zahlen {items} so aus, dass ihre Summe 100 ist. Jede Zahl darf höchstens einmal verwendet werden.",
                 "subset_digits": "Streiche drei der Ziffern {items} so, dass die übrigen Ziffern zusammen {s} ergeben.",
