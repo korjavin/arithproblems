@@ -31,6 +31,7 @@ import { generateGridFiguresData, TYPES as GRID_FIGURES_TYPES } from './generato
 import { generateCubeBuildingsData, TYPES as CUBE_BUILDINGS_TYPES } from './generators/cube-buildings.js';
 import { generateMagicSquaresData } from './generators/magic-squares.js';
 import { generatePageNumbersData, TYPES as PAGE_NUMBERS_TYPES } from './generators/page-numbers.js';
+import { generateMoneyProblemsData, TYPES as MONEY_PROBLEMS_TYPES } from './generators/money-problems.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -114,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "cube-buildings": controls.renderCubeBuildingsControls,
         "magic-squares": controls.renderMagicSquaresControls,
         "page-numbers": controls.renderPageNumbersControls,
+        "money-problems": controls.renderMoneyProblemsControls,
     };
 
     const problemRenderers = {
@@ -148,6 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "cube-buildings": renderCubeBuildingsProblems,
         "magic-squares": renderMagicSquaresProblems,
         "page-numbers": renderPageNumbersProblems,
+        "money-problems": renderMoneyProblemsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -1054,6 +1057,22 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(problems, t.answer_label)
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderMoneyProblemsProblems(translations) {
+        const t = translations.script.money_problems;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateMoneyProblemsData({
+                types: MONEY_PROBLEMS_TYPES.filter(x => document.getElementById(`mp-type-${x}`).checked),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label)}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);

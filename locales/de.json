@@ -65,6 +65,8 @@
     "magic_squares_p": "Magische Quadrate 3×3 und 4×4 mit fehlenden Feldern, Rechenvierecke.",
     "page_numbers_h3": "Seitenzahlen",
     "page_numbers_p": "Ziffern in den Seitenzahlen eines Buches und in der Reihe 123456789101112…",
+    "money_problems_h3": "Rechnen mit Geld",
+    "money_problems_p": "Preislisten, Wechselgeld, Einzel- und Packungspreise, Tarife, Gruppeneintritt und Taschengeld sparen.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -958,6 +960,125 @@
                 "wire_cuboid": "Wie viele cm Draht braucht man für das Kantenmodell eines Quaders mit den Kanten {a} cm, {b} cm und {c} cm?",
                 "volume": "Das Kantenmodell eines Würfels besteht aus 12 gleichen Stäbchen. Wie viele solche Stäbchen braucht man für das Kantenmodell eines Würfels mit {v}-fachem Volumen?",
                 "trap": "Das Kantenmodell {shape} besteht aus Stäbchen von {e} cm Länge. Ein Modell derselben Form mit {k}-mal so langen Kanten wird aus Stäbchen von {ke} cm Länge gebaut. Wie viele Stäbchen braucht das größere Modell?"
+            }
+        },
+        "money_problems": {
+            "type_pay_label": "Bezahlen und Wechselgeld",
+            "type_affordable_label": "Wie viele kann man kaufen? (Einzel- und Packungspreis)",
+            "type_tariff_label": "Welcher Tarif ist günstiger?",
+            "type_group_label": "Eintritt für Gruppen",
+            "type_saving_label": "Taschengeld sparen",
+            "type_riddle_label": "Wechselgeld-Rätsel",
+            "description": "Sachaufgaben mit Preisen: Lies die Preisliste und rechne mit Euro und Cent.",
+            "problems_title": "Rechnen mit Geld",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Kontrollraster",
+            "control_sum_grid_subtitle": "Ist das Ergebnis ein Geldbetrag, rechne es in Cent um (14,20 € = 1420 ct) und bilde die Quersumme, bis eine Ziffer übrig bleibt. Ist das Ergebnis eine Anzahl (Stück, Wochen, Minuten, Fahrten), bilde die Quersumme dieser Zahl.",
+            "error_message": "Fehler beim Erstellen der Aufgaben. Wähle mindestens eine Aufgabenart.",
+            "decimal_separator": ",",
+            "money_format": "{v} €",
+            "cent_format": "{n} ct",
+            "and": " und ",
+            "names": [
+                "Anna",
+                "Tom",
+                "Mia",
+                "Leon",
+                "Emma",
+                "Ben",
+                "Lena",
+                "Paul"
+            ],
+            "shop_items": [
+                {
+                    "name": "Ball",
+                    "acc": "einen Ball"
+                },
+                {
+                    "name": "Kopfhörer",
+                    "acc": "Kopfhörer"
+                },
+                {
+                    "name": "Roller",
+                    "acc": "einen Roller"
+                },
+                {
+                    "name": "Puzzle",
+                    "acc": "ein Puzzle"
+                },
+                {
+                    "name": "Buch",
+                    "acc": "ein Buch"
+                },
+                {
+                    "name": "Spielzeugauto",
+                    "acc": "ein Spielzeugauto"
+                },
+                {
+                    "name": "Buntstifte",
+                    "acc": "Buntstifte"
+                },
+                {
+                    "name": "Puppe",
+                    "acc": "eine Puppe"
+                },
+                {
+                    "name": "Drachen",
+                    "acc": "einen Drachen"
+                },
+                {
+                    "name": "Brettspiel",
+                    "acc": "ein Brettspiel"
+                }
+            ],
+            "bakery_items": [
+                {
+                    "single": "Ein Brötchen",
+                    "many": "Brötchen"
+                },
+                {
+                    "single": "Eine Brezel",
+                    "many": "Brezeln"
+                },
+                {
+                    "single": "Ein Muffin",
+                    "many": "Muffins"
+                }
+            ],
+            "pack_format": "Packung mit {k} {many}",
+            "phone_tariff_format": "Tarif {label}: {base} im Monat und {per} pro Minute",
+            "minute_forms": [
+                "Minute",
+                "Minuten"
+            ],
+            "ride_forms": [
+                "Mal",
+                "Mal"
+            ],
+            "single_ticket": "Einzelfahrschein",
+            "monthly_ticket": "Monatskarte",
+            "adult_ticket": "Erwachsene",
+            "child_ticket": "Kinder ab 6 Jahren",
+            "small_free": "Kinder unter 6 Jahren: frei, sie brauchen keine Karte",
+            "adult_forms": [
+                "Erwachsener",
+                "Erwachsene"
+            ],
+            "child_forms": [
+                "Kind",
+                "Kinder"
+            ],
+            "templates": {
+                "pay": "Preisliste im Spielzeugladen:{list}{name} kauft {items} und bezahlt mit einem {note}-Euro-Schein. Wie viel kostet alles zusammen? Wie viel Wechselgeld bekommt {name}? Selbstkontrolle: das Wechselgeld.",
+                "affordable": "Preise beim Bäcker:{list}{name} hat {budget}. Wie viele {many} kann {name} höchstens kaufen?",
+                "tariff_even_phone": "Eine Telefongesellschaft bietet zwei Tarife an:{list}Bei wie vielen Minuten im Monat kosten beide Tarife gleich viel?",
+                "tariff_diff_phone": "Eine Telefongesellschaft bietet zwei Tarife an:{list}{name} telefoniert {minutes} im Monat. Welcher Tarif ist günstiger und um wie viel Cent? Selbstkontrolle: der Unterschied in Cent.",
+                "tariff_even_bus": "Fahrpreise im Bus:{list}Bei wie vielen Fahrten im Monat kostet die Monatskarte genauso viel wie Einzelfahrscheine?",
+                "tariff_diff_bus": "Fahrpreise im Bus:{list}{name} fährt im Monat {rides} mit dem Bus. Was ist günstiger: Einzelfahrscheine oder die Monatskarte? Um wie viel Cent? Selbstkontrolle: der Unterschied in Cent.",
+                "group": "Eintritt im Museum:{list}Kauft eine Gruppe mindestens {t} Karten, kostet jede Karte {off} weniger. In der Gruppe sind {adults}, {kids} ab 6 Jahren und {small} unter 6 Jahren. Wie viel bezahlt die Gruppe?",
+                "saving": "Preisliste im Spielzeugladen:{list}{name} möchte {item} kaufen und hat schon {saved} gespart. Jede Woche bekommt {name} {allowance} Taschengeld und spart alles. Wie viele Wochen muss {name} noch sparen?",
+                "riddle_less": "{name} bezahlt mit einem {note}-Euro-Schein und bekommt {k} weniger zurück, als der Einkauf kostet. Wie viel kostet der Einkauf?",
+                "riddle_more": "{name} bezahlt mit einem {note}-Euro-Schein und bekommt {k} mehr zurück, als der Einkauf kostet. Wie viel kostet der Einkauf?"
             }
         },
         "magic_squares": {
