@@ -61,6 +61,8 @@
     "grid_figures_p": "Umfang, Flächeninhalt und Ecken von Figuren aus Kästchen, Treppen, aneinandergeklebte Quadrate, Figuren vergleichen.",
     "cube_buildings_h3": "Würfelgebäude",
     "cube_buildings_p": "Würfel zählen: Gebäude nach Bauplan, Treppen und Pyramiden; bemalte Würfel, Ansichten, geklebte Flächen und Kantenmodelle.",
+    "magic_squares_h3": "Magische Quadrate",
+    "magic_squares_p": "Magische Quadrate 3×3 und 4×4 mit fehlenden Feldern, Rechenvierecke.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -954,6 +956,32 @@
                 "wire_cuboid": "Wie viele cm Draht braucht man für das Kantenmodell eines Quaders mit den Kanten {a} cm, {b} cm und {c} cm?",
                 "volume": "Das Kantenmodell eines Würfels besteht aus 12 gleichen Stäbchen. Wie viele solche Stäbchen braucht man für das Kantenmodell eines Würfels mit {v}-fachem Volumen?",
                 "trap": "Das Kantenmodell {shape} besteht aus Stäbchen von {e} cm Länge. Ein Modell derselben Form mit {k}-mal so langen Kanten wird aus Stäbchen von {ke} cm Länge gebaut. Wie viele Stäbchen braucht das größere Modell?"
+            }
+        },
+        "magic_squares": {
+            "size_label": "Quadrat:",
+            "size_3": "3×3",
+            "size_4": "4×4",
+            "size_2": "Rechenviereck (Summen der Ecken)",
+            "size_mixed": "Gemischt",
+            "hidden_label": "Fehlende Felder:",
+            "hidden_few": "Wenige",
+            "hidden_many": "Viele",
+            "sum_label": "Magische Summe:",
+            "sum_show": "Angegeben",
+            "sum_hide": "Aus einer vollen Reihe bestimmen",
+            "description": "Ergänze die fehlenden Zahlen. Bei einem 4×4-Quadrat stehen die fehlenden Zahlen darunter.",
+            "problems_title": "Magische Quadrate",
+            "rule_magic": "In einem magischen Quadrat haben jede Zeile, jede Spalte und beide Diagonalen dieselbe Summe: die magische Summe.",
+            "rule_rechenviereck": "Im Rechenviereck steht in jedem mittleren Kästchen die Summe der beiden benachbarten Eckzahlen.",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Zahl im ★-Feld.",
+            "error_message": "Fehler beim Erstellen der magischen Quadrate.",
+            "templates": {
+                "sum_given": "Magische Summe: {s}.",
+                "sum_hidden": "Finde zuerst die magische Summe.",
+                "use_numbers": "Verwende jede der Zahlen {list} genau einmal.",
+                "rechenviereck": "Ergänze die fehlenden Zahlen."
             }
         }
     }

@@ -716,3 +716,22 @@ export function renderCubeBuildingsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderMagicSquaresControls(container, t) {
+    const select = (id, options, selected) => `<select id="ms-${id}">${options.map(v => `<option value="${v}"${v === selected ? ' selected' : ''}>${t[`${id}_${v}`]}</option>`).join('')}</select>`;
+    container.innerHTML = `
+        <div>
+            <label for="ms-size">${t.size_label}</label>
+            ${select('size', ['3', '4', '2', 'mixed'], '3')}
+        </div>
+        <div>
+            <label for="ms-hidden">${t.hidden_label}</label>
+            ${select('hidden', ['few', 'many'], 'few')}
+        </div>
+        <div>
+            <label for="ms-sum">${t.sum_label}</label>
+            ${select('sum', ['show', 'hide'], 'show')}
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
