@@ -69,9 +69,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         return `<div class="digital-root-check-grid-container"><h4>${title}</h4><p style="font-size:0.85em; margin-bottom:10px;">${subtitle}</p><div class="digital-root-check-grid">${digits.map(d => `<div class="dr-cell">${d}</div>`).join('')}</div></div>`;
     }
 
-    // Prose problems (each `{ text }`) with an answer line, styled for print by styles/print-grid.css.
+    // Prose problems (each `{ text }`, or a ready grid item `{ html }`) with an answer line, styled for print by styles/print-grid.css.
     function proseProblemsHtml(problems, answerLabel) {
-        return `<div class="word-problems-grid problems-grid">${problems.map(p => `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
+        return `<div class="word-problems-grid problems-grid">${problems.map(p => p.html || `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
     }
 
     const topicControlsRenderers = {
@@ -875,17 +875,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
                 translations: t,
             });
-            // The generator puts letter chains last; they print one glyph per cell.
-            const prose = problems.filter(p => p.type !== 'letters');
-            const letters = problems.filter(p => p.type === 'letters');
+            // Letter chains (grouped last by the generator) share the prose grid — print-grid
+            // lays out only the first grid — but are not .word-problem-item, so they print one glyph per cell.
+            const items = problems.map(p => (p.type !== 'letters' ? p : {
+                html: `<div class="find-the-number-letters-item"><div class="problem-content"><span class="puzzle">${p.data.lines.join('<br>')}<br>c = <span class="answer-space"></span></span></div></div>`,
+            }));
             let html = `<h3>${t.problems_title}</h3>`;
-            if (prose.length) html += proseProblemsHtml(prose, t.answer_label);
-            if (letters.length) {
-                html += `<p class="print-instructions">${t.letters_instruction}</p><div class="arithmetic-grid cell-grid find-the-number-letters-grid">`;
-                html += letters.map(p => `<div class="find-the-number-letters-item"><div class="problem-content"><span class="puzzle">${p.data.lines.join('<br>')}<br>c = <span class="answer-space"></span></span></div></div>`).join('');
-                html += `</div>`;
-            }
-            DOM.problemsContainer.innerHTML = html
+            if (problems.some(p => p.type === 'letters')) html += `<p class="print-instructions">${t.letters_instruction}</p>`;
+            DOM.problemsContainer.innerHTML = html + proseProblemsHtml(items, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
