@@ -68,7 +68,69 @@ function testInputValidation() {
     console.log('All input validation tests passed!');
 }
 
+// Olympiad "inverse" types: recompute each answer from the problem fields and match the control sum.
+function testInverseTypes() {
+    const dr = n => (n === 0 ? 0 : 1 + ((n - 1) % 9));
+    const solve = {
+        'side-from-perimeter': p => {
+            assert(p.perimeter >= 8 && p.perimeter <= 200);
+            if (p.type === 'squares') { assert.strictEqual(p.perimeter % 4, 0); return p.perimeter / 4; }
+            assert.strictEqual(p.type, 'rectangles');
+            const b = p.perimeter / 2 - p.knownSide;
+            assert(b >= 2, 'other side must be positive');
+            return b;
+        },
+        'max-area': p => {
+            assert(p.perimeter % 2 === 0 && p.perimeter >= 20 && p.perimeter <= 400);
+            let best = 0;
+            for (let a = 1; a < p.perimeter / 2; a++) best = Math.max(best, a * (p.perimeter / 2 - a));
+            return best;
+        },
+        'ribbon': p => {
+            [p.length, p.width, p.height].forEach(x => assert(x >= 10 && x <= 80));
+            assert(p.bow >= 20 && p.bow <= 100);
+            return 2 * p.length + 2 * p.width + 4 * p.height + p.bow;
+        },
+        'path-around': p => {
+            assert(p.distance === 1 || p.distance === 2);
+            return 2 * (p.length + 2 * p.distance) + 2 * (p.width + 2 * p.distance);
+        },
+        'floor-plan': p => {
+            assert(p.rooms.length >= 2 && p.rooms.length <= 3);
+            const areas = p.rooms.map(r => r.length * r.width);
+            if (p.variant === 'largest') {
+                const max = Math.max(...areas);
+                assert.strictEqual(areas.filter(a => a === max).length, 1, 'largest room must be unique');
+                return areas.indexOf(max) + 1;
+            }
+            assert.strictEqual(p.variant, 'rent');
+            return p.price * areas.reduce((s, a) => s + a, 0);
+        },
+    };
+    for (const [calculationType, fn] of Object.entries(solve)) {
+        for (const shapeMix of ['mixed', 'squares', 'rectangles', 'circles']) {
+            const data = generateGeometryData({ shapeMix, calculationType, maxDimension: 10, wholeNumbersOnly: false, numberOfProblems: 50 });
+            data.problems.forEach((p, i) => {
+                assert.strictEqual(p.calculation, calculationType);
+                assert.notStrictEqual(p.type, 'circles', 'circles are excluded from the new types');
+                const answer = fn(p);
+                assert(Number.isInteger(answer) && answer > 0, `${calculationType}: answer ${answer} must be a positive integer`);
+                const c = data.digitalRoots[i].digitalRoot;
+                assert(c >= 0 && c <= 9);
+                assert.strictEqual(c, dr(answer), `${calculationType}: control sum mismatch`);
+            });
+            if (calculationType === 'side-from-perimeter' && shapeMix !== 'mixed' && shapeMix !== 'circles') {
+                assert(data.problems.every(p => p.type === shapeMix));
+            }
+        }
+    }
+    const variants = new Set(generateGeometryData({ shapeMix: 'mixed', calculationType: 'floor-plan', maxDimension: 10, wholeNumbersOnly: true, numberOfProblems: 50 }).problems.map(p => p.variant));
+    assert.strictEqual(variants.size, 2, 'floor-plan should produce both variants');
+    console.log('All inverse perimeter type tests passed!');
+}
+
 try {
+    testInverseTypes();
     testProblemGeneration();
     testShapeMix();
     testCalculationType();

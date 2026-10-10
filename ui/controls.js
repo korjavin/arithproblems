@@ -215,6 +215,11 @@ export function renderGeometryControls(container, t) {
                 <option value="mixed">${t.mixed_calculations_option}</option>
                 <option value="area">${t.area_only_option}</option>
                 <option value="perimeter">${t.perimeter_only_option}</option>
+                <option value="side-from-perimeter">${t.side_from_perimeter_option}</option>
+                <option value="max-area">${t.max_area_option}</option>
+                <option value="ribbon">${t.ribbon_option}</option>
+                <option value="path-around">${t.path_around_option}</option>
+                <option value="floor-plan">${t.floor_plan_option}</option>
             </select>
         </div>
         <div>

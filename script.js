@@ -563,7 +563,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                 wholeNumbersOnly: document.getElementById('geo-whole-numbers-only').checked,
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
-            let html = `<h3>${t.problems_title}</h3><div class="arithmetic-grid geometry-problem-grid">${problems.map(p => {
+            // Olympiad prose types (one calculation type per sheet) wrap as word problems.
+            const prose = p => {
+                if (p.calculation === 'max-area') return [fillTemplate(t.max_area_text, p), t.area_text];
+                if (p.calculation === 'ribbon') return [fillTemplate(t.ribbon_text, p), t.ribbon_answer_text];
+                if (p.calculation === 'path-around') return [fillTemplate(t.path_around_text, p), t.path_answer_text];
+                if (p.calculation === 'floor-plan') {
+                    const rooms = p.rooms.map((r, i) => fillTemplate(t.room_text, { n: i + 1, length: r.length, width: r.width })).join('<br>');
+                    return p.variant === 'largest' ? [`${rooms}<br>${t.largest_room_text}`, t.room_number_text] : [`${rooms}<br>${fillTemplate(t.rent_text, p)}`, t.rent_answer_text];
+                }
+                return null;
+            };
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (prose(problems[0])) html += proseProblemsHtml(problems.map(p => {
+                const [text, label] = prose(p);
+                return { html: `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${text}</div><div class="answer-space">${label} = </div></div></div>` };
+            }));
+            else html += `<div class="arithmetic-grid geometry-problem-grid">${problems.map(p => {
+                if (p.calculation === 'side-from-perimeter') return p.type === 'squares'
+                    ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${fillTemplate(t.sfp_square_text, p)}</span><br><span class="calculation-text">${t.side_text.charAt(0).toUpperCase() + t.side_text.slice(1)} = </span><div class="answer-space"></div></div></div>`
+                    : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${fillTemplate(t.sfp_rectangle_text, { perimeter: p.perimeter, side: p.knownSide })}</span><br><span class="calculation-text">${t.other_side_text} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'rectangles') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${p.length}, ${t.width_text} = ${p.width}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.rectangle_text}: ${t.length_text} = ${p.length}, ${t.width_text} = ${p.width}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'squares') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${p.side}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.square_text}: ${t.side_text} = ${p.side}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
                 if (p.type === 'triangles') return p.calculation === 'area' ? `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.base_text} = ${p.base}, ${t.height_text} = ${p.height}</span><br><span class="calculation-text">${t.area_text} = </span><div class="answer-space"></div></div></div>` : `<div class="geometry-problem-item"><div class="problem-content"><span class="shape-text">${t.triangle_text}: ${t.sides_text} = ${p.side1}, ${p.side2}, ${p.side3}</span><br><span class="calculation-text">${t.perimeter_text} = </span><div class="answer-space"></div></div></div>`;
