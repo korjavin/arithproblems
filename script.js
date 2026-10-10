@@ -28,6 +28,7 @@ import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './gener
 import { generateIntegerSolutionsData, TYPES as INTEGER_SOLUTIONS_TYPES } from './generators/integer-solutions.js';
 import { generateNumberPropertiesData, TYPES as NUMBER_PROPERTIES_TYPES } from './generators/number-properties.js';
 import { generateGridFiguresData, TYPES as GRID_FIGURES_TYPES } from './generators/grid-figures.js';
+import { generateMagicSquaresData } from './generators/magic-squares.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -108,6 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "integer-solutions": controls.renderIntegerSolutionsControls,
         "number-properties": controls.renderNumberPropertiesControls,
         "grid-figures": controls.renderGridFiguresControls,
+        "magic-squares": controls.renderMagicSquaresControls,
     };
 
     const problemRenderers = {
@@ -139,6 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "integer-solutions": renderIntegerSolutionsProblems,
         "number-properties": renderNumberPropertiesProblems,
         "grid-figures": renderGridFiguresProblems,
+        "magic-squares": renderMagicSquaresProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -970,6 +973,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             const items = problems.map(p => ({ html: `<div class="word-problem-item grid-figure-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="gf-figures">${p.svg}</div><div class="answer-space">${t.answer_label}</div></div></div>` }));
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(items, t.answer_label)}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderMagicSquaresProblems(translations) {
+        const t = translations.script.magic_squares;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateMagicSquaresData({
+                size: document.getElementById('ms-size').value,
+                hidden: document.getElementById('ms-hidden').value,
+                magicSumMode: document.getElementById('ms-sum').value,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            const cell = (p, v, r, c) => {
+                if (v === null) return '<td class="ms-none"></td>';
+                const star = p.star[0] === r && p.star[1] === c ? '<span class="ms-star">★</span>' : '';
+                const sum = p.kind === '2' && (r + c) % 2 === 1 ? ' ms-sum' : '';
+                return p.hidden[r][c] ? `<td class="ms-blank${sum}">${star}</td>` : `<td class="${sum.trim()}">${v}</td>`;
+            };
+            const table = p => `<table class="magic-square" style="--ms-n:${p.grid.length}"><tbody>${p.grid.map((row, r) => `<tr>${row.map((v, c) => cell(p, v, r, c)).join('')}</tr>`).join('')}</tbody></table>`;
+            const items = problems.map(p => ({ html: `<div class="word-problem-item magic-square-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${table(p)}</div></div>` }));
+            const rules = [problems.some(p => p.kind !== '2') && t.rule_magic, problems.some(p => p.kind === '2') && t.rule_rechenviereck].filter(Boolean);
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${rules.map(r => `<p class="print-instructions">${r}</p>`).join('')}${proseProblemsHtml(items, '')}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);

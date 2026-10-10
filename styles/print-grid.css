@@ -517,3 +517,45 @@
 #problems-container .gf-svg text {
     font-size: 0.75px !important;
 }
+
+/* === Magic squares: every box is 3 x 2 grid cells, lines on the cell lines === */
+#problems-container .magic-square {
+    display: grid !important;
+    grid-template-columns: repeat(var(--ms-n, 3), calc(var(--cell) * 3));
+    width: max-content !important;
+    margin-top: var(--cell) !important;
+    border-collapse: separate;
+}
+
+#problems-container .magic-square tbody,
+#problems-container .magic-square tr {
+    display: contents;
+}
+
+#problems-container .magic-square td {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: calc(var(--cell) * 3);
+    height: calc(var(--cell) * 2);
+    box-shadow: inset 0 0 0 var(--rule) var(--ink) !important;
+}
+
+#problems-container .magic-square td.ms-none {
+    box-shadow: none !important;
+}
+
+#problems-container .pg-item .ms-star {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#problems-container .pg-item .ms-star .gc {
+    width: auto;
+    height: auto;
+    font-size: 7pt !important;
+    font-weight: normal;
+    line-height: 1 !important;
+}

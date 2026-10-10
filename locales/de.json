@@ -59,6 +59,8 @@
     "number_properties_p": "Zahlenrätsel: Divisionsreste, Quersumme und Querprodukt, Abzählen, aufeinanderfolgende Zahlen, Palindrome, Primzahlen.",
     "grid_figures_h3": "Figuren auf Karopapier",
     "grid_figures_p": "Umfang, Flächeninhalt und Ecken von Figuren aus Kästchen, Treppen, aneinandergeklebte Quadrate, Figuren vergleichen.",
+    "magic_squares_h3": "Magische Quadrate",
+    "magic_squares_p": "Magische Quadrate 3×3 und 4×4 mit fehlenden Feldern, Rechenvierecke.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -889,6 +891,32 @@
                 "glued_perimeter": "Wie groß ist der Umfang der ganzen Figur?",
                 "compare_area": "Welche Figur hat den größten Flächeninhalt? Schreibe ihren Buchstaben auf.",
                 "compare_perimeter": "Jedes Kästchen hat die Seitenlänge 1 cm. Welche Figur hat den größten Umfang? Schreibe ihren Buchstaben auf."
+            }
+        },
+        "magic_squares": {
+            "size_label": "Quadrat:",
+            "size_3": "3×3",
+            "size_4": "4×4",
+            "size_2": "Rechenviereck (Summen der Ecken)",
+            "size_mixed": "Gemischt",
+            "hidden_label": "Fehlende Felder:",
+            "hidden_few": "Wenige",
+            "hidden_many": "Viele",
+            "sum_label": "Magische Summe:",
+            "sum_show": "Angegeben",
+            "sum_hide": "Aus einer vollen Reihe bestimmen",
+            "description": "Ergänze die fehlenden Zahlen. Bei einem 4×4-Quadrat stehen die fehlenden Zahlen darunter.",
+            "problems_title": "Magische Quadrate",
+            "rule_magic": "In einem magischen Quadrat haben jede Zeile, jede Spalte und beide Diagonalen dieselbe Summe: die magische Summe.",
+            "rule_rechenviereck": "Im Rechenviereck steht in jedem mittleren Kästchen die Summe der beiden benachbarten Eckzahlen.",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Zahl im ★-Feld.",
+            "error_message": "Fehler beim Erstellen der magischen Quadrate.",
+            "templates": {
+                "sum_given": "Magische Summe: {s}.",
+                "sum_hidden": "Finde zuerst die magische Summe.",
+                "use_numbers": "Verwende jede der Zahlen {list} genau einmal.",
+                "rechenviereck": "Ergänze die fehlenden Zahlen."
             }
         }
     }

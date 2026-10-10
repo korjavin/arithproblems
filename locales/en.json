@@ -61,6 +61,8 @@
     "number_properties_p": "Number riddles: remainders, digit sums and products, counting, consecutive numbers, palindromes, primes.",
     "grid_figures_h3": "Figures on Squared Paper",
     "grid_figures_p": "Perimeter, area and corners of figures made of squares, staircases, glued squares, comparing figures.",
+    "magic_squares_h3": "Magic Squares",
+    "magic_squares_p": "Magic squares 3×3 and 4×4 with missing cells, number squares with sums of corners.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -990,6 +992,32 @@
                 "glued_perimeter": "What is the perimeter of the whole figure?",
                 "compare_area": "Which figure has the largest area? Write its letter.",
                 "compare_perimeter": "Each square of the grid has a side of 1 cm. Which figure has the largest perimeter? Write its letter."
+            }
+        },
+        "magic_squares": {
+            "size_label": "Square:",
+            "size_3": "3×3",
+            "size_4": "4×4",
+            "size_2": "Number square (sums of corners)",
+            "size_mixed": "Mixed",
+            "hidden_label": "Missing cells:",
+            "hidden_few": "Few",
+            "hidden_many": "Many",
+            "sum_label": "Magic sum:",
+            "sum_show": "Given",
+            "sum_hide": "Find it from a complete line",
+            "description": "Fill in the missing numbers. In a 4×4 square the missing numbers are listed below it.",
+            "problems_title": "Magic Squares",
+            "rule_magic": "In a magic square every row, every column and both diagonals have the same sum: the magic sum.",
+            "rule_rechenviereck": "In a number square every middle box holds the sum of the two corner numbers next to it.",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Write the digital root of the number in the ★ cell.",
+            "error_message": "Error generating magic squares.",
+            "templates": {
+                "sum_given": "Magic sum: {s}.",
+                "sum_hidden": "Find the magic sum first.",
+                "use_numbers": "Use each of the numbers {list} exactly once.",
+                "rechenviereck": "Fill in the missing numbers."
             }
         }
     }

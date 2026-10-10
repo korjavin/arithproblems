@@ -1054,3 +1054,33 @@ footer {
     height: auto;
     overflow: visible;
 }
+
+.magic-square {
+    border-collapse: collapse;
+    margin: 0.5em 0;
+    font: bold 1.1em monospace;
+}
+
+.magic-square td {
+    position: relative;
+    width: 3em;
+    height: 2.2em;
+    border: 1px solid #333;
+    text-align: center;
+}
+
+.magic-square td.ms-sum {
+    background: #f0f0f0;
+}
+
+.magic-square td.ms-none {
+    border: 0;
+}
+
+.ms-star {
+    position: absolute;
+    top: 1px;
+    left: 3px;
+    font-size: 0.85em;
+    font-weight: normal;
+}
