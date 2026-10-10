@@ -254,6 +254,7 @@
             "geometry_word_problems_option": "Geometry Word Problems Only",
             "number_problems_option": "Number Problems Only",
             "percentage_word_problems_option": "Percentage Word Problems Only",
+            "olympiad_problems_option": "Olympiad Problems Only",
             "difficulty_level_label": "Difficulty Level:",
             "easy_level_option": "Easy (1-step solutions)",
             "medium_level_option": "Medium (2-step solutions)",
@@ -374,7 +375,19 @@
                 "percent1": "What is {percent}% of {number}?",
                 "percent2": "{part} is what percent of {whole}?",
                 "percent3": "{percent}% of what number is {part}?",
-                "percent4": "A shirt originally costs ${original_price}. It's on sale for {percent}% off. What is the sale price?"
+                "percent4": "A shirt originally costs ${original_price}. It's on sale for {percent}% off. What is the sale price?",
+                "oly1": "Liam is {diff} years older than Mia. Mia is {mult} times as old as Jack. Jack is {young} years old. How old is Liam?",
+                "oly2": "Ben and Jack are {sum} years old together. Jack is {diff} years younger than Ben. How old is Ben?",
+                "oly3": "Jack is {older} and his sister is {younger}. In how many years will Jack be {mult} times as old as his sister?",
+                "oly4": "There were {total} cookies on a plate. Lily took 1/{a} of them, Kate took 1/{b} of the rest, and Sam took 1/{c} of what remained. How many cookies are left on the plate?",
+                "oly5": "In a hall, 1/{k} of the seats are taken by children, {adults} seats by adults, and {free} seats are free. How many seats are there in the hall?",
+                "oly6": "A rope {length} m long was cut into three parts. The mother got half as much as her son, and the daughter got {mult} times as much as the mother. How many metres did the daughter get?",
+                "oly7": "Ann, Bob, Carl, Dan and Eva collect stamps. Bob has half as many stamps as Dan. Eva has {more} more stamps than Bob. Carl has as many as Eva. Ann has as many as Bob and Carl together. Together they have {total} stamps. How many stamps does Dan have?",
+                "oly8": "Tom said to Max: “If you give me {k} marbles, I will have {q} times as many as you. If I give you {k} marbles, we will have the same number.” How many marbles does Tom have?",
+                "oly9": "In a class, {football} pupils play football and {swim} pupils swim; {both} of them do both, and {neither} do neither. How many pupils are in the class?",
+                "oly10": "Points A, B, C and E lie on a line in this order. AE = {ae} cm, segment BE is {q} times as long as AB, and AC is {bc} cm longer than AB. How long is CE in cm?",
+                "oly11": "Grandma is handing out sweets to her grandchildren. If she gives each of them {a}, {left} are left over. If she gives each of them {b}, she is {short} short. How many grandchildren does she have?",
+                "oly12": "Find the missing number so that the average of {nums} and the missing number is {avg}."
             }
         },
         "house_problems": {
