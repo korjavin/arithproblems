@@ -65,6 +65,8 @@
     "cube_buildings_p": "Count cubes in buildings from a plan, staircases and pyramids; painted cubes, views, glued faces and edge models.",
     "magic_squares_h3": "Magic Squares",
     "magic_squares_p": "Magic squares 3×3 and 4×4 with missing cells, number squares with sums of corners.",
+    "money_problems_h3": "Money Problems",
+    "money_problems_p": "Price lists, change, single and pack prices, tariffs, group tickets and saving pocket money.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -1057,6 +1059,125 @@
                 "wire_cuboid": "How many cm of wire are needed for the edge model of a cuboid with edges {a} cm, {b} cm and {c} cm?",
                 "volume": "The edge model of a cube is made of 12 equal sticks. How many such sticks are needed for the edge model of a cube with {v} times the volume?",
                 "trap": "The edge model of {shape} is made of sticks {e} cm long. A model of the same shape with edges {k} times as long is made of sticks {ke} cm long. How many sticks does the bigger model need?"
+            }
+        },
+        "money_problems": {
+            "type_pay_label": "Pay and change",
+            "type_affordable_label": "How many can you buy? (single and pack prices)",
+            "type_tariff_label": "Which tariff is cheaper?",
+            "type_group_label": "Group entrance tickets",
+            "type_saving_label": "Saving pocket money",
+            "type_riddle_label": "Change riddles",
+            "description": "Story problems with prices: read the price list and calculate in euros and cents.",
+            "problems_title": "Money Problems",
+            "answer_label": "Answer: ",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "If the answer is an amount of money, write it in cents (€14.20 = 1420 ct) and find its digital root. If the answer is a count (items, weeks, minutes, rides), find the digital root of that number.",
+            "error_message": "Error generating money problems. Please select at least one problem type.",
+            "decimal_separator": ".",
+            "money_format": "€{v}",
+            "cent_format": "{n} ct",
+            "and": " and ",
+            "names": [
+                "Anna",
+                "Tom",
+                "Mia",
+                "Leo",
+                "Emma",
+                "Ben",
+                "Lena",
+                "Paul"
+            ],
+            "shop_items": [
+                {
+                    "name": "Ball",
+                    "acc": "a ball"
+                },
+                {
+                    "name": "Headphones",
+                    "acc": "headphones"
+                },
+                {
+                    "name": "Scooter",
+                    "acc": "a scooter"
+                },
+                {
+                    "name": "Puzzle",
+                    "acc": "a puzzle"
+                },
+                {
+                    "name": "Book",
+                    "acc": "a book"
+                },
+                {
+                    "name": "Toy car",
+                    "acc": "a toy car"
+                },
+                {
+                    "name": "Crayons",
+                    "acc": "crayons"
+                },
+                {
+                    "name": "Doll",
+                    "acc": "a doll"
+                },
+                {
+                    "name": "Kite",
+                    "acc": "a kite"
+                },
+                {
+                    "name": "Board game",
+                    "acc": "a board game"
+                }
+            ],
+            "bakery_items": [
+                {
+                    "single": "One roll",
+                    "many": "rolls"
+                },
+                {
+                    "single": "One pretzel",
+                    "many": "pretzels"
+                },
+                {
+                    "single": "One muffin",
+                    "many": "muffins"
+                }
+            ],
+            "pack_format": "Pack of {k} {many}",
+            "phone_tariff_format": "Tariff {label}: {base} per month and {per} per minute",
+            "minute_forms": [
+                "minute",
+                "minutes"
+            ],
+            "ride_forms": [
+                "time",
+                "times"
+            ],
+            "single_ticket": "Single ticket",
+            "monthly_ticket": "Monthly ticket",
+            "adult_ticket": "Adult ticket",
+            "child_ticket": "Child ticket (6 years and older)",
+            "small_free": "Children under 6: free, no ticket needed",
+            "adult_forms": [
+                "adult",
+                "adults"
+            ],
+            "child_forms": [
+                "child",
+                "children"
+            ],
+            "templates": {
+                "pay": "Toy shop price list:{list}{name} buys {items} and pays with a €{note} note. How much does everything cost together? How much change does {name} get? Self-check: the change.",
+                "affordable": "Bakery prices:{list}{name} has {budget}. How many {many} can {name} buy at most?",
+                "tariff_even_phone": "A phone company offers two tariffs:{list}For how many minutes a month do both tariffs cost the same?",
+                "tariff_diff_phone": "A phone company offers two tariffs:{list}{name} talks on the phone for {minutes} a month. Which tariff is cheaper, and by how many cents? Self-check: the difference in cents.",
+                "tariff_even_bus": "Bus fares:{list}For how many rides a month does the monthly ticket cost exactly as much as single tickets?",
+                "tariff_diff_bus": "Bus fares:{list}{name} rides the bus {rides} a month. Which is cheaper: single tickets or the monthly ticket? By how many cents? Self-check: the difference in cents.",
+                "group": "Museum entrance:{list}A group that buys at least {t} tickets pays {off} less for every ticket. The group has {adults}, {kids} aged 6 and older and {small} under 6. How much does the group pay?",
+                "saving": "Toy shop price list:{list}{name} wants to buy {item} and has already saved {saved}. Every week {name} gets {allowance} pocket money and saves all of it. How many more weeks does {name} have to save?",
+                "riddle_less": "{name} pays with a €{note} note and gets back {k} less than the purchase costs. How much does the purchase cost?",
+                "riddle_more": "{name} pays with a €{note} note and gets back {k} more than the purchase costs. How much does the purchase cost?"
             }
         },
         "magic_squares": {
