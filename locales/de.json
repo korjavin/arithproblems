@@ -67,6 +67,8 @@
     "page_numbers_p": "Ziffern in den Seitenzahlen eines Buches und in der Reihe 123456789101112…",
     "dice_h3": "Spielwürfel",
     "dice_p": "Würfel, deren gegenüberliegende Seiten zusammen 7 Augen haben: Würfelnetze, Türme und geklebte Würfel.",
+    "corner_sums_h3": "Eckensummen",
+    "corner_sums_p": "Zahlen in die Kreise an den Ecken von Quadraten und einem Dreieck eintragen, sodass sich die vorgegebenen Summen ergeben.",
     "money_problems_h3": "Rechnen mit Geld",
     "money_problems_p": "Preislisten, Wechselgeld, Einzel- und Packungspreise, Tarife, Gruppeneintritt und Taschengeld sparen.",
     "category_basic_arithmetic": "Grundrechenarten",
@@ -1172,6 +1174,31 @@
                 "contact_free": "Würfel {a} und {b}, die geklebte Seite von Würfel {a} mit {x}, die von Würfel {b} mit {y}",
                 "glued_inverse": "Drei Spielwürfel werden zusammengeklebt: der zweite an den ersten mit Seiten gleicher Augenzahl, dann der dritte an den zweiten, wieder mit Seiten gleicher Augenzahl. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Außen auf der Figur sind {visible} zu sehen. Wie viele Augen hatten die geklebten Seiten? Nenne beide Zahlen.",
                 "table_row": "{dice} stehen in einer Reihe auf einem Tisch und sind an den Seitenflächen zusammengeklebt: {contacts}. Die Augenzahlen auf den Oberseiten von links nach rechts: {tops}. Bei einem Spielwürfel haben gegenüberliegende Seiten zusammen immer 7 Augen. Wie viele Augen sieht man, wenn man um den Tisch herumgeht? (Die Unterseiten und die geklebten Seiten sieht man nicht.)"
+            }
+        },
+        "corner_sums": {
+            "figure_label": "Figur:",
+            "figure_row": "Reihe von Quadraten",
+            "figure_block": "Vier Quadrate (2×2)",
+            "figure_triangle": "Dreieck",
+            "figure_mixed": "Gemischt",
+            "numbers_label": "Zahlen:",
+            "numbers_8": "1 bis 8",
+            "numbers_9": "1 bis 9",
+            "numbers_12": "1 bis 12",
+            "hidden_label": "Leere Kreise:",
+            "hidden_few": "Wenige",
+            "hidden_many": "Viele",
+            "description": "Vier Quadrate (2×2) brauchen neun Zahlen, daher 1 bis 9 statt 1 bis 8. Jede Aufgabe hat genau eine Lösung.",
+            "problems_title": "Eckensummen",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Schreibe die Ziffernwurzel der Zahl im Kreis mit dem ★.",
+            "error_message": "Fehler beim Erstellen der Eckensummen.",
+            "templates": {
+                "rule_squares": "Trage Zahlen in die leeren Kreise ein. Die Zahl in jedem Quadrat ist die Summe der Zahlen an seinen vier Ecken.",
+                "rule_triangle": "Trage Zahlen in die leeren Kreise ein. Die Zahl neben jeder Seite des Dreiecks ist die Summe der drei Zahlen auf dieser Seite.",
+                "use_all": "Verwende jede Zahl von 1 bis {n} genau einmal.",
+                "use_some": "Verwende Zahlen von 1 bis {n}, jede höchstens einmal."
             }
         }
     }

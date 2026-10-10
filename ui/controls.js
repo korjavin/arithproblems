@@ -780,3 +780,22 @@ export function renderDiceControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderCornerSumsControls(container, t) {
+    const select = (id, options, selected) => `<select id="cs-${id}">${options.map(v => `<option value="${v}"${v === selected ? ' selected' : ''}>${t[`${id}_${v}`]}</option>`).join('')}</select>`;
+    container.innerHTML = `
+        <div>
+            <label for="cs-figure">${t.figure_label}</label>
+            ${select('figure', ['row', 'block', 'triangle', 'mixed'], 'row')}
+        </div>
+        <div>
+            <label for="cs-numbers">${t.numbers_label}</label>
+            ${select('numbers', ['8', '9', '12'], '8')}
+        </div>
+        <div>
+            <label for="cs-hidden">${t.hidden_label}</label>
+            ${select('hidden', ['few', 'many'], 'few')}
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

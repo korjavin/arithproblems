@@ -33,6 +33,7 @@ import { generateMagicSquaresData } from './generators/magic-squares.js';
 import { generatePageNumbersData, TYPES as PAGE_NUMBERS_TYPES } from './generators/page-numbers.js';
 import { generateMoneyProblemsData, TYPES as MONEY_PROBLEMS_TYPES } from './generators/money-problems.js';
 import { generateDiceData, TYPES as DICE_TYPES } from './generators/dice.js';
+import { generateCornerSumsData } from './generators/corner-sums.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -118,6 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "page-numbers": controls.renderPageNumbersControls,
         "money-problems": controls.renderMoneyProblemsControls,
         "dice": controls.renderDiceControls,
+        "corner-sums": controls.renderCornerSumsControls,
     };
 
     const problemRenderers = {
@@ -154,6 +156,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "page-numbers": renderPageNumbersProblems,
         "money-problems": renderMoneyProblemsProblems,
         "dice": renderDiceProblems,
+        "corner-sums": renderCornerSumsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -1110,6 +1113,35 @@ document.addEventListener("DOMContentLoaded", async () => {
                 html: `<div class="word-problem-item dice-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${p.net ? netHtml(p.net) : ''}${p.tower ? towerHtml(p.tower) : ''}<div class="answer-space">${t.answer_label}</div></div></div>`,
             }));
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(items, t.answer_label)
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderCornerSumsProblems(translations) {
+        const t = translations.script.corner_sums;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateCornerSumsData({
+                figure: document.getElementById('cs-figure').value,
+                numberSet: document.getElementById('cs-numbers').value,
+                hidden: document.getElementById('cs-hidden').value,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            // Coordinates are paper cells; on screen one cell is 20px.
+            const text = (x, y, v, cls = '') => `<text x="${x}" y="${y}" class="${cls}" font-size="${cls ? 0.8 : 0.9}" text-anchor="middle" dominant-baseline="central" fill="#222" stroke="none">${v}</text>`;
+            const svg = p => `<svg class="cs-svg" style="--w:${p.w};--h:${p.h}" viewBox="0 0 ${p.w} ${p.h}" width="${p.w * 20}" height="${p.h * 20}" overflow="visible" stroke="#222" stroke-width="0.06">`
+                + p.rects.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#ddd"/>`).join('')
+                + p.edges.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`).join('')
+                + p.groups.map(g => text(g.x, g.y, `<tspan font-weight="bold">${g.sum}</tspan>`)).join('')
+                + p.circles.map((c, i) => `<circle cx="${c.x}" cy="${c.y}" r="0.95" fill="#fff"/>`
+                    + (c.hidden ? '' : text(c.x, c.y, c.value))
+                    + (i === p.star ? text(c.x - 0.95, c.y - 0.8, '★', 'cs-star') : '')).join('')
+                + '</svg>';
+            const items = problems.map(p => ({ html: `<div class="word-problem-item cs-item"><div class="problem-content"><div class="problem-text">${p.text}</div>${svg(p)}</div></div>` }));
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>` + proseProblemsHtml(items, '')
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);

@@ -1082,7 +1082,8 @@ footer {
 }
 
 .cube-stairs svg,
-.dice-svg svg {
+.dice-svg svg,
+.cs-svg {
     display: block;
     margin: 8px 0;
 }
