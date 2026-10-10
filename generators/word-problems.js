@@ -1,6 +1,6 @@
 import { digitalRoot, getRandomInt, getRandomFromArray, shuffleArray, fillTemplate } from '../utils.js';
 
-function generateProblemData(templateKey, t, difficultyLevel) {
+export function generateProblemData(templateKey, t, difficultyLevel) {
     const difficultyMultiplier = difficultyLevel === 'easy' ? 1 : difficultyLevel === 'medium' ? 1.5 : difficultyLevel === 'hard' ? 2 : 1 + (getRandomInt(0, 100) / 100);
     function roundToWhole(num) { return Math.round(num); }
     const getRandomName = (type = 'neutral') => getRandomFromArray(t.names[type]);
@@ -235,6 +235,62 @@ function generateProblemData(templateKey, t, difficultyLevel) {
             const sale_price = original_price - discount;
             return { original_price, percent, answer: Math.round(sale_price * 100) / 100 };
         }
+        // Olympiad templates: built backwards from the solution so every step is an integer.
+        // ponytail: difficultyMultiplier is ignored here, scaling would break exact divisions.
+        case 'oly1': { // L = M + diff, M = mult * J
+            const young = getRandomInt(3, 5), mult = getRandomInt(2, 3), diff = getRandomInt(2, 4);
+            return { young, mult, diff, answer: young * mult + diff };
+        }
+        case 'oly2': { // B + J = sum, J = B - diff
+            const older = getRandomInt(6, 15), diff = getRandomInt(2, older - 2);
+            return { sum: 2 * older - diff, diff, answer: older };
+        }
+        case 'oly3': { // older + t = mult * (younger + t)
+            const mult = getRandomInt(2, 4), younger = getRandomInt(1, 3), years = getRandomInt(1, 6);
+            return { older: mult * (younger + years) - years, younger, mult, answer: years };
+        }
+        case 'oly4': { // take 1/a, then 1/b of the rest, then 1/c of what remains
+            const a = getRandomInt(2, 4), b = getRandomInt(2, 4), c = getRandomInt(2, 4), z = getRandomInt(1, 2);
+            return { total: a * b * c * z, a, b, c, answer: (a - 1) * (b - 1) * (c - 1) * z };
+        }
+        case 'oly5': { // 1/k of seats children, the rest adults + free
+            const k = getRandomInt(3, 5), children = getRandomInt(10, 30);
+            const rest = (k - 1) * children, free = getRandomInt(5, rest - 5);
+            return { k, adults: rest - free, free, answer: k * children };
+        }
+        case 'oly6': { // son = 2 * mother, daughter = mult * mother
+            const mother = getRandomInt(2, 8), mult = getRandomInt(3, 4);
+            return { length: (3 + mult) * mother, mult, answer: mult * mother };
+        }
+        case 'oly7': { // B = D / 2, E = B + more, C = E, A = B + C
+            const b = getRandomInt(3, 12), more = getRandomInt(2, 10);
+            return { more, total: 7 * b + 3 * more, answer: 2 * b };
+        }
+        case 'oly8': { // m - k = y + k, m + k = q * (y - k)
+            const q = getRandomInt(2, 3), k = getRandomInt(2, 3); // ranges keep ru plurals ("2-3 шарика", "в 2-3 раза") correct
+            const y = k * (3 + q) / (q - 1);
+            return { k, q, answer: y + 2 * k };
+        }
+        case 'oly9': { // |F ∪ S| + neither
+            const football = getRandomInt(10, 20), swim = getRandomInt(8, 16);
+            const both = getRandomInt(2, Math.min(football, swim) - 2), neither = getRandomInt(1, 5);
+            return { football, swim, both, neither, answer: football + swim - both + neither };
+        }
+        case 'oly10': { // A, B, C, E in order; BE = q * AB, AC = AB + bc
+            const ab = getRandomInt(2, 8), q = getRandomInt(2, 3), bc = getRandomInt(1, q * ab - 1);
+            return { ae: (1 + q) * ab, q, bc, answer: q * ab - bc };
+        }
+        case 'oly11': { // a each -> left over, b each -> short
+            const a = getRandomInt(1, 4), b = a + getRandomInt(1, 2), guests = getRandomInt(3, 10);
+            const left = getRandomInt(1, (b - a) * guests - 1);
+            return { a, b, left, short: (b - a) * guests - left, answer: guests };
+        }
+        case 'oly12': { // average of three given numbers and a missing one
+            const avg = getRandomInt(8, 20);
+            let nums;
+            do { nums = [0, 0, 0].map(() => getRandomInt(1, 2 * avg)); } while (4 * avg - nums[0] - nums[1] - nums[2] < 1);
+            return { nums: nums.join(', '), avg, answer: 4 * avg - nums[0] - nums[1] - nums[2] };
+        }
         default:
             return { answer: 0 };
     }
@@ -253,12 +309,15 @@ export function generateWordProblemsData({ problemCategory, difficultyLevel, num
         mixture: ['mixture1', 'mixture2', 'mixture3', 'mixture4'],
         geometry: ['geometry1', 'geometry2', 'geometry3', 'geometry4'],
         number: ['number1', 'number2', 'number3', 'number4'],
-        percentage: ['percent1', 'percent2', 'percent3', 'percent4']
+        percentage: ['percent1', 'percent2', 'percent3', 'percent4'],
+        olympiad: Array.from({ length: 12 }, (_, i) => `oly${i + 1}`)
     };
 
     let availableTemplates = [];
     if (problemCategory === 'mixed') {
-        availableTemplates = Object.values(templateCategories).flat();
+        // Olympiad templates are opt-in only; 'mixed' keeps the classic pool.
+        const { olympiad, ...classic } = templateCategories;
+        availableTemplates = Object.values(classic).flat();
     } else {
         availableTemplates = templateCategories[problemCategory] || [];
     }
