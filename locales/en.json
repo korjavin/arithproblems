@@ -47,6 +47,8 @@
     "compare_expressions_p": "Fill in <, >, or = between two expressions. Quick mental-math drill.",
     "boolean_logic_h3": "Boolean Logic",
     "boolean_logic_p": "Evaluate logical expressions (∧ ∨ ¬ → ↔) given true/false values for each variable.",
+    "unit_conversion_h3": "Units of Measure",
+    "unit_conversion_p": "Convert, add and subtract lengths, masses, volumes, times and money.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -478,6 +480,90 @@
         "unknown_topic_error": "Unknown topic selected:",
         "generate_button_clicked_for_topic": "Generate button clicked for topic:",
         "invalid_num_problems_alert": "Please enter a valid number of problems.",
-        "unknown_topic_generation_error": "Error: Unknown topic selected."
+        "unknown_topic_generation_error": "Error: Unknown topic selected.",
+        "unit_conversion": {
+            "family_length_label": "Length (km, m, dm, cm, mm)",
+            "family_mass_label": "Mass (t, kg, g)",
+            "family_volume_label": "Volume (l, ml)",
+            "family_time_label": "Time (weeks, days, h, min, s, years, months)",
+            "family_money_label": "Money (€, ct)",
+            "difficulty_label": "Difficulty:",
+            "difficulty_1": "Easy: convert single units",
+            "difficulty_2": "Medium: mixed units, missing parts, sharing",
+            "difficulty_3": "Hard: bigger numbers",
+            "allow_decimals_label": "Allow decimals (2.6 kg)",
+            "include_unsolvable_label": "Include one item that cannot be solved",
+            "description": "Fill in the blanks. Each item converts quantities, completes a sum or shares a quantity equally.",
+            "problems_title": "Units of Measure",
+            "unsolvable_instruction": "One item cannot be solved because its units do not fit together — cross it out.",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Take the digital root of each answer. If the answer has a decimal point, first convert it to whole g / ml / mm / ct. The item you crossed out gets 0.",
+            "error_message": "Error generating unit problems. Select at least one family of units.",
+            "decimal_separator": ".",
+            "units": {
+                "mm": "mm",
+                "cm": "cm",
+                "dm": "dm",
+                "m": "m",
+                "km": "km",
+                "g": "g",
+                "kg": "kg",
+                "t": "t",
+                "ml": "ml",
+                "l": "l",
+                "ct": "ct",
+                "eur": "€",
+                "s": "s",
+                "min": "min",
+                "h": "h",
+                "d": [
+                    "day",
+                    "days"
+                ],
+                "wk": [
+                    "week",
+                    "weeks"
+                ],
+                "mo": [
+                    "month",
+                    "months"
+                ],
+                "yr": [
+                    "year",
+                    "years"
+                ]
+            },
+            "parts": {
+                "2": "One half",
+                "3": "One third",
+                "4": "One quarter",
+                "5": "One fifth",
+                "8": "One eighth",
+                "10": "One tenth"
+            },
+            "fraction_template": "{part} of {qty} is {blank}.",
+            "unit_price_templates": {
+                "money": [
+                    "{count} balls cost {total} together. One ball costs {blank}.",
+                    "{count} notebooks cost {total} together. One notebook costs {blank}."
+                ],
+                "mass": [
+                    "{count} equal bags weigh {total} together. One bag weighs {blank}.",
+                    "{count} equal boxes weigh {total} together. One box weighs {blank}."
+                ],
+                "volume": [
+                    "{count} equal bottles hold {total} together. One bottle holds {blank}.",
+                    "{total} of juice is shared equally among {count} glasses. Each glass gets {blank}."
+                ],
+                "length": [
+                    "A ribbon {total} long is cut into {count} equal pieces. One piece is {blank} long.",
+                    "{count} equal boards are {total} long together. One board is {blank} long."
+                ],
+                "time": [
+                    "{count} songs of equal length last {total} together. One song lasts {blank}.",
+                    "{count} equal breaks last {total} together. One break lasts {blank}."
+                ]
+            }
+        }
     }
 }

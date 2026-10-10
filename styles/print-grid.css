@@ -214,6 +214,22 @@
     box-shadow: inset 0 0 0 0.3mm var(--ink);
 }
 
+#problems-container .unit-conversion-item .answer-space {
+    width: calc(var(--cell) * 5);
+}
+
+/* Long sharing sentences wrap like word problems instead of one glyph per cell. */
+#problems-container .unit-conversion-prose {
+    justify-self: stretch !important;
+    white-space: normal;
+}
+
+#problems-container .unit-conversion-prose .problem-text {
+    font-size: 11pt !important;
+    font-weight: normal;
+    white-space: normal;
+}
+
 #problems-container .pg-item .op-blank.op-blank-number {
     width: calc(var(--cell) * 2);
 }
