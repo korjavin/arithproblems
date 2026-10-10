@@ -51,6 +51,8 @@
     "time_calendar_p": "Uhrzeiten, Zeitspannen, Fahrpläne, Wochentage und Daten als kurze Textaufgaben.",
     "find_the_number_h3": "Zahl gesucht",
     "find_the_number_p": "Zahlenrätsel: in Worten beschriebene Zahlen, „Ich denke mir eine Zahl“-Ketten, Halbierungsketten und verkettete Buchstabengleichungen.",
+    "combinatorics_h3": "Möglichkeiten zählen",
+    "combinatorics_p": "Alle Möglichkeiten aufschreiben und zählen: Menüs, Auswählen, Anordnen, Händeschütteln, Halbzeitstände, Domino.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -696,6 +698,63 @@
                 "first_plus": "{to} die Hälfte davon und noch 1",
                 "rest": "dann {to} die Hälfte des Rests",
                 "rest_plus": "dann {to} die Hälfte des Rests und noch 1"
+            }
+        },
+        "combinatorics": {
+            "type_product_label": "Eins aus jeder Gruppe (Menüs, Kleidung)",
+            "type_choose_label": "Einige auswählen (Reihenfolge egal)",
+            "type_arrange_label": "In eine Reihe legen (PINs, Apps, farbige Karten)",
+            "type_handshakes_label": "Jeder mit jedem (Händeschütteln, Spiele, Geraden)",
+            "type_halftime_label": "Halbzeitstände",
+            "type_dominoes_label": "Dominosteine",
+            "max_count_label": "Größte Antwort:",
+            "description": "Zählaufgaben: alle Möglichkeiten systematisch aufschreiben und dann zählen. Eine kleinere größte Antwort hält die Listen kurz.",
+            "problems_title": "Alle Möglichkeiten zählen",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Bilde von jeder Anzahl die Quersumme bis zu einer Ziffer.",
+            "error_message": "Fehler beim Erzeugen der Zählaufgaben. Wähle mindestens eine Aufgabenart.",
+            "list_prompt": "Schreibe alle Möglichkeiten auf. Wie viele sind es?",
+            "group_format": "{label}: {items}",
+            "group_separator": "; ",
+            "card_format": "{colour} — {count}",
+            "product_groups": {
+                "menu": [
+                    { "label": "Getränke", "items": ["Tee", "Saft", "Milch", "Kakao"] },
+                    { "label": "Hauptgerichte", "items": ["Suppe", "Nudeln", "Pizza", "Fisch"] },
+                    { "label": "Nachtische", "items": ["Kuchen", "Eis", "Apfel", "Pudding"] }
+                ],
+                "outfit": [
+                    { "label": "Hosen", "items": ["Jeans", "Shorts", "graue Hose", "schwarze Hose"] },
+                    { "label": "Hemden", "items": ["weißes Hemd", "blaues Hemd", "gestreiftes Hemd", "T-Shirt"] },
+                    { "label": "Pullover", "items": ["roter Pullover", "grüner Pullover", "Kapuzenpulli", "Strickjacke"] }
+                ]
+            },
+            "choose_items": {
+                "toppings": ["Käse", "Schinken", "Pilze", "Oliven", "Tomaten", "Paprika"],
+                "flavours": ["Vanille", "Schokolade", "Erdbeere", "Zitrone", "Minze", "Banane"]
+            },
+            "apps": ["Karten", "Mail", "Musik", "Kamera", "Notizen", "Wetter"],
+            "colours": ["gelb", "blau", "rot", "grün", "weiß"],
+            "colours_start": ["gelb", "blau", "rot", "grün", "weiß"],
+            "templates": {
+                "product_menu": "Ein Café hat eine Mittagskarte — {groups}. Ein Mittagessen besteht aus einem Gericht aus jeder Gruppe.",
+                "product_outfit": "{name} hat diese Kleidung — {groups}. Ein Outfit besteht aus einem Teil jeder Art.",
+                "choose_friends": "{name} darf {k} der Freunde {items} ins Kino einladen.",
+                "choose_toppings": "Eine Pizza bekommt {k} verschiedene Beläge aus {items}.",
+                "choose_flavours": "In einen Eisbecher kommen {k} Kugeln verschiedener Sorten, ausgewählt aus {items}.",
+                "arrange_apps": "{name} legt die Apps {items} in eine Reihe auf den Handybildschirm.",
+                "arrange_digits": "Ein PIN-Code benutzt jede der Ziffern {items} genau einmal.",
+                "arrange_first": "{name} legt die Apps {items} in eine Reihe auf den Handybildschirm, und {first} muss vorne stehen.",
+                "arrange_cards": "{name} legt alle diese Karten in eine Reihe: {cards}. Karten derselben Farbe sehen gleich aus.",
+                "arrange_cards_start": "{name} legt alle diese Karten in eine Reihe: {cards}. Karten derselben Farbe sehen gleich aus. Die erste Karte muss {start0} oder {start1} sein.",
+                "handshakes": "{n} Freunde treffen sich, und jeder gibt jedem anderen genau einmal die Hand.",
+                "tournament": "{n} Mannschaften spielen ein Turnier: Jede Mannschaft spielt genau einmal gegen jede andere.",
+                "lines": "Auf ein Blatt werden {n} Geraden gezeichnet. Wie viele Schnittpunkte kann es höchstens geben? Benenne die Geraden mit Buchstaben.",
+                "halftime": "Ein Fußballspiel endete {a}:{b}. Wie könnte es zur Halbzeit gestanden haben?",
+                "halftime_second": "Ein Fußballspiel endete {a}:{b}, und in der zweiten Halbzeit fielen insgesamt {k} Tor(e). Wie könnte es zur Halbzeit gestanden haben?",
+                "domino_set": "In einem Dominospiel zeigt jede Hälfte eines Steins 0 bis {m} Augen, und jedes Zahlenpaar (auch Pasche wie 2|2) kommt auf genau einem Stein vor. Welche Steine gehören zum Spiel?",
+                "domino_with": "In einem Dominospiel zeigt jede Hälfte eines Steins 0 bis {m} Augen, und jedes Zahlenpaar (auch Pasche wie 2|2) kommt auf genau einem Stein vor. Welche Steine zeigen mindestens eine {v}?"
             }
         }
     }

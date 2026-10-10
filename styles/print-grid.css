@@ -381,6 +381,11 @@
     margin-top: var(--cell) !important;
 }
 
+/* Counting problems: room to write down every possibility. */
+#problems-container .word-problem-item .answer-space.listing-space {
+    height: calc(var(--cell) * 6);
+}
+
 /* === Pictures (houses, pyramids): boxes are whole cells === */
 #problems-container .house-problem,
 #problems-container .pyramid-problem {

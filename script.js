@@ -24,6 +24,7 @@ import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
 import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
 import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './generators/find-the-number.js';
+import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './generators/combinatorics.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -70,8 +71,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Prose problems (each `{ text }`, or a ready grid item `{ html }`) with an answer line, styled for print by styles/print-grid.css.
-    function proseProblemsHtml(problems, answerLabel) {
-        return `<div class="word-problems-grid problems-grid">${problems.map(p => p.html || `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space">${answerLabel}</div></div></div>`).join('')}</div>`;
+    // answerClass adds to .answer-space, e.g. ' listing-space' for a taller box.
+    function proseProblemsHtml(problems, answerLabel, answerClass = '') {
+        return `<div class="word-problems-grid problems-grid">${problems.map(p => p.html || `<div class="word-problem-item"><div class="problem-content"><div class="problem-text">${p.text}</div><div class="answer-space${answerClass}">${answerLabel}</div></div></div>`).join('')}</div>`;
     }
 
     const topicControlsRenderers = {
@@ -99,6 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "unit-conversion": controls.renderUnitConversionControls,
         "time-calendar": controls.renderTimeCalendarControls,
         "find-the-number": controls.renderFindTheNumberControls,
+        "combinatorics": controls.renderCombinatoricsControls,
     };
 
     const problemRenderers = {
@@ -126,6 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "unit-conversion": renderUnitConversionProblems,
         "time-calendar": renderTimeCalendarProblems,
         "find-the-number": renderFindTheNumberProblems,
+        "combinatorics": renderCombinatoricsProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -883,6 +887,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             let html = `<h3>${t.problems_title}</h3>`;
             if (problems.some(p => p.type === 'letters')) html += `<p class="print-instructions">${t.letters_instruction}</p>`;
             DOM.problemsContainer.innerHTML = html + proseProblemsHtml(items, t.answer_label)
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderCombinatoricsProblems(translations) {
+        const t = translations.script.combinatorics;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { male, female } = translations.script.word_problems.names;
+            const { problems, controlSums } = generateCombinatoricsData({
+                types: COMBINATORICS_TYPES.filter(x => document.getElementById(`cb-type-${x}`).checked),
+                maxCount: parseInt(document.getElementById('cb-max-count').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+                names: [...male, ...female],
+            });
+            DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label, ' listing-space')}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
