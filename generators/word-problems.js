@@ -315,7 +315,9 @@ export function generateWordProblemsData({ problemCategory, difficultyLevel, num
 
     let availableTemplates = [];
     if (problemCategory === 'mixed') {
-        availableTemplates = Object.values(templateCategories).flat();
+        // Olympiad templates are opt-in only; 'mixed' keeps the classic pool.
+        const { olympiad, ...classic } = templateCategories;
+        availableTemplates = Object.values(classic).flat();
     } else {
         availableTemplates = templateCategories[problemCategory] || [];
     }

@@ -99,10 +99,6 @@ function testInputValidation() {
     console.log('All input validation tests passed!');
 }
 
-// The 'mixed' pool includes olympiad keys: borrow their real templates so the mock covers every key.
-const enTemplates = JSON.parse(readFileSync('./locales/en.json', 'utf8')).script.word_problems.templates;
-for (const key of Object.keys(enTemplates)) if (key.startsWith('oly')) mockTranslations.templates[key] = enTemplates[key];
-
 // Re-derive each olympiad answer from the generated data, solving the story forward.
 const olympiadChecks = {
     oly1: d => d.young * d.mult + d.diff,
@@ -161,6 +157,11 @@ function testOlympiadCategory() {
         for (const p of data.problems) assert(!/[{}]/.test(p.text), `${locale}: unfilled placeholder in "${p.text}"`);
         for (const r of data.digitalRoots) assert(r.digitalRoot >= 0 && r.digitalRoot <= 9, `${locale}: control sum ${r.digitalRoot} out of 0-9`);
     }
+    // 'mixed' (36 classic templates) must not pull in olympiad ones; 50 problems cover the whole pool.
+    const en = JSON.parse(readFileSync('./locales/en.json', 'utf8')).script.word_problems;
+    const olyPrefixes = Object.keys(en.templates).filter(k => k.startsWith('oly')).map(k => en.templates[k].split('{')[0]);
+    const mixed = generateWordProblemsData({ problemCategory: 'mixed', difficultyLevel: 'mixed', numberOfProblems: 50, translations: en });
+    for (const p of mixed.problems) assert(!olyPrefixes.some(pre => p.text.startsWith(pre)), `mixed pool leaked an olympiad problem: "${p.text}"`);
     console.log('All olympiad category tests passed!');
 }
 
