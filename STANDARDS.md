@@ -35,7 +35,7 @@ This document describes the standards and conventions for adding new topics/sect
 ├── script.js                # Main app logic & problem rendering
 ├── style.css                # Styling (grid layouts, containers)
 ├── i18n.js                  # i18n management
-├── utils.js                 # Shared utilities (gcd, digitalRoot)
+├── utils.js                 # Shared utilities (gcd, digitalRoot, fillTemplate, ...)
 └── test-[topic].js          # Unit tests for each generator
 ```
 
@@ -85,6 +85,16 @@ html += `<div class="digital-root-check-grid-container">
     </div>
 </div>`;
 ```
+
+New renderers should call the `script.js` helper instead of copying this markup:
+`selfCheckGridHtml(title, subtitle, digits)` (`digits` is an array of single characters).
+
+### Prose problems
+Text problems (word problems, olympiad riddles) use `proseProblemsHtml(problems, answerLabel)` in `script.js`:
+each `{ text }` becomes a `.word-problem-item` with `.problem-text` and an `.answer-space` line inside
+a `.word-problems-grid`, which `styles/print-grid.css` already lays out on squared paper.
+Generators fill locale templates such as `"{name} has {count} apples"` with `fillTemplate(template, data)`
+from `utils.js` (unknown `{keys}` are left untouched).
 
 ---
 
@@ -148,6 +158,7 @@ Translations in `/locales/{en|de|ru}.json`
 - `geometry`
 - `algebra`
 - `word-problems`
+- `olympiad`
 
 ### Registration in `script.js`
 Topics must be registered in **three locations**:
@@ -473,7 +484,7 @@ For each language file (en.json, de.json, ru.json):
 - [ ] Verify control sums are correct
 - [ ] Test in all three languages (en, de, ru)
 - [ ] Test responsive layout on different screen sizes
-- [ ] Verify print layout looks correct: every digit sits in its own 5mm cell (see `styles/print-grid.css`)
+- [ ] Verify print layout looks correct: every digit sits in its own 5mm cell (see `styles/print-grid.css`). A problem grid that is not `.arithmetic-grid` / `.word-problems-grid` gets cell-snapped by adding the opt-in class `.cell-grid` — no edit to `ui/print-grid.js` needed
 
 ---
 

@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { gcd, digitalRoot, getRandomInt, getRandomNumberByDigits, getRandomFromArray, shuffleArray } from './utils.js';
+import { gcd, digitalRoot, getRandomInt, getRandomNumberByDigits, getRandomFromArray, shuffleArray, fillTemplate } from './utils.js';
 
 function testGcd() {
     assert.strictEqual(gcd(48, 18), 6, 'Test Case 1 Failed: gcd(48, 18)');
@@ -109,6 +109,13 @@ function testShuffleArray() {
     console.log('All shuffleArray tests passed!');
 }
 
+function testFillTemplate() {
+    assert.strictEqual(fillTemplate('{a} + {b} = {c}', { a: 1, b: 0, c: 1 }), '1 + 0 = 1');
+    assert.strictEqual(fillTemplate('{name} has {x}', { name: 'Ann' }), 'Ann has {x}', 'unknown keys stay');
+    assert.strictEqual(fillTemplate('{toString}', {}), '{toString}', 'prototype keys are not data');
+    console.log('All fillTemplate tests passed!');
+}
+
 try {
     testGcd();
     testDigitalRoot();
@@ -116,6 +123,7 @@ try {
     testGetRandomNumberByDigits();
     testGetRandomFromArray();
     testShuffleArray();
+    testFillTemplate();
     console.log('All tests passed!');
 } catch (error) {
     console.error(error.message);

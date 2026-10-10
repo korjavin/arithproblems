@@ -53,6 +53,7 @@
     "category_geometry": "Geometry",
     "category_algebra": "Algebra",
     "category_word_problems": "Word Problems",
+    "category_olympiad": "Olympiad (grade 4)",
     "controls_panel_h2": "Controls",
     "num_problems_label": "Number of Problems:",
     "generate_button": "Generate Worksheet",

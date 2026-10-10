@@ -51,6 +51,7 @@
     "category_geometry": "Геометрия",
     "category_algebra": "Алгебра",
     "category_word_problems": "Текстовые задачи",
+    "category_olympiad": "Олимпиада (4 класс)",
     "controls_panel_h2": "Параметры",
     "num_problems_label": "Количество задач:",
     "generate_button": "Создать задания",
