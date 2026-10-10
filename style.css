@@ -1039,3 +1039,18 @@ footer {
     border-bottom: 2px solid #333;
     vertical-align: baseline;
 }
+
+.gf-figures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-start;
+    margin: 0.5em 0;
+}
+
+.gf-svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    overflow: visible;
+}

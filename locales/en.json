@@ -59,6 +59,8 @@
     "integer_solutions_p": "Search problems: legs, vertices, market prices, notes, numbers with a given sum, matchstick squares, even and odd pairs.",
     "number_properties_h3": "Number Properties",
     "number_properties_p": "Number riddles: remainders, digit sums and products, counting, consecutive numbers, palindromes, primes.",
+    "grid_figures_h3": "Figures on Squared Paper",
+    "grid_figures_p": "Perimeter, area and corners of figures made of squares, staircases, glued squares, comparing figures.",
     "category_basic_arithmetic": "Basic Arithmetic",
     "category_fractions": "Fractions",
     "category_percentages": "Percentages",
@@ -955,6 +957,39 @@
                 "next_palindrome": "{p} is a palindrome. What is the next palindrome after {p}, and how much larger is it? Self-check: the next palindrome.",
                 "prime_sum": "Write {n} as the sum of two prime numbers in all possible ways. Self-check: the number of ways.",
                 "prime_count": "How many prime numbers are there between {a} and {b}?"
+            }
+        },
+        "grid_figures": {
+            "type_perimeter_label": "Perimeter of a figure on squared paper",
+            "type_area_label": "Area of a figure (in squares)",
+            "type_corners_label": "Number of corners of a figure",
+            "type_staircase_label": "Staircase: perimeter and step height",
+            "type_glued_label": "Glued squares: side and perimeter",
+            "type_compare_label": "Compare figures: largest area or perimeter",
+            "size_label": "Field size (squares per side):",
+            "halves_label": "Area: allow half squares (cut along a diagonal)",
+            "description": "Figures made of squares on squared paper. In print every square of a figure is exactly one square of the paper.",
+            "problems_title": "Figures on Squared Paper",
+            "answer_label": "Answer: ",
+            "unit_cm": "cm",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Write the digital root of the answer (for a letter: A = 1, B = 2, C = 3). If an area has half squares, use the double area.",
+            "error_message": "Error generating figure problems. Select at least one problem type.",
+            "templates": {
+                "perimeter": "Each square of the grid has a side of 1 cm. What is the perimeter of the grey figure?",
+                "area": "What is the area of the grey figure? Count it in grid squares.",
+                "area_halves": "What is the area of the grey figure in grid squares? A square cut along its diagonal counts as half a square. Self-check: use the double area.",
+                "corners": "How many corners does the grey figure have?",
+                "staircase_perimeter": "The figure is a staircase with {k} equal steps. It is {W} cm wide and {H} cm high. The drawing is not to scale. What is the perimeter of the figure?",
+                "staircase_step": "The figure is a staircase with {k} equal steps. It is {W} cm wide and {H} cm high. The drawing is not to scale. How high is one step?",
+                "glued_intro": "Squares {names} are glued together as in the picture. The drawing is not to scale.",
+                "glued_given": "Square {s} has a perimeter of {p} cm.",
+                "glued_width": "The whole figure is {l} cm wide.",
+                "glued_height": "The whole figure is {l} cm high.",
+                "glued_side": "What is the side of square {s}?",
+                "glued_perimeter": "What is the perimeter of the whole figure?",
+                "compare_area": "Which figure has the largest area? Write its letter.",
+                "compare_perimeter": "Each square of the grid has a side of 1 cm. Which figure has the largest perimeter? Write its letter."
             }
         }
     }
