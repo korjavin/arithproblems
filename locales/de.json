@@ -53,6 +53,8 @@
     "find_the_number_p": "Zahlenrätsel: in Worten beschriebene Zahlen, „Ich denke mir eine Zahl“-Ketten, Halbierungsketten und verkettete Buchstabengleichungen.",
     "combinatorics_h3": "Möglichkeiten zählen",
     "combinatorics_p": "Alle Möglichkeiten aufschreiben und zählen: Menüs, Auswählen, Anordnen, Händeschütteln, Halbzeitstände, Domino.",
+    "integer_solutions_h3": "Alle Lösungen finden",
+    "integer_solutions_p": "Suchaufgaben: Beine, Ecken, Marktpreise, Geldscheine, Zahlen mit vorgegebener Summe, Streichholzquadrate, gerade und ungerade Paare.",
     "category_basic_arithmetic": "Grundrechenarten",
     "category_fractions": "Brüche",
     "category_percentages": "Prozentrechnung",
@@ -768,6 +770,41 @@
                 "halftime_second": "Ein Fußballspiel endete {a}:{b}, und in der zweiten Halbzeit fielen insgesamt {k} Tor(e). Wie könnte es zur Halbzeit gestanden haben?",
                 "domino_set": "In einem Dominospiel zeigt jede Hälfte eines Steins 0 bis {m} Augen, und jedes Zahlenpaar (auch Pasche wie 2|2) kommt auf genau einem Stein vor. Welche Steine gehören zum Spiel?",
                 "domino_with": "In einem Dominospiel zeigt jede Hälfte eines Steins 0 bis {m} Augen, und jedes Zahlenpaar (auch Pasche wie 2|2) kommt auf genau einem Stein vor. Welche Steine zeigen mindestens eine {v}?"
+            }
+        },
+        "integer_solutions": {
+            "type_legs_label": "Beine (Hühner, Schafe, Käfer)",
+            "type_vertices_label": "Ecken (Quadrate und Fünfecke)",
+            "type_market_label": "Markt (100 € für Tiere)",
+            "type_money_label": "Scheine und Beträge",
+            "type_subset_label": "Zahlen mit vorgegebener Summe wählen",
+            "type_matches_label": "Quadrate aus Streichhölzern",
+            "type_parity_label": "Gerade und ungerade Paare",
+            "description": "Suchaufgaben: Probiere die Möglichkeiten der Reihe nach durch und schreibe jede Lösung auf.",
+            "problems_title": "Finde die Lösungen",
+            "answer_label": "Antwort: ",
+            "control_sum_grid_title": "Selbstkontrolle",
+            "control_sum_grid_subtitle": "Aufgaben, die alle Lösungen verlangen: Schreibe die Anzahl der Lösungen. Andere Aufgaben: die Quersumme der gefragten Zahl bis zu einer Ziffer.",
+            "error_message": "Fehler beim Erstellen der Suchaufgaben. Wähle mindestens eine Aufgabenart.",
+            "find_all": "Finde alle Lösungen. Selbstkontrolle: Wie viele Lösungen gibt es?",
+            "cent_format": "{n} ct",
+            "templates": {
+                "legs_count": "Auf einem Hof leben Hühner und Schafe, insgesamt {n} Tiere. Zusammen haben sie {legs} Beine. Wie viele Schafe sind es?",
+                "legs_all": "Hühner und Schafe auf einem Hof haben zusammen {legs} Beine, und von jeder Art gibt es mindestens ein Tier. Wie viele Hühner und wie viele Schafe können es sein?",
+                "legs_three": "In einer Tierecke leben Hühner (2 Beine), Kaninchen (4 Beine) und Käfer (6 Beine), von jeder Art mindestens eines: insgesamt {n} Tiere mit {legs} Beinen. Wie viele Tiere jeder Art können es sein?",
+                "vertices": "Auf einem Blatt sind einige Quadrate und einige Fünfecke gezeichnet, von jeder Form mindestens eine. Zusammen haben sie {v} Ecken. Wie viele Quadrate und wie viele Fünfecke können es sein?",
+                "market_count": "Auf dem Markt kostet eine Kuh {p1} €, eine Ziege {p2} € und ein Huhn {p3} €. Ein Bauer gibt genau 100 € aus und kauft genau {n} Tiere, von jeder Art mindestens eines. Wie viele Kühe, Ziegen und Hühner kauft er? Selbstkontrolle: die Anzahl der Hühner.",
+                "market_most": "Auf dem Markt kostet eine Kuh {p1} €, eine Ziege {p2} € und ein Huhn {p3} €. Ein Bauer gibt genau 100 € aus und kauft von jeder Art mindestens ein Tier. Wie viele Tiere kann er höchstens kaufen?",
+                "money_ways": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Welche Zusammenstellungen von Scheinen sind möglich?",
+                "money_fewest": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Wie viele Scheine brauchst du mindestens?",
+                "money_most": "Bezahle genau {a} € nur mit Scheinen zu 200 €, 100 € und 20 €. Wie viele Scheine kannst du höchstens verwenden?",
+                "note_coins": "In einer Tasche sind ein {note}-€-Schein und drei gleiche Münzen. Eine Münze kann {coins} sein. Wie viel Geld kann zusammen in der Tasche sein?",
+                "notes_three": "In einer Geldbörse sind genau drei Scheine, mindestens einer davon ist ein 5-€-Schein. Jeder Schein ist 5 €, 10 €, 20 € oder 50 € wert, zusammen weniger als {l} €. Welche Beträge können in der Geldbörse sein?",
+                "subset_sum": "Wähle einige der Zahlen {items} so aus, dass ihre Summe 100 ist. Jede Zahl darf höchstens einmal verwendet werden.",
+                "subset_digits": "Streiche drei der Ziffern {items} so, dass die übrigen Ziffern zusammen {s} ergeben.",
+                "matches": "Aus {m} Streichhölzern legst du Quadrate, jede Seite aus {k} Streichhölzern, und die Quadrate dürfen sich nicht berühren. Wie viele Quadrate kannst du höchstens legen, und wie viele Streichhölzer bleiben übrig? Selbstkontrolle: die Anzahl der Quadrate.",
+                "parity_pairs": "Finde alle Paare natürlicher Zahlen a und b mit a + b = {t}, wobei a gerade und b ungerade ist.",
+                "parity_pick": "Die natürlichen Zahlen a und b ergeben zusammen {t}, a ist gerade und b ungerade. Schreibe alle solchen Paare auf und finde dann das Paar mit {c1}·a + {c2}·b = {w}. Selbstkontrolle: die Zahl a."
             }
         }
     }

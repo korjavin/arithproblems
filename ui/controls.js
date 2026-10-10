@@ -649,3 +649,15 @@ export function renderCombinatoricsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderIntegerSolutionsControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="is-type-${id}" checked>
+            <label for="is-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['legs', 'vertices', 'market', 'money', 'subset', 'matches', 'parity'].map(type).join('')}
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
