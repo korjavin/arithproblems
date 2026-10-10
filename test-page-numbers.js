@@ -16,7 +16,7 @@ assert.strictEqual(book(250).length, 642);
 assert.strictEqual(book(20)[19], '1'); // 1234567891011121314… → 15th..: 20th digit is 1 of "15"
 assert.strictEqual(triples(book(20)), 1); // "101112" → 111
 assert.strictEqual(longestRun(book(110)), 3);
-assert.ok(longestRun(book(111)) > 3);
+assert.ok(longestRun(book(112)) > 3); // "110111112"
 
 function check(p, maxPages) {
     const { n, d, k, digits } = p.data;

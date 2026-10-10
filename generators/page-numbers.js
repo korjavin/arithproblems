@@ -32,7 +32,7 @@ const MAKERS = {
         return { variant: 'sum', data: { k }, answer: k * (k + 1) / 2 };
     },
     triples(maxPages) {
-        // ponytail: N ≤ 110 keeps every run of equal digits ≤ 3 long (page 111 makes "111111"),
+        // ponytail: N ≤ 110 keeps every run of equal digits ≤ 3 long (page 112 makes "110111112"),
         // so "places with three equal digits" is unambiguous.
         const n = getRandomInt(20, Math.min(110, maxPages));
         const s = pageString(n);
