@@ -69,6 +69,8 @@
     "page_numbers_p": "Digits in the page numbers of a book and in the row 123456789101112…",
     "dice_h3": "Dice",
     "dice_p": "Dice whose opposite faces add up to 7: complete a net, towers and glued dice.",
+    "corner_sums_h3": "Corner Sums",
+    "corner_sums_p": "Put numbers into the circles at the corners of squares and a triangle so that they add up to the given sums.",
     "money_problems_h3": "Money Problems",
     "money_problems_p": "Price lists, change, single and pack prices, tariffs, group tickets and saving pocket money.",
     "category_basic_arithmetic": "Basic Arithmetic",
@@ -1282,6 +1284,31 @@
                 "tip_path": "A die stands on the first square of the strip. On a die, opposite faces always add up to 7 pips. The die is tipped over an edge to the right, one square at a time, until it stands on the square marked ★. How many pips are on the top face then?",
                 "views_opposite": "The faces of a cube are labelled with the letters {letters}, a different letter on each face. The pictures show the same cube in three different positions. Which letter is on the face opposite the letter {x}?",
                 "views_bottom": "The faces of a cube are labelled with the letters {letters}, a different letter on each face. The pictures show the same cube in three different positions. Which letter is on the bottom face in picture {v}?"
+            }
+        },
+        "corner_sums": {
+            "figure_label": "Figure:",
+            "figure_row": "Row of squares",
+            "figure_block": "Four squares (2×2)",
+            "figure_triangle": "Triangle",
+            "figure_mixed": "Mixed",
+            "numbers_label": "Numbers:",
+            "numbers_8": "1 to 8",
+            "numbers_9": "1 to 9",
+            "numbers_12": "1 to 12",
+            "hidden_label": "Empty circles:",
+            "hidden_few": "Few",
+            "hidden_many": "Many",
+            "description": "The four squares (2×2) need nine numbers, so they use 1 to 9 instead of 1 to 8. Every puzzle has exactly one solution.",
+            "problems_title": "Corner Sums",
+            "control_sum_grid_title": "Self-Check Grid",
+            "control_sum_grid_subtitle": "Write the digital root of the number in the circle marked ★.",
+            "error_message": "Error generating corner-sum puzzles.",
+            "templates": {
+                "rule_squares": "Write numbers into the empty circles. The number in each square is the sum of the numbers at its four corners.",
+                "rule_triangle": "Write numbers into the empty circles. The number next to each side of the triangle is the sum of the three numbers on that side.",
+                "use_all": "Use every number from 1 to {n} exactly once.",
+                "use_some": "Use numbers from 1 to {n}, each at most once."
             }
         }
     }

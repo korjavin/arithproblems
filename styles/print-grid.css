@@ -447,6 +447,24 @@
 }
 
 #problems-container .dice-net { --s: 2; }
+
+/* === Corner sums: viewBox in cells, circles 2 cells wide on a 3-cell lattice === */
+#problems-container .cs-svg {
+    display: block;
+    margin-top: var(--cell) !important;
+    width: calc(var(--cell) * var(--w)) !important;
+    height: calc(var(--cell) * var(--h)) !important;
+    overflow: visible;
+}
+
+/* SVG text is in cell units; the .pg-item reset would make it 14pt = 14 cells. */
+#problems-container .cs-svg text {
+    font-size: 0.9px !important;
+}
+
+#problems-container .cs-svg text.cs-star {
+    font-size: 0.8px !important;
+}
 #problems-container .dice-tower { --s: 1; }
 #problems-container .dice-cube { --s: 1; }
 #problems-container .dice-views text { font-size: 0.8px !important; }
