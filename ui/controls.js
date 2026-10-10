@@ -661,3 +661,19 @@ export function renderIntegerSolutionsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+
+export function renderNumberPropertiesControls(container, t) {
+    const type = id => `
+        <div>
+            <input type="checkbox" id="np-type-${id}" checked>
+            <label for="np-type-${id}">${t[`type_${id}_label`]}</label>
+        </div>`;
+    container.innerHTML = `
+        ${['remainder', 'digits', 'count', 'consecutive', 'extremes', 'primes'].map(type).join('')}
+        <div>
+            <label for="np-max-value">${t.max_value_label}</label>
+            <select id="np-max-value">${[100, 400, 1000].map(v => `<option value="${v}"${v === 100 ? ' selected' : ''}>${v}</option>`).join('')}</select>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}

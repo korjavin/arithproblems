@@ -26,6 +26,7 @@ import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './genera
 import { generateFindTheNumberData, TYPES as FIND_THE_NUMBER_TYPES } from './generators/find-the-number.js';
 import { generateCombinatoricsData, TYPES as COMBINATORICS_TYPES } from './generators/combinatorics.js';
 import { generateIntegerSolutionsData, TYPES as INTEGER_SOLUTIONS_TYPES } from './generators/integer-solutions.js';
+import { generateNumberPropertiesData, TYPES as NUMBER_PROPERTIES_TYPES } from './generators/number-properties.js';
 import { snapToCells, layoutForPrint } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
@@ -104,6 +105,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "find-the-number": controls.renderFindTheNumberControls,
         "combinatorics": controls.renderCombinatoricsControls,
         "integer-solutions": controls.renderIntegerSolutionsControls,
+        "number-properties": controls.renderNumberPropertiesControls,
     };
 
     const problemRenderers = {
@@ -133,6 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "find-the-number": renderFindTheNumberProblems,
         "combinatorics": renderCombinatoricsProblems,
         "integer-solutions": renderIntegerSolutionsProblems,
+        "number-properties": renderNumberPropertiesProblems,
     };
 
     function renderCurrentTopicControls() {
@@ -925,6 +928,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                 translations: t,
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label, ' listing-space')}`
+                + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderNumberPropertiesProblems(translations) {
+        const t = translations.script.number_properties;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateNumberPropertiesData({
+                types: NUMBER_PROPERTIES_TYPES.filter(x => document.getElementById(`np-type-${x}`).checked),
+                maxValue: parseInt(document.getElementById('np-max-value').value, 10),
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+                translations: t,
+            });
+            let html = `<h3>${t.problems_title}</h3>`;
+            if (problems.some(p => p.digitTerms)) html += `<p class="print-instructions">${t.digit_terms_hint}</p>`;
+            if (problems.some(p => p.palindromeTerms)) html += `<p class="print-instructions">${t.palindrome_hint}</p>`;
+            DOM.problemsContainer.innerHTML = html + proseProblemsHtml(problems, t.answer_label)
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
         } catch (error) {
             showError(t.error_message || error.message);
