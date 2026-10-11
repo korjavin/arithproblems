@@ -20,6 +20,7 @@ import { generateSimplifyRationalsData } from './generators/simplify-rationals.j
 import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
+import { generateNumberSetsData, NUMBER_SETS } from './generators/number-sets.js';
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
 import { generateTimeCalendarData, TYPES as TIME_CALENDAR_TYPES } from './generators/time-calendar.js';
@@ -126,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "number-sequences": controls.renderNumberSequencesControls,
         "operator-puzzles": controls.renderOperatorPuzzlesControls,
         "compare-expressions": controls.renderCompareExpressionsControls,
+        "number-sets": controls.renderNumberSetsControls,
         "boolean-logic": controls.renderBooleanLogicControls,
         "unit-conversion": controls.renderUnitConversionControls,
         "time-calendar": controls.renderTimeCalendarControls,
@@ -163,6 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "number-sequences": renderNumberSequencesProblems,
         "operator-puzzles": renderOperatorPuzzlesProblems,
         "compare-expressions": renderCompareExpressionsProblems,
+        "number-sets": renderNumberSetsProblems,
         "boolean-logic": renderBooleanLogicProblems,
         "unit-conversion": renderUnitConversionProblems,
         "time-calendar": renderTimeCalendarProblems,
@@ -1187,6 +1190,36 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
             DOM.problemsContainer.innerHTML = `<h3>${t.problems_title}</h3>${proseProblemsHtml(problems, t.answer_label)}`
                 + selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+        } catch (error) {
+            showError(t.error_message || error.message);
+        }
+    }
+
+    function renderNumberSetsProblems(translations) {
+        const t = translations.script.number_sets;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateNumberSetsData({
+                maxValue: parseInt(document.getElementById('nst-max-value').value, 10),
+                allowNegative: document.getElementById('nst-allow-negative').checked,
+                allowIrrational: document.getElementById('nst-allow-irrational').checked,
+                allowTricky: document.getElementById('nst-allow-tricky').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+
+            const symbols = { natural: 'ℕ', whole: 'W', integers: 'ℤ', rational: 'ℚ', irrational: 'I', real: 'ℝ' };
+            const bubbles = NUMBER_SETS.map(s => `<span class="ns-bubble">${symbols[s]}</span>`).join('');
+
+            let html = `<h3>${t.problems_title}</h3>`;
+            html += `<p class="print-instructions">${t.print_instructions}</p>`;
+            html += `<p class="print-instructions">${t.legend}</p>`;
+            html += `<div class="arithmetic-grid number-sets-problem-grid">`;
+            html += problems.map(p =>
+                `<div class="number-sets-item"><div class="problem-content"><span class="ns-number">${p.display}</span><span class="ns-bubbles">${bubbles}</span></div></div>`
+            ).join('');
+            html += `</div>`;
+            html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(a => a.controlSum));
+            DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_message || error.message);
         }

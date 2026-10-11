@@ -491,6 +491,28 @@ export function renderBooleanLogicControls(container, t) {
     `;
 }
 
+export function renderNumberSetsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="nst-max-value">${t.max_value_label}</label>
+            <input type="number" id="nst-max-value" value="20" min="5" max="100">
+        </div>
+        <div>
+            <input type="checkbox" id="nst-allow-negative" checked>
+            <label for="nst-allow-negative">${t.allow_negative_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="nst-allow-irrational" checked>
+            <label for="nst-allow-irrational">${t.allow_irrational_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="nst-allow-tricky" checked>
+            <label for="nst-allow-tricky">${t.allow_tricky_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderOperatorPuzzlesControls(container, t) {
     container.innerHTML = `
         <div>
