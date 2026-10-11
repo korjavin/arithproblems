@@ -1,4 +1,4 @@
-import { planCells, siteLinkText, PAGE_COLS, PAGE_ROWS, CELL_MM } from './ui/print-grid.js';
+import { planCells, siteLinkText, sheetGridPath, PAGE_COLS, PAGE_ROWS, CELL_MM } from './ui/print-grid.js';
 
 function assert(condition, message) {
     if (!condition) {
@@ -50,5 +50,11 @@ assert(siteLinkText(loc('https://math.example.com/')) === 'math.example.com', 'r
 assert(siteLinkText(loc('http://localhost:8001/index.html?x=1#y')) === 'localhost:8001', 'index.html, query and hash are dropped');
 assert(siteLinkText(loc('https://example.com/ws/index.html')) === 'example.com/ws', 'subpath is kept');
 assert(siteLinkText(loc('file:///home/me/index.html')) === null, 'no address for a local file');
+
+// Squared paper: plain vector lines, one per cell edge, nothing tiled.
+const sheet = sheetGridPath();
+assert((sheet.match(/V/g) || []).length === PAGE_COLS, 'one vertical line per column');
+assert((sheet.match(/H/g) || []).length === PAGE_ROWS, 'one horizontal line per row');
+assert(sheet.includes(`M0.02 0V${PAGE_ROWS}`) && sheet.includes(`M0 ${PAGE_ROWS - 1 + 0.02}H${PAGE_COLS}`), 'lines sit on the top/left cell edges and span the page');
 
 console.log('All print grid tests passed!');

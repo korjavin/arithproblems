@@ -680,6 +680,11 @@ footer {
     color: #777;
 }
 
+/* Squared paper sheets (ui/print-grid.js); styles/print-grid.css shows them in print. */
+.pg-sheet {
+    display: none;
+}
+
 /* Print-specific styles */
 /* Print-specific page chrome. Everything inside #problems-container is laid
    out on the squared grid by styles/print-grid.css (see ui/print-grid.js). */
