@@ -34,7 +34,7 @@ import { generatePageNumbersData, TYPES as PAGE_NUMBERS_TYPES } from './generato
 import { generateMoneyProblemsData, TYPES as MONEY_PROBLEMS_TYPES } from './generators/money-problems.js';
 import { generateDiceData, TYPES as DICE_TYPES } from './generators/dice.js';
 import { generateCornerSumsData } from './generators/corner-sums.js';
-import { snapToCells, layoutForPrint } from './ui/print-grid.js';
+import { snapToCells, layoutForPrint, installSiteLink } from './ui/print-grid.js';
 import { fillTemplate } from './utils.js';
 
 // Die pips on a unit square, in quarters (value 0 = none).
@@ -1305,6 +1305,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         DOM.printButton.addEventListener("click", () => window.print());
         // Fit the worksheet onto the squared print grid. Runs for Ctrl+P too.
         window.addEventListener('beforeprint', () => layoutForPrint(DOM.problemsContainer));
+        installSiteLink();
 
         DOM.languageSwitcher.addEventListener('click', (e) => {
             const lang = e.target.dataset.lang;
