@@ -1207,7 +1207,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
             });
 
-            const symbols = { natural: 'ℕ', whole: 'W', integers: 'ℤ', rational: 'ℚ', irrational: 'I', real: 'ℝ' };
+            const symbols = { natural: 'ℕ', whole: 'W', integers: 'ℤ', rational: 'ℚ', irrational: 'I' };
             const bubbles = NUMBER_SETS.map(s => `<span class="ns-bubble">${symbols[s]}</span>`).join('');
 
             let html = `<h3>${t.problems_title}</h3>`;

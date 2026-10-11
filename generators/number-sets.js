@@ -1,7 +1,7 @@
 import { getRandomInt, getRandomFromArray } from '../utils.js';
 
 // Order matters: this is the order of the bubbles under each number.
-export const NUMBER_SETS = ['natural', 'whole', 'integers', 'rational', 'irrational', 'real'];
+export const NUMBER_SETS = ['natural', 'whole', 'integers', 'rational', 'irrational'];
 
 // Natural numbers are 1, 2, 3, ...; whole numbers add 0.
 function membershipOf({ integer, rational }, value) {
@@ -11,7 +11,6 @@ function membershipOf({ integer, rational }, value) {
         integers: integer,
         rational,
         irrational: !rational,
-        real: true,
     };
 }
 
@@ -86,7 +85,7 @@ const KINDS = {
         return { display: `√${n} + ${k}`, integer: false, rational: false, value: Math.sqrt(n) + k };
     },
     patternDecimal: () => {
-        const text = getRandomFromArray(['0.1010010001…', '0.2020020002…', '0.3030030003…', '3.14114111411114…']);
+        const text = getRandomFromArray(['0.1010010001…', '0.2020020002…', '0.3030030003…', '0.4040040004…']);
         return { display: text, integer: false, rational: false, value: 0.1 };
     },
 };
@@ -127,7 +126,7 @@ export function generateNumberSetsData({
 
         const membership = membershipOf(item, item.value);
         problems.push({ display: item.display, kind: item.kind, membership });
-        // Self-check: how many sets the number belongs to (always 1-5, so a single digit).
+        // Self-check: how many sets the number belongs to (always 1-4, so a single digit).
         controlSums.push({ controlSum: NUMBER_SETS.filter(s => membership[s]).length });
     }
 
