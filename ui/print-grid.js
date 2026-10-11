@@ -181,11 +181,43 @@ function chooseColumns(count, itemCells) {
     return best;
 }
 
+// Path data for the squared paper of one page, in cell units: a 0.04-cell
+// (0.2mm) line along the top and left edge of every cell.
+export function sheetGridPath(cols = PAGE_COLS, rows = PAGE_ROWS) {
+    const d = [];
+    for (let x = 0; x < cols; x++) d.push(`M${x + 0.02} 0V${rows}`);
+    for (let y = 0; y < rows; y++) d.push(`M0 ${y + 0.02}H${cols}`);
+    return d.join('');
+}
+
+// The squared paper is real vector lines, one <svg> per page, not a tiled
+// CSS background: printer drivers re-render PDF tiling patterns themselves
+// and many get their scale wrong, so the grid printed at ~2x on paper while
+// the preview looked right. No <pattern> here either, for the same reason.
+function drawSheets(container, sheetRows) {
+    container.querySelectorAll(':scope > .pg-sheet').forEach(svg => svg.remove());
+    const NS = 'http://www.w3.org/2000/svg';
+    const d = sheetGridPath();
+    for (let page = 0; page < sheetRows / PAGE_ROWS; page++) {
+        const svg = document.createElementNS(NS, 'svg');
+        svg.setAttribute('class', 'pg-sheet');
+        svg.setAttribute('aria-hidden', 'true');
+        // 0.1 cell (0.5mm) short of the page, like the container's min-height,
+        // so rounding never spills a sheet onto an extra page.
+        svg.setAttribute('viewBox', `0 0 ${PAGE_COLS} ${PAGE_ROWS - 0.1}`);
+        svg.style.setProperty('--page', page);
+        const path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', d);
+        svg.appendChild(path);
+        container.prepend(svg);
+    }
+}
+
 export function layoutForPrint(container) {
     const link = document.getElementById('print-grid-css');
     const media = link && link.sheet && link.sheet.media;
     const grid = container.querySelector('.pg-grid');
-    if (!media || !grid) return;
+    if (!media) return;
 
     // Lay the worksheet out with the print rules for a moment so we can
     // measure it. Nothing is painted between here and the restore below.
@@ -202,42 +234,51 @@ export function layoutForPrint(container) {
         const cellPx = probe.getBoundingClientRect().width;
         probe.remove();
         if (!cellPx) return;
-
-        const items = Array.from(grid.children);
-        grid.style.setProperty('--print-cols', 1);
-        grid.style.setProperty('--print-col-cells', PAGE_COLS);
-        grid.style.removeProperty('--print-row-size');
-        grid.classList.add('pg-natural');
-        const itemCells = items.reduce((m, it) => Math.max(m, toCells(it.getBoundingClientRect().width, cellPx)), 1);
-        grid.classList.remove('pg-natural');
-
-        const cols = chooseColumns(items.length, itemCells);
-        grid.style.setProperty('--print-cols', cols);
-        grid.style.setProperty('--print-col-cells', Math.floor(PAGE_COLS / cols));
-
-        const itemRows = items.reduce((m, it) => Math.max(m, toCells(it.getBoundingClientRect().height, cellPx)), 1);
-        const top = container.getBoundingClientRect().top;
-        const headerRows = toCells(grid.getBoundingClientRect().top - top, cellPx);
-        let footerRows = 0;
-        for (let el = grid.nextElementSibling; el; el = el.nextElementSibling) {
-            footerRows += toCells(el.getBoundingClientRect().height, cellPx);
-        }
-
-        const rows = Math.ceil(items.length / cols);
-        const available = PAGE_ROWS - headerRows - footerRows - 1; // 1 blank row above the footer
-        // Fill the page if every problem still gets a blank row under it;
-        // otherwise let it run onto more pages with a little room for work.
-        const fitCells = Math.floor(available / rows);
-        const rowCells = fitCells > itemRows ? fitCells : itemRows + MIN_WORK_ROWS;
-        grid.style.setProperty('--print-row-size', `calc(var(--cell) * ${rowCells})`);
-        // Whatever doesn't divide evenly goes above the footer so it sits on the last rows of the page.
-        const gapAfter = 1 + Math.max(0, available - rows * rowCells);
-        grid.style.setProperty('--print-gap-after', gapAfter);
-        // Let the squared background run to the bottom of the last sheet.
-        const usedRows = headerRows + rows * rowCells + gapAfter + footerRows;
-        container.style.setProperty('--print-sheet-rows', Math.ceil(usedRows / PAGE_ROWS) * PAGE_ROWS);
+        container.style.removeProperty('--print-sheet-rows');
+        if (grid) layoutGrid(container, grid, cellPx);
+        // Whole sheets, at least as tall as the content (the container's
+        // min-height already covers the grid layout's own estimate).
+        const sheetRows = Math.max(1, Math.ceil(toCells(container.getBoundingClientRect().height, cellPx) / PAGE_ROWS)) * PAGE_ROWS;
+        container.style.setProperty('--print-sheet-rows', sheetRows);
+        drawSheets(container, sheetRows);
     } finally {
         media.mediaText = prevMedia;
         container.classList.remove('pg-measuring');
     }
+}
+
+function layoutGrid(container, grid, cellPx) {
+    const items = Array.from(grid.children);
+    grid.style.setProperty('--print-cols', 1);
+    grid.style.setProperty('--print-col-cells', PAGE_COLS);
+    grid.style.removeProperty('--print-row-size');
+    grid.classList.add('pg-natural');
+    const itemCells = items.reduce((m, it) => Math.max(m, toCells(it.getBoundingClientRect().width, cellPx)), 1);
+    grid.classList.remove('pg-natural');
+
+    const cols = chooseColumns(items.length, itemCells);
+    grid.style.setProperty('--print-cols', cols);
+    grid.style.setProperty('--print-col-cells', Math.floor(PAGE_COLS / cols));
+
+    const itemRows = items.reduce((m, it) => Math.max(m, toCells(it.getBoundingClientRect().height, cellPx)), 1);
+    const top = container.getBoundingClientRect().top;
+    const headerRows = toCells(grid.getBoundingClientRect().top - top, cellPx);
+    let footerRows = 0;
+    for (let el = grid.nextElementSibling; el; el = el.nextElementSibling) {
+        footerRows += toCells(el.getBoundingClientRect().height, cellPx);
+    }
+
+    const rows = Math.ceil(items.length / cols);
+    const available = PAGE_ROWS - headerRows - footerRows - 1; // 1 blank row above the footer
+    // Fill the page if every problem still gets a blank row under it;
+    // otherwise let it run onto more pages with a little room for work.
+    const fitCells = Math.floor(available / rows);
+    const rowCells = fitCells > itemRows ? fitCells : itemRows + MIN_WORK_ROWS;
+    grid.style.setProperty('--print-row-size', `calc(var(--cell) * ${rowCells})`);
+    // Whatever doesn't divide evenly goes above the footer so it sits on the last rows of the page.
+    const gapAfter = 1 + Math.max(0, available - rows * rowCells);
+    grid.style.setProperty('--print-gap-after', gapAfter);
+    // Let the squared paper run to the bottom of the last sheet.
+    const usedRows = headerRows + rows * rowCells + gapAfter + footerRows;
+    container.style.setProperty('--print-sheet-rows', Math.ceil(usedRows / PAGE_ROWS) * PAGE_ROWS);
 }
