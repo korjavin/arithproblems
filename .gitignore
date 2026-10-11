@@ -1,3 +1,10 @@
 node_modules/
 server.log
 *.log
+.claude/settings.local.json
+.claude/worktrees/
+olympiad-source/
+.beads/*
+!.beads/config.yaml
+!.beads/metadata.json
+.beads.gate.lock

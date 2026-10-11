@@ -1,0 +1,2 @@
+issue-prefix: "ap"
+sync.remote: "git+https://github.com/korjavin/arithproblems.git"
