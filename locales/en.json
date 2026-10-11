@@ -45,6 +45,8 @@
     "operator_puzzles_p": "Fill in the missing operators (and brackets, if enabled) to make the equation true.",
     "compare_expressions_h3": "Compare Expressions",
     "compare_expressions_p": "Fill in <, >, or = between two expressions. Quick mental-math drill.",
+    "number_sets_h3": "Number Sets",
+    "number_sets_p": "Circle every set a number belongs to: natural, whole, integers, rational, irrational, real.",
     "boolean_logic_h3": "Boolean Logic",
     "boolean_logic_p": "Evaluate logical expressions (∧ ∨ ¬ → ↔) given true/false values for each variable.",
     "unit_conversion_h3": "Units of Measure",
@@ -78,6 +80,7 @@
     "category_percentages": "Percentages",
     "category_geometry": "Geometry",
     "category_algebra": "Algebra",
+    "category_number_theory": "Number Theory",
     "category_word_problems": "Word Problems",
     "category_olympiad": "Olympiad (grade 4)",
     "controls_panel_h2": "Controls",
@@ -494,6 +497,19 @@
             "control_sum_grid_title": "Count Self-Check Grid",
             "control_sum_grid_subtitle": "Count the sub-expressions (every bracketed group and every ¬) that come out true. Take the last digit of that count and compare to the cell.",
             "error_message": "Error generating boolean logic problems."
+        },
+        "number_sets": {
+            "max_value_label": "Max value:",
+            "allow_negative_label": "Include negative numbers",
+            "allow_irrational_label": "Include irrational numbers (√, π)",
+            "allow_tricky_label": "Include tricky ones (√49, 12/4)",
+            "description": "Each number is shown with the sets ℕ, W, ℤ, ℚ, I, ℝ. Circle every set it belongs to. Natural numbers are 1, 2, 3, …; whole numbers also include 0. Tricky numbers look like roots or fractions but are really integers.",
+            "problems_title": "Number Sets",
+            "print_instructions": "Circle every set that the number belongs to.",
+            "legend": "ℕ natural · W whole (with 0) · ℤ integers · ℚ rational · I irrational · ℝ real",
+            "control_sum_grid_title": "Count Self-Check Grid",
+            "control_sum_grid_subtitle": "Count how many sets you circled. It should match the number in the cell.",
+            "error_message": "Error generating number set problems."
         },
         "compare_expressions": {
             "num_operands_label": "Operands per side:",
