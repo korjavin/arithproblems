@@ -38,9 +38,10 @@ function testStructure() {
         if (p.membership.natural) assert(p.membership.whole);
         if (p.membership.whole) assert(p.membership.integers);
         if (p.membership.integers) assert(p.membership.rational);
-        const count = NUMBER_SETS.filter(s => p.membership[s]).length;
-        assert.strictEqual(controlSums[i].controlSum, count);
-        assert(count >= 1 && count <= 9);
+        // Binary self-check: the bits are N W Z Q I, so N+Z alone would be 10100 = 20.
+        const bits = ['natural', 'whole', 'integers', 'rational', 'irrational'].map(s => (p.membership[s] ? '1' : '0')).join('');
+        assert.strictEqual(controlSums[i].controlSum, parseInt(bits, 2), `binary check for ${p.display}`);
+        assert([30, 14, 6, 2, 1].includes(controlSums[i].controlSum), `possible value for ${p.display}`);
     });
 }
 
@@ -65,6 +66,15 @@ function testKnownExamples() {
     if (zero) assert.strictEqual(zero.membership.natural, false, '0 is whole but not natural');
 }
 
+function testBinaryCheckValues() {
+    const { problems, controlSums } = generateNumberSetsData(base);
+    const byKind = { natural: 30, zero: 14, negativeInteger: 6, fraction: 2, irrational: 1 };
+    problems.forEach((p, i) => {
+        const key = p.membership.natural ? 'natural' : p.membership.whole ? 'zero' : p.membership.integers ? 'negativeInteger' : p.membership.rational ? 'fraction' : 'irrational';
+        assert.strictEqual(controlSums[i].controlSum, byKind[key], p.display);
+    });
+}
+
 function testToggles() {
     const plain = generateNumberSetsData({ ...base, allowNegative: false, allowIrrational: false, allowTricky: false });
     plain.problems.forEach(p => {
@@ -86,6 +96,7 @@ function testValidation() {
 testStructure();
 testMembershipMatchesText();
 testKnownExamples();
+testBinaryCheckValues();
 testToggles();
 testValidation();
 console.log('Number sets tests passed.');

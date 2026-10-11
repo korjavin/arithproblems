@@ -434,7 +434,7 @@
             "print_instructions": "Kreise jede Menge ein, zu der die Zahl gehört.",
             "legend": "ℕ natürlich · W mit 0 · ℤ ganze Zahlen · ℚ rational · I irrational",
             "control_sum_grid_title": "Zähl-Kontrollraster",
-            "control_sum_grid_subtitle": "Zähle, wie viele Mengen du eingekreist hast. Die Zahl muss mit dem Feld übereinstimmen.",
+            "control_sum_grid_subtitle": "Schreibe 1 für jede eingekreiste Menge und 0 für die anderen, in der Reihenfolge ℕ W ℤ ℚ I, und lies es als Binärzahl. Bei ℕ und ℤ ergibt das 10100 = 20.",
             "error_message": "Fehler beim Erzeugen der Aufgaben zu Zahlenmengen."
         },
         "compare_expressions": {
