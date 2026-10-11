@@ -1122,3 +1122,21 @@ footer {
     font-size: 0.85em;
     font-weight: normal;
 }
+
+/* --- Number sets (screen) --- */
+.number-sets-item .ns-number {
+    display: block;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+/* Letters are spaced out so students have room to circle them. */
+.number-sets-item .ns-bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9em;
+    margin-top: 0.5em;
+    font-size: 1.1em;
+    font-weight: bold;
+}
