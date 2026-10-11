@@ -378,26 +378,6 @@
     width: calc(var(--cell) * 2);
 }
 
-/* === Number sets: the number, then six 2x2-cell boxes to circle === */
-#problems-container .number-sets-item .ns-number,
-#problems-container .number-sets-item .ns-bubbles {
-    display: block;
-}
-
-#problems-container .pg-item .ns-bubble {
-    display: inline-block;
-    width: calc(var(--cell) * 2) !important;
-    height: calc(var(--cell) * 2);
-    vertical-align: top;
-    text-align: center;
-}
-
-/* Centre the one-cell glyph vertically in its two-cell box. */
-#problems-container .pg-item .ns-bubble .gc {
-    position: relative;
-    top: calc(var(--cell) * 0.5);
-}
-
 /* === Word problems: prose wraps inside the column, one line per cell row === */
 #problems-container .word-problem-item {
     justify-self: stretch !important;
