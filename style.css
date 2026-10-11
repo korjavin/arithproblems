@@ -1124,11 +1124,17 @@ footer {
 }
 
 /* --- Number sets (screen) --- */
+/* Wide columns: long numbers like 0.4040040004… must not run into the next one. */
+#problems-container .number-sets-problem-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17em), 1fr));
+}
+
 .number-sets-item .ns-number {
     display: block;
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.4em;
     font-weight: bold;
+    overflow-wrap: anywhere;
 }
 
 /* Letters are spaced out so students have room to circle them. */

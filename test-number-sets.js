@@ -33,7 +33,6 @@ function testStructure() {
     assert.strictEqual(controlSums.length, 300);
     problems.forEach((p, i) => {
         assert.deepStrictEqual(Object.keys(p.membership), NUMBER_SETS);
-        assert.strictEqual(p.membership.real, true, 'everything here is real');
         assert.notStrictEqual(p.membership.rational, p.membership.irrational, `rational xor irrational: ${p.display}`);
         // nesting: N ⊂ W ⊂ Z ⊂ Q
         if (p.membership.natural) assert(p.membership.whole);
@@ -56,11 +55,11 @@ function testMembershipMatchesText() {
 }
 
 function testKnownExamples() {
-    // 3 is natural, whole, integer, rational, real - but not irrational.
+    // 3 is natural, whole, integer and rational - but not irrational.
     const { problems } = generateNumberSetsData({ ...base, allowNegative: false, allowIrrational: false, allowTricky: false, numberOfProblems: 200 });
     const three = problems.find(p => p.display === '3');
     if (three) {
-        assert.deepStrictEqual(three.membership, { natural: true, whole: true, integers: true, rational: true, irrational: false, real: true });
+        assert.deepStrictEqual(three.membership, { natural: true, whole: true, integers: true, rational: true, irrational: false });
     }
     const zero = problems.find(p => p.display === '0');
     if (zero) assert.strictEqual(zero.membership.natural, false, '0 is whole but not natural');
