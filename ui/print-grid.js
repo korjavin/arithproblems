@@ -140,6 +140,28 @@ export function snapToCells(container) {
     sizeMultiplicationChart(container);
 }
 
+// The site address printed in small type at the bottom of every sheet, so a
+// copy of the worksheet tells where it came from: "example.com/ws". Drops the
+// scheme, query and a trailing index.html. Null for pages not served over http.
+export function siteLinkText(loc) {
+    if (!loc || !/^https?:$/.test(loc.protocol)) return null;
+    return (loc.host + loc.pathname.replace(/index\.html$/, '')).replace(/\/$/, '');
+}
+
+// Puts the address in the bottom page margin (@page margin box) rather than on
+// the squared paper, so it takes no cell row and can't push a full sheet onto
+// a second page. Browsers without margin-box support just leave it out.
+export function installSiteLink(doc = globalThis.document, loc = globalThis.location) {
+    const text = siteLinkText(loc);
+    if (!doc || !text) return;
+    const style = doc.createElement('style');
+    style.id = 'print-site-link';
+    style.media = 'print';
+    style.textContent = `@page { @bottom-right { content: "${text.replace(/["\\]/g, '\\$&')}"; ` +
+        `font: 7pt 'Courier New', Courier, monospace; color: #777; vertical-align: middle; } }`;
+    doc.head.appendChild(style);
+}
+
 const toCells = (px, cellPx) => Math.ceil(px / cellPx - 0.05);
 
 function chooseColumns(count, itemCells) {

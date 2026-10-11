@@ -1,4 +1,4 @@
-import { planCells, PAGE_COLS, PAGE_ROWS, CELL_MM } from './ui/print-grid.js';
+import { planCells, siteLinkText, PAGE_COLS, PAGE_ROWS, CELL_MM } from './ui/print-grid.js';
 
 function assert(condition, message) {
     if (!condition) {
@@ -43,5 +43,12 @@ const dec = planCells('0.37');
 assert(dec[1].className === 'gc gc-sep' && dec[1].cells === 0, 'decimal point takes no cell');
 assert(width('0.37') === 3, '"0.37" is 3 cells wide');
 assert(planCells('3, 4').find(b => b.text === ',').className === 'gc', 'list comma is not a decimal separator');
+
+// Site address printed at the bottom of the sheet.
+const loc = href => new URL(href);
+assert(siteLinkText(loc('https://math.example.com/')) === 'math.example.com', 'root URL prints as bare host');
+assert(siteLinkText(loc('http://localhost:8001/index.html?x=1#y')) === 'localhost:8001', 'index.html, query and hash are dropped');
+assert(siteLinkText(loc('https://example.com/ws/index.html')) === 'example.com/ws', 'subpath is kept');
+assert(siteLinkText(loc('file:///home/me/index.html')) === null, 'no address for a local file');
 
 console.log('All print grid tests passed!');
