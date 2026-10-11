@@ -126,8 +126,9 @@ export function generateNumberSetsData({
 
         const membership = membershipOf(item, item.value);
         problems.push({ display: item.display, kind: item.kind, membership });
-        // Self-check: how many sets the number belongs to (always 1-4, so a single digit).
-        controlSums.push({ controlSum: NUMBER_SETS.filter(s => membership[s]).length });
+        // Self-check: the circled sets as a binary number, ℕ W ℤ ℚ I = 16 8 4 2 1
+        // (circling ℕ and ℤ is 10100 = 20). Up to 30, so it takes two digits.
+        controlSums.push({ controlSum: NUMBER_SETS.reduce((acc, s) => acc * 2 + (membership[s] ? 1 : 0), 0) });
     }
 
     return { problems, controlSums };

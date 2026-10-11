@@ -44,4 +44,4 @@ State persisted in `localStorage`: `lang`, `selectedTopic`, `expandedCategories`
 
 ## Self-check convention
 
-Every topic ships a self-check grid below the problems: a digital root (`utils.digitalRoot`) for arithmetic, or a topic-specific control sum for fractions/algebra (e.g. simplify-equations uses `digitalRoot(|a| + |b|)` of the canonical `ax + b`). Control sums must land in 0–9 — the tests assert this and the grid CSS assumes single-character cells.
+Every topic ships a self-check grid below the problems: a digital root (`utils.digitalRoot`) for arithmetic, or a topic-specific control sum for fractions/algebra (e.g. simplify-equations uses `digitalRoot(|a| + |b|)` of the canonical `ax + b`). Control sums normally land in 0–9 — the tests assert this and the grid CSS assumes single-character cells. Exception: `number-sets` uses a binary code (up to 30), and `.dr-cell` grows to fit two digits.

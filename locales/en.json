@@ -508,7 +508,7 @@
             "print_instructions": "Circle every set that the number belongs to.",
             "legend": "ℕ natural · W whole (with 0) · ℤ integers · ℚ rational · I irrational",
             "control_sum_grid_title": "Count Self-Check Grid",
-            "control_sum_grid_subtitle": "Count how many sets you circled. It should match the number in the cell.",
+            "control_sum_grid_subtitle": "Write 1 for every set you circled and 0 for the others, in the order ℕ W ℤ ℚ I, and read it as a binary number. Circling ℕ and ℤ gives 10100 = 20.",
             "error_message": "Error generating number set problems."
         },
         "compare_expressions": {
