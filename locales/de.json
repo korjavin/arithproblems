@@ -417,10 +417,8 @@
             "allow_biconditional_label": "Bikonditional (↔) einbeziehen",
             "description": "Jede Aufgabe ist ein verschachtelter logischer Ausdruck mit vorgegebenen Wahrheitswerten. Entscheide, ob der gesamte Ausdruck wahr oder falsch ist.",
             "problems_title": "Sätze der Aussagenlogik",
-            "print_instructions": "Setze die Werte ein, werte den Ausdruck aus und schreibe W (wahr) oder F (falsch).",
+            "print_instructions": "Setze die Werte ein, werte den Ausdruck aus und schreibe 1 (wahr) oder 0 (falsch).",
             "answer_prompt": "Antwort:",
-            "true_symbol": "W",
-            "false_symbol": "F",
             "control_sum_grid_title": "Zähl-Kontrollraster",
             "control_sum_grid_subtitle": "Zähle die Teilausdrücke (jede Klammer und jedes ¬), die wahr sind. Nimm die letzte Ziffer der Anzahl und vergleiche mit dem Feld.",
             "error_message": "Fehler beim Erzeugen der Aufgaben zur Booleschen Logik."

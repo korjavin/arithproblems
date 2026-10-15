@@ -853,7 +853,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             html += `<p class="print-instructions">${t.print_instructions}</p>`;
             html += `<div class="arithmetic-grid boolean-logic-problem-grid">`;
             html += problems.map(p => {
-                const assignment = p.variables.map(v => `${v.name} = ${v.value ? t.true_symbol : t.false_symbol}`).join(', ');
+                const assignment = p.variables.map(v => `${v.name} = ${v.value ? 1 : 0}`).join(', ');
                 return `<div class="boolean-logic-item"><div class="problem-content"><span class="puzzle">${p.expression}</span><span class="bl-assignment">${assignment}</span><span class="bl-answer">${t.answer_prompt} <span class="bl-blank"></span></span></div></div>`;
             }).join('');
             html += `</div>`;
