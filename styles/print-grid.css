@@ -336,6 +336,7 @@
 /* Rows that contain fractions: symbols sit on the fraction bar. */
 #problems-container .fraction-problem-item .problem-content,
 #problems-container .fraction-operation-item .problem-content,
+#problems-container .compare-fraction-item .problem-content,
 #problems-container .simplify-rational-item .problem-content,
 #problems-container .proportion,
 #problems-container .fraction-display,
@@ -348,6 +349,7 @@
 
 #problems-container .fraction-problem-item,
 #problems-container .fraction-operation-item,
+#problems-container .compare-fraction-item,
 #problems-container .simplify-rational-item,
 #problems-container .proportion-problem-item,
 #problems-container .decimal-rational-problem-item {
@@ -361,6 +363,13 @@
     width: calc(var(--cell) * 3);
     height: calc(var(--cell) * 2);
     box-shadow: none;
+}
+
+/* Compare fractions: a 2x2-cell box spanning both fraction rows, one empty cell either side. */
+#problems-container .pg-item.compare-fraction-item .cmp-blank {
+    width: calc(var(--cell) * 2);
+    height: calc(var(--cell) * 2);
+    margin: 0 var(--cell) !important;
 }
 
 /* === Text-and-numbers topics === */

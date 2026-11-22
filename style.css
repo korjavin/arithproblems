@@ -634,6 +634,35 @@ h2 {
     /* Ensure some minimum space even if flex-grow doesn't give much */
 }
 
+/* Compare fractions: fraction, blank box for <, >, =, fraction */
+.compare-fraction-item {
+    font-size: 1.2em;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fdfdfd;
+}
+
+.compare-fraction-item .problem-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.compare-fraction-item .cmp-blank {
+    display: inline-block;
+    width: 1.6em;
+    height: 1.6em;
+    border: 2px solid #333;
+    border-radius: 3px;
+    margin: 0 0.2em;
+    flex-shrink: 0;
+}
+
+.compare-fraction-item .fraction {
+    margin: 0 4px;
+}
+
 /* Styling for the fraction itself */
 .fraction {
     display: inline-block;
