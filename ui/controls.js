@@ -443,6 +443,32 @@ export function renderSimplifyRationalsControls(container, t) {
         <p style="font-size:0.9em; color:#555;">${t.description}</p>
     `;
 }
+export function renderCompareFractionsControls(container, t) {
+    container.innerHTML = `
+        <div>
+            <label for="cf-max-denominator">${t.max_denominator_label}</label>
+            <input type="number" id="cf-max-denominator" value="12" min="4" max="30">
+        </div>
+        <div>
+            <input type="checkbox" id="cf-same-denominator" checked>
+            <label for="cf-same-denominator">${t.same_denominator_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cf-same-numerator" checked>
+            <label for="cf-same-numerator">${t.same_numerator_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cf-different" checked>
+            <label for="cf-different">${t.different_label}</label>
+        </div>
+        <div>
+            <input type="checkbox" id="cf-allow-improper">
+            <label for="cf-allow-improper">${t.allow_improper_label}</label>
+        </div>
+        <p style="font-size:0.9em; color:#555;">${t.description}</p>
+    `;
+}
+
 export function renderCompareExpressionsControls(container, t) {
     container.innerHTML = `
         <div>

@@ -41,6 +41,8 @@
     "number_sequences_p": "Finde das nächste Glied einer Folge (arithmetisch, geometrisch, Quadratzahlen, Fibonacci-artig).",
     "operator_puzzles_h3": "Rechenzeichen-Rätsel",
     "operator_puzzles_p": "Setze die fehlenden Rechenzeichen (und ggf. Klammern) so ein, dass die Gleichung stimmt.",
+    "compare_fractions_h3": "Brüche vergleichen",
+    "compare_fractions_p": "Setze <, > oder = zwischen zwei Brüche.",
     "compare_expressions_h3": "Ausdrücke vergleichen",
     "compare_expressions_p": "Setze <, > oder = zwischen die beiden Ausdrücke. Schnelle Kopfrechen-Übung.",
     "number_sets_h3": "Zahlenmengen",
@@ -435,6 +437,19 @@
             "control_sum_grid_title": "Zähl-Kontrollraster",
             "control_sum_grid_subtitle": "Schreibe 1 für jede eingekreiste Menge und 0 für die anderen, in der Reihenfolge ℕ W ℤ ℚ I, und lies es als Binärzahl. Bei ℕ und ℤ ergibt das 10100 = 20.",
             "error_message": "Fehler beim Erzeugen der Aufgaben zu Zahlenmengen."
+        },
+        "compare_fractions": {
+            "max_denominator_label": "Maximaler Nenner:",
+            "same_denominator_label": "Gleiche Nenner (3/7 und 5/7)",
+            "same_numerator_label": "Gleiche Zähler (3/5 und 3/8)",
+            "different_label": "Verschiedene Zähler und Nenner (2/3 und 5/8)",
+            "allow_improper_label": "Unechte Brüche erlauben (Zähler größer als Nenner)",
+            "description": "Setze <, > oder = zwischen die beiden Brüche. Manche Paare mit verschiedenen Nennern sind gleichwertige Brüche (wie 2/3 und 6/9).",
+            "problems_title": "Brüche vergleichen",
+            "print_instructions": "Setze <, > oder = zwischen die Brüche.",
+            "control_sum_grid_title": "Kontrollsummen-Raster zur Selbstkontrolle",
+            "control_sum_grid_subtitle": "Nimm den größeren Bruch (bei Gleichheit einen beliebigen), kürze ihn vollständig, addiere Zähler und Nenner und bilde die Quersumme bis zu einer Ziffer.",
+            "error_message": "Fehler beim Erstellen der Aufgaben zum Bruchvergleich. Wähle mindestens einen Aufgabentyp und einen maximalen Nenner zwischen 4 und 30."
         },
         "compare_expressions": {
             "num_operands_label": "Operanden pro Seite:",

@@ -43,6 +43,8 @@
     "number_sequences_p": "Find the next term in a sequence (arithmetic, geometric, squares, Fibonacci-like).",
     "operator_puzzles_h3": "Operator Puzzles",
     "operator_puzzles_p": "Fill in the missing operators (and brackets, if enabled) to make the equation true.",
+    "compare_fractions_h3": "Compare Fractions",
+    "compare_fractions_p": "Fill in <, >, or = between two fractions.",
     "compare_expressions_h3": "Compare Expressions",
     "compare_expressions_p": "Fill in <, >, or = between two expressions. Quick mental-math drill.",
     "number_sets_h3": "Number Sets",
@@ -509,6 +511,19 @@
             "control_sum_grid_title": "Count Self-Check Grid",
             "control_sum_grid_subtitle": "Write 1 for every set you circled and 0 for the others, in the order ℕ W ℤ ℚ I, and read it as a binary number. Circling ℕ and ℤ gives 10100 = 20.",
             "error_message": "Error generating number set problems."
+        },
+        "compare_fractions": {
+            "max_denominator_label": "Max denominator:",
+            "same_denominator_label": "Same denominators (3/7 and 5/7)",
+            "same_numerator_label": "Same numerators (3/5 and 3/8)",
+            "different_label": "Different numerators and denominators (2/3 and 5/8)",
+            "allow_improper_label": "Allow improper fractions (numerator larger than denominator)",
+            "description": "Fill in <, >, or = between the two fractions. Some pairs with different denominators are equal fractions (like 2/3 and 6/9).",
+            "problems_title": "Compare Fractions",
+            "print_instructions": "Write <, >, or = between the fractions.",
+            "control_sum_grid_title": "Control Sum Self-Check Grid",
+            "control_sum_grid_subtitle": "Take the larger fraction (either if equal), reduce it to lowest terms, add numerator and denominator, and find the digital root.",
+            "error_message": "Error generating fraction comparison problems. Check that at least one problem type is selected and the max denominator is between 4 and 30."
         },
         "compare_expressions": {
             "num_operands_label": "Operands per side:",

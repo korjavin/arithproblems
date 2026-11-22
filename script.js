@@ -20,6 +20,7 @@ import { generateSimplifyRationalsData } from './generators/simplify-rationals.j
 import { generateNumberSequencesData } from './generators/number-sequences.js';
 import { generateOperatorPuzzlesData } from './generators/operator-puzzles.js';
 import { generateCompareExpressionsData } from './generators/compare-expressions.js';
+import { generateCompareFractionsData } from './generators/compare-fractions.js';
 import { generateNumberSetsData, NUMBER_SETS } from './generators/number-sets.js';
 import { generateBooleanLogicData } from './generators/boolean-logic.js';
 import { generateUnitConversionData, displayNumber, factorOf } from './generators/unit-conversion.js';
@@ -114,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "rational-canonical": controls.renderRationalCanonicalControls,
         "rational-operations": controls.renderRationalOperationsControls,
         "rational-mult-div": controls.renderRationalMultDivControls,
+        "compare-fractions": controls.renderCompareFractionsControls,
         "proportion": controls.renderProportionControls,
         "decimal-rational": controls.renderDecimalRationalControls,
         "percentage": controls.renderPercentageControls,
@@ -152,6 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         "rational-canonical": renderRationalCanonicalProblems,
         "rational-operations": renderRationalOperationsProblems,
         "rational-mult-div": renderRationalMultDivProblems,
+        "compare-fractions": renderCompareFractionsProblems,
         "proportion": renderProportionProblems,
         "decimal-rational": renderDecimalRationalProblems,
         "percentage": renderPercentageProblems,
@@ -495,6 +498,33 @@ document.addEventListener("DOMContentLoaded", async () => {
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
             showError(t.error_max_val || error.message);
+        }
+    }
+
+    function renderCompareFractionsProblems(translations) {
+        const t = translations.script.compare_fractions;
+        DOM.problemsContainer.innerHTML = '';
+        try {
+            const { problems, controlSums } = generateCompareFractionsData({
+                maxDenominator: parseInt(document.getElementById('cf-max-denominator').value, 10),
+                includeSameDenominator: document.getElementById('cf-same-denominator').checked,
+                includeSameNumerator: document.getElementById('cf-same-numerator').checked,
+                includeDifferent: document.getElementById('cf-different').checked,
+                allowImproper: document.getElementById('cf-allow-improper').checked,
+                numberOfProblems: parseInt(DOM.numProblemsInput.value, 10),
+            });
+            const frac = f => `<span class="fraction"><span class="numerator">${f.n}</span><span class="denominator">${f.d}</span></span>`;
+            let html = `<h3>${t.problems_title}</h3>`;
+            html += `<p class="print-instructions">${t.print_instructions}</p>`;
+            html += `<div class="arithmetic-grid fraction-problem-grid compare-fractions-problem-grid">`;
+            html += problems.map(p =>
+                `<div class="compare-fraction-item"><div class="problem-content">${frac(p.left)}<span class="cmp-blank"></span>${frac(p.right)}</div></div>`
+            ).join('');
+            html += `</div>`;
+            html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
+            DOM.problemsContainer.innerHTML = html;
+        } catch (error) {
+            showError(t.error_message || error.message);
         }
     }
 
