@@ -524,7 +524,8 @@ document.addEventListener("DOMContentLoaded", async () => {
             html += selfCheckGridHtml(t.control_sum_grid_title, t.control_sum_grid_subtitle, controlSums.map(c => c.controlSum));
             DOM.problemsContainer.innerHTML = html;
         } catch (error) {
-            showError(t.error_message || error.message);
+            // t is undefined when a cached old locale file lacks this topic; still show something.
+            showError(t?.error_message || error.message);
         }
     }
 

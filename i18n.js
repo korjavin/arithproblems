@@ -1,3 +1,6 @@
+// The deploy stamps this module's URL with ?v=<commit> (scripts/stamp-version.sh);
+// reuse it so a new deploy never gets an old cached locale file.
+const VERSION_QUERY = new URL(import.meta.url).search;
 let translations = {};
 const supportedLangs = ['en', 'de', 'ru'];
 let currentLang = 'en'; // default
@@ -46,7 +49,7 @@ export async function setLanguage(lang, onLanguageChange) {
     localStorage.setItem('lang', lang);
 
     try {
-        const response = await fetch(`locales/${lang}.json`);
+        const response = await fetch(`locales/${lang}.json${VERSION_QUERY}`);
         translations = await response.json();
         await applyTranslations();
         if (onLanguageChange) {
